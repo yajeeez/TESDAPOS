@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TESDA POS Admin</title>
+  <link rel="stylesheet" href="./assets/css/AmdminDashboard.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="dashboard">
+
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+      <!-- TESDA Logo -->
+      <div class="sidebar-logo">
+        <img src="/img/TESDAG.png" alt="TESDA Logo" class="tesda-logo" />
+      </div>
+
+      <h2>TESDA POS</h2>
+      <ul>
+        <li><a href="#" onclick="showSection('dashboard')"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
+        <li><a href="#" onclick="showSection('orders')"><i class="fas fa-receipt"></i><span>Manage Orders</span></a></li>
+        <li><a href="#" onclick="showSection('inventory')"><i class="fas fa-boxes"></i><span>Inventory</span></a></li>
+        <li><a href="#" onclick="showSection('trainees')"><i class="fas fa-user-graduate"></i><span>Trainee Access</span></a></li>
+        <li><a href="#" onclick="showSection('transactions')"><i class="fas fa-cash-register"></i><span>Transactions</span></a></li>
+        <li><a href="#" onclick="showSection('maintenance')"><i class="fas fa-tools"></i><span>Maintenance</span></a></li>
+        <li><a href="#" onclick="showSection('reports')"><i class="fas fa-chart-line"></i><span>Reports</span></a></li>
+      </ul>
+
+      <!-- Logout Button (fixed) -->
+      <div class="logout-btn">
+        <a href="#" onclick="logout(event)">
+          <i class="fas fa-sign-out-alt"></i><span>Logout</span>
+        </a>
+      </div>
+
+      <script>
+        function logout(e) {
+          // stop default <a> behavior
+          if (e) e.preventDefault();
+
+          if (confirm("Are you sure you want to logout?")) {
+            window.location.href = "/LandingPage/LandingPage.html"; 
+          }
+        }
+      </script>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main">
+      <div class="topbar">
+        <input type="text" placeholder="Search..." class="search-input" />
+      </div>
+
+      <section id="dashboard" class="page-section"></section>
+      <section id="orders" class="page-section" style="display:none;"></section>
+
+      <section id="inventory" class="page-section" style="display:none;">
+        <h2>Inventory Management</h2>
+        <form id="inventoryForm">
+          <label>Item Name: <input type="text" name="itemName" required pattern="[A-Za-z ]+"></label>
+          <label>Quantity: <input type="number" name="quantity" min="0" required></label>
+          <label>Price: <input type="number" name="price" min="0" required></label>
+          <label>Photo: <input type="file" name="photo" accept="image/*"></label>
+          <button type="submit">Add Item</button>
+        </form>
+        <div id="inventoryList"></div>
+      </section>
+
+      <section id="trainees" class="page-section" style="display:none;"></section>
+      <section id="transactions" class="page-section" style="display:none;"></section>
+      <section id="menu" class="page-section" style="display:none;"></section>
+      <section id="maintenance" class="page-section" style="display:none;"></section>
+      <section id="reports" class="page-section" style="display:none;"></section>
+    </main>
+  </div>
+
+  <script src="./assets/css/js/AdminDashboard.js"></script>
+</body>
+</html>

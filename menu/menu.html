@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu Module</title>
+  <link rel="stylesheet" href="menu.css">
+</head>
+<body>
+  <div class="menu-container">
+    <div class="menu-header">
+      <h1>Exact Colleges of Asia - Food & Beverage Menu</h1>
+      <div class="menu-controls">
+        <input type="text" id="searchInput" placeholder="Search for meals or drinks...">
+        <select id="categoryFilter">
+          <option value="all">All</option>
+          <option value="meal">Meals</option>
+          <option value="drink">Drinks</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="menu-grid" id="menuGrid">
+      <div class="menu-item" data-category="meal">
+        <img src="/img/adobo.jpg" alt="Chicken Adobo">
+        <h3>Chicken Adobo</h3>
+        <p>Classic Filipino stew with soy sauce and vinegar.</p>
+        <p class="price">₱85</p>
+        <button class="view-btn" onclick="openModal('Chicken Adobo', 'Classic Filipino stew with soy sauce and vinegar.', '₱85', 'images/adobo.jpg')">View</button>
+      </div>
+
+      <div class="menu-item" data-category="meal">
+        <img src="/img/sinigang.jpg" alt="Sinigang">
+        <h3>Sinigang</h3>
+        <p>Sour tamarind soup with vegetables and pork.</p>
+        <p class="price">₱90</p>
+        <button class="view-btn" onclick="openModal('Sinigang', 'Sour tamarind soup with vegetables and pork.', '₱90', 'images/sinigang.jpg')">View</button>
+      </div>
+
+      <div class="menu-item" data-category="drink">
+        <img src="/img/icedtea.jpg" alt="Iced Tea">
+        <h3>Iced Tea</h3>
+        <p>Refreshing sweet lemon iced tea.</p>
+        <p class="price">₱25</p>
+        <button class="view-btn" onclick="openModal('Iced Tea', 'Refreshing sweet lemon iced tea.', '₱25', 'images/icedtea.jpg')">View</button>
+      </div>
+
+      <div class="menu-item" data-category="drink">
+        <img src="/img/milktea.jpg" alt="Milk Tea">
+        <h3>Milk Tea</h3>
+        <p>Sweet and creamy milk tea with tapioca pearls.</p>
+        <p class="price">₱45</p>
+        <button class="view-btn" onclick="openModal('Milk Tea', 'Sweet and creamy milk tea with tapioca pearls.', '₱45', 'images/milktea.jpg')">View</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal hidden" id="itemModal">
+    <div class="modal-content">
+      <span class="close-button" id="closeModal">&times;</span>
+      <img src="" alt="Item Image" class="modal-image" id="modalImage">
+      <h2 id="modalTitle"></h2>
+      <p id="modalDescription"></p>
+      <p id="modalPrice" class="price"></p>
+      <button class="order-btn" id="orderNowButton">Order Now</button>
+      <button class="cancel-btn" id="cancelOrderButton">Cancel</button>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast" style="display: none;">Order placed!</div>
+
+  <script src="menu.js"></script>
+</body>
+</html>
