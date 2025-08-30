@@ -14,12 +14,10 @@
   <div class="dashboard">
 
     <!-- Sidebar -->
-    <nav class="sidebar" id="sidebar">  
-      <!-- TESDA Logo -->
+    <nav class="sidebar" id="sidebar">
       <div class="sidebar-logo">
         <img src="/img/TESDAG.png" alt="TESDA Logo" class="tesda-logo" />
       </div>
-
       <h2>TESDA POS</h2>
       <ul>
         <li><a href="#" onclick="showSection('dashboard')"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
@@ -30,106 +28,89 @@
         <li><a href="#" onclick="showSection('maintenance')"><i class="fas fa-tools"></i><span>Maintenance</span></a></li>
         <li><a href="#" onclick="showSection('reports')"><i class="fas fa-chart-line"></i><span>Reports</span></a></li>
       </ul>
-
-      <!-- Logout Button -->
       <div class="logout-btn">
-        <a href="#" onclick="logout(event)">
-          <i class="fas fa-sign-out-alt"></i><span>Logout</span>
-        </a>
+        <a href="#" onclick="logout(event)"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
       </div>
     </nav>
 
     <!-- Main Content -->
     <main class="main">
+
+      <!-- Topbar with dynamic section card -->
       <div class="topbar">
-        <input type="text" placeholder="Search..." class="search-input" />
+        <div class="topbar-left" id="topbarSectionCard">
+          <!-- Section card will be injected here -->
+        </div>
+        <div class="topbar-right">
+          <input type="text" placeholder="Search..." class="search-input" />
+        </div>
       </div>
 
-      <!-- Dashboard -->
-      <section id="dashboard" class="page-section">
-        <h2>Dashboard Overview</h2>
-        <div class="cards">
-          <div class="card">
-            <h3>Total Sales</h3>
-            <p>₱25,000</p>
-          </div>
-          <div class="card">
-            <h3>Orders Today</h3>
-            <p>45</p>
-          </div>
-          <div class="card">
-            <h3>Active Trainees</h3>
-            <p>120</p>
-          </div>
-          <div class="card">
-            <h3>Low Stock Items</h3>
-            <p>8</p>
-          </div>
-        </div>
+      <!-- Dashboard Section -->
+<section id="dashboard" class="page-section">
 
-        <!-- Charts Section -->
-        <div class="charts-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; margin-top: 30px;">
-          <canvas id="barChart"></canvas>
-          <canvas id="pieChart"></canvas>
-        </div>
-      </section>
+  <!-- Summary Cards -->
+  <div class="cards">
+    <div class="card">
+      <h3>Total Sales</h3>
+      <p>₱25,000</p>
+    </div>
+    <div class="card">
+      <h3>Orders Today</h3>
+      <p>45</p>
+    </div>
+    <div class="card">
+      <h3>Active Trainees</h3>
+      <p>120</p>
+    </div>
+    <div class="card">
+      <h3>Low Stock Items</h3>
+      <p>8</p>
+    </div>
+  </div>
 
-     <!-- Orders Section -->
-<section id="orders" class="page-section" style="display:none;">
-  <h2>Manage Orders</h2>
-  <p>Here you can view and manage all trainee orders.</p>
+  <!-- Charts Container -->
+  <div class="charts-container">
 
-  <div class="orders-table-container">
-    <table class="orders-table">
-      <thead>
-        <tr>
-          <th>Order ID</th>
-          <th>Item</th>
-          <th>Quantity</th>
-          <th>Status</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody id="ordersList">
-        <tr>
-          <td>1</td>
-          <td>Burger</td>
-          <td>2</td>
-          <td><span class="status pending">Pending</span></td>
-          <td>
-            <select onchange="updateOrderStatus(1, this.value)">
-              <option value="">Change Status</option>
-              <option value="Pending">Pending</option>
-              <option value="Approved">Approved</option>
-              <option value="Served">Served</option>
-              <option value="Canceled">Canceled</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>Fries</td>
-          <td>1</td>
-          <td><span class="status approved">Approved</span></td>
-          <td>
-            <select onchange="updateOrderStatus(2, this.value)">
-              <option value="">Change Status</option>
-              <option value="Pending">Pending</option>
-              <option value="Approved">Approved</option>
-              <option value="Served">Served</option>
-              <option value="Canceled">Canceled</option>
-            </select>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <!-- Bar Chart -->
+    <div class="chart-box">
+      <h3>Dashboard Metrics (Bar Chart)</h3>
+      <canvas id="barChart"></canvas>
+    </div>
+
+    <!-- Pie Chart -->
+    <div class="chart-box">
+      <h3>Orders Status Distribution (Pie Chart)</h3>
+      <canvas id="pieChart"></canvas>
+    </div>
+
   </div>
 </section>
 
 
-      <!-- Inventory -->
+
+      <!-- Orders Section -->
+      <section id="orders" class="page-section" style="display:none;">
+        <div class="orders-table-container">
+          <table class="orders-table">
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Item</th>
+                <th>Quantity</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="ordersList">
+              <!-- Orders dynamically loaded via JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Inventory Section -->
       <section id="inventory" class="page-section" style="display:none;">
-        <h2>Inventory Management</h2>
         <form id="inventoryForm">
           <label>Item Name: <input type="text" name="itemName" required pattern="[A-Za-z ]+"></label>
           <label>Quantity: <input type="number" name="quantity" min="0" required></label>
@@ -140,34 +121,75 @@
         <div id="inventoryList"></div>
       </section>
 
-      <!-- Trainees -->
+      <!-- Trainees Section -->
       <section id="trainees" class="page-section" style="display:none;">
-        <h2>Trainee Access</h2>
-        <p>Manage trainee accounts and their access to the POS system.</p>
+        <div id="traineesContent"></div>
       </section>
 
-      <!-- Transactions -->
+      <!-- Transactions Section -->
       <section id="transactions" class="page-section" style="display:none;">
-        <h2>Transactions</h2>
-        <p>Review all past transactions and payment history.</p>
+        <div id="transactionsContent"></div>
       </section>
 
-      <!-- Maintenance -->
+      <!-- Maintenance Section -->
       <section id="maintenance" class="page-section" style="display:none;">
-        <h2>Maintenance</h2>
-        <p>Configure system settings and perform maintenance tasks.</p>
+        <div id="maintenanceContent"></div>
       </section>
 
-      <!-- Reports -->
+      <!-- Reports Section -->
       <section id="reports" class="page-section" style="display:none;">
-        <h2>Reports</h2>
-        <p>Generate and view sales, inventory, and trainee activity reports.</p>
+        <div id="reportsContent"></div>
       </section>
+
     </main>
   </div>
 
   <!-- JS -->
-  <script src="./assets/css/js/AdminDashboard.js"></script>
-    
+  <script>
+    function showSection(sectionId) {
+      // Hide all sections
+      document.querySelectorAll('.page-section').forEach(sec => sec.style.display = 'none');
+
+      // Show selected section
+      const section = document.getElementById(sectionId);
+      if(section) section.style.display = 'block';
+
+      // Update active sidebar link
+      document.querySelectorAll('.sidebar ul li a').forEach(a => a.classList.remove('active'));
+      const activeLink = document.querySelector(`.sidebar ul li a[onclick="showSection('${sectionId}')"]`);
+      if(activeLink) activeLink.classList.add('active');
+
+      // Update topbar section card
+      const topbarCard = document.getElementById('topbarSectionCard');
+      topbarCard.innerHTML = getSectionCardHTML(sectionId);
+    }
+
+    function getSectionCardHTML(sectionId) {
+      const cards = {
+        dashboard: { title: "Dashboard Overview", desc: "Quick summary of the system metrics." },
+        orders: { title: "Orders Management", desc: "View and manage all trainee orders." },
+        inventory: { title: "Inventory Management", desc: "Manage stock items and their details." },
+        trainees: { title: "Trainee Access", desc: "Manage trainee accounts and their access." },
+        transactions: { title: "Transactions", desc: "Review all past transactions and payment history." },
+        maintenance: { title: "Maintenance", desc: "Configure system settings and perform maintenance tasks." },
+        reports: { title: "Reports", desc: "Generate sales, inventory, and trainee activity reports." }
+      };
+
+      if(cards[sectionId]){
+        return `
+          <div class="section-card">
+            <h3>${cards[sectionId].title}</h3>
+            <p>${cards[sectionId].desc}</p>
+          </div>
+        `;
+      }
+      return '';
+    }
+
+    // Initialize dashboard on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      showSection('dashboard');
+    });
+  </script>
 </body>
 </html>

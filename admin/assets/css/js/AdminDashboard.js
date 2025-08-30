@@ -6,13 +6,47 @@ function toggleSidebar() {
 }
 
 // ==========================
-// Section switching
+// Section switching & Topbar
 // ==========================
+const sectionCards = {
+  dashboard: { title: "Dashboard Overview", desc: "Quick summary of the system metrics." },
+  orders: { title: "Orders Management", desc: "View and manage all trainee orders." },
+  inventory: { title: "Inventory Management", desc: "Manage stock items and their details." },
+  trainees: { title: "Trainee Access", desc: "Manage trainee accounts and their access." },
+  transactions: { title: "Transactions", desc: "Review all past transactions and payment history." },
+  maintenance: { title: "Maintenance", desc: "Configure system settings and perform maintenance tasks." },
+  reports: { title: "Reports", desc: "Generate sales, inventory, and trainee activity reports." }
+};
+
 function showSection(sectionId) {
-  const sections = document.querySelectorAll(".page-section");
-  sections.forEach(sec => sec.style.display = "none");
-  const target = document.getElementById(sectionId);
-  if (target) target.style.display = "block";
+  // Hide all sections
+  document.querySelectorAll('.page-section').forEach(sec => sec.style.display = 'none');
+  const section = document.getElementById(sectionId);
+  if(section) section.style.display = 'block';
+
+  // Update topbar
+  const topbarCard = document.getElementById('topbarSectionCard');
+  if(sectionCards[sectionId]) {
+    topbarCard.innerHTML = `
+      <div class="section-card">
+        <h3>${sectionCards[sectionId].title}</h3>
+        <p>${sectionCards[sectionId].desc}</p>
+      </div>
+    `;
+  } else {
+    topbarCard.innerHTML = '';
+  }
+
+  // Update sidebar active state
+  document.querySelectorAll('.sidebar ul li a').forEach(a => a.classList.remove('active'));
+  const activeLink = document.querySelector(`.sidebar ul li a[onclick="showSection('${sectionId}')"]`);
+  if(activeLink) activeLink.classList.add('active');
+
+  // Render dynamic content if needed
+  if(sectionId === 'orders') renderOrders();
+  if(sectionId === 'trainees') showTrainees();
+  if(sectionId === 'reports') showReports();
+  if(sectionId === 'maintenance') showMaintenance();
 }
 
 // ==========================
@@ -55,6 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   window.updateItem = function (id) {
     const item = inventoryItems.find(i => i.id === id);
+    if (!item) return;
     const newName = prompt("Update name:", item.name);
     const newQty = prompt("Update quantity:", item.quantity);
     const newPrice = prompt("Update price:", item.price);
@@ -82,33 +117,17 @@ let orders = [
   { id: 4, item: 'Pizza', quantity: 1, status: 'Canceled' },
 ];
 
-// Map statuses to CSS classes
 const statusColors = {
-  'Pending': 'pending',   // add styles in your CSS for .pending
+  'Pending': 'pending',
   'Approved': 'approved',
   'Served': 'served',
   'Canceled': 'canceled'
 };
 
 function renderOrders() {
-  const section = document.getElementById('orders');
-  section.innerHTML = `
-    <h2>Manage Orders</h2>
-    <table id="ordersTable" class="orders-table">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Item</th>
-          <th>Quantity</th>
-          <th>Status</th>
-          <th>Change Status</th>
-        </tr>
-      </thead>
-      <tbody id="ordersList"></tbody>
-    </table>
-  `;
-
   const tbody = document.getElementById('ordersList');
+  if (!tbody) return;
+  tbody.innerHTML = '';
   orders.forEach(order => {
     const tr = document.createElement('tr');
     tr.innerHTML = `
@@ -149,14 +168,15 @@ const trainees = [
 
 function showTrainees() {
   const section = document.getElementById('trainees');
+  if (!section) return;
   section.innerHTML = '<h2>Trainee Access</h2>';
   trainees.forEach((t, index) => {
-    section.innerHTML += `
-      <div>
-        ${t.name} - ${t.online ? 'Online' : 'Offline'}
-        <button onclick="toggleTrainee(${index})">${t.online ? 'Disable' : 'Enable'}</button>
-      </div>
+    const div = document.createElement('div');
+    div.innerHTML = `
+      ${t.name} - ${t.online ? 'Online' : 'Offline'}
+      <button onclick="toggleTrainee(${index})">${t.online ? 'Disable' : 'Enable'}</button>
     `;
+    section.appendChild(div);
   });
 }
 
@@ -166,7 +186,7 @@ function toggleTrainee(index) {
 }
 
 // ==========================
-// Menu Module
+// Reports
 // ==========================
 const menuItems = [
   { name: 'Burger', price: 50 },
@@ -174,22 +194,12 @@ const menuItems = [
   { name: 'Coke', price: 20 },
 ];
 
-function showMenu() {
-  const section = document.getElementById('menu');
-  section.innerHTML = '<h2>Menu</h2>';
-  menuItems.forEach(item => {
-    section.innerHTML += `<div>${item.name} - ₱${item.price}</div>`;
-  });
-}
-
-// ==========================
-// Report Generation
-// ==========================
 function showReports() {
   const section = document.getElementById('reports');
+  if (!section) return;
   const totalSales = orders.reduce((total, order) => {
     const item = menuItems.find(i => i.name === order.item);
-    return item && (order.status === 'Served') ? total + item.price : total;
+    return item && order.status === 'Served' ? total + item.price * order.quantity : total;
   }, 0);
 
   section.innerHTML = `
@@ -208,6 +218,7 @@ function generateReceipt() {
 // ==========================
 function showMaintenance() {
   const section = document.getElementById('maintenance');
+  if (!section) return;
   section.innerHTML = `
     <h2>Maintenance Module</h2>
     <button onclick="performBackup()">Backup Data</button>
@@ -236,43 +247,60 @@ function logout(e) {
 // ==========================
 // Charts (Chart.js)
 // ==========================
-const barCtx = document.getElementById('barChart').getContext('2d');
-new Chart(barCtx, {
-  type: 'bar',
-  data: {
-    labels: ['Total Sales', 'Orders Today', 'Active Trainees', 'Low Stock Items'],
-    datasets: [{
-      label: 'Dashboard Metrics',
-      data: [25000, 45, 120, 8],
-      backgroundColor: ['#4CAF50', '#2196F3', '#FF9800', '#F44336']
-    }]
-  },
-  options: {
-    responsive: false,
-    maintainAspectRatio: false,
-    plugins: { legend: { display: false } },
-    scales: { y: { beginAtZero: true } }
-  }
-});
+let barChart, pieChart;
 
-const pieCtx = document.getElementById('pieChart').getContext('2d');
-new Chart(pieCtx, {
-  type: 'pie',
-  data: {
-    labels: ['Total Sales', 'Orders Today', 'Active Trainees', 'Low Stock Items'],
-    datasets: [{
-      data: [25000, 45, 120, 8],
-      backgroundColor: ['#4CAF50', '#2196F3', '#FF9800', '#F44336']
-    }]
-  },
-  options: {
-    responsive: false,
-    maintainAspectRatio: false,
-    plugins: { legend: { position: 'bottom' } }
-  }
-});
+function initCharts() {
+  const barCtx = document.getElementById('barChart').getContext('2d');
+  const pieCtx = document.getElementById('pieChart').getContext('2d');
 
-// Initialize Orders on page load
+  // --- Bar Chart ---
+  barChart = new Chart(barCtx, {
+    type: 'bar',
+    data: {
+      labels: ['Total Sales', 'Orders Today', 'Active Trainees', 'Low Stock Items'],
+      datasets: [{
+        label: 'Dashboard Metrics',
+        data: [25000, 45, 120, 8],
+        backgroundColor: ['#4CAF50', '#2196F3', '#FF9800', '#F44336']
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: { y: { beginAtZero: true } }
+    }
+  });
+
+  // --- Pie Chart ---
+  pieChart = new Chart(pieCtx, {
+    type: 'pie',
+    data: {
+      labels: ['Total Sales', 'Orders Today', 'Active Trainees', 'Low Stock Items'],
+      datasets: [{
+        data: [25000, 45, 120, 8],
+        backgroundColor: ['#4CAF50', '#2196F3', '#FF9800', '#F44336']
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { position: 'bottom' } }
+    }
+  });
+}
+
+// Initialize charts when page loads
 document.addEventListener('DOMContentLoaded', () => {
-  renderOrders();
+  showSection('dashboard'); // default section
+  initCharts();
+});
+
+
+// ==========================
+// Initialize on page load
+// ==========================
+document.addEventListener('DOMContentLoaded', () => {
+  showSection('dashboard'); // default
+  initCharts();
 });
