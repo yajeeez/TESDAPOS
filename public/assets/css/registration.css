@@ -1,0 +1,148 @@
+:root {
+  --tesda-blue: #0072bc;
+  --tesda-green: #28a745;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  height: 100vh;
+  background: url('') no-repeat center center/cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.background-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(227, 228, 232, 0.112);
+  backdrop-filter: blur(6px);
+  z-index: 1;
+}
+
+.login-container {
+  position: relative;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(15px);
+  padding: 2.5rem 3rem;
+  border-radius: 1rem;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: var(--tesda-blue);
+}
+
+.login-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 2rem;
+}
+
+.login-header img {
+  width: 50px;
+  height: auto;
+}
+
+.login-header h2 {
+  margin: 0;
+  font-size: 2rem;
+  color: white;
+}
+
+.input-icon-group {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.input-icon-group i {
+  position: absolute;
+  top: 50%;
+  left: 1rem;
+  transform: translateY(-50%);
+  color: var(--tesda-blue);
+  font-size: 1rem;
+}
+
+.input-icon-group input {
+  width: 100%;
+  padding: 0.75rem 0.75rem 0.75rem 2.75rem;
+  border: 1px solid rgba(0, 114, 188, 0.3);
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  background-color: rgba(255, 255, 255, 0.65);
+  color: #000;
+}
+
+.input-icon-group input:focus {
+  outline: 2px solid var(--tesda-blue);
+  border-color: var(--tesda-blue);
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+button {
+  width: 100%;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+/* Buttons */
+button[type="submit"] {
+  background-color: var(--tesda-blue);
+  color: white;
+}
+
+.register-btn {
+  background-color: var(--tesda-green);
+  color: white;
+  margin-top: 0.75rem;
+}
+
+.back-btn {
+  margin-top: 0.75rem;
+  background-color: transparent;
+  color: var(--tesda-blue);
+  border: 2px solid var(--tesda-blue);
+}
+
+.back-btn:hover {
+  background-color: var(--tesda-blue);
+  color: white;
+}
+
+@media (max-width: 500px) {
+  .login-container {
+    padding: 2rem 1.5rem;
+    margin: 1rem;
+  }
+  .login-header img {
+    width: 40px;
+  }
+  .login-header h2 {
+    font-size: 1.5rem;
+  }
+}

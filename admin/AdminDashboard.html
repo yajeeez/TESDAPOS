@@ -7,6 +7,8 @@
   <link rel="stylesheet" href="./assets/css/AmdminDashboard.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <div class="dashboard">
@@ -29,23 +31,12 @@
         <li><a href="#" onclick="showSection('reports')"><i class="fas fa-chart-line"></i><span>Reports</span></a></li>
       </ul>
 
-      <!-- Logout Button (fixed) -->
+      <!-- Logout Button -->
       <div class="logout-btn">
         <a href="#" onclick="logout(event)">
           <i class="fas fa-sign-out-alt"></i><span>Logout</span>
         </a>
       </div>
-
-      <script>
-        function logout(e) {
-          // stop default <a> behavior
-          if (e) e.preventDefault();
-
-          if (confirm("Are you sure you want to logout?")) {
-            window.location.href = "/LandingPage/LandingPage.html"; 
-          }
-        }
-      </script>
     </nav>
 
     <!-- Main Content -->
@@ -54,9 +45,42 @@
         <input type="text" placeholder="Search..." class="search-input" />
       </div>
 
-      <section id="dashboard" class="page-section"></section>
-      <section id="orders" class="page-section" style="display:none;"></section>
+      <!-- Dashboard -->
+      <section id="dashboard" class="page-section">
+        <h2>Dashboard Overview</h2>
+        <div class="cards">
+          <div class="card">
+            <h3>Total Sales</h3>
+            <p>₱25,000</p>
+          </div>
+          <div class="card">
+            <h3>Orders Today</h3>
+            <p>45</p>
+          </div>
+          <div class="card">
+            <h3>Active Trainees</h3>
+            <p>120</p>
+          </div>
+          <div class="card">
+            <h3>Low Stock Items</h3>
+            <p>8</p>
+          </div>
+        </div>
 
+        <!-- Charts Section -->
+        <div class="charts-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; margin-top: 30px;">
+          <canvas id="barChart"></canvas>
+          <canvas id="pieChart"></canvas>
+        </div>
+      </section>
+
+      <!-- Orders -->
+      <section id="orders" class="page-section" style="display:none;">
+        <h2>Manage Orders</h2>
+        <p>Here you can view and manage all trainee orders.</p>
+      </section>
+
+      <!-- Inventory -->
       <section id="inventory" class="page-section" style="display:none;">
         <h2>Inventory Management</h2>
         <form id="inventoryForm">
@@ -69,14 +93,89 @@
         <div id="inventoryList"></div>
       </section>
 
-      <section id="trainees" class="page-section" style="display:none;"></section>
-      <section id="transactions" class="page-section" style="display:none;"></section>
-      <section id="menu" class="page-section" style="display:none;"></section>
-      <section id="maintenance" class="page-section" style="display:none;"></section>
-      <section id="reports" class="page-section" style="display:none;"></section>
+      <!-- Trainees -->
+      <section id="trainees" class="page-section" style="display:none;">
+        <h2>Trainee Access</h2>
+        <p>Manage trainee accounts and their access to the POS system.</p>
+      </section>
+
+      <!-- Transactions -->
+      <section id="transactions" class="page-section" style="display:none;">
+        <h2>Transactions</h2>
+        <p>Review all past transactions and payment history.</p>
+      </section>
+
+      <!-- Maintenance -->
+      <section id="maintenance" class="page-section" style="display:none;">
+        <h2>Maintenance</h2>
+        <p>Configure system settings and perform maintenance tasks.</p>
+      </section>
+
+      <!-- Reports -->
+      <section id="reports" class="page-section" style="display:none;">
+        <h2>Reports</h2>
+        <p>Generate and view sales, inventory, and trainee activity reports.</p>
+      </section>
     </main>
   </div>
 
+  <!-- JS -->
   <script src="./assets/css/js/AdminDashboard.js"></script>
+  <script>
+    function logout(e) {
+      if (e) e.preventDefault();
+      if (confirm("Are you sure you want to logout?")) {
+        window.location.href = "/LandingPage/LandingPage.html"; 
+      }
+    }
+
+    function showSection(sectionId) {
+      const sections = document.querySelectorAll(".page-section");
+      sections.forEach(sec => sec.style.display = "none");
+      document.getElementById(sectionId).style.display = "block";
+    }
+
+    // Chart.js - Bar Chart
+    const barCtx = document.getElementById('barChart').getContext('2d');
+    new Chart(barCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Total Sales', 'Orders Today', 'Active Trainees', 'Low Stock Items'],
+        datasets: [{
+          label: 'Dashboard Metrics',
+          data: [25000, 45, 120, 8],
+          backgroundColor: ['#4CAF50', '#2196F3', '#FF9800', '#F44336']
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { beginAtZero: true }
+        }
+      }
+    });
+
+    // Chart.js - Pie Chart
+    const pieCtx = document.getElementById('pieChart').getContext('2d');
+    new Chart(pieCtx, {
+      type: 'pie',
+      data: {
+        labels: ['Total Sales', 'Orders Today', 'Active Trainees', 'Low Stock Items'],
+        datasets: [{
+          data: [25000, 45, 120, 8],
+          backgroundColor: ['#4CAF50', '#2196F3', '#FF9800', '#F44336']
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'bottom'
+          }
+        }
+      }
+    });
+  </script>
 </body>
 </html>

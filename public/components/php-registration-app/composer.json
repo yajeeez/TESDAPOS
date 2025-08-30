@@ -1,0 +1,17 @@
+{
+  "name": "php-registration-app",
+  "description": "A simple PHP registration application with MongoDB integration.",
+  "require": {
+    "mongodb/mongodb": "^1.10"
+  },
+  "autoload": {
+    "psr-4": {
+      "Src\\": "src/"
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9.5"
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true
+}

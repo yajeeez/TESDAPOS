@@ -143,6 +143,22 @@ body {
   animation: fadeIn 1s ease;
 }
 
+/* Custom Scrollbar */
+.main::-webkit-scrollbar {
+  width: 8px;
+}
+.main::-webkit-scrollbar-track {
+  background: #e0e0e0;
+  border-radius: 8px;
+}
+.main::-webkit-scrollbar-thumb {
+  background: var(--tesda-blue);
+  border-radius: 8px;
+}
+.main::-webkit-scrollbar-thumb:hover {
+  background: var(--tesda-light-blue);
+}
+
 /* Topbar */
 .topbar {
   display: flex;
@@ -180,6 +196,81 @@ body {
   transform: translateY(15px);
   opacity: 0;
   animation: fadeInUp 0.6s ease forwards;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover Effect for Sections */
+.page-section:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* === Dashboard Cards === */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.card {
+  background: var(--tesda-blue);
+  color: var(--white);
+  padding: 1.2rem;
+  border-radius: 12px;
+  text-align: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.card p {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--tesda-yellow);
+}
+
+.card:hover {
+  transform: translateY(-5px) scale(1.03);
+  background: var(--tesda-dark-blue);
+}
+
+/* === Chart Section === */
+.chart-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.chart-box {
+  background: #fff;
+  border-radius: 15px;
+  padding: 1rem;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Set fixed height for the charts */
+.chart-box canvas {
+  width: 100% !important;  /* fill container width */
+  height: 250px !important; /* adjust this value to make it smaller/larger */
+}
+
+
+.chart-box h3 {
+  font-size: 1rem;
+  color: var(--tesda-blue);
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  text-align: center;
 }
 
 /* === Animations === */
@@ -212,25 +303,30 @@ body {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.4; }
 }
+
+/* === Logout Button === */
 .logout-btn {
-  margin-top: auto; /* pushes it to the bottom */
+  margin-top: auto;
   padding: 15px;
+  width: 100%;
 }
 
 .logout-btn a {
   display: flex;
+  justify-content: center;
   align-items: center;
   gap: 10px;
   color: #fff;
   text-decoration: none;
   font-weight: 500;
   background: #e63946;
-  padding: 5px 10px;
-  border-radius: 8px;
-  transition: background 0.3s ease;
+  padding: 10px 15px;
+  border-radius: 10px;
+  transition: all 0.3s ease;
 }
 
 .logout-btn a:hover {
   background: #d62828;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
-
