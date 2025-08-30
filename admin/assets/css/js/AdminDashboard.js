@@ -1,17 +1,23 @@
+// ==========================
 // Sidebar toggle
+// ==========================
 function toggleSidebar() {
   document.getElementById("sidebar").classList.toggle("collapsed");
 }
 
+// ==========================
 // Section switching
-function showSection(id) {
-  const sections = document.querySelectorAll('.page-section');
-  sections.forEach(sec => sec.style.display = 'none');
-  const target = document.getElementById(id);
-  if (target) target.style.display = 'block';
+// ==========================
+function showSection(sectionId) {
+  const sections = document.querySelectorAll(".page-section");
+  sections.forEach(sec => sec.style.display = "none");
+  const target = document.getElementById(sectionId);
+  if (target) target.style.display = "block";
 }
 
+// ==========================
 // Inventory Management
+// ==========================
 let inventoryItems = [];
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -66,20 +72,51 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 });
 
-// Order Management (Dummy data + status updates)
+// ==========================
+// Orders Management
+// ==========================
 let orders = [
-  { id: 1, item: 'Burger', status: 'Pending' },
-  { id: 2, item: 'Fries', status: 'Approved' },
+  { id: 1, item: 'Burger', quantity: 2, status: 'Pending' },
+  { id: 2, item: 'Fries', quantity: 1, status: 'Approved' },
+  { id: 3, item: 'Coke', quantity: 3, status: 'Served' },
+  { id: 4, item: 'Pizza', quantity: 1, status: 'Canceled' },
 ];
 
-function showOrders() {
+// Map statuses to CSS classes
+const statusColors = {
+  'Pending': 'pending',   // add styles in your CSS for .pending
+  'Approved': 'approved',
+  'Served': 'served',
+  'Canceled': 'canceled'
+};
+
+function renderOrders() {
   const section = document.getElementById('orders');
-  section.innerHTML = '<h2>Manage Orders</h2>';
+  section.innerHTML = `
+    <h2>Manage Orders</h2>
+    <table id="ordersTable" class="orders-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Item</th>
+          <th>Quantity</th>
+          <th>Status</th>
+          <th>Change Status</th>
+        </tr>
+      </thead>
+      <tbody id="ordersList"></tbody>
+    </table>
+  `;
+
+  const tbody = document.getElementById('ordersList');
   orders.forEach(order => {
-    section.innerHTML += `
-      <div>
-        <strong>Order #${order.id}</strong>: ${order.item} - 
-        <span>${order.status}</span>
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${order.id}</td>
+      <td>${order.item}</td>
+      <td>${order.quantity}</td>
+      <td><span class="status ${statusColors[order.status]}">${order.status}</span></td>
+      <td>
         <select onchange="updateOrderStatus(${order.id}, this.value)">
           <option value="">Change Status</option>
           <option value="Pending">Pending</option>
@@ -87,20 +124,24 @@ function showOrders() {
           <option value="Served">Served</option>
           <option value="Canceled">Canceled</option>
         </select>
-      </div>
+      </td>
     `;
+    tbody.appendChild(tr);
   });
 }
 
 function updateOrderStatus(orderId, newStatus) {
+  if (!newStatus) return;
   const order = orders.find(o => o.id === orderId);
   if (order) {
     order.status = newStatus;
-    showOrders();
+    renderOrders();
   }
 }
 
-// Trainee Access Management (Dummy)
+// ==========================
+// Trainee Access Management
+// ==========================
 const trainees = [
   { name: 'Trainee A', online: true },
   { name: 'Trainee B', online: false },
@@ -124,7 +165,9 @@ function toggleTrainee(index) {
   showTrainees();
 }
 
-// Menu Module (Static)
+// ==========================
+// Menu Module
+// ==========================
 const menuItems = [
   { name: 'Burger', price: 50 },
   { name: 'Fries', price: 30 },
@@ -139,7 +182,9 @@ function showMenu() {
   });
 }
 
+// ==========================
 // Report Generation
+// ==========================
 function showReports() {
   const section = document.getElementById('reports');
   const totalSales = orders.reduce((total, order) => {
@@ -158,7 +203,9 @@ function generateReceipt() {
   alert('Receipt generated for customer!');
 }
 
-// Maintenance (Stubs)
+// ==========================
+// Maintenance
+// ==========================
 function showMaintenance() {
   const section = document.getElementById('maintenance');
   section.innerHTML = `
@@ -175,8 +222,57 @@ function performBackup() {
 function viewAuditTrail() {
   alert("Audit trail viewed (placeholder).");
 }
-// Sidebar toggle
-function toggleSidebar() {
-  const sidebar = document.getElementById("sidebar");
-  sidebar.classList.toggle("collapsed");
+
+// ==========================
+// Logout
+// ==========================
+function logout(e) {
+  if (e) e.preventDefault();
+  if (confirm("Are you sure you want to logout?")) {
+    window.location.href = "/LandingPage/LandingPage.html"; 
+  }
 }
+
+// ==========================
+// Charts (Chart.js)
+// ==========================
+const barCtx = document.getElementById('barChart').getContext('2d');
+new Chart(barCtx, {
+  type: 'bar',
+  data: {
+    labels: ['Total Sales', 'Orders Today', 'Active Trainees', 'Low Stock Items'],
+    datasets: [{
+      label: 'Dashboard Metrics',
+      data: [25000, 45, 120, 8],
+      backgroundColor: ['#4CAF50', '#2196F3', '#FF9800', '#F44336']
+    }]
+  },
+  options: {
+    responsive: false,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: { y: { beginAtZero: true } }
+  }
+});
+
+const pieCtx = document.getElementById('pieChart').getContext('2d');
+new Chart(pieCtx, {
+  type: 'pie',
+  data: {
+    labels: ['Total Sales', 'Orders Today', 'Active Trainees', 'Low Stock Items'],
+    datasets: [{
+      data: [25000, 45, 120, 8],
+      backgroundColor: ['#4CAF50', '#2196F3', '#FF9800', '#F44336']
+    }]
+  },
+  options: {
+    responsive: false,
+    maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom' } }
+  }
+});
+
+// Initialize Orders on page load
+document.addEventListener('DOMContentLoaded', () => {
+  renderOrders();
+});

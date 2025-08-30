@@ -74,11 +74,58 @@
         </div>
       </section>
 
-      <!-- Orders -->
-      <section id="orders" class="page-section" style="display:none;">
-        <h2>Manage Orders</h2>
-        <p>Here you can view and manage all trainee orders.</p>
-      </section>
+     <!-- Orders Section -->
+<section id="orders" class="page-section" style="display:none;">
+  <h2>Manage Orders</h2>
+  <p>Here you can view and manage all trainee orders.</p>
+
+  <div class="orders-table-container">
+    <table class="orders-table">
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Item</th>
+          <th>Quantity</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="ordersList">
+        <tr>
+          <td>1</td>
+          <td>Burger</td>
+          <td>2</td>
+          <td><span class="status pending">Pending</span></td>
+          <td>
+            <select onchange="updateOrderStatus(1, this.value)">
+              <option value="">Change Status</option>
+              <option value="Pending">Pending</option>
+              <option value="Approved">Approved</option>
+              <option value="Served">Served</option>
+              <option value="Canceled">Canceled</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Fries</td>
+          <td>1</td>
+          <td><span class="status approved">Approved</span></td>
+          <td>
+            <select onchange="updateOrderStatus(2, this.value)">
+              <option value="">Change Status</option>
+              <option value="Pending">Pending</option>
+              <option value="Approved">Approved</option>
+              <option value="Served">Served</option>
+              <option value="Canceled">Canceled</option>
+            </select>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
 
       <!-- Inventory -->
       <section id="inventory" class="page-section" style="display:none;">
@@ -121,61 +168,6 @@
 
   <!-- JS -->
   <script src="./assets/css/js/AdminDashboard.js"></script>
-  <script>
-    function logout(e) {
-      if (e) e.preventDefault();
-      if (confirm("Are you sure you want to logout?")) {
-        window.location.href = "/LandingPage/LandingPage.html"; 
-      }
-    }
-
-    function showSection(sectionId) {
-      const sections = document.querySelectorAll(".page-section");
-      sections.forEach(sec => sec.style.display = "none");
-      document.getElementById(sectionId).style.display = "block";
-    }
-
-    // Chart.js - Bar Chart
-    const barCtx = document.getElementById('barChart').getContext('2d');
-    new Chart(barCtx, {
-      type: 'bar',
-      data: {
-        labels: ['Total Sales', 'Orders Today', 'Active Trainees', 'Low Stock Items'],
-        datasets: [{
-          label: 'Dashboard Metrics',
-          data: [25000, 45, 120, 8],
-          backgroundColor: ['#4CAF50', '#2196F3', '#FF9800', '#F44336']
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: { legend: { display: false } },
-        scales: {
-          y: { beginAtZero: true }
-        }
-      }
-    });
-
-    // Chart.js - Pie Chart
-    const pieCtx = document.getElementById('pieChart').getContext('2d');
-    new Chart(pieCtx, {
-      type: 'pie',
-      data: {
-        labels: ['Total Sales', 'Orders Today', 'Active Trainees', 'Low Stock Items'],
-        datasets: [{
-          data: [25000, 45, 120, 8],
-          backgroundColor: ['#4CAF50', '#2196F3', '#FF9800', '#F44336']
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            position: 'bottom'
-          }
-        }
-      }
-    });
-  </script>
+    
 </body>
 </html>
