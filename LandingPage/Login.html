@@ -23,11 +23,29 @@
       height: auto;
     }
 
-    .login-header h2 {
+    .login-header h3 {
       margin: 0;
-      font-size: 2rem;
+      font-size: 1.3rem;
       color: white;
     }
+
+    .forgot-password {
+  text-align: right;
+  margin: 0.5rem 0 1rem;
+}
+
+.forgot-password a {
+  font-size: 0.9rem;
+  color: #FFFFFF; /* white color */
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.forgot-password a:hover {
+  text-decoration: underline;
+  color: #004080; /* darker blue hover */
+}
+
 
     /* Back button */
     .back-btn {
@@ -61,19 +79,23 @@
     <!-- Logo on the left, Admin centered -->
     <div class="login-header">
       <img src="/img/TESDALOGO.png" alt="Admin Logo">
-      <h2>Admin</h2>
+      <h3>TESDA POS LOGIN</h3>
     </div>
 
     <form method="POST" action="login_handler.php">
       <input type="hidden" name="role" value="admin">
       <div class="input-icon-group">
         <i class="fas fa-user"></i>
-        <input type="text" id="username" name="username" placeholder="Username" maxlength="10" required>
+        <input type="text" id="username" name="username" placeholder="Username" maxlength="11" required>
       </div>
 
       <div class="input-icon-group">
         <i class="fas fa-lock"></i>
-        <input type="password" id="password" name="password" placeholder="Password" maxlength="12" required>
+        <input type="password" id="password" name="password" placeholder="Password" maxlength="8" required>
+      </div>
+      <!-- Forgot Password link -->
+      <div class="forgot-password">
+      <a href="">Forgot Password?</a>
       </div>
 
       <button type="submit">
