@@ -44,14 +44,11 @@ body {
   flex-direction: column;
   align-items: center;
   transition: width 0.3s ease;
-  overflow-y: auto;       /* allow scrolling */
-  scrollbar-width: none;  /* Firefox hide */
+  overflow-y: auto;
+  scrollbar-width: none;
 }
 
-.sidebar::-webkit-scrollbar {
-  display: none;          /* Chrome, Safari, Edge hide */
-}
-
+.sidebar::-webkit-scrollbar { display: none; }
 
 .sidebar-logo img.tesda-logo {
   width: 140px;
@@ -285,100 +282,136 @@ body {
   padding: 1rem;
 }
 
-#inventoryForm {
-  background: #ffffff;
-  padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem 2rem;
-  margin-bottom: 2rem;
-}
-
-#inventoryForm label {
+.filter-bar {
   display: flex;
-  flex-direction: column;
-  font-size: 0.95rem;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+
+.filter-bar label {
   font-weight: 600;
-  color: #222;
-}
-
-#inventoryForm input[type="text"],
-#inventoryForm input[type="number"],
-#inventoryForm input[type="file"] {
-  margin-top: 0.5rem;
-  padding: 0.6rem 0.8rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  color: var(--tesda-blue);
   font-size: 0.95rem;
-  transition: all 0.3s ease;
 }
 
-#inventoryForm input:focus {
+.filter-bar select {
+  padding: 0.5rem 0.8rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 0.9rem;
+  background: #fff;
+  color: #333;
+  transition: 0.3s;
+}
+
+.filter-bar select:hover,
+.filter-bar select:focus {
   border-color: var(--tesda-blue);
   outline: none;
-  box-shadow: 0 0 0 2px rgba(0, 74, 173, 0.15);
 }
 
-#inventoryForm button {
-  grid-column: span 2;
-  padding: 0.75rem;
-  background: var(--tesda-blue);
-  border: none;
-  border-radius: 8px;
-  color: #fff;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease;
-}
-
-#inventoryForm button:hover {
-  background: var(--tesda-dark-blue);
-  transform: translateY(-2px);
-}
-
-/* Inventory List */
 #inventoryList {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 1.5rem;
+  margin-top: 1rem;
 }
 
+/* Inventory Card */
 .inventory-card {
   background: #fff;
-  border-radius: 12px;
-  padding: 1rem;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  text-align: center;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  display: flex;
+  flex-direction: column;
 }
 
 .inventory-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  transform: translateY(-6px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 .inventory-card img {
   width: 100%;
-  height: 150px;
+  height: 170px;
   object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 0.75rem;
+  border-bottom: 1px solid #eee;
+}
+
+.inventory-card .card-body {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  flex: 1;
 }
 
 .inventory-card h4 {
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   font-weight: 600;
-  margin: 0.5rem 0;
-  color: #222;
+  margin: 0;
+  color: var(--tesda-blue);
 }
 
 .inventory-card p {
   font-size: 0.9rem;
-  color: #666;
-  margin: 0.25rem 0;
+  color: #555;
+  margin: 0;
+}
+
+.inventory-card .price {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #27ae60;
+}
+
+.inventory-card .stock {
+  font-size: 0.85rem;
+  color: #999;
+}
+
+.inventory-card .actions {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding-top: 0.8rem;
+}
+
+.inventory-card .actions button {
+  flex: 1;
+  padding: 0.55rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+}
+
+.inventory-card .actions .edit-btn {
+  background: var(--tesda-blue);
+  color: #fff;
+}
+
+.inventory-card .actions .edit-btn:hover {
+  background: var(--tesda-dark-blue);
+}
+
+.inventory-card .actions .delete-btn {
+  background: var(--danger);
+  color: #fff;
+}
+
+.inventory-card .actions .delete-btn:hover {
+  background: var(--danger-dark);
 }
 
 /* === Create Products Section === */

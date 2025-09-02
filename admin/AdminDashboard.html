@@ -146,16 +146,23 @@
     </button>
   </form>
 
-  <div id="productsList" class="product-list">
-    <!-- Newly created products will be shown here -->
-  </div>
+  
 </section>
 
 
 
       <!-- Inventory Section -->
       <section id="inventory" class="page-section" style="display:none;">
-        
+  <!-- Newly created products will be shown here -->
+ <div class="filter-bar">
+    <label for="categoryFilter">Filter by Category:</label>
+    <select id="categoryFilter" onchange="renderInventory()">
+      <option value="food">Food</option>
+      <option value="beverage">Beverage</option>
+      <option value="snacks">Snacks</option>
+      <option value="others">Others</option>
+    </select>
+  </div>
         <div id="inventoryList"></div>
       </section>
 

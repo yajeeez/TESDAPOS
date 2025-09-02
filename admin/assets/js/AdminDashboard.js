@@ -5,13 +5,13 @@ function toggleSidebar() {
   document.getElementById("sidebar").classList.toggle("collapsed");
 }
 
-   // ==========================
+// ==========================
 // Section switching & Topbar
 // ==========================
 const sectionCards = {
   dashboard: { title: "Dashboard Overview", desc: "Quick summary of the system metrics." },
   orders: { title: "Orders Management", desc: "View and manage all trainee orders." },
-  products: { title: "Product Creation", desc: "Add new items to the POS system inventory." }, // ✅ add this
+  products: { title: "Product Creation", desc: "Add new items to the POS system inventory." },
   inventory: { title: "Inventory Management", desc: "Manage stock items and their details." },
   trainees: { title: "Trainee Access", desc: "Manage trainee accounts and their access." },
   transactions: { title: "Transactions", desc: "Review all past transactions and payment history." },
@@ -58,99 +58,72 @@ function showSection(sectionId) {
     case 'trainees': showTrainees(); break;
     case 'reports': showReports(); break;
     case 'maintenance': showMaintenance(); break;
+    case 'inventory': renderInventory(); break;
   }
 }
 
-    // Initialize dashboard on page load
-    document.addEventListener('DOMContentLoaded', () => {
-      showSection('dashboard');
-    });
-
 // ==========================
-// Inventory Management
-// ==========================
-let inventoryItems = [];
-
-function initInventory() {
-  const inventoryForm = document.getElementById('inventoryForm');
-  const inventoryList = document.getElementById('inventoryList');
-
-  if (inventoryForm) {
-    inventoryForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const item = {
-        id: Date.now(),
-        name: inventoryForm.itemName.value,
-        quantity: Number(inventoryForm.quantity.value),
-        price: Number(inventoryForm.price.value),
-      };
-      inventoryItems.push(item);
-      renderInventory();
-      inventoryForm.reset();
-    });
-  }
-
-  function renderInventory() {
-    inventoryList.innerHTML = '';
-    inventoryItems.forEach(item => {
-      const div = document.createElement('div');
-      div.className = 'inventory-item';
-      div.innerHTML = `
-        <strong>${item.name}</strong> - Qty: ${item.quantity}, ₱${item.price.toFixed(2)}
-        <button onclick="updateItem(${item.id})">Update</button>
-        <button onclick="deleteItem(${item.id})">Delete</button>
-      `;
-      inventoryList.appendChild(div);
-    });
-  }
-
-  window.updateItem = function (id) {
-    const item = inventoryItems.find(i => i.id === id);
-    if (!item) return;
-    const newName = prompt("Update name:", item.name);
-    const newQty = prompt("Update quantity:", item.quantity);
-    const newPrice = prompt("Update price:", item.price);
-    if (newName && newQty && newPrice) {
-      item.name = newName;
-      item.quantity = Number(newQty);
-      item.price = Number(newPrice);
-      renderInventory();
-    }
-  };
-
-  window.deleteItem = function (id) {
-    inventoryItems = inventoryItems.filter(i => i.id !== id);
-    renderInventory();
-  };
-}
-
-// ==========================
-// Products Management
+// Inventory & Products Management
 // ==========================
 let products = [];
+let inventoryItems = [];
 
 function initProducts() {
-  const productForm = document.getElementById('createProductForm'); // ✅ matches HTML
+  const productForm = document.getElementById('createProductForm'); 
   const productsList = document.getElementById('productsList');
 
   if (productForm) {
     productForm.addEventListener('submit', (e) => {
       e.preventDefault();
+
+      const photoFile = productForm.photo.files[0];
+      let imgURL = "https://via.placeholder.com/300x170?text=No+Image";
+      if (photoFile) imgURL = URL.createObjectURL(photoFile);
+
       const product = {
         id: Date.now(),
         name: productForm.productName.value,
         category: productForm.category.value,
         price: Number(productForm.price.value),
+        stock: Number(productForm.stock.value) || 0,
+        image: imgURL
       };
+
+      // ✅ Add to products
       products.push(product);
+
+      // ✅ Sync with inventory
+      inventoryItems.push({
+        id: product.id,
+        name: product.name,
+        quantity: product.stock,
+        price: product.price,
+        image: product.image,
+        category: product.category
+      });
+
       renderProducts();
+      renderInventory();
       productForm.reset();
     });
   }
 
+  // ==========================
+  // Render Products
+  // ==========================
   window.renderProducts = function () {
     if (!productsList) return;
     productsList.innerHTML = '';
+
+    if (products.length === 0) {
+      productsList.innerHTML = `
+        <p class="empty-message">
+         "No products found. Go ahead and add new products in the 'Create Products' section to get started."
+        </p>
+      `;
+      return;
+    }
+
     products.forEach(product => {
       const div = document.createElement('div');
       div.className = 'product-card';
@@ -158,6 +131,7 @@ function initProducts() {
         <h4>${product.name}</h4>
         <p>Category: ${product.category}</p>
         <p>Price: ₱${product.price.toFixed(2)}</p>
+        <p>Stock: ${product.stock}</p>
         <button onclick="updateProduct(${product.id})">Update</button>
         <button onclick="deleteProduct(${product.id})">Delete</button>
       `;
@@ -165,24 +139,86 @@ function initProducts() {
     });
   };
 
+  // ==========================
+  // Update Product
+  // ==========================
   window.updateProduct = function (id) {
     const product = products.find(p => p.id === id);
     if (!product) return;
     const newName = prompt("Update name:", product.name);
     const newCategory = prompt("Update category:", product.category);
     const newPrice = prompt("Update price:", product.price);
-    if (newName && newCategory && newPrice) {
+    const newStock = prompt("Update stock:", product.stock);
+    if (newName && newCategory && newPrice && newStock) {
       product.name = newName;
       product.category = newCategory;
       product.price = Number(newPrice);
+      product.stock = Number(newStock);
+
+      // ✅ Sync with inventory
+      const item = inventoryItems.find(i => i.id === id);
+      if (item) {
+        item.name = product.name;
+        item.price = product.price;
+        item.quantity = product.stock;
+        item.category = product.category;
+      }
+
       renderProducts();
+      renderInventory();
     }
   };
 
+  // ==========================
+  // Delete Product
+  // ==========================
   window.deleteProduct = function (id) {
     products = products.filter(p => p.id !== id);
+    inventoryItems = inventoryItems.filter(i => i.id !== id);
     renderProducts();
+    renderInventory();
   };
+}
+
+// ==========================
+// Render Inventory with Category Filter
+// ==========================
+function renderInventory() {
+  const inventoryList = document.getElementById('inventoryList');
+  const filter = document.getElementById('categoryFilter')?.value || 'all';
+  if (!inventoryList) return;
+
+  inventoryList.innerHTML = '';
+
+  const filteredItems = inventoryItems.filter(item => filter === 'all' || item.category === filter);
+
+  if (filteredItems.length === 0) {
+    inventoryList.innerHTML = `
+      <p class="empty-message">
+        No products found in inventory. Please add products first in the "Create Products" section.
+      </p>
+    `;
+    return;
+  }
+
+  filteredItems.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'inventory-card';
+    div.innerHTML = `
+      <img src="${item.image}" alt="${item.name}">
+      <div class="card-body">
+        <h4>${item.name}</h4>
+        <p>Category: ${item.category}</p>
+        <p class="price">₱${item.price.toFixed(2)}</p>
+        <p class="stock">Stock: ${item.quantity} pcs</p>
+        <div class="actions">
+          <button class="edit-btn" onclick="updateProduct(${item.id})"><i class="fas fa-edit"></i> Edit</button>
+          <button class="delete-btn" onclick="deleteProduct(${item.id})"><i class="fas fa-trash"></i> Delete</button>
+        </div>
+      </div>
+    `;
+    inventoryList.appendChild(div);
+  });
 }
 
 // ==========================
@@ -372,8 +408,8 @@ function initCharts() {
 // Initialize on page load
 // ==========================
 document.addEventListener('DOMContentLoaded', () => {
-  initInventory();
   initProducts();
+  renderInventory();
   showSection('dashboard'); 
   initCharts();
 });
