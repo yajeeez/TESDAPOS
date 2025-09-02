@@ -112,102 +112,9 @@ header.header-hidden {
   transform: scale(1.1);
 }
 
-.main-hero-text {
-  position: absolute;
-  bottom: 5%;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 3;
-  color: #ffffff;
-  text-align: center;
-  max-width: 1000px;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 2rem;
-  transition: all 0.3s ease-in-out;
-}
-
-.main-hero-text h1 {
-  font-size: 3rem;
-  font-weight: 700;
-  line-height: 1.2;
-  margin-bottom: 1rem;
-}
-
-.main-hero-text p {
-  font-size: 1.25rem;
-  line-height: 1.6;
-  max-width: 800px;
-  color: #e0e0e0;
-}
-
-@media (max-width: 768px) {
-  .main-hero-text h1 {
-    font-size: 2.2rem;
-  }
-
-  .main-hero-text p {
-    font-size: 1rem;
-  }
-}
 
 
-/* Hero Text */
-.hero-category {
-  font-size: 1.1rem;
-  letter-spacing: 2px;
-  color: var(--text-light);
-  margin-bottom: 1.2rem;
-  opacity: 0.85;
-}
 
-.hero-heading {
-  font-size: 3.2rem;
-  font-family: "Georgia", "Times New Roman", serif;
-  font-weight: bold;
-  line-height: 1.1;
-  margin-bottom: 1.2rem;
-  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
-}
-
-.hero-publish-date {
-  font-size: 1.1rem;
-  color: var(--text-light);
-  opacity: 0.8;
-}
-
-.hero-welcome-text {
-  font-size: 1.25rem;
-  margin: 1.2rem 0 1.5rem 0;
-  color: var(--text-light);
-  opacity: 0.95;
-  max-width: 600px;
-}
-
-.hero-message {
-  text-align: center;
-  font-size: 1.5rem;
-  color: var(--text-light);
-  font-weight: 400;
-  margin-bottom: 3rem;
-  line-height: 1.3;
-  max-width: 1000px;
-}
-
-.hero-message div {
-  margin-bottom: 0.15em;
-}
-.hero-message div:last-child {
-  margin-bottom: 0;
-}
-
-.hero-message-bold {
-  font-weight: 700;
-  font-size: 1.5rem;
-  color: white;
-}
 
 /* Login Dropdown */
 .login-dropdown {
@@ -262,8 +169,6 @@ header.header-hidden {
 .login-dropdown-item:hover {
   background: var(--tesda-dark); /* Darker on hover */
   color: white;
-
-
 }
 
 /* Logo Container */
@@ -284,6 +189,3 @@ header.header-hidden {
   margin-bottom: 6.5rem;
 }
 
-.main-hero-text .logo-container {
-  margin-bottom: -7.5rem;
-}

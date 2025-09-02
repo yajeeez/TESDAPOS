@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ADMIN Login</title>
+  <title>Login</title>
   <link rel="stylesheet" href="login.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
@@ -61,10 +61,11 @@
     <!-- Logo on the left, Admin centered -->
     <div class="login-header">
       <img src="/img/TESDALOGO.png" alt="Admin Logo">
-      <h2>Manager</h2>
+      <h2>Admin</h2>
     </div>
 
-    <form>
+    <form method="POST" action="login_handler.php">
+      <input type="hidden" name="role" value="admin">
       <div class="input-icon-group">
         <i class="fas fa-user"></i>
         <input type="text" id="username" name="username" placeholder="Username" maxlength="10" required>
@@ -81,7 +82,7 @@
     </form>
 
     <!-- Back button -->
-    <button class="back-btn" onclick="window.location.href='LandingPage.html'">
+    <button class="back-btn" onclick="window.location.href='/LandingPage/LandingPage.html'">
       <i class="fas fa-arrow-left"></i> Back
     </button>
   </div>
