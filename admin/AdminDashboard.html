@@ -22,6 +22,7 @@
       <ul>
         <li><a href="#" onclick="showSection('dashboard')"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
         <li><a href="#" onclick="showSection('orders')"><i class="fas fa-receipt"></i><span>Manage Orders</span></a></li>
+        <li><a href="#" onclick="showSection('products')"><i class="fas fa-cart-plus"></i><span>Create Products</span></a></li>
         <li><a href="#" onclick="showSection('inventory')"><i class="fas fa-boxes"></i><span>Inventory</span></a></li>
         <li><a href="#" onclick="showSection('trainees')"><i class="fas fa-user-graduate"></i><span>Trainee Access</span></a></li>
         <li><a href="#" onclick="showSection('transactions')"><i class="fas fa-cash-register"></i><span>Transactions</span></a></li>
@@ -109,15 +110,52 @@
         </div>
       </section>
 
+      <!-- Create Products Section -->
+<section id="products" class="page-section" style="display:none;">
+  <form id="createProductForm">
+    <div class="form-grid">
+      <label>
+        Product Name:
+        <input type="text" name="productName" required pattern="[A-Za-z ]+">
+      </label>
+      <label>
+        Category:
+        <select name="category" required>
+          <option value="">-- Select Category --</option>
+          <option value="food">Food</option>
+          <option value="beverage">Beverage</option>
+          <option value="snacks">Snacks</option>
+          <option value="others">Others</option>
+        </select>
+      </label>
+      <label>
+        Price:
+        <input type="number" name="price" min="0" required>
+      </label>
+      <label>
+        Stock Quantity:
+        <input type="number" name="stock" min="0" required>
+      </label>
+      <label>
+        Upload Photo:
+        <input type="file" name="photo" accept="image/*">
+      </label>
+    </div>
+    <button type="submit" class="btn-submit">
+      <i class="fas fa-plus-circle"></i> Add Product
+    </button>
+  </form>
+
+  <div id="productsList" class="product-list">
+    <!-- Newly created products will be shown here -->
+  </div>
+</section>
+
+
+
       <!-- Inventory Section -->
       <section id="inventory" class="page-section" style="display:none;">
-        <form id="inventoryForm">
-          <label>Item Name: <input type="text" name="itemName" required pattern="[A-Za-z ]+"></label>
-          <label>Quantity: <input type="number" name="quantity" min="0" required></label>
-          <label>Price: <input type="number" name="price" min="0" required></label>
-          <label>Photo: <input type="file" name="photo" accept="image/*"></label>
-          <button type="submit">Add Item</button>
-        </form>
+        
         <div id="inventoryList"></div>
       </section>
 
@@ -128,7 +166,22 @@
 
       <!-- Transactions Section -->
       <section id="transactions" class="page-section" style="display:none;">
-        <div id="transactionsContent"></div>
+        <div class="orders-table-container">
+          <table class="orders-table">
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Item</th>
+                <th>Quantity</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="ordersList">
+              <!-- Orders dynamically loaded via JS -->
+            </tbody>
+          </table>
+        </div>
       </section>
 
       <!-- Maintenance Section -->
@@ -145,51 +198,6 @@
   </div>
 
   <!-- JS -->
-  <script>
-    function showSection(sectionId) {
-      // Hide all sections
-      document.querySelectorAll('.page-section').forEach(sec => sec.style.display = 'none');
-
-      // Show selected section
-      const section = document.getElementById(sectionId);
-      if(section) section.style.display = 'block';
-
-      // Update active sidebar link
-      document.querySelectorAll('.sidebar ul li a').forEach(a => a.classList.remove('active'));
-      const activeLink = document.querySelector(`.sidebar ul li a[onclick="showSection('${sectionId}')"]`);
-      if(activeLink) activeLink.classList.add('active');
-
-      // Update topbar section card
-      const topbarCard = document.getElementById('topbarSectionCard');
-      topbarCard.innerHTML = getSectionCardHTML(sectionId);
-    }
-
-    function getSectionCardHTML(sectionId) {
-      const cards = {
-        dashboard: { title: "Dashboard Overview", desc: "Quick summary of the system metrics." },
-        orders: { title: "Orders Management", desc: "View and manage all trainee orders." },
-        inventory: { title: "Inventory Management", desc: "Manage stock items and their details." },
-        trainees: { title: "Trainee Access", desc: "Manage trainee accounts and their access." },
-        transactions: { title: "Transactions", desc: "Review all past transactions and payment history." },
-        maintenance: { title: "Maintenance", desc: "Configure system settings and perform maintenance tasks." },
-        reports: { title: "Reports", desc: "Generate sales, inventory, and trainee activity reports." }
-      };
-
-      if(cards[sectionId]){
-        return `
-          <div class="section-card">
-            <h3>${cards[sectionId].title}</h3>
-            <p>${cards[sectionId].desc}</p>
-          </div>
-        `;
-      }
-      return '';
-    }
-
-    // Initialize dashboard on page load
-    document.addEventListener('DOMContentLoaded', () => {
-      showSection('dashboard');
-    });
-  </script>
+  <script src="/admin/assets/js/AdminDashboard.js"></script>
 </body>
 </html>

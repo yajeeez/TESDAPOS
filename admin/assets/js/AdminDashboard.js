@@ -5,12 +5,13 @@ function toggleSidebar() {
   document.getElementById("sidebar").classList.toggle("collapsed");
 }
 
-// ==========================
+   // ==========================
 // Section switching & Topbar
 // ==========================
 const sectionCards = {
   dashboard: { title: "Dashboard Overview", desc: "Quick summary of the system metrics." },
   orders: { title: "Orders Management", desc: "View and manage all trainee orders." },
+  products: { title: "Product Creation", desc: "Add new items to the POS system inventory." }, // ✅ add this
   inventory: { title: "Inventory Management", desc: "Manage stock items and their details." },
   trainees: { title: "Trainee Access", desc: "Manage trainee accounts and their access." },
   transactions: { title: "Transactions", desc: "Review all past transactions and payment history." },
@@ -21,12 +22,16 @@ const sectionCards = {
 function showSection(sectionId) {
   // Hide all sections
   document.querySelectorAll('.page-section').forEach(sec => sec.style.display = 'none');
-  const section = document.getElementById(sectionId);
-  if(section) section.style.display = 'block';
 
-  // Update topbar
+  // Show selected section
+  const section = document.getElementById(sectionId);
+  if (section) section.style.display = 'block';
+
+  // ==========================
+  // Update topbar card
+  // ==========================
   const topbarCard = document.getElementById('topbarSectionCard');
-  if(sectionCards[sectionId]) {
+  if (sectionCards[sectionId]) {
     topbarCard.innerHTML = `
       <div class="section-card">
         <h3>${sectionCards[sectionId].title}</h3>
@@ -37,24 +42,36 @@ function showSection(sectionId) {
     topbarCard.innerHTML = '';
   }
 
-  // Update sidebar active state
+  // ==========================
+  // Update sidebar active link
+  // ==========================
   document.querySelectorAll('.sidebar ul li a').forEach(a => a.classList.remove('active'));
   const activeLink = document.querySelector(`.sidebar ul li a[onclick="showSection('${sectionId}')"]`);
-  if(activeLink) activeLink.classList.add('active');
+  if (activeLink) activeLink.classList.add('active');
 
-  // Render dynamic content if needed
-  if(sectionId === 'orders') renderOrders();
-  if(sectionId === 'trainees') showTrainees();
-  if(sectionId === 'reports') showReports();
-  if(sectionId === 'maintenance') showMaintenance();
+  // ==========================
+  // Render dynamic content
+  // ==========================
+  switch (sectionId) {
+    case 'orders': renderOrders(); break;
+    case 'products': renderProducts(); break;
+    case 'trainees': showTrainees(); break;
+    case 'reports': showReports(); break;
+    case 'maintenance': showMaintenance(); break;
+  }
 }
+
+    // Initialize dashboard on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      showSection('dashboard');
+    });
 
 // ==========================
 // Inventory Management
 // ==========================
 let inventoryItems = [];
 
-document.addEventListener('DOMContentLoaded', () => {
+function initInventory() {
   const inventoryForm = document.getElementById('inventoryForm');
   const inventoryList = document.getElementById('inventoryList');
 
@@ -105,7 +122,68 @@ document.addEventListener('DOMContentLoaded', () => {
     inventoryItems = inventoryItems.filter(i => i.id !== id);
     renderInventory();
   };
-});
+}
+
+// ==========================
+// Products Management
+// ==========================
+let products = [];
+
+function initProducts() {
+  const productForm = document.getElementById('createProductForm'); // ✅ matches HTML
+  const productsList = document.getElementById('productsList');
+
+  if (productForm) {
+    productForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const product = {
+        id: Date.now(),
+        name: productForm.productName.value,
+        category: productForm.category.value,
+        price: Number(productForm.price.value),
+      };
+      products.push(product);
+      renderProducts();
+      productForm.reset();
+    });
+  }
+
+  window.renderProducts = function () {
+    if (!productsList) return;
+    productsList.innerHTML = '';
+    products.forEach(product => {
+      const div = document.createElement('div');
+      div.className = 'product-card';
+      div.innerHTML = `
+        <h4>${product.name}</h4>
+        <p>Category: ${product.category}</p>
+        <p>Price: ₱${product.price.toFixed(2)}</p>
+        <button onclick="updateProduct(${product.id})">Update</button>
+        <button onclick="deleteProduct(${product.id})">Delete</button>
+      `;
+      productsList.appendChild(div);
+    });
+  };
+
+  window.updateProduct = function (id) {
+    const product = products.find(p => p.id === id);
+    if (!product) return;
+    const newName = prompt("Update name:", product.name);
+    const newCategory = prompt("Update category:", product.category);
+    const newPrice = prompt("Update price:", product.price);
+    if (newName && newCategory && newPrice) {
+      product.name = newName;
+      product.category = newCategory;
+      product.price = Number(newPrice);
+      renderProducts();
+    }
+  };
+
+  window.deleteProduct = function (id) {
+    products = products.filter(p => p.id !== id);
+    renderProducts();
+  };
+}
 
 // ==========================
 // Orders Management
@@ -290,17 +368,12 @@ function initCharts() {
   });
 }
 
-// Initialize charts when page loads
-document.addEventListener('DOMContentLoaded', () => {
-  showSection('dashboard'); // default section
-  initCharts();
-});
-
-
 // ==========================
 // Initialize on page load
 // ==========================
 document.addEventListener('DOMContentLoaded', () => {
-  showSection('dashboard'); // default
+  initInventory();
+  initProducts();
+  showSection('dashboard'); 
   initCharts();
 });

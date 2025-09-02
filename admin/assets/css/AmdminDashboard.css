@@ -34,7 +34,7 @@ body {
   overflow: hidden;
 }
 
-/* === Sidebar === */
+/* === Sidebar Scroll === */
 .sidebar {
   width: 180px;
   background: linear-gradient(180deg, var(--tesda-blue), var(--tesda-dark-blue));
@@ -44,7 +44,14 @@ body {
   flex-direction: column;
   align-items: center;
   transition: width 0.3s ease;
+  overflow-y: auto;       /* allow scrolling */
+  scrollbar-width: none;  /* Firefox hide */
 }
+
+.sidebar::-webkit-scrollbar {
+  display: none;          /* Chrome, Safari, Edge hide */
+}
+
 
 .sidebar-logo img.tesda-logo {
   width: 140px;
@@ -196,7 +203,6 @@ body {
 .card p { font-size: 1.3rem; font-weight: bold; color: var(--tesda-yellow); }
 
 /* === Charts === */
-/* Charts Container */
 .charts-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -204,13 +210,12 @@ body {
   margin-top: 1.5rem;
 }
 
-/* Chart Box */
 .chart-box {
   background: #fff;
   padding: 1rem;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  min-height: 350px; /* important: set min-height */
+  min-height: 350px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -219,10 +224,9 @@ body {
 
 .chart-box canvas {
   width: 100% !important;
-  height: 300px !important; /* ensure canvas has height */
+  height: 300px !important;
 }
 
-/* Optional: Chart Titles */
 .chart-box h3 {
   text-align: center;
   color: var(--tesda-blue);
@@ -274,4 +278,200 @@ body {
   border-radius: 6px;
   border: 1px solid #ccc;
   font-size: 0.85rem;
+}
+
+/* === Inventory Section === */
+#inventory {
+  padding: 1rem;
+}
+
+#inventoryForm {
+  background: #ffffff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem 2rem;
+  margin-bottom: 2rem;
+}
+
+#inventoryForm label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #222;
+}
+
+#inventoryForm input[type="text"],
+#inventoryForm input[type="number"],
+#inventoryForm input[type="file"] {
+  margin-top: 0.5rem;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+#inventoryForm input:focus {
+  border-color: var(--tesda-blue);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 74, 173, 0.15);
+}
+
+#inventoryForm button {
+  grid-column: span 2;
+  padding: 0.75rem;
+  background: var(--tesda-blue);
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+#inventoryForm button:hover {
+  background: var(--tesda-dark-blue);
+  transform: translateY(-2px);
+}
+
+/* Inventory List */
+#inventoryList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.5rem;
+}
+
+.inventory-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-align: center;
+}
+
+.inventory-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.inventory-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+}
+
+.inventory-card h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0.5rem 0;
+  color: #222;
+}
+
+.inventory-card p {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 0.25rem 0;
+}
+
+/* === Create Products Section === */
+#createProductForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+#createProductForm h2 {
+  color: var(--tesda-blue);
+  margin-bottom: 0.5rem;
+}
+
+#createProductForm .form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+#createProductForm label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  color: #333;
+}
+
+#createProductForm input,
+#createProductForm select {
+  margin-top: 0.4rem;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+#createProductForm input:focus,
+#createProductForm select:focus {
+  outline: 2px solid var(--tesda-light-blue);
+}
+
+#createProductForm .btn-submit {
+  align-self: flex-start;
+  background: var(--tesda-blue);
+  color: #fff;
+  padding: 0.7rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+#createProductForm .btn-submit:hover {
+  background: var(--tesda-dark-blue);
+  transform: translateY(-2px);
+}
+
+/* Product List */
+.product-list {
+  margin-top: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.product-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.product-card img {
+  max-width: 100%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+}
+
+.product-card h3 {
+  font-size: 1rem;
+  margin-bottom: 0.3rem;
+  color: var(--tesda-blue);
+}
+
+.product-card p {
+  font-size: 0.9rem;
+  color: #666;
 }
