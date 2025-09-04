@@ -78,6 +78,7 @@ body {
   color: #dce3ff;
   text-decoration: none;
   transition: all 0.3s ease;
+  font-size: 0.8rem;
 }
 
 .sidebar ul li a:hover {
@@ -176,7 +177,6 @@ body {
   background: var(--white);
   color: #333;
   border-radius: 12px;
-  padding: 1rem;
   margin-bottom: 1.5rem;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
@@ -430,6 +430,7 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1rem;
+  padding: 1rem;
 }
 
 #createProductForm label {

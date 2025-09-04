@@ -225,10 +225,16 @@ function renderInventory() {
 // Orders Management
 // ==========================
 let orders = [
-  { id: 1, item: 'Burger', quantity: 2, status: 'Pending' },
-  { id: 2, item: 'Fries', quantity: 1, status: 'Approved' },
+  { id: 180, item: 'Burger', quantity: 2, status: 'Pending' },
+  { id: 69, item: 'Fries', quantity: 1, status: 'Approved' },
   { id: 3, item: 'Coke', quantity: 3, status: 'Served' },
   { id: 4, item: 'Pizza', quantity: 1, status: 'Canceled' },
+  { id: 5, item: 'aeronchups', quantity: 1, status: 'Canceled' },
+  { id: 6, item: 'aeronpagpag', quantity: 1, status: 'Canceled' },
+  { id: 7, item: 'aeroneater', quantity: 1, status: 'Canceled' },
+  { id: 8, item: 'aeronbisacool', quantity: 1, status: 'Canceled' },
+  { id: 9, item: 'eronpatakla', quantity: 1, status: 'Canceled' },
+  { id: 10, item: 'eronmalala', quantity: 1, status: 'Canceled' },
 ];
 
 const statusColors = {
