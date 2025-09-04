@@ -35,7 +35,6 @@ header {
   width: 100%;
   height: 72px;
   padding: 0 2rem;
-  background: var(--tesda-dark);
   z-index: 10;
   animation: fadeIn 1s ease forwards;
   transition: opacity 0.5s, transform 0.5s;
@@ -95,9 +94,12 @@ header.header-hidden {
   width: 100%;
   min-height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  text-align: center;
   overflow: hidden;
+  padding: 2rem;
 }
 
 .main-hero-background {
@@ -110,66 +112,53 @@ header.header-hidden {
   pointer-events: none;
   filter: blur(6px);
   transform: scale(1.1);
+  z-index: -1;
 }
 
-
-
-
-
-/* Login Dropdown */
-.login-dropdown {
-  position: relative;
-  display: inline-block;
+.hero-text {
+  font-size: 2.5rem;
+  color: white;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+  margin-bottom: 1.5rem;
 }
 
-.login-dropdown-menu {
-  display: none;
-  position: absolute;
-  right: 0;
-  top: 110%;
-  min-width: 140px;
-  background: var(--tesda-dark);
-  border: 2px solid var(--tesda-blue);
-  border-radius: 14px;
-  box-shadow: 0 8px 32px rgba(0, 0, 66, 0.13);
-  z-index: 100;
-  padding: 0.5rem 0;
+/* Hero Buttons */
+.hero-buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
 }
 
-/* Login Dropdown */
-.login-dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-.login-dropdown-menu {
-  display: none;
-  position: absolute;
-  right: 0;
-  top: 110%;
-  min-width: 140px;
-  background: var(--tesda-blue); /* Background is TESDA Blue */
-  border: 2px solid var(--tesda-dark);
-  border-radius: 14px;
-  box-shadow: 0 8px 32px rgba(0, 0, 66, 0.13);
-  z-index: 100;
-  padding: 0.5rem 0;
-}
-
-.login-dropdown-item {
-  display: block;
-  padding: 0.7rem 1.2rem;
-  color: white; /* White text */
-  text-decoration: none;
-  font-weight: 500;
+.hero-buttons button {
+  padding: 10px 10px;
+  font-size: 1.2rem;
+  border: none;
   border-radius: 8px;
-  transition: background 0.18s, color 0.18s;
+  cursor: pointer;
+  transition: 0.3s ease;
+  font-weight: 550;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
 }
 
-.login-dropdown-item:hover {
-  background: var(--tesda-dark); /* Darker on hover */
+.order-btn {
+  background-color: var(--tesda-blue);
   color: white;
 }
+
+.order-btn:hover {
+  background-color: var(--tesda-dark);
+}
+
+.tutorial-btn {
+  background-color: white;
+  color: var(--tesda-blue);
+  border: 2px solid var(--tesda-blue);
+}
+
+.tutorial-btn:hover {
+  background-color: var(--tesda-accent);
+}
+
 
 /* Logo Container */
 .logo-container {
@@ -188,4 +177,3 @@ header.header-hidden {
   border-radius: 0;
   margin-bottom: 6.5rem;
 }
-
