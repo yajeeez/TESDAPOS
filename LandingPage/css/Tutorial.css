@@ -19,8 +19,8 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  background: var(--tesda-blue);
-  color: white;
+  color: rgb(0, 0, 0);
+  font-weight: 500;
 }
 
 header .logo {
@@ -102,22 +102,12 @@ footer {
 }
 
 .back-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  background: var(--tesda-blue);
+  background: var(--tesda-dark);
   color: white;
-  font-weight: 500;
+  padding: 8px 16px;
   border-radius: 6px;
+  font-weight: 500;
   text-decoration: none;
   transition: all 0.3s ease;
-  margin-top: 10px;
-  float: right; /* Aligns button to the right */
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
 }
 
-.back-btn:hover {
-  background: var(--tesda-dark);
-  transform: translateX(-3px);
-}
