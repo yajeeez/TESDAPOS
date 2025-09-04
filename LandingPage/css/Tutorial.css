@@ -1,0 +1,123 @@
+:root {
+  --tesda-blue: #0056b3;
+  --tesda-dark: #003366;
+  --tesda-accent: #e6f0ff;
+  --text-light: #e0e7ff;
+  --text-dark: #000000;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8f9fa;
+  color: var(--tesda-dark);
+}
+
+/* Header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: var(--tesda-blue);
+  color: white;
+}
+
+header .logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+nav .nav-link {
+  color: white;
+  margin-left: 20px;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+nav .nav-link.active {
+  text-decoration: underline;
+}
+
+/* Tutorial Section */
+.tutorial-section {
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+.tutorial-section h1 {
+  font-size: 2.2rem;
+  color: var(--tesda-dark);
+}
+
+.tutorial-subtext {
+  margin-top: 0.5rem;
+  color: #555;
+}
+
+.steps-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.step-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+}
+
+.step-card:hover {
+  transform: translateY(-5px);
+}
+
+.step-icon {
+  font-size: 2.5rem;
+  color: var(--tesda-blue);
+  margin-bottom: 1rem;
+}
+
+.step-card h2 {
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 1rem;
+  background: var(--tesda-dark);
+  color: white;
+  margin-top: 2rem;
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: var(--tesda-blue);
+  color: white;
+  font-weight: 500;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+  float: right; /* Aligns button to the right */
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+}
+
+.back-btn:hover {
+  background: var(--tesda-dark);
+  transform: translateX(-3px);
+}
