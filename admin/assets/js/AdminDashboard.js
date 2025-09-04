@@ -15,8 +15,7 @@ const sectionCards = {
   inventory: { title: "Inventory Management", desc: "Manage stock items and their details." },
   trainees: { title: "Trainee Access", desc: "Manage trainee accounts and their access." },
   transactions: { title: "Transactions", desc: "Review all past transactions and payment history." },
-  maintenance: { title: "Maintenance", desc: "Configure system settings and perform maintenance tasks." },
-  reports: { title: "Reports", desc: "Generate sales, inventory, and trainee activity reports." }
+  maintenance: { title: "Maintenance", desc: "Configure system settings and perform maintenance tasks." }
 };
 
 function showSection(sectionId) {
@@ -57,6 +56,7 @@ function showSection(sectionId) {
     case 'products': renderProducts(); break;
     case 'trainees': showTrainees(); break;
     case 'reports': showReports(); break;
+    case 'transactions': showTransactions(); break; // ✅ Added
     case 'maintenance': showMaintenance(); break;
     case 'inventory': renderInventory(); break;
   }
@@ -319,6 +319,25 @@ function showReports() {
   section.innerHTML = `
     <h2>Reports</h2>
     <p>Total Sales: ₱${totalSales}</p>
+    <button onclick="generateReceipt()">Generate Receipt</button>
+  `;
+}
+
+// ==========================
+// Transactions (with receipt)
+// ==========================
+function showTransactions() {
+  const section = document.getElementById('transactions');
+  if (!section) return;
+
+  const totalSales = orders.reduce((total, order) => {
+    const item = menuItems.find(i => i.name === order.item);
+    return item && order.status === 'Served' ? total + item.price * order.quantity : total;
+  }, 0);
+
+  section.innerHTML = `
+    <h2>Transactions</h2>
+    <p>Total Sales from Transactions: ₱${totalSales}</p>
     <button onclick="generateReceipt()">Generate Receipt</button>
   `;
 }
