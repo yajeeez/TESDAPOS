@@ -131,14 +131,13 @@ header.header-hidden {
 }
 
 .hero-buttons button {
-  padding: 10px 10px;
-  font-size: 1.2rem;
   border: none;
-  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  border-radius: 999px;
   cursor: pointer;
-  transition: 0.3s ease;
-  font-weight: 550;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
 }
 
 .order-btn {
