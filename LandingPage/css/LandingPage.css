@@ -2,8 +2,10 @@
   --tesda-blue: #0056b3;
   --tesda-dark: #003366;
   --tesda-accent: #e6f0ff;
-  --text-light: #e0e7ff;
-  --text-dark: #000000;
+  --text-dark: #222;
+  --text-light: #fff;
+  --card-bg: rgba(255, 255, 255, 0.9);
+  --shadow: rgba(0, 0, 0, 0.1);
 }
 
 * {
@@ -39,6 +41,8 @@ header {
   animation: fadeIn 1s ease forwards;
   transition: opacity 0.5s, transform 0.5s;
   color: white;
+  background-color: var(--tesda-dark);
+  box-shadow: 0 2px 4px rgba(86, 86, 86, 0.1);
 }
 
 header.header-hidden {
@@ -82,18 +86,22 @@ header.header-hidden {
   left: 0;
   width: 100%;
   height: 100%;
-  background: url("/../img/ECABG.jpg") center center/cover no-repeat;
-  pointer-events: none;
+  background: 
+    rgba(0, 0, 0, 0.245)  /* overlay color */
+    url("/../img/ECABG.jpg") center center/cover no-repeat;
+  background-blend-mode: darken; /* or overlay, multiply, soft-light */
+  filter: blur(6px);
   transform: scale(1.1);
-  backdrop-filter: blur (6px);
   z-index: -1;
+  pointer-events: none;
 }
+
 
 .hero-text {
   margin-top: 8rem;
   font-size: 2.5rem;
-  color: black;
-  text-shadow: 0 2px 8px rgb(0, 200, 255);
+  color: #ffffff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
   margin-bottom: 1.5rem;
 }
 
@@ -122,6 +130,7 @@ header.header-hidden {
 
 .order-btn:hover {
   background-color: var(--tesda-dark);
+  transform: translateY(-2px) scale(1.04);
 }
 
 .tutorial-btn {
@@ -132,6 +141,7 @@ header.header-hidden {
 
 .tutorial-btn:hover {
   background-color: var(--tesda-accent);
+  transform: translateY(-2px) scale(1.04);
 }
 
 
