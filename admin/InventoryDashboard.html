@@ -21,7 +21,6 @@
       <h2>TESDA POS</h2>
       <ul>
         <li><a href="#" onclick="showSection('dashboard')"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
-        <li><a href="#" onclick="showSection('orders')"><i class="fas fa-receipt"></i><span>Manage Orders</span></a></li>
         <li><a href="#" onclick="showSection('products')"><i class="fas fa-cart-plus"></i><span>Create Products</span></a></li>
         <li><a href="#" onclick="showSection('inventory')"><i class="fas fa-boxes"></i><span>Inventory</span></a></li>
         <li><a href="#" onclick="showSection('transactions')"><i class="fas fa-cash-register"></i><span>Transactions</span></a></li>
@@ -87,25 +86,7 @@
 
 
 
-      <!-- Orders Section -->
-      <section id="orders" class="page-section" style="display:none;">
-        <div class="orders-table-container">
-          <table class="orders-table">
-            <thead>
-              <tr>
-                <th>Order ID</th>
-                <th>Item</th>
-                <th>Quantity</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody id="ordersList">
-              <!-- Orders dynamically loaded via JS -->
-            </tbody>
-          </table>
-        </div>
-      </section>
+      
 
       <!-- Create Products Section -->
 <section id="products" class="page-section" style="display:none;">
@@ -163,11 +144,6 @@
         <div id="inventoryList"></div>
       </section>
 
-      <!-- Trainees Section -->
-      <section id="trainees" class="page-section" style="display:none;">
-        <div id="traineesContent"></div>
-      </section>
-
       <!-- Transactions Section -->
       <section id="transactions" class="page-section" style="display:none;">
         <div class="orders-table-container">
@@ -192,8 +168,6 @@
       <section id="maintenance" class="page-section" style="display:none;">
         <div id="maintenanceContent"></div>
       </section>
-
-      
 
     </main>
   </div>

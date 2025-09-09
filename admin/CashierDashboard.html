@@ -22,10 +22,7 @@
       <ul>
         <li><a href="#" onclick="showSection('dashboard')"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
         <li><a href="#" onclick="showSection('orders')"><i class="fas fa-receipt"></i><span>Manage Orders</span></a></li>
-        <li><a href="#" onclick="showSection('products')"><i class="fas fa-cart-plus"></i><span>Create Products</span></a></li>
-        <li><a href="#" onclick="showSection('inventory')"><i class="fas fa-boxes"></i><span>Inventory</span></a></li>
         <li><a href="#" onclick="showSection('transactions')"><i class="fas fa-cash-register"></i><span>Transactions</span></a></li>
-        <li><a href="#" onclick="showSection('maintenance')"><i class="fas fa-tools"></i><span>Maintenance</span></a></li>
         <li><a href="#" onclick="logout(event)"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></li>
       </ul>
       
@@ -107,44 +104,7 @@
         </div>
       </section>
 
-      <!-- Create Products Section -->
-<section id="products" class="page-section" style="display:none;">
-  <form id="createProductForm">
-    <div class="form-grid">
-      <label>
-        Product Name:
-        <input type="text" name="productName" required pattern="[A-Za-z ]+">
-      </label>
-      <label>
-        Category:
-        <select name="category" required>
-          <option value="">-- Select Category --</option>
-          <option value="food">Food</option>
-          <option value="beverage">Beverage</option>
-          <option value="snacks">Snacks</option>
-          <option value="others">Others</option>
-        </select>
-      </label>
-      <label>
-        Price:
-        <input type="number" name="price" min="0" required>
-      </label>
-      <label>
-        Stock Quantity:
-        <input type="number" name="stock" min="0" required>
-      </label>
-      <label>
-        Upload Photo:
-        <input type="file" name="photo" accept="image/*">
-      </label>
-    </div>
-    <button type="submit" class="btn-submit">
-      <i class="fas fa-plus-circle"></i> Add Product
-    </button>
-  </form>
-
-  
-</section>
+      
 
 
 
@@ -163,10 +123,7 @@
         <div id="inventoryList"></div>
       </section>
 
-      <!-- Trainees Section -->
-      <section id="trainees" class="page-section" style="display:none;">
-        <div id="traineesContent"></div>
-      </section>
+    
 
       <!-- Transactions Section -->
       <section id="transactions" class="page-section" style="display:none;">
