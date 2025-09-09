@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Local Images</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .product-card { 
+            border: 1px solid #ddd; 
+            padding: 15px; 
+            margin: 10px; 
+            border-radius: 8px; 
+            display: inline-block; 
+            width: 200px;
+            text-align: center;
+        }
+        .product-card img { 
+            max-width: 150px; 
+            max-height: 100px; 
+            border-radius: 4px; 
+        }
+        .info { 
+            background: #f8f9fa; 
+            padding: 15px; 
+            border-radius: 4px; 
+            margin-bottom: 20px; 
+        }
+    </style>
+</head>
+<body>
+    <h2>Test Local Image Display</h2>
+    
+    <div class="info">
+        <h3>Available Images in img/product/ folder:</h3>
+        <div id="imageList"></div>
+    </div>
+    
+    <h3>Product Cards with Images:</h3>
+    <div id="productCards"></div>
+
+    <script>
+        // Test the image detection system
+        async function testImageDetection() {
+            try {
+                // Get list of available images
+                const response = await fetch('http://localhost/TESDAPOS/admin/list_images.php');
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById('imageList').innerHTML = `
+                        <p>Found ${data.count} images:</p>
+                        <ul>
+                            ${data.images.map(img => `<li>${img.filename} (${Math.round(img.size/1024)}KB)</li>`).join('')}
+                        </ul>
+                    `;
+                    
+                    // Test product image detection
+                    const testProducts = [
+                        { id: 1, name: "Pork Adobo" },
+                        { id: 2, name: "Pork Sinigang" },
+                        { id: 3, name: "Iced Tea" },
+                        { id: 4, name: "Hot Coffee" }
+                    ];
+                    
+                    const productCards = await Promise.all(testProducts.map(async (product) => {
+                        const imagePath = await getProductImage(product.id, product.name);
+                        return `
+                            <div class="product-card">
+                                <img src="${imagePath}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/150x100?text=No+Image'">
+                                <h4>${product.name}</h4>
+                                <p>ID: ${product.id}</p>
+                                <p>Image: ${imagePath}</p>
+                            </div>
+                        `;
+                    }));
+                    
+                    document.getElementById('productCards').innerHTML = productCards.join('');
+                }
+            } catch (error) {
+                document.getElementById('imageList').innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+            }
+        }
+        
+        // Copy the getProductImage function from AdminDashboard.js
+        async function getProductImage(productId, productName) {
+            try {
+                // Get list of available images
+                const response = await fetch(`http://localhost/TESDAPOS/admin/list_images.php`);
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success && data.images.length > 0) {
+                        // Find image for this product ID
+                        const productImage = data.images.find(img => 
+                            img.filename.startsWith(`product_${productId}_`)
+                        );
+                        if (productImage) {
+                            return productImage.path;
+                        }
+                    }
+                }
+            } catch (error) {
+                console.log('Could not fetch image list:', error);
+            }
+            
+            // If no local image found, return placeholder
+            return `https://via.placeholder.com/300x170?text=${encodeURIComponent(productName)}`;
+        }
+        
+        // Run the test when page loads
+        document.addEventListener('DOMContentLoaded', testImageDetection);
+    </script>
+</body>
+</html>

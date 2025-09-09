@@ -41,5 +41,4 @@ ini_set('session.cookie_lifetime', SESSION_LIFETIME);
 ini_set('session.name', SESSION_NAME);
 
 // Timezone
-date_default_timezone_set('Asia/Manila');
-?> 
+date_default_timezone_set('Asia/Manila'); 

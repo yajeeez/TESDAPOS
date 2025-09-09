@@ -234,6 +234,236 @@ SessionManager::requireRole('admin');
             color: white;
         }
 
+        /* Filter Bar */
+        .filter-bar {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .filter-bar label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .filter-bar select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: white;
+            font-size: 14px;
+        }
+
+        /* Loading and Error Messages */
+        .loading-message,
+        .empty-message,
+        .error-message {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+            font-size: 1.1rem;
+            background: #f8f9fa;
+            border-radius: 12px;
+            margin: 1rem 0;
+        }
+
+        .loading-message {
+            color: #3498db;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            background: #ffe6e6;
+            border: 1px solid #ffcccc;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.3s ease;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #004aad, #002b80);
+            color: #fff;
+            padding: 1.5rem;
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .close {
+            color: #fff;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .close:hover {
+            color: #ffc107;
+        }
+
+        #updateProductForm {
+            padding: 2rem;
+        }
+
+        #updateProductForm .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        #updateProductForm label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        #updateProductForm input,
+        #updateProductForm select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.2s ease;
+        }
+
+        #updateProductForm input:focus,
+        #updateProductForm select:focus {
+            outline: none;
+            border-color: #004aad;
+            box-shadow: 0 0 0 3px rgba(0, 74, 173, 0.1);
+        }
+
+        .photo-preview {
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .photo-preview img {
+            max-width: 200px;
+            max-height: 150px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e1e5e9;
+        }
+
+        .btn-cancel,
+        .btn-update {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-cancel {
+            background: #6c757d;
+            color: #fff;
+        }
+
+        .btn-cancel:hover {
+            background: #5a6268;
+        }
+
+        .btn-update {
+            background: #004aad;
+            color: #fff;
+        }
+
+        .btn-update:hover {
+            background: #002b80;
+            transform: translateY(-1px);
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #28a745;
+            color: #fff;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            z-index: 1001;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast-content {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .toast-content i {
+            font-size: 1.2rem;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { 
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             #sidebar {
@@ -348,22 +578,17 @@ SessionManager::requireRole('admin');
             <!-- Inventory Section -->
             <div id="inventory" class="page-section">
                 <h2>Inventory Management</h2>
-                <form id="inventoryForm">
-                    <div class="form-group">
-                        <label for="itemName">Item Name:</label>
-                        <input type="text" id="itemName" name="itemName" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="quantity">Quantity:</label>
-                        <input type="number" id="quantity" name="quantity" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="price">Price:</label>
-                        <input type="number" id="price" name="price" step="0.01" required>
-                    </div>
-                    <button type="submit" class="btn">Add Item</button>
-                </form>
-                
+                <!-- Products from database will be shown here -->
+                <div class="filter-bar">
+                    <label for="categoryFilter">Filter by Category:</label>
+                    <select id="categoryFilter" onchange="renderInventory()">
+                        <option value="all">All Categories</option>
+                        <option value="food">Food</option>
+                        <option value="beverage">Beverage</option>
+                        <option value="snack">Snack</option>
+                        <option value="others">Others</option>
+                    </select>
+                </div>
                 <div id="inventoryList" style="margin-top: 30px;">
                     <!-- Inventory items will be displayed here -->
                 </div>
@@ -411,7 +636,65 @@ SessionManager::requireRole('admin');
         </div>
     </div>
 
-    <script src="assets/css/js/AdminDashboard.js"></script>
+    <!-- Update Product Modal -->
+    <div id="updateProductModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Update Product</h2>
+                <span class="close" onclick="closeUpdateModal()">&times;</span>
+            </div>
+            <form id="updateProductForm" enctype="multipart/form-data">
+                <input type="hidden" id="updateProductId" name="product_id">
+                
+                <div class="form-group">
+                    <label for="updateProductName">Product Name:</label>
+                    <input type="text" id="updateProductName" name="product_name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="updateCategory">Category:</label>
+                    <select id="updateCategory" name="category" required>
+                        <option value="">-- Select Category --</option>
+                        <option value="Food">Food</option>
+                        <option value="Beverage">Beverage</option>
+                        <option value="Snack">Snack</option>
+                        <option value="Others">Others</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="updatePrice">Price:</label>
+                    <input type="number" id="updatePrice" name="price" min="0" step="0.01" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="updateStockQuantity">Stock Quantity:</label>
+                    <input type="number" id="updateStockQuantity" name="stock_quantity" min="0" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="updatePhoto">Product Photo:</label>
+                    <input type="file" id="updatePhoto" name="photo" accept="image/*">
+                    <div id="currentPhotoPreview" class="photo-preview"></div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancel" onclick="closeUpdateModal()">Cancel</button>
+                    <button type="submit" class="btn-update">Update Product</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="notificationToast" class="toast">
+        <div class="toast-content">
+            <i class="fas fa-check-circle"></i>
+            <span id="toastMessage">Product updated successfully!</span>
+        </div>
+    </div>
+
+    <script src="assets/js/AdminDashboard.js"></script>
     <script>
         // Initialize dashboard
         document.addEventListener('DOMContentLoaded', function() {

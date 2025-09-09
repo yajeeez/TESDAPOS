@@ -16,7 +16,7 @@
     <!-- Sidebar -->
     <nav class="sidebar" id="sidebar">
       <div class="sidebar-logo">
-        <img src="/img/TESDAG.png" alt="TESDA Logo" class="tesda-logo" />
+        <img src="../img/TESDAG.png" alt="TESDA Logo" class="tesda-logo" />
       </div>
       <h2>TESDA POS</h2>
       <ul>
@@ -143,20 +143,24 @@
     </button>
   </form>
 
-  
+  <!-- Products List -->
+  <div id="productsList" class="product-list">
+    <!-- Products will be dynamically loaded here -->
+  </div>
 </section>
 
 
 
       <!-- Inventory Section -->
       <section id="inventory" class="page-section" style="display:none;">
-  <!-- Newly created products will be shown here -->
+  <!-- Products from database will be shown here -->
  <div class="filter-bar">
     <label for="categoryFilter">Filter by Category:</label>
     <select id="categoryFilter" onchange="renderInventory()">
+      <option value="all">All Categories</option>
       <option value="food">Food</option>
       <option value="beverage">Beverage</option>
-      <option value="snacks">Snacks</option>
+      <option value="snack">Snack</option>
       <option value="others">Others</option>
     </select>
   </div>
@@ -181,8 +185,8 @@
                 <th>Action</th>
               </tr>
             </thead>
-            <tbody id="ordersList">
-              <!-- Orders dynamically loaded via JS -->
+            <tbody id="transactionsList">
+              <!-- Transactions dynamically loaded via JS -->
             </tbody>
           </table>
         </div>
@@ -198,7 +202,65 @@
     </main>
   </div>
 
+  <!-- Update Product Modal -->
+  <div id="updateProductModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Update Product</h2>
+        <span class="close" onclick="closeUpdateModal()">&times;</span>
+      </div>
+      <form id="updateProductForm" enctype="multipart/form-data">
+        <input type="hidden" id="updateProductId" name="product_id">
+        
+        <div class="form-group">
+          <label for="updateProductName">Product Name:</label>
+          <input type="text" id="updateProductName" name="product_name" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="updateCategory">Category:</label>
+          <select id="updateCategory" name="category" required>
+            <option value="">-- Select Category --</option>
+            <option value="Food">Food</option>
+            <option value="Beverage">Beverage</option>
+            <option value="Snack">Snack</option>
+            <option value="Others">Others</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="updatePrice">Price:</label>
+          <input type="number" id="updatePrice" name="price" min="0" step="0.01" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="updateStockQuantity">Stock Quantity:</label>
+          <input type="number" id="updateStockQuantity" name="stock_quantity" min="0" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="updatePhoto">Product Photo:</label>
+          <input type="file" id="updatePhoto" name="photo" accept="image/*">
+          <div id="currentPhotoPreview" class="photo-preview"></div>
+        </div>
+        
+        <div class="modal-actions">
+          <button type="button" class="btn-cancel" onclick="closeUpdateModal()">Cancel</button>
+          <button type="submit" class="btn-update">Update Product</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Notification Toast -->
+  <div id="notificationToast" class="toast">
+    <div class="toast-content">
+      <i class="fas fa-check-circle"></i>
+      <span id="toastMessage">Product updated successfully!</span>
+    </div>
+  </div>
+
   <!-- JS -->
-  <script src="/admin/assets/js/AdminDashboard.js"></script>
+  <script src="./assets/js/AdminDashboard.js"></script>
 </body>
 </html>
