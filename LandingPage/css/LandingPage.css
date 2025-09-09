@@ -60,33 +60,7 @@ header.header-hidden {
   border-radius: 50%;
 }
 
-/* Button */
-.login-btn {
-  background-color: var(--tesda-blue);
-  color: white;
-  border: none;
-  padding: 0.6rem 1.2rem;
-  border-radius: 999px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
-}
 
-.login-btn:hover {
-  background-color: white;
-  color: var(--tesda-blue);
-  border: 2px solid var(--tesda-blue);
-  transform: scale(1.05);
-}
-
-.login-btn.clicked {
-  background: white;
-  color: var(--tesda-blue) !important;
-  border: 2px solid var(--tesda-blue);
-  transform: scale(1.05);
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-}
 
 /* Hero Section */
 .main-hero {
@@ -111,13 +85,14 @@ header.header-hidden {
   background: url("/../img/ECABG.jpg") center center/cover no-repeat;
   pointer-events: none;
   transform: scale(1.1);
+  backdrop-filter: blur (6px);
   z-index: -1;
 }
 
 .hero-text {
   margin-top: 8rem;
   font-size: 2.5rem;
-  color: rgb(0, 255, 64);
+  color: black;
   text-shadow: 0 2px 8px rgb(0, 200, 255);
   margin-bottom: 1.5rem;
 }
