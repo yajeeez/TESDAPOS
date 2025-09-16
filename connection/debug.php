@@ -1,8 +1,15 @@
 <?php
-// Debug endpoint to test basic functionality
+// Prevent any output before headers
+ob_start();
+
+// Set JSON header
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST');
+header('Access-Control-Allow-Headers: Content-Type');
 
+// Clean output buffer and send JSON response
+ob_clean();
 echo json_encode([
     'success' => true,
     'message' => 'PHP endpoint is working!',
@@ -13,4 +20,5 @@ echo json_encode([
     'php_version' => phpversion(),
     'mongodb_extension' => extension_loaded('mongodb') ? 'Available' : 'Not Available'
 ]);
+ob_end_flush();
 ?>

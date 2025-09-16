@@ -14,7 +14,7 @@ error_log('add_product.php called with method: ' . $_SERVER['REQUEST_METHOD']);
 error_log('POST data: ' . print_r($_POST, true));
 error_log('FILES data: ' . print_r($_FILES, true));
 
-require_once __DIR__ . '/../connection/MongoInventory.php';
+require_once __DIR__ . '/MongoInventory.php';
 
 // Handle preflight OPTIONS request
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
@@ -96,7 +96,7 @@ try {
     echo json_encode([
         'success' => false, 
         'message' => 'Server error occurred: ' . $e->getMessage(),
-        'debug' => DEBUG_MODE ? $e->getTraceAsString() : 'Enable debug mode for details'
+        'debug' => $e->getMessage() // Always show error message for debugging
     ]);
 }
 ?>

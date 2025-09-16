@@ -4,7 +4,7 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET');
 header('Access-Control-Allow-Headers: Content-Type');
 
-require_once __DIR__ . '/../connection/MongoInventory.php';
+require_once __DIR__ . '/MongoInventory.php';
 
 // Handle preflight OPTIONS request
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
@@ -35,6 +35,6 @@ try {
     
 } catch (Exception $e) {
     error_log("Error in fetch_products.php: " . $e->getMessage());
-    echo json_encode(['success' => false, 'message' => 'Server error occurred']);
+    echo json_encode(['success' => false, 'message' => 'Server error occurred: ' . $e->getMessage()]);
 }
 ?>

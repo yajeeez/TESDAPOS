@@ -76,15 +76,6 @@ function initProducts() {
       submitBtn.disabled = true;
       
       try {
-        // First test if the server is responding
-        console.log('Testing server connection...');
-        const testResponse = await fetch('../debug.php');
-        if (!testResponse.ok) {
-          throw new Error(`Server not responding: ${testResponse.status}`);
-        }
-        const testResult = await testResponse.json();
-        console.log('Server test result:', testResult);
-        
         // Create FormData object to handle file upload
         const formData = new FormData();
         formData.append('productName', productForm.productName.value.trim());
@@ -100,7 +91,7 @@ function initProducts() {
         
         // Send to backend
         console.log('Sending request to add_product.php...');
-        const response = await fetch('../add_product.php', {
+        const response = await fetch('../connection/add_product.php', {
           method: 'POST',
           body: formData
         });
@@ -207,7 +198,7 @@ function initProducts() {
   // ==========================
   async function loadRecentProducts() {
     try {
-      const response = await fetch('../fetch_products.php');
+      const response = await fetch('../connection/fetch_products.php');
       const result = await response.json();
       
       if (result.success && result.products.length > 0) {

@@ -72,7 +72,7 @@ async function getProductImageWithFallback(productId, productName, dbImagePath) 
 async function fetchProductsFromDB() {
   try {
     console.log('Attempting to fetch products...');
-    const response = await fetch('/TESDAPOS/admin/fetch_products.php');
+    const response = await fetch('/TESDAPOS/connection/fetch_products.php');
     console.log('Response status:', response.status);
     
     if (!response.ok) {

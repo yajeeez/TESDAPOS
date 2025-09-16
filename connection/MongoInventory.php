@@ -7,7 +7,6 @@ use MongoDB\Client;
 use MongoDB\BSON\ObjectId;
 use MongoDB\BSON\UTCDateTime;
 use MongoDB\Exception\Exception as MongoException;
-use Exception;
 
 class MongoInventory {
     private $client;
