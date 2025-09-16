@@ -86,6 +86,11 @@ try {
         $updateData['stock_quantity'] = (int) $_POST['stock'];
     }
     
+    // Alternative parameter name for backward compatibility
+    if (isset($_POST['stock_quantity']) && $_POST['stock_quantity'] !== '') {
+        $updateData['stock_quantity'] = (int) $_POST['stock_quantity'];
+    }
+    
     if (!empty($imagePath)) {
         $updateData['image_path'] = $imagePath;
     }

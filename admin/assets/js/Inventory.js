@@ -9,22 +9,36 @@ let products = [];
 // Modal Functions
 // ==========================
 function showConfirmationModal(title, message, confirmCallback, isDelete = false) {
+  console.log('showConfirmationModal called:', { title, message, isDelete });
+  
   const modal = document.getElementById('confirmationModal');
   const modalTitle = document.getElementById('modalTitle');
   const modalMessage = document.getElementById('modalMessage');
   const confirmBtn = document.getElementById('modalConfirm');
   
+  if (!modal || !modalTitle || !modalMessage || !confirmBtn) {
+    console.error('Modal elements not found:', {
+      modal: !!modal,
+      modalTitle: !!modalTitle,
+      modalMessage: !!modalMessage,
+      confirmBtn: !!confirmBtn
+    });
+    return;
+  }
+  
   modalTitle.textContent = title;
   modalMessage.textContent = message;
   modal.style.display = 'block';
   
+  console.log('Modal should now be visible');
+  
   // Style button based on action type
   if (isDelete) {
-    confirmBtn.className = 'btn-confirm delete';
-    confirmBtn.textContent = 'Delete';
+    confirmBtn.className = 'btn btn-danger';
+    confirmBtn.innerHTML = '<i class="fas fa-trash"></i> Delete';
   } else {
-    confirmBtn.className = 'btn-confirm';
-    confirmBtn.textContent = 'Yes';
+    confirmBtn.className = 'btn btn-primary';
+    confirmBtn.innerHTML = '<i class="fas fa-check"></i> Confirm';
   }
   
   // Remove any existing event listeners
@@ -33,6 +47,7 @@ function showConfirmationModal(title, message, confirmCallback, isDelete = false
   
   // Add new event listener
   newConfirmBtn.addEventListener('click', () => {
+    console.log('Confirm button clicked');
     closeConfirmationModal();
     if (confirmCallback) confirmCallback();
   });
@@ -211,8 +226,8 @@ async function renderInventory() {
         <p class="price">₱${item.price.toFixed(2)}</p>
         <p class="stock">Stock: ${item.quantity} pcs</p>
         <div class="actions">
-          <button class="edit-btn" onclick="updateProduct(${item.id})"><i class="fas fa-edit"></i> Edit</button>
-          <button class="delete-btn" onclick="deleteProduct(${item.id})"><i class="fas fa-trash"></i> Delete</button>
+          <button class="edit-btn" onclick="updateProduct('${item.id}')"><i class="fas fa-edit"></i> Edit</button>
+          <button class="delete-btn" onclick="deleteProduct('${item.id}')"><i class="fas fa-trash"></i> Delete</button>
         </div>
       </div>
     `;
@@ -223,17 +238,27 @@ async function renderInventory() {
 // ==========================
 // Update Product
 // ==========================
-window.updateProduct = function (id) {
+function updateProduct(id) {
   console.log('updateProduct called with ID:', id);
   
-  let product = inventoryItems.find(p => p.id === id);
+  const modal = document.getElementById('updateProductModal');
+  if (!modal) {
+    console.error('Update Product Modal not found!');
+    showToast('Modal not found', 'error');
+    return;
+  }
+  
+  let product = inventoryItems.find(p => p.id == id);
   if (!product) {
-    product = products.find(p => p.id === id);
+    product = products.find(p => p.id == id);
   }
   if (!product) {
     console.error('Product not found with ID:', id);
+    showToast('Product not found', 'error');
     return;
   }
+  
+  console.log('Found product:', product);
   
   document.getElementById('updateProductId').value = product.id;
   document.getElementById('updateProductName').value = product.name;
@@ -254,17 +279,23 @@ window.updateProduct = function (id) {
     photoPreview.innerHTML = '<p style="text-align: center; color: #666;">No current photo</p>';
   }
   
-  document.getElementById('updateProductModal').style.display = 'block';
-};
+  modal.style.display = 'block';
+  console.log('Update modal should now be visible');
+}
+
+// Make functions globally accessible
+window.updateProduct = updateProduct;
 
 // ==========================
 // Delete Product with Confirmation
 // ==========================
-window.deleteProduct = function (id) {
+function deleteProduct(id) {
+  console.log('deleteProduct called with ID:', id);
+  
   // Find the product to get its name for the confirmation message
-  let product = inventoryItems.find(p => p.id === id);
+  let product = inventoryItems.find(p => p.id == id);
   if (!product) {
-    product = products.find(p => p.id === id);
+    product = products.find(p => p.id == id);
   }
   
   if (!product) {
@@ -279,7 +310,10 @@ window.deleteProduct = function (id) {
     () => performDelete(id),
     true // isDelete flag
   );
-};
+}
+
+// Make functions globally accessible
+window.deleteProduct = deleteProduct;
 
 // ==========================
 // Perform Delete Operation
@@ -323,15 +357,26 @@ async function performDelete(id) {
 // ==========================
 // Modal Control Functions
 // ==========================
-window.closeUpdateModal = function() {
+function closeUpdateModal() {
   document.getElementById('updateProductModal').style.display = 'none';
   document.getElementById('updateProductForm').reset();
   document.getElementById('currentPhotoPreview').innerHTML = '';
-};
+}
 
-window.closeConfirmationModal = function() {
-  document.getElementById('confirmationModal').style.display = 'none';
-};
+function closeConfirmationModal() {
+  console.log('closeConfirmationModal called');
+  const modal = document.getElementById('confirmationModal');
+  if (modal) {
+    modal.style.display = 'none';
+    console.log('Confirmation modal hidden');
+  } else {
+    console.error('Confirmation modal not found when trying to close');
+  }
+}
+
+// Make functions globally accessible
+window.closeUpdateModal = closeUpdateModal;
+window.closeConfirmationModal = closeConfirmationModal;
 
 // Close modal when clicking outside of it
 window.onclick = function(event) {
@@ -404,12 +449,8 @@ function initUpdateProductForm() {
     updateForm.addEventListener('submit', (e) => {
       e.preventDefault();
       
-      // Show confirmation modal before updating
-      showConfirmationModal(
-        'Confirm Product Update',
-        'Are you sure you want to update this product?',
-        () => performUpdate(updateForm)
-      );
+      // Directly perform update without confirmation
+      performUpdate(updateForm);
     });
   }
 }
@@ -419,11 +460,17 @@ function initUpdateProductForm() {
 // ==========================
 async function performUpdate(updateForm) {
   const formData = new FormData(updateForm);
-  const productId = formData.get('product_id');
+  const productId = formData.get('productId');
+  
+  // Add detailed logging
+  console.log('=== UPDATE OPERATION STARTED ===');
+  console.log('Product ID:', productId);
+  console.log('Product Name:', formData.get('productName'));
+  console.log('Category:', formData.get('category'));
+  console.log('Price:', formData.get('price'));
+  console.log('Stock:', formData.get('stock'));
   
   try {
-    console.log('Updating product:', productId);
-    
     const response = await fetch('/TESDAPOS/connection/update_product.php', {
       method: 'POST',
       body: formData
@@ -434,7 +481,7 @@ async function performUpdate(updateForm) {
     }
     
     const responseText = await response.text();
-    console.log('Raw response:', responseText);
+    console.log('Raw server response:', responseText);
     
     let result;
     try {
@@ -445,50 +492,41 @@ async function performUpdate(updateForm) {
       throw new Error('Server returned invalid JSON response. Check console for details.');
     }
     
-    console.log('Update result:', result);
+    console.log('Parsed result:', result);
     
     if (result.success) {
-      const product = products.find(p => p.id == productId);
-      if (product) {
-        product.name = formData.get('product_name');
-        product.category = formData.get('category').toLowerCase();
-        product.price = parseFloat(formData.get('price'));
-        product.stock = parseInt(formData.get('stock_quantity'));
-        
-        const photoFile = document.getElementById('updatePhoto').files[0];
-        
-        if (photoFile && result.image_uploaded && result.image_path) {
-          const newImagePath = getProductImagePath(productId, product.name, result.image_path);
-          console.log('Updating product image to:', newImagePath);
-          product.image = newImagePath;
-        }
-      }
+      console.log('Update successful, refreshing data...');
       
-      const inventoryItem = inventoryItems.find(i => i.id == productId);
-      if (inventoryItem) {
-        inventoryItem.name = product.name;
-        inventoryItem.category = product.category;
-        inventoryItem.price = product.price;
-        inventoryItem.quantity = product.stock;
-        if (photoFile && result.image_uploaded && result.image_path) {
-          const newImagePath = getProductImagePath(productId, inventoryItem.name, result.image_path);
-          console.log('Updating inventory item image to:', newImagePath);
-          inventoryItem.image = newImagePath;
-        }
-      }
+      // Clear cache and refetch from database
+      inventoryItems = [];
+      products = [];
       
-      renderInventory();
-      closeUpdateModal();
-      showToast('Product updated successfully!');
+      // Refetch products from database
+      const fetchSuccess = await fetchProductsFromDB();
+      if (fetchSuccess) {
+        console.log('Data refetched successfully');
+        // Refresh the inventory display
+        renderInventory();
+        closeUpdateModal();
+        
+        // Show success notification
+        showToast('Product updated successfully and saved to database!', 'success');
+      } else {
+        console.error('Failed to refetch data after update');
+        showToast('Product updated but failed to refresh display. Please refresh page.', 'warning');
+      }
       
     } else {
-      showToast('Failed to update product: ' + result.error, 'error');
+      console.error('Update failed:', result.message);
+      showToast('Failed to update product: ' + (result.message || 'Unknown error'), 'error');
     }
     
   } catch (error) {
     console.error('Error updating product:', error);
     showToast('Error updating product: ' + error.message, 'error');
   }
+  
+  console.log('=== UPDATE OPERATION COMPLETED ===');
 }
 
 // ==========================
@@ -534,8 +572,27 @@ window.refreshInventory = async function() {
 // Initialize on page load
 // ==========================
 document.addEventListener('DOMContentLoaded', async () => {
+  console.log('DOM Content Loaded - Initializing Inventory page...');
+  
+  // Check if modal elements exist
+  const updateModal = document.getElementById('updateProductModal');
+  const confirmModal = document.getElementById('confirmationModal');
+  
+  if (!updateModal) {
+    console.error('Update Product Modal not found!');
+  } else {
+    console.log('Update Product Modal found');
+  }
+  
+  if (!confirmModal) {
+    console.error('Confirmation Modal not found!');
+  } else {
+    console.log('Confirmation Modal found');
+  }
+  
   initUpdateProductForm();
   initImagePreview();
+  initModernButtons();
   
   // Add refresh button functionality
   const refreshBtn = document.getElementById('refreshBtn');
@@ -551,4 +608,40 @@ document.addEventListener('DOMContentLoaded', async () => {
   
   await fetchProductsFromDB();
   renderInventory();
+  
+  console.log('Inventory page initialization complete');
 });
+
+// ==========================
+// Modern Button Ripple Effect
+// ==========================
+function createRipple(event) {
+  const button = event.currentTarget;
+  const ripple = button.querySelector('.btn-ripple');
+  
+  if (!ripple) return;
+  
+  const circle = ripple;
+  const diameter = Math.max(button.clientWidth, button.clientHeight);
+  const radius = diameter / 2;
+  
+  const rect = button.getBoundingClientRect();
+  circle.style.width = circle.style.height = `${diameter}px`;
+  circle.style.left = `${event.clientX - rect.left - radius}px`;
+  circle.style.top = `${event.clientY - rect.top - radius}px`;
+  circle.classList.remove('ripple');
+  
+  void circle.offsetWidth; // Trigger reflow
+  circle.classList.add('ripple');
+}
+
+// ==========================
+// Initialize Modern Buttons
+// ==========================
+function initModernButtons() {
+  const modernButtons = document.querySelectorAll('.btn-modern-primary, .btn-modern-secondary');
+  
+  modernButtons.forEach(button => {
+    button.addEventListener('click', createRipple);
+  });
+}
