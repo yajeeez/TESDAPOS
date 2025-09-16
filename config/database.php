@@ -2,7 +2,7 @@
 // Database Configuration
 if (!defined('DB_HOST')) define('DB_HOST', 'localhost');
 if (!defined('DB_PORT')) define('DB_PORT', '27017');
-if (!defined('DB_NAME')) define('DB_NAME', 'tesdapos');
+if (!defined('DB_NAME')) define('DB_NAME', 'TESDAPOS1');
 if (!defined('DB_URI')) define('DB_URI', 'mongodb://' . DB_HOST . ':' . DB_PORT);
 
 // Application Configuration

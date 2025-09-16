@@ -17,7 +17,7 @@ class MongoInventory {
         try {
             // Create MongoDB client using the configuration
             $this->client = new Client(DB_URI);
-            $this->database = $this->client->selectDatabase('TESDAPOS1');
+            $this->database = $this->client->selectDatabase(DB_NAME);
             $this->collection = $this->database->selectCollection('Inventory');
             
             // Test the connection
