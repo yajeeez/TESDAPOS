@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <?php
 // Start session and check authentication
 session_start();

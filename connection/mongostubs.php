@@ -12,8 +12,12 @@ if (!extension_loaded('mongodb')) {
     if (!class_exists('MongoDB\Client')) {
         class MongoDB_Client {
             public function __construct($uri = null, array $uriOptions = [], array $driverOptions = []) {}
-            public function selectDatabase($databaseName) {}
-            public function selectCollection($databaseName, $collectionName) {}
+            public function selectDatabase($databaseName) {
+                return new MongoDB_Database();
+            }
+            public function selectCollection($databaseName, $collectionName) {
+                return new MongoDB_Collection();
+            }
         }
         class_alias('MongoDB_Client', 'MongoDB\Client');
     }
@@ -21,8 +25,12 @@ if (!extension_loaded('mongodb')) {
     // MongoDB\Database stub
     if (!class_exists('MongoDB\Database')) {
         class MongoDB_Database {
-            public function selectCollection($collectionName) {}
-            public function command($command) {}
+            public function selectCollection($collectionName) {
+                return new MongoDB_Collection();
+            }
+            public function command($command) {
+                return ['ok' => 1];
+            }
         }
         class_alias('MongoDB_Database', 'MongoDB\Database');
     }
@@ -30,14 +38,84 @@ if (!extension_loaded('mongodb')) {
     // MongoDB\Collection stub
     if (!class_exists('MongoDB\Collection')) {
         class MongoDB_Collection {
-            public function insertOne($document) {}
-            public function find($filter = [], $options = []) {}
-            public function findOne($filter = [], $options = []) {}
-            public function updateOne($filter, $update, $options = []) {}
-            public function deleteOne($filter, $options = []) {}
-            public function count($filter = []) {}
+            public function insertOne($document) {
+                return new MongoDB_InsertOneResult();
+            }
+            public function find($filter = [], $options = []) {
+                return new MongoDB_Cursor();
+            }
+            public function findOne($filter = [], $options = []) {
+                return [];
+            }
+            public function updateOne($filter, $update, $options = []) {
+                return new MongoDB_UpdateResult();
+            }
+            public function deleteOne($filter, $options = []) {
+                return new MongoDB_DeleteResult();
+            }
+            public function count($filter = []) {
+                return 0;
+            }
         }
         class_alias('MongoDB_Collection', 'MongoDB\Collection');
+    }
+    
+    // MongoDB\Driver\Cursor stub
+    if (!class_exists('MongoDB\Driver\Cursor')) {
+        class MongoDB_Cursor implements Iterator {
+            private $data = [];
+            private $position = 0;
+            
+            public function rewind(): void {
+                $this->position = 0;
+            }
+            
+            public function current(): mixed {
+                return $this->data[$this->position] ?? null;
+            }
+            
+            public function key(): mixed {
+                return $this->position;
+            }
+            
+            public function next(): void {
+                ++$this->position;
+            }
+            
+            public function valid(): bool {
+                return isset($this->data[$this->position]);
+            }
+        }
+        class_alias('MongoDB_Cursor', 'MongoDB\Driver\Cursor');
+    }
+    
+    // MongoDB\Driver\Cursor stub (for Collection::find())
+    if (!class_exists('MongoDB\Driver\Cursor')) {
+        class MongoDB_Cursor implements Iterator {
+            private $data = [];
+            private $position = 0;
+            
+            public function rewind(): void {
+                $this->position = 0;
+            }
+            
+            public function current(): mixed {
+                return $this->data[$this->position] ?? null;
+            }
+            
+            public function key(): mixed {
+                return $this->position;
+            }
+            
+            public function next(): void {
+                ++$this->position;
+            }
+            
+            public function valid(): bool {
+                return isset($this->data[$this->position]);
+            }
+        }
+        class_alias('MongoDB_Cursor', 'MongoDB\Driver\Cursor');
     }
     
     // MongoDB\InsertOneResult stub

@@ -33,17 +33,12 @@
         "meta",
         "mongodb",
         "mysqli",
-        "mysqlnd",
         "oci8",
         "odbc",
         "openssl",
         "pcntl",
         "pcre",
         "PDO",
-        "pdo_ibm",
-        "pdo_mysql",
-        "pdo_pgsql",
-        "pdo_sqlite",
         "pgsql",
         "Phar",
         "posix",
@@ -77,5 +72,9 @@
     ],
     "intelephense.diagnostics.undefinedTypes": false,
     "intelephense.diagnostics.undefinedMethods": false,
-    "intelephense.diagnostics.undefinedClassConstants": false
+    "intelephense.diagnostics.undefinedClassConstants": false,
+    "intelephense.files.exclude": [
+        "**/node_modules/**",
+        "**/vendor/**"
+    ]
 }

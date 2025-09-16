@@ -21,7 +21,8 @@ class MongoInventory {
             $this->collection = $this->database->selectCollection('Inventory');
             
             // Test the connection
-            $this->client->selectDatabase('admin')->command(['ping' => 1]);
+            $adminDatabase = $this->client->selectDatabase('admin');
+            $adminDatabase->command(['ping' => 1]);
         } catch (Exception $e) {
             error_log("MongoDB connection error: " . $e->getMessage());
             throw new Exception("Failed to connect to MongoDB: " . $e->getMessage());

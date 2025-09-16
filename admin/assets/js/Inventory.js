@@ -22,58 +22,30 @@ function getLocalPlaceholderImage(productName) {
   const name = productName.toLowerCase();
   
   if (name.includes('adobo')) {
-    return '../img/adobo.jpg';
+    return '../../img/adobo.jpg';
   } else if (name.includes('sinigang')) {
-    return '../img/sinigang.jpg';
+    return '../../img/sinigang.jpg';
   } else if (name.includes('iced') || name.includes('tea')) {
-    return '../img/icedtea.jpg';
+    return '../../img/icedtea.jpg';
   } else if (name.includes('milk') || name.includes('tea')) {
-    return '../img/milktea.jpg';
+    return '../../img/milktea.jpg';
   } else {
-    return '../img/TESDALOGO.png';
+    return '../../img/TESDALOGO.png';
   }
 }
 
 // ==========================
 // Get Product Image with Database Path and Fallback
 // ==========================
-async function getProductImageWithFallback(productId, productName, dbImagePath) {
-  // If we have a database image path, try to use it first
+function getProductImagePath(productId, productName, dbImagePath) {
+  // If we have a database image path, construct the correct relative path
   if (dbImagePath) {
-    const fullPath = `../${dbImagePath}`;
-    
-    // Check if the file exists by trying to load it
-    try {
-      const response = await fetch(fullPath, { method: 'HEAD' });
-      if (response.ok) {
-        return fullPath;
-      }
-    } catch (error) {
-      console.log(`Database image not accessible: ${fullPath}`);
-    }
+    // Remove any leading slashes and ensure proper path from admin/components/
+    const cleanPath = dbImagePath.replace(/^\/+/, '');
+    return `../../${cleanPath}`;
   }
   
-  // Fallback to uploaded images
-  try {
-    const response = await fetch('/TESDAPOS/connection/list_images.php');
-    if (response.ok) {
-      const data = await response.json();
-      if (data.success && data.images.length > 0) {
-        const productImages = data.images.filter(img => 
-          img.filename.includes(`${productId}_`) || img.filename.includes(productName.replace(/\s+/g, '_'))
-        );
-        
-        if (productImages.length > 0) {
-          productImages.sort((a, b) => b.modified - a.modified);
-          return `../${productImages[0].path}`;
-        }
-      }
-    }
-  } catch (error) {
-    console.log('Could not fetch image list:', error);
-  }
-  
-  // Final fallback to placeholder
+  // Fallback to placeholder
   return getLocalPlaceholderImage(productName);
 }
 
@@ -94,14 +66,14 @@ async function fetchProductsFromDB() {
     console.log('Fetched data:', data);
     
     if (data.success) {
-      inventoryItems = await Promise.all(data.products.map(async (product) => ({
+      inventoryItems = data.products.map((product) => ({
         id: product.id,
         name: product.product_name,
         category: product.category.toLowerCase(),
         price: product.price,
         quantity: product.stock_quantity,
-        image: product.image_path ? await getProductImageWithFallback(product.id, product.product_name, product.image_path) : getLocalPlaceholderImage(product.product_name)
-      })));
+        image: getProductImagePath(product.id, product.product_name, product.image_path)
+      }));
       
       products = inventoryItems.map(item => ({
         id: item.id,
@@ -168,7 +140,7 @@ async function renderInventory() {
     const imageSrc = item.image;
     
     div.innerHTML = `
-      <img src="${imageSrc}" alt="${item.name}" onerror="this.src='../img/TESDALOGO.png'">
+      <img src="${imageSrc}" alt="${item.name}" onerror="this.src='../../img/TESDALOGO.png'">
       <div class="card-body">
         <h4>${item.name}</h4>
         <p>Category: ${item.category}</p>
@@ -344,7 +316,7 @@ function initUpdateProductForm() {
             const photoFile = document.getElementById('updatePhoto').files[0];
             
             if (photoFile && result.image_uploaded && result.image_path) {
-              const newImagePath = `../${result.image_path}`;
+              const newImagePath = getProductImagePath(productId, product.name, result.image_path);
               console.log('Updating product image to:', newImagePath);
               product.image = newImagePath;
             }
@@ -357,7 +329,7 @@ function initUpdateProductForm() {
             inventoryItem.price = product.price;
             inventoryItem.quantity = product.stock;
             if (photoFile && result.image_uploaded && result.image_path) {
-              const newImagePath = `../${result.image_path}`;
+              const newImagePath = getProductImagePath(productId, inventoryItem.name, result.image_path);
               console.log('Updating inventory item image to:', newImagePath);
               inventoryItem.image = newImagePath;
             }
