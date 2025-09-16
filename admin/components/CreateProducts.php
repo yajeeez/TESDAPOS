@@ -89,6 +89,74 @@ session_start();
     </main>
   </div>
 
+  <!-- Confirmation Modal -->
+  <div id="confirmationModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modalTitle">Confirm Action</h3>
+        <span class="close" onclick="closeModal()">&times;</span>
+      </div>
+      <div class="modal-body">
+        <p id="modalMessage">Are you sure you want to proceed?</p>
+      </div>
+      <div class="modal-footer">
+        <button id="modalConfirm" class="btn-confirm">Yes</button>
+        <button id="modalCancel" class="btn-cancel" onclick="closeModal()">No</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Product Modal -->
+  <div id="editModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Edit Product</h3>
+        <span class="close" onclick="closeEditModal()">&times;</span>
+      </div>
+      <div class="modal-body">
+        <form id="editProductForm">
+          <input type="hidden" id="editProductId">
+          <div class="form-grid">
+            <label>
+              Product Name:
+              <input type="text" id="editProductName" required pattern="[A-Za-z ]+">
+            </label>
+            <label>
+              Category:
+              <select id="editCategory" required>
+                <option value="">-- Select Category --</option>
+                <option value="food">Food</option>
+                <option value="beverage">Beverage</option>
+                <option value="snacks">Snacks</option>
+                <option value="others">Others</option>
+              </select>
+            </label>
+            <label>
+              Price:
+              <input type="number" id="editPrice" min="0" required>
+            </label>
+            <label>
+              Stock Quantity:
+              <input type="number" id="editStock" min="0" required>
+            </label>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button id="saveEdit" class="btn-confirm">Save</button>
+        <button class="btn-cancel" onclick="closeEditModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Toast -->
+  <div id="toast" class="toast">
+    <div class="toast-content">
+      <i id="toastIcon" class="fas fa-check-circle"></i>
+      <span id="toastMessage">Message</span>
+    </div>
+  </div>
+
   <!-- JS -->
   <script src="../assets/js/CreateProducts.js"></script>
 </body>

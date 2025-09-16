@@ -116,6 +116,23 @@ session_start();
     </div>
   </div>
 
+  <!-- Confirmation Modal -->
+  <div id="confirmationModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modalTitle">Confirm Action</h3>
+        <span class="close" onclick="closeConfirmationModal()">&times;</span>
+      </div>
+      <div class="modal-body">
+        <p id="modalMessage">Are you sure you want to proceed?</p>
+      </div>
+      <div class="modal-footer">
+        <button id="modalConfirm" class="btn-confirm">Yes</button>
+        <button id="modalCancel" class="btn-cancel" onclick="closeConfirmationModal()">No</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Notification Toast -->
   <div id="notificationToast" class="toast">
     <div class="toast-content">

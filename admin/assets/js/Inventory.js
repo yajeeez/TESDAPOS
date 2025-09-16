@@ -6,13 +6,77 @@ let inventoryItems = [];
 let products = [];
 
 // ==========================
+// Modal Functions
+// ==========================
+function showConfirmationModal(title, message, confirmCallback, isDelete = false) {
+  const modal = document.getElementById('confirmationModal');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalMessage = document.getElementById('modalMessage');
+  const confirmBtn = document.getElementById('modalConfirm');
+  
+  modalTitle.textContent = title;
+  modalMessage.textContent = message;
+  modal.style.display = 'block';
+  
+  // Style button based on action type
+  if (isDelete) {
+    confirmBtn.className = 'btn-confirm delete';
+    confirmBtn.textContent = 'Delete';
+  } else {
+    confirmBtn.className = 'btn-confirm';
+    confirmBtn.textContent = 'Yes';
+  }
+  
+  // Remove any existing event listeners
+  const newConfirmBtn = confirmBtn.cloneNode(true);
+  confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
+  
+  // Add new event listener
+  newConfirmBtn.addEventListener('click', () => {
+    closeConfirmationModal();
+    if (confirmCallback) confirmCallback();
+  });
+}
+
+function closeConfirmationModal() {
+  const modal = document.getElementById('confirmationModal');
+  modal.style.display = 'none';
+}
+
+// ==========================
+// Toast Notification Functions
+// ==========================
+function showToast(message, type = 'success') {
+  const toast = document.getElementById('notificationToast');
+  const toastMessage = document.getElementById('toastMessage');
+  
+  toastMessage.textContent = message;
+  
+  if (type === 'error') {
+    toast.style.background = '#dc3545';
+  } else {
+    toast.style.background = '#28a745';
+  }
+  
+  toast.classList.add('show');
+  
+  setTimeout(() => {
+    toast.classList.remove('show');
+  }, 3000);
+}
+
+// ==========================
 // Logout Function
 // ==========================
 function logout(e) {
   if (e) e.preventDefault();
-  if (confirm("Are you sure you want to logout?")) {
-    window.location.href = "/TESDAPOS/LandingPage/LandingPage.html"; 
-  }
+  showConfirmationModal(
+    'Confirm Logout',
+    'Are you sure you want to logout?',
+    () => {
+      window.location.href = "/TESDAPOS/LandingPage/LandingPage.html";
+    }
+  );
 }
 
 // ==========================
@@ -194,13 +258,67 @@ window.updateProduct = function (id) {
 };
 
 // ==========================
-// Delete Product
+// Delete Product with Confirmation
 // ==========================
 window.deleteProduct = function (id) {
-  products = products.filter(p => p.id !== id);
-  inventoryItems = inventoryItems.filter(i => i.id !== id);
-  renderInventory();
+  // Find the product to get its name for the confirmation message
+  let product = inventoryItems.find(p => p.id === id);
+  if (!product) {
+    product = products.find(p => p.id === id);
+  }
+  
+  if (!product) {
+    showToast('Product not found', 'error');
+    return;
+  }
+  
+  // Show confirmation modal
+  showConfirmationModal(
+    'Confirm Product Deletion',
+    `Are you sure you want to delete "${product.name}"? This action cannot be undone.`,
+    () => performDelete(id),
+    true // isDelete flag
+  );
 };
+
+// ==========================
+// Perform Delete Operation
+// ==========================
+async function performDelete(id) {
+  try {
+    const formData = new FormData();
+    formData.append('productId', id);
+    
+    const response = await fetch('/TESDAPOS/connection/delete_product.php', {
+      method: 'POST',
+      body: formData
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const result = await response.json();
+    
+    if (result.success) {
+      // Remove from local arrays
+      products = products.filter(p => p.id !== id);
+      inventoryItems = inventoryItems.filter(i => i.id !== id);
+      
+      // Re-render inventory
+      renderInventory();
+      
+      // Show success message
+      showToast('Product deleted successfully!', 'success');
+    } else {
+      throw new Error(result.error || 'Failed to delete product');
+    }
+    
+  } catch (error) {
+    console.error('Error deleting product:', error);
+    showToast('Error deleting product: ' + error.message, 'error');
+  }
+}
 
 // ==========================
 // Modal Control Functions
@@ -211,11 +329,21 @@ window.closeUpdateModal = function() {
   document.getElementById('currentPhotoPreview').innerHTML = '';
 };
 
+window.closeConfirmationModal = function() {
+  document.getElementById('confirmationModal').style.display = 'none';
+};
+
 // Close modal when clicking outside of it
 window.onclick = function(event) {
-  const modal = document.getElementById('updateProductModal');
-  if (event.target === modal) {
+  const updateModal = document.getElementById('updateProductModal');
+  const confirmModal = document.getElementById('confirmationModal');
+  
+  if (event.target === updateModal) {
     closeUpdateModal();
+  }
+  
+  if (event.target === confirmModal) {
+    closeConfirmationModal();
   }
 };
 
@@ -273,81 +401,93 @@ function initImagePreview() {
 function initUpdateProductForm() {
   const updateForm = document.getElementById('updateProductForm');
   if (updateForm) {
-    updateForm.addEventListener('submit', async (e) => {
+    updateForm.addEventListener('submit', (e) => {
       e.preventDefault();
       
-      const formData = new FormData(updateForm);
-      const productId = formData.get('product_id');
-      
-      try {
-        console.log('Updating product:', productId);
-        
-        const response = await fetch('/TESDAPOS/connection/update_product.php', {
-          method: 'POST',
-          body: formData
-        });
-        
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const responseText = await response.text();
-        console.log('Raw response:', responseText);
-        
-        let result;
-        try {
-          result = JSON.parse(responseText);
-        } catch (jsonError) {
-          console.error('JSON parse error:', jsonError);
-          console.error('Response text:', responseText);
-          throw new Error('Server returned invalid JSON response. Check console for details.');
-        }
-        
-        console.log('Update result:', result);
-        
-        if (result.success) {
-          const product = products.find(p => p.id == productId);
-          if (product) {
-            product.name = formData.get('product_name');
-            product.category = formData.get('category').toLowerCase();
-            product.price = parseFloat(formData.get('price'));
-            product.stock = parseInt(formData.get('stock_quantity'));
-            
-            const photoFile = document.getElementById('updatePhoto').files[0];
-            
-            if (photoFile && result.image_uploaded && result.image_path) {
-              const newImagePath = getProductImagePath(productId, product.name, result.image_path);
-              console.log('Updating product image to:', newImagePath);
-              product.image = newImagePath;
-            }
-          }
-          
-          const inventoryItem = inventoryItems.find(i => i.id == productId);
-          if (inventoryItem) {
-            inventoryItem.name = product.name;
-            inventoryItem.category = product.category;
-            inventoryItem.price = product.price;
-            inventoryItem.quantity = product.stock;
-            if (photoFile && result.image_uploaded && result.image_path) {
-              const newImagePath = getProductImagePath(productId, inventoryItem.name, result.image_path);
-              console.log('Updating inventory item image to:', newImagePath);
-              inventoryItem.image = newImagePath;
-            }
-          }
-          
-          renderInventory();
-          closeUpdateModal();
-          showNotification('Product updated successfully!');
-          
-        } else {
-          showNotification('Failed to update product: ' + result.error, 'error');
-        }
-        
-      } catch (error) {
-        console.error('Error updating product:', error);
-        showNotification('Error updating product: ' + error.message, 'error');
-      }
+      // Show confirmation modal before updating
+      showConfirmationModal(
+        'Confirm Product Update',
+        'Are you sure you want to update this product?',
+        () => performUpdate(updateForm)
+      );
     });
+  }
+}
+
+// ==========================
+// Perform Update Operation
+// ==========================
+async function performUpdate(updateForm) {
+  const formData = new FormData(updateForm);
+  const productId = formData.get('product_id');
+  
+  try {
+    console.log('Updating product:', productId);
+    
+    const response = await fetch('/TESDAPOS/connection/update_product.php', {
+      method: 'POST',
+      body: formData
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const responseText = await response.text();
+    console.log('Raw response:', responseText);
+    
+    let result;
+    try {
+      result = JSON.parse(responseText);
+    } catch (jsonError) {
+      console.error('JSON parse error:', jsonError);
+      console.error('Response text:', responseText);
+      throw new Error('Server returned invalid JSON response. Check console for details.');
+    }
+    
+    console.log('Update result:', result);
+    
+    if (result.success) {
+      const product = products.find(p => p.id == productId);
+      if (product) {
+        product.name = formData.get('product_name');
+        product.category = formData.get('category').toLowerCase();
+        product.price = parseFloat(formData.get('price'));
+        product.stock = parseInt(formData.get('stock_quantity'));
+        
+        const photoFile = document.getElementById('updatePhoto').files[0];
+        
+        if (photoFile && result.image_uploaded && result.image_path) {
+          const newImagePath = getProductImagePath(productId, product.name, result.image_path);
+          console.log('Updating product image to:', newImagePath);
+          product.image = newImagePath;
+        }
+      }
+      
+      const inventoryItem = inventoryItems.find(i => i.id == productId);
+      if (inventoryItem) {
+        inventoryItem.name = product.name;
+        inventoryItem.category = product.category;
+        inventoryItem.price = product.price;
+        inventoryItem.quantity = product.stock;
+        if (photoFile && result.image_uploaded && result.image_path) {
+          const newImagePath = getProductImagePath(productId, inventoryItem.name, result.image_path);
+          console.log('Updating inventory item image to:', newImagePath);
+          inventoryItem.image = newImagePath;
+        }
+      }
+      
+      renderInventory();
+      closeUpdateModal();
+      showToast('Product updated successfully!');
+      
+    } else {
+      showToast('Failed to update product: ' + result.error, 'error');
+    }
+    
+  } catch (error) {
+    console.error('Error updating product:', error);
+    showToast('Error updating product: ' + error.message, 'error');
   }
 }
 
@@ -357,13 +497,22 @@ function initUpdateProductForm() {
 function showNotification(message, type = 'success') {
   const toast = document.getElementById('notificationToast');
   const toastMessage = document.getElementById('toastMessage');
+  const toastIcon = toast.querySelector('i');
   
   toastMessage.textContent = message;
   
+  // Update icon and color based on type
   if (type === 'error') {
     toast.style.background = '#dc3545';
+    toastIcon.className = 'fas fa-exclamation-circle';
+  } else if (type === 'warning') {
+    toast.style.background = '#ffc107';
+    toast.style.color = '#333';
+    toastIcon.className = 'fas fa-exclamation-triangle';
   } else {
     toast.style.background = '#28a745';
+    toast.style.color = '#fff';
+    toastIcon.className = 'fas fa-check-circle';
   }
   
   toast.classList.add('show');

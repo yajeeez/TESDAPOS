@@ -43,7 +43,7 @@ try {
         'message' => 'Database connection test successful',
         'mongodb_available' => extension_loaded('mongodb'),
         'php_version' => phpversion(),
-        'products_count' => $testResult['success'] ? count($testResult['products']) : 0,
+        'products_count' => ($testResult['success'] && isset($testResult['products']) && is_array($testResult['products'])) ? count($testResult['products']) : 0,
         'database_status' => $testResult['success'] ? 'Connected' : 'Connection failed',
         'timestamp' => date('Y-m-d H:i:s')
     ]);

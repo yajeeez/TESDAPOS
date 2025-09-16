@@ -451,6 +451,53 @@ body {
   font-size: 1.2rem;
 }
 
+/* === Confirmation Modal Styles === */
+.modal-body {
+  padding: 1.5rem;
+  color: #333;
+}
+
+.modal-body p {
+  margin: 0;
+  font-size: 1.1rem;
+  line-height: 1.5;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-top: 1px solid #e9ecef;
+  background: #f8f9fa;
+  border-radius: 0 0 12px 12px;
+}
+
+.btn-confirm {
+  background: var(--tesda-blue);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-confirm:hover {
+  background: var(--tesda-dark-blue);
+  transform: translateY(-2px);
+}
+
+.btn-confirm.delete {
+  background: var(--danger);
+}
+
+.btn-confirm.delete:hover {
+  background: var(--danger-dark);
+}
+
 /* === Animations === */
 @keyframes fadeIn {
   from { opacity: 0; }
