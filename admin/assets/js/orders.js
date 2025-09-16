@@ -1,7 +1,18 @@
 // ==========================
+// ==========================
 // Orders Management
 // ==========================
 let orders = [];
+
+// ==========================
+// Logout Function
+// ==========================
+function logout(e) {
+  if (e) e.preventDefault();
+  if (confirm("Are you sure you want to logout?")) {
+    window.location.href = "/TESDAPOS/LandingPage/LandingPage.html"; 
+  }
+}
 
 const statusColors = {
   'Pending': 'pending',
