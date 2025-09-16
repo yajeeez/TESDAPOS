@@ -34,7 +34,7 @@ body {
   overflow: hidden;
 }
 
-/* === Sidebar Scroll === */
+/* === Sidebar Styles === */
 .sidebar {
   width: 180px;
   background: linear-gradient(180deg, var(--tesda-blue), var(--tesda-dark-blue));
@@ -92,28 +92,6 @@ body {
   color: var(--tesda-yellow);
 }
 
-/* === Logout Button === */
-.logout-btn {
-  margin-top: auto;
-  width: 100%;
-}
-
-.logout-btn a {
-  display: block;
-  text-align: center;
-  background: var(--danger);
-  padding: 0.7rem;
-  color: var(--white);
-  font-weight: 500;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-}
-
-.logout-btn a:hover {
-  background: var(--danger-dark);
-  transform: translateY(-2px);
-}
-
 /* === Main Content === */
 .main {
   flex: 1;
@@ -125,7 +103,7 @@ body {
 .main::-webkit-scrollbar { width: 8px; }
 .main::-webkit-scrollbar-thumb { background: var(--tesda-blue); border-radius: 6px; }
 
-/* Topbar */
+/* === Topbar === */
 .topbar {
   display: flex;
   justify-content: space-between;
@@ -138,6 +116,12 @@ body {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
+}
+
+.topbar-left h2 {
+  color: var(--tesda-blue);
+  font-size: 1.8rem;
+  font-weight: 600;
 }
 
 .search-input {
@@ -154,127 +138,14 @@ body {
   outline: 2px solid var(--tesda-light-blue);
 }
 
-/* Section Cards */
-.section-card {
-  background: var(--tesda-blue);
-  color: var(--white);
-  border-radius: 10px;
-  padding: 0.8rem 1rem;
-  min-width: 180px;
-  transition: all 0.3s ease;
-}
-
-.section-card h3 { font-size: 1rem; margin-bottom: 0.3rem; }
-.section-card p { font-size: 0.8rem; color: #f0e68c; }
-
-.section-card:hover {
-  transform: translateY(-3px);
-  background: var(--tesda-dark-blue);
-}
-
 /* === Page Sections === */
 .page-section {
   background: var(--white);
   color: #333;
   border-radius: 12px;
+  padding: 1rem;
   margin-bottom: 1.5rem;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-/* === Dashboard Cards === */
-.cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.card {
-  background: var(--tesda-blue);
-  color: var(--white);
-  padding: 1rem;
-  border-radius: 10px;
-  text-align: center;
-}
-
-.card p { font-size: 1.3rem; font-weight: bold; color: var(--tesda-yellow); }
-
-/* === Charts === */
-.charts-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 20px;
-  margin-top: 1.5rem;
-}
-
-.chart-box {
-  background: #fff;
-  padding: 1rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  min-height: 350px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.chart-box canvas {
-  width: 100% !important;
-  height: 300px !important;
-}
-
-.chart-box h3 {
-  text-align: center;
-  color: var(--tesda-blue);
-  margin-bottom: 10px;
-}
-
-/* === Orders Table === */
-.orders-table-container {
-  margin-top: 1rem;
-  overflow-x: auto;
-}
-
-.orders-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: #fff;
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.orders-table th, .orders-table td {
-  padding: 10px 12px;
-  text-align: left;
-}
-
-.orders-table th {
-  background: var(--tesda-blue);
-  color: #fff;
-}
-
-.orders-table tbody tr:nth-child(even) {
-  background: #f9f9f9;
-}
-
-.status {
-  padding: 4px 8px;
-  border-radius: 6px;
-  color: #fff;
-  font-size: 0.8rem;
-}
-
-.status.pending { background: #f39c12; }
-.status.approved { background: #27ae60; }
-.status.served { background: #3498db; }
-.status.canceled { background: #e74c3c; }
-
-.orders-table select {
-  padding: 4px 6px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 0.85rem;
 }
 
 /* === Inventory Section === */
@@ -412,125 +283,6 @@ body {
 
 .inventory-card .actions .delete-btn:hover {
   background: var(--danger-dark);
-}
-
-/* === Create Products Section === */
-#createProductForm {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-#createProductForm h2 {
-  color: var(--tesda-blue);
-  margin-bottom: 0.5rem;
-}
-
-#createProductForm .form-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1rem;
-  padding: 1rem;
-}
-
-#createProductForm label {
-  display: flex;
-  flex-direction: column;
-  font-weight: 500;
-  color: #333;
-}
-
-#createProductForm input,
-#createProductForm select {
-  margin-top: 0.4rem;
-  padding: 0.6rem 0.8rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 0.95rem;
-}
-
-#createProductForm input:focus,
-#createProductForm select:focus {
-  outline: 2px solid var(--tesda-light-blue);
-}
-
-#createProductForm .btn-submit {
-  align-self: flex-start;
-  background: var(--tesda-blue);
-  color: #fff;
-  padding: 0.7rem 1.2rem;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  transition: all 0.3s ease;
-}
-
-#createProductForm .btn-submit:hover {
-  background: var(--tesda-dark-blue);
-  transform: translateY(-2px);
-}
-
-/* Product List */
-.product-list {
-  margin-top: 1.5rem;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1rem;
-}
-
-.product-card {
-  background: #fff;
-  border-radius: 10px;
-  padding: 1rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  text-align: center;
-}
-
-.product-card img {
-  max-width: 100%;
-  height: 140px;
-  object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 0.5rem;
-}
-
-.product-card h3 {
-  font-size: 1rem;
-  margin-bottom: 0.3rem;
-  color: var(--tesda-blue);
-}
-
-.product-card p {
-  font-size: 0.9rem;
-  color: #666;
-}
-
-/* === Loading and Error Messages === */
-.loading-message,
-.empty-message,
-.error-message {
-  text-align: center;
-  padding: 2rem;
-  color: #666;
-  font-size: 1.1rem;
-  background: var(--white);
-  border-radius: 12px;
-  margin: 1rem 0;
-}
-
-.loading-message {
-  color: var(--tesda-blue);
-}
-
-.error-message {
-  color: var(--danger);
-  background: #ffe6e6;
-  border: 1px solid #ffcccc;
 }
 
 /* === Modal Styles === */

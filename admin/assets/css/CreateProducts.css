@@ -1,0 +1,245 @@
+/* === TESDA Dashboard Theme Variables === */
+:root {
+  --tesda-blue: #004aad;
+  --tesda-dark-blue: #002b80;
+  --tesda-light-blue: #1e5fff;
+  --tesda-yellow: #ffc107;
+  --white: #fff;
+  --gray: #f5f6fa;
+  --danger: #e63946;
+  --danger-dark: #d62828;
+}
+
+/* === Reset & Global Styles === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, var(--tesda-blue), var(--tesda-dark-blue));
+  color: var(--white);
+  height: 100vh;
+  display: flex;
+  overflow: hidden;
+}
+
+/* === Dashboard Layout === */
+.dashboard {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* === Sidebar Styles === */
+.sidebar {
+  width: 180px;
+  background: linear-gradient(180deg, var(--tesda-blue), var(--tesda-dark-blue));
+  padding: 1rem 0.5rem;
+  box-shadow: 4px 0 20px rgba(0,0,0,0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: width 0.3s ease;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.sidebar::-webkit-scrollbar { display: none; }
+
+.sidebar-logo img.tesda-logo {
+  width: 140px;
+  margin-bottom: 1.5rem;
+  transition: transform 0.5s ease;
+}
+
+.sidebar-logo img.tesda-logo:hover {
+  transform: scale(1.1) rotate(3deg);
+}
+
+.sidebar ul {
+  list-style: none;
+  width: 100%;
+}
+
+.sidebar ul li {
+  margin-bottom: 5px;
+}
+
+.sidebar ul li a {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  color: #dce3ff;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-size: 0.8rem;
+}
+
+.sidebar ul li a:hover {
+  background: rgba(255,255,255,0.15);
+  color: var(--tesda-yellow);
+  transform: translateX(5px);
+}
+
+.sidebar ul li a.active {
+  background: var(--tesda-dark-blue);
+  color: var(--tesda-yellow);
+}
+
+/* === Main Content === */
+.main {
+  flex: 1;
+  background: var(--gray);
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.main::-webkit-scrollbar { width: 8px; }
+.main::-webkit-scrollbar-thumb { background: var(--tesda-blue); border-radius: 6px; }
+
+/* === Topbar === */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+
+.topbar-left {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.topbar-left h2 {
+  color: var(--tesda-blue);
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.search-input {
+  padding: 0.6rem 1rem;
+  border-radius: 20px;
+  border: none;
+  width: 250px;
+  font-size: 0.95rem;
+  transition: 0.3s;
+}
+
+.search-input:focus {
+  width: 300px;
+  outline: 2px solid var(--tesda-light-blue);
+}
+
+/* === Page Sections === */
+.page-section {
+  background: var(--white);
+  color: #333;
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* === Create Products Section === */
+#createProductForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+#createProductForm h2 {
+  color: var(--tesda-blue);
+  margin-bottom: 0.5rem;
+}
+
+#createProductForm .form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+}
+
+#createProductForm label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  color: #333;
+}
+
+#createProductForm input,
+#createProductForm select {
+  margin-top: 0.4rem;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+#createProductForm input:focus,
+#createProductForm select:focus {
+  outline: 2px solid var(--tesda-light-blue);
+}
+
+#createProductForm .btn-submit {
+  align-self: flex-start;
+  background: var(--tesda-blue);
+  color: #fff;
+  padding: 0.7rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+#createProductForm .btn-submit:hover {
+  background: var(--tesda-dark-blue);
+  transform: translateY(-2px);
+}
+
+/* Product List */
+.product-list {
+  margin-top: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.product-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.product-card img {
+  max-width: 100%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+}
+
+.product-card h3 {
+  font-size: 1rem;
+  margin-bottom: 0.3rem;
+  color: var(--tesda-blue);
+}
+
+.product-card p {
+  font-size: 0.9rem;
+  color: #666;
+}
