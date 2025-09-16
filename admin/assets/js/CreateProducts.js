@@ -74,7 +74,6 @@ async function getProductImage(productId, productName) {
 // ==========================
 function initProducts() {
   const productForm = document.getElementById('createProductForm');
-  const productsList = document.getElementById('productsList');
 
   if (productForm) {
     productForm.addEventListener('submit', async (e) => {
@@ -152,86 +151,6 @@ function initProducts() {
         submitBtn.disabled = false;
       }
     });
-  }
-
-  // ==========================
-  // Load and Display Recent Products
-  // ==========================
-  loadRecentProducts();
-  
-  // ==========================
-  // Render Products
-  // ==========================
-  window.renderProducts = function () {
-    if (!productsList) return;
-    productsList.innerHTML = '';
-
-    if (products.length === 0) {
-      productsList.innerHTML = `
-        <p class="empty-message">
-         "No recent products found. Add new products using the form above."
-        </p>
-      `;
-      return;
-    }
-
-    products.forEach(product => {
-      const div = document.createElement('div');
-      div.className = 'product-card';
-      div.innerHTML = `
-        <div class="product-image">
-          <img src="${product.image || '../img/TESDALOGO.png'}" alt="${product.name}" 
-               onerror="this.src='../img/TESDALOGO.png'">
-        </div>
-        <div class="product-info">
-          <h4>${product.name}</h4>
-          <p>Category: ${product.category}</p>
-          <p>Price: ₱${product.price.toFixed(2)}</p>
-          <p>Stock: ${product.stock}</p>
-        </div>
-        <div class="product-actions">
-          <button onclick="viewInInventory('${product.id}')">View in Inventory</button>
-        </div>
-      `;
-      productsList.appendChild(div);
-    });
-  };
-
-  // ==========================
-  // View Product in Inventory
-  // ==========================
-  window.viewInInventory = function (id) {
-    window.location.href = `Inventory.php?product=${id}`;
-  };
-  
-  // ==========================
-  // Load Recent Products from Database
-  // ==========================
-  async function loadRecentProducts() {
-    try {
-      const response = await fetch('/TESDAPOS/connection/fetch_products.php');
-      const result = await response.json();
-      
-      if (result.success && result.products.length > 0) {
-        // Show only the 5 most recent products
-        const recentProducts = result.products.slice(0, 5).map(product => ({
-          id: product.id,
-          name: product.product_name,
-          category: product.category,
-          price: product.price,
-          stock: product.stock_quantity,
-          image: product.image_path ? `../${product.image_path}` : '../img/TESDALOGO.png'
-        }));
-        
-        products = recentProducts;
-        renderProducts();
-      } else {
-        renderProducts(); // Show empty state
-      }
-    } catch (error) {
-      console.error('Error loading recent products:', error);
-      renderProducts(); // Show empty state
-    }
   }
 }
 

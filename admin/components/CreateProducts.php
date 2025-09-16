@@ -84,11 +84,6 @@ session_start();
             <i class="fas fa-plus-circle"></i> Add Product
           </button>
         </form>
-
-        <!-- Products List -->
-        <div id="productsList" class="product-list">
-          <!-- Products will be dynamically loaded here -->
-        </div>
       </section>
 
     </main>
