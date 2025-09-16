@@ -180,7 +180,7 @@ async function submitProduct(productForm) {
     
     // Send to backend
     console.log('Sending request to add_product.php...');
-    const response = await fetch('/TESDAPOS/connection/add_product.php', {
+    const response = await fetch('../../connection/add_product.php', {
       method: 'POST',
       body: formData
     });
@@ -211,9 +211,13 @@ async function submitProduct(productForm) {
       // Reset form
       productForm.reset();
       
-      // Redirect to inventory page after a short delay
+      // Add debug logging
+      console.log('Product added successfully, redirecting to inventory...');
+      console.log('Added product ID:', result.product_id);
+      
+      // Redirect to inventory page after a short delay with cache busting
       setTimeout(() => {
-        window.location.href = 'Inventory.php';
+        window.location.href = 'Inventory.php?refresh=' + Date.now();
       }, 2000);
       
     } else {
@@ -248,7 +252,7 @@ async function updateProduct() {
     formData.append('price', price);
     formData.append('stock', stock);
     
-    const response = await fetch('/TESDAPOS/connection/update_product.php', {
+    const response = await fetch('../../connection/update_product.php', {
       method: 'POST',
       body: formData
     });
@@ -288,7 +292,7 @@ async function performDelete(productId) {
     const formData = new FormData();
     formData.append('productId', productId);
     
-    const response = await fetch('/TESDAPOS/connection/delete_product.php', {
+    const response = await fetch('../../connection/delete_product.php', {
       method: 'POST',
       body: formData
     });

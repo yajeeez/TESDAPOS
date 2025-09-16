@@ -133,26 +133,52 @@ function getProductImagePath(productId, productName, dbImagePath) {
 // ==========================
 async function fetchProductsFromDB() {
   try {
-    console.log('Attempting to fetch products...');
-    const response = await fetch('/TESDAPOS/connection/fetch_products.php');
+    console.log('=== FETCHING PRODUCTS FROM DATABASE ===');
+    console.log('Requesting:', '../../connection/fetch_products.php');
+    
+    const response = await fetch('../../connection/fetch_products.php', {
+      method: 'GET',
+      headers: {
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache'
+      }
+    });
+    
     console.log('Response status:', response.status);
+    console.log('Response headers:', response.headers);
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     
-    const data = await response.json();
-    console.log('Fetched data:', data);
+    const responseText = await response.text();
+    console.log('Raw response text:', responseText);
+    
+    let data;
+    try {
+      data = JSON.parse(responseText);
+    } catch (parseError) {
+      console.error('JSON parse error:', parseError);
+      console.error('Raw response:', responseText);
+      throw new Error('Server returned invalid JSON');
+    }
+    
+    console.log('Parsed response data:', data);
     
     if (data.success) {
-      inventoryItems = data.products.map((product) => ({
-        id: product.id,
-        name: product.product_name,
-        category: product.category.toLowerCase(),
-        price: product.price,
-        quantity: product.stock_quantity,
-        image: getProductImagePath(product.id, product.product_name, product.image_path)
-      }));
+      console.log('Found', data.products.length, 'products in database');
+      
+      inventoryItems = data.products.map((product) => {
+        console.log('Processing product:', product);
+        return {
+          id: product.id,
+          name: product.product_name,
+          category: product.category.toLowerCase(),
+          price: product.price,
+          quantity: product.stock_quantity,
+          image: getProductImagePath(product.id, product.product_name, product.image_path)
+        };
+      });
       
       products = inventoryItems.map(item => ({
         id: item.id,
@@ -163,14 +189,18 @@ async function fetchProductsFromDB() {
         image: item.image
       }));
       
+      console.log('Processed inventory items:', inventoryItems);
+      console.log('Processed products array:', products);
       console.log('Products loaded successfully:', inventoryItems.length, 'items');
       return true;
     } else {
-      console.error('Failed to fetch products:', data.error);
+      console.error('Failed to fetch products:', data.message || data.error);
+      console.error('Full response:', data);
       return false;
     }
   } catch (error) {
     console.error('Error fetching products:', error);
+    console.error('Stack trace:', error.stack);
     inventoryItems = [];
     products = [];
     return false;
@@ -180,19 +210,22 @@ async function fetchProductsFromDB() {
 // ==========================
 // Render Inventory with Category Filter
 // ==========================
-async function renderInventory() {
+async function renderInventory(forceRefresh = false) {
   const inventoryList = document.getElementById('inventoryList');
   const filter = document.getElementById('categoryFilter')?.value || 'all';
   if (!inventoryList) return;
 
   inventoryList.innerHTML = '<p class="loading-message">Loading products...</p>';
 
-  if (inventoryItems.length === 0) {
+  // Force refresh or if no items cached
+  if (forceRefresh || inventoryItems.length === 0) {
+    console.log('Fetching fresh data from database...');
     const success = await fetchProductsFromDB();
     if (!success) {
       inventoryList.innerHTML = `
         <p class="error-message">
           Failed to load products from database. Please check your connection.
+          <br><button onclick="refreshInventoryData()" class="btn btn-modern-primary" style="margin-top: 1rem;">Try Again</button>
         </p>
       `;
       return;
@@ -207,6 +240,7 @@ async function renderInventory() {
     inventoryList.innerHTML = `
       <p class="empty-message">
         No products found in inventory. Please add products first in the "Create Products" section.
+        <br><button onclick="refreshInventoryData()" class="btn btn-modern-primary" style="margin-top: 1rem;">Refresh Inventory</button>
       </p>
     `;
     return;
@@ -323,7 +357,7 @@ async function performDelete(id) {
     const formData = new FormData();
     formData.append('productId', id);
     
-    const response = await fetch('/TESDAPOS/connection/delete_product.php', {
+    const response = await fetch('../../connection/delete_product.php', {
       method: 'POST',
       body: formData
     });
@@ -471,7 +505,7 @@ async function performUpdate(updateForm) {
   console.log('Stock:', formData.get('stock'));
   
   try {
-    const response = await fetch('/TESDAPOS/connection/update_product.php', {
+    const response = await fetch('../../connection/update_product.php', {
       method: 'POST',
       body: formData
     });
@@ -501,20 +535,12 @@ async function performUpdate(updateForm) {
       inventoryItems = [];
       products = [];
       
-      // Refetch products from database
-      const fetchSuccess = await fetchProductsFromDB();
-      if (fetchSuccess) {
-        console.log('Data refetched successfully');
-        // Refresh the inventory display
-        renderInventory();
-        closeUpdateModal();
-        
-        // Show success notification
-        showToast('Product updated successfully and saved to database!', 'success');
-      } else {
-        console.error('Failed to refetch data after update');
-        showToast('Product updated but failed to refresh display. Please refresh page.', 'warning');
-      }
+      // Force refresh from database to get updated data
+      await renderInventory(true);
+      closeUpdateModal();
+      
+      // Show success notification
+      showToast('Product updated successfully and saved to database!', 'success');
       
     } else {
       console.error('Update failed:', result.message);
@@ -565,7 +591,37 @@ function showNotification(message, type = 'success') {
 // ==========================
 window.refreshInventory = async function() {
   inventoryItems = []; // Clear cache
-  await renderInventory();
+  await renderInventory(true); // Force refresh
+};
+
+// Enhanced refresh function with user feedback
+window.refreshInventoryData = async function() {
+  console.log('=== MANUAL INVENTORY REFRESH TRIGGERED ===');
+  
+  const refreshBtn = document.getElementById('refreshInventoryBtn');
+  const originalText = refreshBtn.innerHTML;
+  
+  // Show loading state
+  refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Refreshing...';
+  refreshBtn.disabled = true;
+  
+  try {
+    // Clear all cached data
+    inventoryItems = [];
+    products = [];
+    
+    // Force refresh from database
+    await renderInventory(true);
+    showToast('Inventory refreshed successfully!', 'success');
+    console.log('Inventory refresh completed successfully');
+  } catch (error) {
+    console.error('Error during inventory refresh:', error);
+    showToast('Error refreshing inventory: ' + error.message, 'error');
+  } finally {
+    // Reset button state
+    refreshBtn.innerHTML = originalText;
+    refreshBtn.disabled = false;
+  }
 };
 
 // ==========================
@@ -607,7 +663,21 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
   
   await fetchProductsFromDB();
-  renderInventory();
+  
+  // Check if we're coming from a redirect (like after creating a product)
+  const urlParams = new URLSearchParams(window.location.search);
+  const shouldRefresh = urlParams.get('refresh');
+  
+  if (shouldRefresh) {
+    console.log('Refresh parameter detected, forcing fresh data load');
+    await renderInventory(true); // Force refresh
+    
+    // Clean up URL without refresh parameter
+    const newUrl = window.location.pathname;
+    window.history.replaceState({}, document.title, newUrl);
+  } else {
+    renderInventory();
+  }
   
   console.log('Inventory page initialization complete');
 });
