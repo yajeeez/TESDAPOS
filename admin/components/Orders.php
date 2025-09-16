@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="dashboards">
+  <div class="dashboard">
 
     <!-- Sidebar -->
     <nav class="sidebar" id="sidebar">
