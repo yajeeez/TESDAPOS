@@ -32,14 +32,20 @@ try {
     // Clean output buffer
     ob_clean();
     
+    // Add debugging
+    error_log("UPDATE PRODUCT REQUEST: " . print_r($_POST, true));
+    
     $mongo = new MongoInventory();
     
     // Get product ID
     $productId = $_POST['productId'] ?? '';
     if (empty($productId)) {
+        error_log("Error: Product ID is missing");
         echo json_encode(['success' => false, 'message' => 'Product ID is required']);
         exit();
     }
+    
+    error_log("Updating product with ID: " . $productId);
     
     // Handle file upload if image is provided
     $imagePath = '';
@@ -97,21 +103,33 @@ try {
     
     // Validate that we have something to update
     if (empty($updateData)) {
+        error_log("Error: No update data provided");
         echo json_encode(['success' => false, 'message' => 'No data provided for update']);
         exit();
     }
     
+    error_log("Update data: " . print_r($updateData, true));
+    
     // Update product in database
     $result = $mongo->updateProduct($productId, $updateData);
     
+    error_log("Update result: " . print_r($result, true));
+    
     if ($result['success']) {
-        echo json_encode([
+        $response = [
             'success' => true, 
             'message' => 'Product updated successfully!',
-            'product_id' => $productId,
-            'image_path' => $imagePath
-        ]);
+            'product_id' => $productId
+        ];
+        
+        if (!empty($imagePath)) {
+            $response['image_path'] = $imagePath;
+        }
+        
+        error_log("Sending success response: " . print_r($response, true));
+        echo json_encode($response);
     } else {
+        error_log("Update failed: " . print_r($result, true));
         echo json_encode($result);
     }
     
