@@ -67,13 +67,13 @@ require_once __DIR__ . '/session.php';
                         </a>
                     <?php endif; ?>
                     
-                    <a href="<?php echo APP_URL; ?>/menu/menu.html">
+                    <a href="<?php echo APP_URL; ?>/menu/menu.php">
                         <i class="fas fa-utensils"></i> Menu
                     </a>
                 </div>
             <?php else: ?>
                 <div class="nav-auth">
-                    <a href="<?php echo APP_URL; ?>/LandingPage/LandingPage.html" class="btn btn-primary">
+                    <a href="<?php echo APP_URL; ?>/LandingPage/LandingPage.php" class="btn btn-primary">
                         <i class="fas fa-sign-in-alt"></i> Login
                     </a>
                 </div>

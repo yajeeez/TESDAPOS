@@ -1,3 +1,10 @@
+<?php
+// Start session and check authentication
+session_start();
+
+// Add any necessary PHP logic here
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

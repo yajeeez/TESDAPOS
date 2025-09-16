@@ -30,7 +30,7 @@
     <button class="register-btn" onclick="window.location.href='register.php'">
       <i class="fas fa-user-plus"></i> Register
     </button>
-    <button class="back-btn" onclick="window.location.href='index.html'">
+    <button class="back-btn" onclick="window.location.href='index.php'">
       <i class="fas fa-arrow-left"></i> Back
     </button>
   </div>
