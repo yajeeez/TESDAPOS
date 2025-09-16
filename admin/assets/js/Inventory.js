@@ -44,7 +44,7 @@ async function getProductImageWithFallback(productId, productName, dbImagePath) 
   
   // Fallback to uploaded images
   try {
-    const response = await fetch('/TESDAPOS/admin/list_images.php');
+    const response = await fetch('/TESDAPOS/connection/list_images.php');
     if (response.ok) {
       const data = await response.json();
       if (data.success && data.images.length > 0) {
@@ -299,7 +299,7 @@ function initUpdateProductForm() {
       try {
         console.log('Updating product:', productId);
         
-        const response = await fetch('http://localhost/TESDAPOS/admin/update_product.php', {
+        const response = await fetch('/TESDAPOS/connection/update_product.php', {
           method: 'POST',
           body: formData
         });

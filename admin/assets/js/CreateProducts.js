@@ -36,7 +36,7 @@ function getLocalPlaceholderImage(productName) {
 // ==========================
 async function getProductImage(productId, productName) {
   try {
-    const response = await fetch(`http://localhost/TESDAPOS/admin/list_images.php`);
+    const response = await fetch(`/TESDAPOS/connection/list_images.php`);
     if (response.ok) {
       const data = await response.json();
       if (data.success && data.images.length > 0) {
@@ -91,7 +91,7 @@ function initProducts() {
         
         // Send to backend
         console.log('Sending request to add_product.php...');
-        const response = await fetch('../connection/add_product.php', {
+        const response = await fetch('/TESDAPOS/connection/add_product.php', {
           method: 'POST',
           body: formData
         });
@@ -198,7 +198,7 @@ function initProducts() {
   // ==========================
   async function loadRecentProducts() {
     try {
-      const response = await fetch('../connection/fetch_products.php');
+      const response = await fetch('/TESDAPOS/connection/fetch_products.php');
       const result = await response.json();
       
       if (result.success && result.products.length > 0) {

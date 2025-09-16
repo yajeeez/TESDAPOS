@@ -126,7 +126,7 @@ function systemHealth() {
     
     try {
       // Test database connection
-      const response = await fetch('http://localhost/TESDAPOS/admin/test_db.php');
+      const response = await fetch('/TESDAPOS/connection/test_db.php');
       if (!response.ok) {
         healthStatus.database = 'ERROR';
       }
