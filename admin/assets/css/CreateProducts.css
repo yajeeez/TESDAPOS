@@ -198,6 +198,101 @@ body {
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+#createProductForm .btn-submit:hover {
+  background: var(--tesda-dark-blue);
+  transform: translateY(-2px);
+}
+
+#createProductForm .btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* === Product List === */
+.product-list {
+  margin-top: 2rem;
+}
+
+.product-card {
+  display: flex;
+  gap: 1rem;
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+
+.product-image {
+  flex-shrink: 0;
+}
+
+.product-image img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2px solid #e9ecef;
+}
+
+.product-info {
+  flex: 1;
+}
+
+.product-info h4 {
+  color: var(--tesda-blue);
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.product-info p {
+  margin-bottom: 0.25rem;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.product-actions {
+  display: flex;
+  align-items: center;
+}
+
+.product-actions button {
+  background: var(--tesda-light-blue);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.product-actions button:hover {
+  background: var(--tesda-blue);
+  transform: translateY(-1px);
+}
+
+.empty-message {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+  font-style: italic;
+}
+
+#createProductForm .btn-submit {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -207,6 +302,12 @@ body {
 #createProductForm .btn-submit:hover {
   background: var(--tesda-dark-blue);
   transform: translateY(-2px);
+}
+
+#createProductForm .btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
 }
 
 /* Product List */

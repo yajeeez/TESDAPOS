@@ -66,28 +66,68 @@ function initProducts() {
   const productsList = document.getElementById('productsList');
 
   if (productForm) {
-    productForm.addEventListener('submit', (e) => {
+    productForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-
-      const photoFile = productForm.photo.files[0];
-      let imgURL = "../img/TESDALOGO.png";
-      if (photoFile) imgURL = URL.createObjectURL(photoFile);
-
-      const product = {
-        id: Date.now(),
-        name: productForm.productName.value,
-        category: productForm.category.value,
-        price: Number(productForm.price.value),
-        stock: Number(productForm.stock.value) || 0,
-        image: imgURL
-      };
-
-      products.push(product);
-      renderProducts();
-      productForm.reset();
+      
+      // Show loading state
+      const submitBtn = productForm.querySelector('button[type="submit"]');
+      const originalText = submitBtn.innerHTML;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding Product...';
+      submitBtn.disabled = true;
+      
+      try {
+        // Create FormData object to handle file upload
+        const formData = new FormData();
+        formData.append('productName', productForm.productName.value.trim());
+        formData.append('category', productForm.category.value);
+        formData.append('price', productForm.price.value);
+        formData.append('stock', productForm.stock.value || 0);
+        
+        // Add photo if selected
+        if (productForm.photo.files[0]) {
+          formData.append('photo', productForm.photo.files[0]);
+        }
+        
+        // Send to backend
+        const response = await fetch('/TESDAPOS/admin/add_product.php', {
+          method: 'POST',
+          body: formData
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          // Show success message
+          alert('Product added successfully! Redirecting to inventory...');
+          
+          // Reset form
+          productForm.reset();
+          
+          // Redirect to inventory page after a short delay
+          setTimeout(() => {
+            window.location.href = 'Inventory.php';
+          }, 1000);
+          
+        } else {
+          throw new Error(result.message || 'Failed to add product');
+        }
+        
+      } catch (error) {
+        console.error('Error adding product:', error);
+        alert('Error adding product: ' + error.message);
+      } finally {
+        // Reset button state
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+      }
     });
   }
 
+  // ==========================
+  // Load and Display Recent Products
+  // ==========================
+  loadRecentProducts();
+  
   // ==========================
   // Render Products
   // ==========================
@@ -98,7 +138,7 @@ function initProducts() {
     if (products.length === 0) {
       productsList.innerHTML = `
         <p class="empty-message">
-         "No products found. Go ahead and add new products in the 'Create Products' section to get started."
+         "No recent products found. Add new products using the form above."
         </p>
       `;
       return;
@@ -108,24 +148,60 @@ function initProducts() {
       const div = document.createElement('div');
       div.className = 'product-card';
       div.innerHTML = `
-        <h4>${product.name}</h4>
-        <p>Category: ${product.category}</p>
-        <p>Price: ₱${product.price.toFixed(2)}</p>
-        <p>Stock: ${product.stock}</p>
-        <button onclick="updateProduct(${product.id})">Update</button>
-        <button onclick="deleteProduct(${product.id})">Delete</button>
+        <div class="product-image">
+          <img src="${product.image || '../img/TESDALOGO.png'}" alt="${product.name}" 
+               onerror="this.src='../img/TESDALOGO.png'">
+        </div>
+        <div class="product-info">
+          <h4>${product.name}</h4>
+          <p>Category: ${product.category}</p>
+          <p>Price: ₱${product.price.toFixed(2)}</p>
+          <p>Stock: ${product.stock}</p>
+        </div>
+        <div class="product-actions">
+          <button onclick="viewInInventory('${product.id}')">View in Inventory</button>
+        </div>
       `;
       productsList.appendChild(div);
     });
   };
 
   // ==========================
-  // Delete Product
+  // View Product in Inventory
   // ==========================
-  window.deleteProduct = function (id) {
-    products = products.filter(p => p.id !== id);
-    renderProducts();
+  window.viewInInventory = function (id) {
+    window.location.href = `Inventory.php?product=${id}`;
   };
+  
+  // ==========================
+  // Load Recent Products from Database
+  // ==========================
+  async function loadRecentProducts() {
+    try {
+      const response = await fetch('/TESDAPOS/admin/fetch_products.php');
+      const result = await response.json();
+      
+      if (result.success && result.products.length > 0) {
+        // Show only the 5 most recent products
+        const recentProducts = result.products.slice(0, 5).map(product => ({
+          id: product.id,
+          name: product.product_name,
+          category: product.category,
+          price: product.price,
+          stock: product.stock_quantity,
+          image: product.image_path ? `../${product.image_path}` : '../img/TESDALOGO.png'
+        }));
+        
+        products = recentProducts;
+        renderProducts();
+      } else {
+        renderProducts(); // Show empty state
+      }
+    } catch (error) {
+      console.error('Error loading recent products:', error);
+      renderProducts(); // Show empty state
+    }
+  }
 }
 
 // ==========================

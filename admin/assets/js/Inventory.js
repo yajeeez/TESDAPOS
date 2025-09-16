@@ -24,22 +24,37 @@ function getLocalPlaceholderImage(productName) {
 }
 
 // ==========================
-// Get Product Image with Fallback
+// Get Product Image with Database Path and Fallback
 // ==========================
-async function getProductImage(productId, productName) {
+async function getProductImageWithFallback(productId, productName, dbImagePath) {
+  // If we have a database image path, try to use it first
+  if (dbImagePath) {
+    const fullPath = `../${dbImagePath}`;
+    
+    // Check if the file exists by trying to load it
+    try {
+      const response = await fetch(fullPath, { method: 'HEAD' });
+      if (response.ok) {
+        return fullPath;
+      }
+    } catch (error) {
+      console.log(`Database image not accessible: ${fullPath}`);
+    }
+  }
+  
+  // Fallback to uploaded images
   try {
-    const response = await fetch(`http://localhost/TESDAPOS/admin/list_images.php`);
+    const response = await fetch('/TESDAPOS/admin/list_images.php');
     if (response.ok) {
       const data = await response.json();
       if (data.success && data.images.length > 0) {
         const productImages = data.images.filter(img => 
-          img.filename.startsWith(`product_${productId}_`)
+          img.filename.includes(`${productId}_`) || img.filename.includes(productName.replace(/\s+/g, '_'))
         );
         
         if (productImages.length > 0) {
           productImages.sort((a, b) => b.modified - a.modified);
-          const imagePath = productImages[0].path;
-          return `../${imagePath}`;
+          return `../${productImages[0].path}`;
         }
       }
     }
@@ -47,6 +62,7 @@ async function getProductImage(productId, productName) {
     console.log('Could not fetch image list:', error);
   }
   
+  // Final fallback to placeholder
   return getLocalPlaceholderImage(productName);
 }
 
@@ -56,7 +72,7 @@ async function getProductImage(productId, productName) {
 async function fetchProductsFromDB() {
   try {
     console.log('Attempting to fetch products...');
-    const response = await fetch('http://localhost/TESDAPOS/admin/fetch_products.php');
+    const response = await fetch('/TESDAPOS/admin/fetch_products.php');
     console.log('Response status:', response.status);
     
     if (!response.ok) {
@@ -73,10 +89,8 @@ async function fetchProductsFromDB() {
         category: product.category.toLowerCase(),
         price: product.price,
         quantity: product.stock_quantity,
-        image: await getProductImage(product.id, product.product_name)
+        image: product.image_path ? await getProductImageWithFallback(product.id, product.product_name, product.image_path) : getLocalPlaceholderImage(product.product_name)
       })));
-      
-      await refreshProductImages();
       
       products = inventoryItems.map(item => ({
         id: item.id,
@@ -102,66 +116,6 @@ async function fetchProductsFromDB() {
 }
 
 // ==========================
-// Refresh Product Images
-// ==========================
-async function refreshProductImages() {
-  try {
-    console.log('Refreshing product images...');
-    const response = await fetch(`http://localhost/TESDAPOS/admin/list_images.php`);
-    if (response.ok) {
-      const data = await response.json();
-      console.log('Image data received:', data);
-      
-      if (data.success && data.images.length > 0) {
-        let updatedCount = 0;
-        
-        for (let item of inventoryItems) {
-          const productImages = data.images.filter(img => 
-            img.filename.startsWith(`product_${item.id}_`)
-          );
-          
-          if (productImages.length > 0) {
-            productImages.sort((a, b) => b.modified - a.modified);
-            const newImagePath = productImages[0].path;
-            
-            const correctedPath = `../${newImagePath}`;
-            if (item.image !== correctedPath) {
-              console.log(`Updating image for product ${item.id}: ${item.image} -> ${correctedPath}`);
-              item.image = correctedPath;
-              updatedCount++;
-            }
-          }
-        }
-        
-        for (let product of products) {
-          const productImages = data.images.filter(img => 
-            img.filename.startsWith(`product_${product.id}_`)
-          );
-          
-          if (productImages.length > 0) {
-            productImages.sort((a, b) => b.modified - a.modified);
-            const newImagePath = productImages[0].path;
-            
-            const correctedPath = `../${newImagePath}`;
-            if (product.image !== correctedPath) {
-              console.log(`Updating image for product ${product.id}: ${product.image} -> ${correctedPath}`);
-              product.image = correctedPath;
-              updatedCount++;
-            }
-          }
-        }
-        
-        console.log(`Image refresh complete. Updated ${updatedCount} products.`);
-        return updatedCount > 0;
-      }
-    }
-  } catch (error) {
-    console.error('Could not refresh product images:', error);
-  }
-  return false;
-}
-
-// ==========================
 // Render Inventory with Category Filter
 // ==========================
 async function renderInventory() {
@@ -182,8 +136,6 @@ async function renderInventory() {
       return;
     }
   }
-
-  const imagesUpdated = await refreshProductImages();
 
   inventoryList.innerHTML = '';
 
@@ -439,11 +391,32 @@ function showNotification(message, type = 'success') {
 }
 
 // ==========================
+// Refresh Inventory Data
+// ==========================
+window.refreshInventory = async function() {
+  inventoryItems = []; // Clear cache
+  await renderInventory();
+};
+
+// ==========================
 // Initialize on page load
 // ==========================
 document.addEventListener('DOMContentLoaded', async () => {
   initUpdateProductForm();
   initImagePreview();
+  
+  // Add refresh button functionality
+  const refreshBtn = document.getElementById('refreshBtn');
+  if (refreshBtn) {
+    refreshBtn.addEventListener('click', refreshInventory);
+  }
+  
+  // Add category filter functionality
+  const categoryFilter = document.getElementById('categoryFilter');
+  if (categoryFilter) {
+    categoryFilter.addEventListener('change', renderInventory);
+  }
+  
   await fetchProductsFromDB();
   renderInventory();
 });

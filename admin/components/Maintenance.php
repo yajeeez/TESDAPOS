@@ -14,16 +14,16 @@
     <!-- Sidebar -->
     <nav class="sidebar" id="sidebar">
       <div class="sidebar-logo">
-        <img src="/../img/TESDAG.png" alt="TESDA Logo" class="tesda-logo" />
+        <img src="../../img/TESDAG.png" alt="TESDA Logo" class="tesda-logo" />
       </div>
       <h2>TESDA POS</h2>
       <ul>
-        <li><a href="AdminDashboard.html"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
-        <li><a href="orders.html"><i class="fas fa-receipt"></i><span>Manage Orders</span></a></li>
-        <li><a href="createproducts.html"><i class="fas fa-cart-plus"></i><span>Create Products</span></a></li>
-        <li><a href="inventory.html"><i class="fas fa-boxes"></i><span>Inventory</span></a></li>
-        <li><a href="transactions.html"><i class="fas fa-cash-register"></i><span>Transactions</span></a></li>
-        <li><a href="maintenance.html" class="active"><i class="fas fa-tools"></i><span>Maintenance</span></a></li>
+        <li><a href="AdminDashboard.php"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
+        <li><a href="Orders.php"><i class="fas fa-receipt"></i><span>Manage Orders</span></a></li>
+        <li><a href="CreateProducts.php"><i class="fas fa-cart-plus"></i><span>Create Products</span></a></li>
+        <li><a href="Inventory.php"><i class="fas fa-boxes"></i><span>Inventory</span></a></li>
+        <li><a href="Transactions.php"><i class="fas fa-cash-register"></i><span>Transactions</span></a></li>
+        <li><a href="Maintenance.php" class="active"><i class="fas fa-tools"></i><span>Maintenance</span></a></li>
         <li><a href="#" onclick="logout(event)"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></li>
       </ul>
     </nav>
