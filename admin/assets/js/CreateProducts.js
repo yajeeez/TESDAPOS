@@ -76,6 +76,15 @@ function initProducts() {
       submitBtn.disabled = true;
       
       try {
+        // First test if the server is responding
+        console.log('Testing server connection...');
+        const testResponse = await fetch('../debug.php');
+        if (!testResponse.ok) {
+          throw new Error(`Server not responding: ${testResponse.status}`);
+        }
+        const testResult = await testResponse.json();
+        console.log('Server test result:', testResult);
+        
         // Create FormData object to handle file upload
         const formData = new FormData();
         formData.append('productName', productForm.productName.value.trim());
@@ -86,15 +95,35 @@ function initProducts() {
         // Add photo if selected
         if (productForm.photo.files[0]) {
           formData.append('photo', productForm.photo.files[0]);
+          console.log('Photo file added:', productForm.photo.files[0].name);
         }
         
         // Send to backend
-        const response = await fetch('/TESDAPOS/admin/add_product.php', {
+        console.log('Sending request to add_product.php...');
+        const response = await fetch('../add_product.php', {
           method: 'POST',
           body: formData
         });
         
-        const result = await response.json();
+        console.log('Response status:', response.status);
+        console.log('Response headers:', response.headers);
+        
+        // Check if response is ok and contains JSON
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const responseText = await response.text();
+        console.log('Raw response:', responseText);
+        
+        let result;
+        try {
+          result = JSON.parse(responseText);
+        } catch (parseError) {
+          console.error('Failed to parse JSON:', parseError);
+          console.error('Response was:', responseText);
+          throw new Error('Server returned invalid JSON. Check console for details.');
+        }
         
         if (result.success) {
           // Show success message
@@ -178,7 +207,7 @@ function initProducts() {
   // ==========================
   async function loadRecentProducts() {
     try {
-      const response = await fetch('/TESDAPOS/admin/fetch_products.php');
+      const response = await fetch('../fetch_products.php');
       const result = await response.json();
       
       if (result.success && result.products.length > 0) {

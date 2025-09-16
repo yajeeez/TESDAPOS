@@ -1,8 +1,18 @@
 <?php
+// Enable error reporting for debugging
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST');
 header('Access-Control-Allow-Headers: Content-Type');
+
+// Log the request for debugging
+error_log('add_product.php called with method: ' . $_SERVER['REQUEST_METHOD']);
+error_log('POST data: ' . print_r($_POST, true));
+error_log('FILES data: ' . print_r($_FILES, true));
 
 require_once __DIR__ . '/../connection/MongoInventory.php';
 
@@ -20,7 +30,10 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 try {
+    // Test MongoDB connection first
+    error_log('Attempting to create MongoInventory instance...');
     $mongo = new MongoInventory();
+    error_log('MongoInventory instance created successfully');
     
     // Handle file upload if image is provided
     $imagePath = '';
@@ -78,7 +91,12 @@ try {
     }
     
 } catch (Exception $e) {
-    error_log("Error in add_product.php: " . $e->getMessage());
-    echo json_encode(['success' => false, 'message' => 'Server error occurred']);
+    error_log("Critical error in add_product.php: " . $e->getMessage());
+    error_log("Stack trace: " . $e->getTraceAsString());
+    echo json_encode([
+        'success' => false, 
+        'message' => 'Server error occurred: ' . $e->getMessage(),
+        'debug' => DEBUG_MODE ? $e->getTraceAsString() : 'Enable debug mode for details'
+    ]);
 }
 ?>

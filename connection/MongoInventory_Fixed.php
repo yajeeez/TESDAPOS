@@ -1,14 +1,13 @@
 <?php
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../config/database.php';
-require_once __DIR__ . '/mongostubs.php'; // Include MongoDB stubs for IDE support
 
 use MongoDB\Client;
-use MongoDB\BSON\ObjectId;
-use MongoDB\BSON\UTCDateTime;
-use MongoDB\Exception\Exception as MongoException;
-use Exception;
 
+/**
+ * MongoDB Inventory Management Class
+ * Fixed version with proper error handling and IDE compatibility
+ */
 class MongoInventory {
     private $client;
     private $database;
@@ -23,9 +22,9 @@ class MongoInventory {
             
             // Test the connection
             $this->client->selectDatabase('admin')->command(['ping' => 1]);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             error_log("MongoDB connection error: " . $e->getMessage());
-            throw new Exception("Failed to connect to MongoDB: " . $e->getMessage());
+            throw new \Exception("Failed to connect to MongoDB: " . $e->getMessage());
         }
     }
     
@@ -34,9 +33,9 @@ class MongoInventory {
      */
     public function addProduct($productData) {
         try {
-            // Add timestamp for creation
-            $productData['created_at'] = new UTCDateTime();
-            $productData['updated_at'] = new UTCDateTime();
+            // Add timestamp for creation using proper class names
+            $productData['created_at'] = new \MongoDB\BSON\UTCDateTime();
+            $productData['updated_at'] = new \MongoDB\BSON\UTCDateTime();
             
             // Insert the product
             $result = $this->collection->insertOne($productData);
@@ -50,7 +49,7 @@ class MongoInventory {
             } else {
                 return ['success' => false, 'message' => 'Failed to add product'];
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             error_log("Error adding product: " . $e->getMessage());
             return ['success' => false, 'message' => 'Database error: ' . $e->getMessage()];
         }
@@ -79,7 +78,7 @@ class MongoInventory {
             }
             
             return ['success' => true, 'products' => $products];
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             error_log("Error fetching products: " . $e->getMessage());
             return ['success' => false, 'message' => 'Database error: ' . $e->getMessage()];
         }
@@ -90,11 +89,11 @@ class MongoInventory {
      */
     public function updateProduct($productId, $updateData) {
         try {
-            // Add timestamp for update
-            $updateData['updated_at'] = new UTCDateTime();
+            // Add timestamp for update using proper class name
+            $updateData['updated_at'] = new \MongoDB\BSON\UTCDateTime();
             
             $result = $this->collection->updateOne(
-                ['_id' => new ObjectId($productId)],
+                ['_id' => new \MongoDB\BSON\ObjectId($productId)],
                 ['$set' => $updateData]
             );
             
@@ -103,7 +102,7 @@ class MongoInventory {
             } else {
                 return ['success' => false, 'message' => 'Product not found or no changes made'];
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             error_log("Error updating product: " . $e->getMessage());
             return ['success' => false, 'message' => 'Database error: ' . $e->getMessage()];
         }
@@ -114,14 +113,14 @@ class MongoInventory {
      */
     public function deleteProduct($productId) {
         try {
-            $result = $this->collection->deleteOne(['_id' => new ObjectId($productId)]);
+            $result = $this->collection->deleteOne(['_id' => new \MongoDB\BSON\ObjectId($productId)]);
             
             if ($result->getDeletedCount() === 1) {
                 return ['success' => true, 'message' => 'Product deleted successfully'];
             } else {
                 return ['success' => false, 'message' => 'Product not found'];
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             error_log("Error deleting product: " . $e->getMessage());
             return ['success' => false, 'message' => 'Database error: ' . $e->getMessage()];
         }
@@ -132,7 +131,7 @@ class MongoInventory {
      */
     public function getProductById($productId) {
         try {
-            $document = $this->collection->findOne(['_id' => new ObjectId($productId)]);
+            $document = $this->collection->findOne(['_id' => new \MongoDB\BSON\ObjectId($productId)]);
             
             if ($document) {
                 $product = [
@@ -150,9 +149,21 @@ class MongoInventory {
             } else {
                 return ['success' => false, 'message' => 'Product not found'];
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             error_log("Error fetching product: " . $e->getMessage());
             return ['success' => false, 'message' => 'Database error: ' . $e->getMessage()];
+        }
+    }
+    
+    /**
+     * Test connection method
+     */
+    public function testConnection() {
+        try {
+            $this->client->selectDatabase('admin')->command(['ping' => 1]);
+            return ['success' => true, 'message' => 'MongoDB connection is working'];
+        } catch (\Exception $e) {
+            return ['success' => false, 'message' => 'MongoDB connection failed: ' . $e->getMessage()];
         }
     }
 }
