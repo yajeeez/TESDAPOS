@@ -80,37 +80,18 @@ function logout(e) {
 }
 
 // ==========================
-// Get Local Placeholder Image
-// ==========================
-function getLocalPlaceholderImage(productName) {
-  const name = productName.toLowerCase();
-  
-  if (name.includes('adobo')) {
-    return '../../img/adobo.jpg';
-  } else if (name.includes('sinigang')) {
-    return '../../img/sinigang.jpg';
-  } else if (name.includes('iced') || name.includes('tea')) {
-    return '../../img/icedtea.jpg';
-  } else if (name.includes('milk') || name.includes('tea')) {
-    return '../../img/milktea.jpg';
-  } else {
-    return '../../img/TESDALOGO.png';
-  }
-}
-
-// ==========================
-// Get Product Image with Database Path and Fallback
+// Get Product Image with Database Path
 // ==========================
 function getProductImagePath(productId, productName, dbImagePath) {
   // If we have a database image path, construct the correct relative path
-  if (dbImagePath) {
+  if (dbImagePath && dbImagePath.trim() !== '') {
     // Remove any leading slashes and ensure proper path from admin/components/
     const cleanPath = dbImagePath.replace(/^\/+/, '');
     return `../../${cleanPath}`;
   }
   
-  // Fallback to placeholder
-  return getLocalPlaceholderImage(productName);
+  // Return empty string if no image path - let CSS handle the styling for missing images
+  return '';
 }
 
 // ==========================
@@ -210,7 +191,6 @@ async function renderInventory(forceRefresh = false) {
       inventoryList.innerHTML = `
         <p class="error-message">
           Failed to load products from database. Please check your connection.
-          <br><button onclick="refreshInventoryData()" class="btn btn-modern-primary" style="margin-top: 1rem;">Try Again</button>
         </p>
       `;
       return;
@@ -220,12 +200,14 @@ async function renderInventory(forceRefresh = false) {
   inventoryList.innerHTML = '';
 
   const filteredItems = inventoryItems.filter(item => filter === 'all' || item.category === filter);
+  
+  // Update category count
+  updateCategoryCount(filteredItems.length, filter);
 
   if (filteredItems.length === 0) {
     inventoryList.innerHTML = `
       <p class="empty-message">
         No products found in inventory. Please add products first in the "Create Products" section.
-        <br><button onclick="refreshInventoryData()" class="btn btn-modern-primary" style="margin-top: 1rem;">Refresh Inventory</button>
       </p>
     `;
     return;
@@ -237,21 +219,85 @@ async function renderInventory(forceRefresh = false) {
     
     const imageSrc = item.image;
     
+    // Determine stock status for indicator
+    const stockStatus = item.quantity > 10 ? 'in-stock' : item.quantity > 0 ? 'low-stock' : 'out-of-stock';
+    
+    // Category badge styling
+    const categoryColors = {
+      'food': 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+      'beverage': 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
+      'snack': 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+      'others': 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)'
+    };
+    
     div.innerHTML = `
-      <img src="${imageSrc}" alt="${item.name}" onerror="this.src='../../img/TESDALOGO.png'">
+      <div class="image-container">
+        <div class="stock-indicator ${stockStatus}"></div>
+        <div class="category-badge" style="background: ${categoryColors[item.category] || categoryColors.others}">
+          ${item.category}
+        </div>
+        <img src="${imageSrc}" alt="${item.name}">
+      </div>
       <div class="card-body">
         <h4>${item.name}</h4>
-        <p>Category: ${item.category}</p>
-        <p class="price">₱${item.price.toFixed(2)}</p>
-        <p class="stock">Stock: ${item.quantity} pcs</p>
+        
+        <div class="product-info">
+          <div class="info-item">
+            <i class="fas fa-tag"></i>
+            <span>${item.category.charAt(0).toUpperCase() + item.category.slice(1)}</span>
+          </div>
+          <div class="info-item">
+            <i class="fas fa-cube"></i>
+            <span>Product</span>
+          </div>
+        </div>
+        
+        <div class="price-display">
+          <div class="price-label">Price</div>
+          <div class="price-value">₱${item.price.toFixed(2)}</div>
+        </div>
+        
+        <div class="stock-display">
+          <div class="stock-info">
+            <i class="fas fa-boxes"></i>
+            <span class="stock-text">Stock</span>
+          </div>
+          <div class="stock-number">${item.quantity}</div>
+        </div>
+        
         <div class="actions">
-          <button class="edit-btn" onclick="updateProduct('${item.id}')"><i class="fas fa-edit"></i> Edit</button>
-          <button class="delete-btn" onclick="deleteProduct('${item.id}')"><i class="fas fa-trash"></i> Delete</button>
+          <button class="edit-btn" onclick="updateProduct('${item.id}')">
+            <i class="fas fa-edit"></i>
+            <span>Edit</span>
+          </button>
+          <button class="delete-btn" onclick="deleteProduct('${item.id}')">
+            <i class="fas fa-trash"></i>
+            <span>Delete</span>
+          </button>
         </div>
       </div>
     `;
     inventoryList.appendChild(div);
   });
+}
+
+// ==========================
+// Update Category Count Display
+// ==========================
+function updateCategoryCount(count, category) {
+  let countBadge = document.querySelector('.category-count');
+  
+  if (!countBadge) {
+    countBadge = document.createElement('div');
+    countBadge.className = 'category-count';
+    const filterBar = document.querySelector('.filter-bar');
+    if (filterBar) {
+      filterBar.appendChild(countBadge);
+    }
+  }
+  
+  const categoryName = category === 'all' ? 'All Products' : category.charAt(0).toUpperCase() + category.slice(1);
+  countBadge.textContent = `${count} ${categoryName}`;
 }
 
 // ==========================
@@ -592,44 +638,6 @@ function showNotification(message, type = 'success') {
 }
 
 // ==========================
-// Refresh Inventory Data
-// ==========================
-window.refreshInventory = async function() {
-  inventoryItems = []; // Clear cache
-  await renderInventory(true); // Force refresh
-};
-
-// Enhanced refresh function with user feedback
-window.refreshInventoryData = async function() {
-  console.log('=== MANUAL INVENTORY REFRESH TRIGGERED ===');
-  
-  const refreshBtn = document.getElementById('refreshInventoryBtn');
-  const originalText = refreshBtn.innerHTML;
-  
-  // Show loading state
-  refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Refreshing...';
-  refreshBtn.disabled = true;
-  
-  try {
-    // Clear all cached data
-    inventoryItems = [];
-    products = [];
-    
-    // Force refresh from database
-    await renderInventory(true);
-    showToast('Inventory refreshed successfully!', 'success');
-    console.log('Inventory refresh completed successfully');
-  } catch (error) {
-    console.error('Error during inventory refresh:', error);
-    showToast('Error refreshing inventory: ' + error.message, 'error');
-  } finally {
-    // Reset button state
-    refreshBtn.innerHTML = originalText;
-    refreshBtn.disabled = false;
-  }
-};
-
-// ==========================
 // Initialize on page load
 // ==========================
 document.addEventListener('DOMContentLoaded', async () => {
@@ -654,12 +662,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   initUpdateProductForm();
   initImagePreview();
   initModernButtons();
-  
-  // Add refresh button functionality
-  const refreshBtn = document.getElementById('refreshBtn');
-  if (refreshBtn) {
-    refreshBtn.addEventListener('click', refreshInventory);
-  }
   
   // Add category filter functionality
   const categoryFilter = document.getElementById('categoryFilter');

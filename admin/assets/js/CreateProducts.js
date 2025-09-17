@@ -7,50 +7,205 @@ let currentAction = null;
 let currentProductId = null;
 
 // ==========================
-// Modal Functions
+// Initialize on page load
 // ==========================
-function showModal(title, message, confirmCallback) {
-  const modal = document.getElementById('confirmationModal');
-  const modalTitle = document.getElementById('modalTitle');
-  const modalMessage = document.getElementById('modalMessage');
-  const confirmBtn = document.getElementById('modalConfirm');
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('DOM Content Loaded - Initializing Create Products page...');
   
-  modalTitle.textContent = title;
-  modalMessage.textContent = message;
-  modal.style.display = 'block';
+  initPhotoPreview();
+  initFormValidation();
+  initButtonRipples();
   
-  // Remove any existing event listeners
-  const newConfirmBtn = confirmBtn.cloneNode(true);
-  confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
+  console.log('Create Products page initialization complete');
+});
+
+// ==========================
+// Photo Preview Functionality
+// ==========================
+function initPhotoPreview() {
+  const photoInput = document.getElementById('photo');
+  const photoPreview = document.getElementById('photoPreview');
   
-  // Add new event listener
-  newConfirmBtn.addEventListener('click', () => {
-    closeModal();
-    if (confirmCallback) confirmCallback();
+  if (!photoInput || !photoPreview) {
+    console.warn('Photo input or preview element not found');
+    return;
+  }
+  
+  photoInput.addEventListener('change', (event) => {
+    handlePhotoPreview(event, photoPreview);
+  });
+  
+  // Handle drag and drop
+  const uploadContainer = document.querySelector('.file-upload-display');
+  if (uploadContainer) {
+    uploadContainer.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      uploadContainer.style.borderColor = 'var(--tesda-blue)';
+    });
+    
+    uploadContainer.addEventListener('dragleave', (e) => {
+      e.preventDefault();
+      uploadContainer.style.borderColor = 'rgba(0, 74, 173, 0.3)';
+    });
+    
+    uploadContainer.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadContainer.style.borderColor = 'rgba(0, 74, 173, 0.3)';
+      
+      const files = e.dataTransfer.files;
+      if (files.length > 0 && files[0].type.startsWith('image/')) {
+        photoInput.files = files;
+        handlePhotoPreview({ target: { files } }, photoPreview);
+      }
+    });
+  }
+}
+
+function handlePhotoPreview(event, previewContainer) {
+  const file = event.target.files[0];
+  
+  if (!file) {
+    resetPhotoPreview(previewContainer);
+    return;
+  }
+  
+  if (!file.type.startsWith('image/')) {
+    showToast('Please select a valid image file', 'warning');
+    resetPhotoPreview(previewContainer);
+    return;
+  }
+  
+  const reader = new FileReader();
+  
+  reader.onload = (e) => {
+    previewContainer.innerHTML = `
+      <img src="${e.target.result}" alt="Preview" />
+    `;
+    previewContainer.classList.add('has-image');
+  };
+  
+  reader.onerror = () => {
+    showToast('Error reading file', 'error');
+    resetPhotoPreview(previewContainer);
+  };
+  
+  reader.readAsDataURL(file);
+}
+
+function resetPhotoPreview(previewContainer) {
+  previewContainer.innerHTML = `
+    <div class="preview-placeholder">
+      <i class="fas fa-image"></i>
+      <span>No image selected</span>
+    </div>
+  `;
+  previewContainer.classList.remove('has-image');
+}
+
+// ==========================
+// Form Validation
+// ==========================
+function initFormValidation() {
+  const form = document.getElementById('createProductForm');
+  if (!form) return;
+  
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    if (validateForm(form)) {
+      await submitProduct(form);
+    }
+  });
+  
+  // Real-time validation feedback
+  const inputs = form.querySelectorAll('input[required], select[required]');
+  inputs.forEach(input => {
+    input.addEventListener('blur', () => {
+      validateField(input);
+    });
+    
+    input.addEventListener('input', () => {
+      clearFieldError(input);
+    });
   });
 }
 
-function closeModal() {
-  const modal = document.getElementById('confirmationModal');
-  modal.style.display = 'none';
+function validateField(field) {
+  const value = field.value.trim();
+  
+  if (!value) {
+    addFieldError(field, 'This field is required');
+    return false;
+  }
+  
+  // Additional validation for specific fields
+  if (field.type === 'number' && parseFloat(value) < 0) {
+    addFieldError(field, 'Value must be greater than or equal to 0');
+    return false;
+  }
+  
+  clearFieldError(field);
+  return true;
 }
 
-function showEditModal(product) {
-  const modal = document.getElementById('editModal');
+function addFieldError(field, message) {
+  clearFieldError(field);
   
-  // Populate form fields
-  document.getElementById('editProductId').value = product.id;
-  document.getElementById('editProductName').value = product.name;
-  document.getElementById('editCategory').value = product.category;
-  document.getElementById('editPrice').value = product.price;
-  document.getElementById('editStock').value = product.stock;
+  field.style.borderColor = '#ef4444';
+  field.style.boxShadow = '0 0 0 4px rgba(239, 68, 68, 0.1)';
   
-  modal.style.display = 'block';
+  const errorDiv = document.createElement('div');
+  errorDiv.className = 'field-error';
+  errorDiv.textContent = message;
+  errorDiv.style.cssText = `
+    color: #ef4444;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+    font-weight: 500;
+  `;
+  
+  field.parentNode.appendChild(errorDiv);
 }
 
-function closeEditModal() {
-  const modal = document.getElementById('editModal');
-  modal.style.display = 'none';
+function clearFieldError(field) {
+  field.style.borderColor = '';
+  field.style.boxShadow = '';
+  
+  const errorDiv = field.parentNode.querySelector('.field-error');
+  if (errorDiv) {
+    errorDiv.remove();
+  }
+}
+
+// ==========================
+// Button Ripple Effects
+// ==========================
+function initButtonRipples() {
+  const buttons = document.querySelectorAll('.btn');
+  
+  buttons.forEach(button => {
+    button.addEventListener('click', createRipple);
+  });
+}
+
+function createRipple(event) {
+  const button = event.currentTarget;
+  const ripple = button.querySelector('.btn-ripple');
+  
+  if (!ripple) return;
+  
+  const circle = ripple;
+  const diameter = Math.max(button.clientWidth, button.clientHeight);
+  const radius = diameter / 2;
+  
+  const rect = button.getBoundingClientRect();
+  circle.style.width = circle.style.height = `${diameter}px`;
+  circle.style.left = `${event.clientX - rect.left - radius}px`;
+  circle.style.top = `${event.clientY - rect.top - radius}px`;
+  circle.classList.remove('ripple');
+  
+  void circle.offsetWidth;
+  circle.classList.add('ripple');
 }
 
 // ==========================
@@ -60,6 +215,11 @@ function showToast(message, type = 'success') {
   const toast = document.getElementById('toast');
   const toastIcon = document.getElementById('toastIcon');
   const toastMessage = document.getElementById('toastMessage');
+  
+  if (!toast || !toastIcon || !toastMessage) {
+    console.warn('Toast elements not found');
+    return;
+  }
   
   // Set icon based on type
   toastIcon.className = 'fas ';
@@ -87,64 +247,6 @@ function showToast(message, type = 'success') {
 }
 
 // ==========================
-// Form Validation
-// ==========================
-function validateForm(form) {
-  const requiredFields = {
-    'productName': 'Product Name',
-    'category': 'Category',
-    'price': 'Price',
-    'stock': 'Stock Quantity'
-  };
-  
-  const emptyFields = [];
-  
-  for (const [fieldName, displayName] of Object.entries(requiredFields)) {
-    const field = form[fieldName];
-    if (!field.value.trim()) {
-      emptyFields.push(displayName);
-    }
-  }
-  
-  if (emptyFields.length > 0) {
-    const message = `Please fill in the following required fields: ${emptyFields.join(', ')}`;
-    showToast(message, 'warning');
-    return false;
-  }
-  
-  return true;
-}
-
-// ==========================
-// Edit Form Validation
-// ==========================
-function validateEditForm(form) {
-  const requiredFields = {
-    'editProductName': 'Product Name',
-    'editCategory': 'Category',
-    'editPrice': 'Price',
-    'editStock': 'Stock Quantity'
-  };
-  
-  const emptyFields = [];
-  
-  for (const [fieldId, displayName] of Object.entries(requiredFields)) {
-    const field = document.getElementById(fieldId);
-    if (!field.value.trim()) {
-      emptyFields.push(displayName);
-    }
-  }
-  
-  if (emptyFields.length > 0) {
-    const message = `Please fill in the following required fields: ${emptyFields.join(', ')}`;
-    showToast(message, 'warning');
-    return false;
-  }
-  
-  return true;
-}
-
-// ==========================
 // Logout Function
 // ==========================
 function logout(e) {
@@ -155,39 +257,150 @@ function logout(e) {
 }
 
 // ==========================
+// Modal Functions (for legacy support)
+// ==========================
+function showModal(title, message, confirmCallback) {
+  const modal = document.getElementById('confirmationModal');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalMessage = document.getElementById('modalMessage');
+  const confirmBtn = document.getElementById('modalConfirm');
+  
+  if (!modal || !modalTitle || !modalMessage || !confirmBtn) {
+    console.warn('Modal elements not found');
+    return;
+  }
+  
+  modalTitle.textContent = title;
+  modalMessage.textContent = message;
+  modal.style.display = 'block';
+  
+  // Remove any existing event listeners
+  const newConfirmBtn = confirmBtn.cloneNode(true);
+  confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
+  
+  // Add new event listener
+  newConfirmBtn.addEventListener('click', () => {
+    closeModal();
+    if (confirmCallback) confirmCallback();
+  });
+}
+
+function closeModal() {
+  const modal = document.getElementById('confirmationModal');
+  if (modal) {
+    modal.style.display = 'none';
+  }
+}
+
+// ==========================
+// Close Modal on Outside Click
+// ==========================
+window.addEventListener('click', (event) => {
+  const confirmModal = document.getElementById('confirmationModal');
+  
+  if (event.target === confirmModal) {
+    closeModal();
+  }
+});
+
+// ==========================
+// Enhanced Form Validation
+// ==========================
+function validateForm(form) {
+  const requiredFields = {
+    'productName': 'Product Name',
+    'category': 'Category', 
+    'price': 'Price',
+    'stock': 'Stock Quantity'
+  };
+  
+  let isValid = true;
+  const emptyFields = [];
+  
+  for (const [fieldName, displayName] of Object.entries(requiredFields)) {
+    const field = form.querySelector(`[name="${fieldName}"]`);
+    if (!field || !field.value.trim()) {
+      emptyFields.push(displayName);
+      if (field) {
+        addFieldError(field, `${displayName} is required`);
+      }
+      isValid = false;
+    } else {
+      if (field) {
+        clearFieldError(field);
+      }
+    }
+  }
+  
+  // Additional validation
+  const priceField = form.querySelector('[name="price"]');
+  const stockField = form.querySelector('[name="stock"]');
+  
+  if (priceField && priceField.value && parseFloat(priceField.value) < 0) {
+    addFieldError(priceField, 'Price must be greater than or equal to 0');
+    isValid = false;
+  }
+  
+  if (stockField && stockField.value && parseInt(stockField.value) < 0) {
+    addFieldError(stockField, 'Stock quantity must be greater than or equal to 0');
+    isValid = false;
+  }
+  
+  if (!isValid && emptyFields.length > 0) {
+    showToast(`Please fill in the required fields: ${emptyFields.join(', ')}`, 'warning');
+  }
+  
+  return isValid;
+}
+
+// ==========================
 // Submit Product Function
 // ==========================
-async function submitProduct(productForm) {
+async function submitProduct(form) {
+  const submitBtn = form.querySelector('button[type="submit"]');
+  const submitContent = submitBtn.querySelector('.btn-content');
+  const originalText = submitContent.innerHTML;
+  
   // Show loading state
-  const submitBtn = productForm.querySelector('button[type="submit"]');
-  const originalText = submitBtn.innerHTML;
-  submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding Product...';
+  submitContent.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Adding Product...</span>';
   submitBtn.disabled = true;
   
   try {
     // Create FormData object to handle file upload
     const formData = new FormData();
-    formData.append('productName', productForm.productName.value.trim());
-    formData.append('category', productForm.category.value);
-    formData.append('price', productForm.price.value);
-    formData.append('stock', productForm.stock.value || 0);
+    
+    // Get form values using the new structure
+    const productName = form.querySelector('[name="productName"]').value.trim();
+    const category = form.querySelector('[name="category"]').value;
+    const price = form.querySelector('[name="price"]').value;
+    const stock = form.querySelector('[name="stock"]').value || 0;
+    const photoFile = form.querySelector('[name="photo"]').files[0];
+    
+    formData.append('productName', productName);
+    formData.append('category', category);
+    formData.append('price', price);
+    formData.append('stock', stock);
     
     // Add photo if selected
-    if (productForm.photo.files[0]) {
-      formData.append('photo', productForm.photo.files[0]);
-      console.log('Photo file added:', productForm.photo.files[0].name);
+    if (photoFile) {
+      formData.append('photo', photoFile);
+      console.log('Photo file added:', photoFile.name);
     }
     
+    console.log('Sending product data:', {
+      productName,
+      category,
+      price,
+      stock,
+      hasPhoto: !!photoFile
+    });
+    
     // Send to backend
-    console.log('Sending request to add_product.php...');
     const response = await fetch('../../connection/add_product.php', {
       method: 'POST',
       body: formData
     });
     
-    console.log('Response status:', response.status);
-    
-    // Check if response is ok and contains JSON
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -208,14 +421,24 @@ async function submitProduct(productForm) {
       // Show success notification
       showToast('Product has been successfully added to the inventory!', 'success');
       
-      // Reset form
-      productForm.reset();
+      // Reset form and preview
+      form.reset();
+      resetPhotoPreview(document.getElementById('photoPreview'));
       
-      // Add debug logging
-      console.log('Product added successfully, redirecting to inventory...');
-      console.log('Added product ID:', result.product_id);
+      // Clear any field errors
+      const errorDivs = form.querySelectorAll('.field-error');
+      errorDivs.forEach(error => error.remove());
       
-      // Redirect to inventory page after a short delay with cache busting
+      // Reset field styles
+      const fields = form.querySelectorAll('input, select');
+      fields.forEach(field => {
+        field.style.borderColor = '';
+        field.style.boxShadow = '';
+      });
+      
+      console.log('Product added successfully:', result.product_id);
+      
+      // Redirect to inventory page after a short delay
       setTimeout(() => {
         window.location.href = 'Inventory.php?refresh=' + Date.now();
       }, 2000);
@@ -229,153 +452,7 @@ async function submitProduct(productForm) {
     showToast('Error adding product: ' + error.message, 'error');
   } finally {
     // Reset button state
-    submitBtn.innerHTML = originalText;
+    submitContent.innerHTML = originalText;
     submitBtn.disabled = false;
   }
 }
-
-// ==========================
-// Update Product Function
-// ==========================
-async function updateProduct() {
-  try {
-    const productId = document.getElementById('editProductId').value;
-    const productName = document.getElementById('editProductName').value.trim();
-    const category = document.getElementById('editCategory').value;
-    const price = document.getElementById('editPrice').value;
-    const stock = document.getElementById('editStock').value;
-    
-    const formData = new FormData();
-    formData.append('productId', productId);
-    formData.append('productName', productName);
-    formData.append('category', category);
-    formData.append('price', price);
-    formData.append('stock', stock);
-    
-    const response = await fetch('../../connection/update_product.php', {
-      method: 'POST',
-      body: formData
-    });
-    
-    const result = await response.json();
-    
-    if (result.success) {
-      showToast('Product updated successfully!', 'success');
-      closeEditModal();
-      // Refresh inventory or reload page
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
-    } else {
-      throw new Error(result.message || 'Failed to update product');
-    }
-    
-  } catch (error) {
-    console.error('Error updating product:', error);
-    showToast('Error updating product: ' + error.message, 'error');
-  }
-}
-
-// ==========================
-// Delete Product Function
-// ==========================
-function deleteProduct(productId, productName) {
-  showModal(
-    'Confirm Product Deletion',
-    `Are you sure you want to delete "${productName}"? This action cannot be undone.`,
-    () => performDelete(productId)
-  );
-}
-
-async function performDelete(productId) {
-  try {
-    const formData = new FormData();
-    formData.append('productId', productId);
-    
-    const response = await fetch('../../connection/delete_product.php', {
-      method: 'POST',
-      body: formData
-    });
-    
-    const result = await response.json();
-    
-    if (result.success) {
-      showToast('Product deleted successfully!', 'success');
-      // Refresh inventory or reload page
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
-    } else {
-      throw new Error(result.message || 'Failed to delete product');
-    }
-    
-  } catch (error) {
-    console.error('Error deleting product:', error);
-    showToast('Error deleting product: ' + error.message, 'error');
-  }
-}
-
-// ==========================
-// Initialize Create Products
-// ==========================
-function initProducts() {
-  const productForm = document.getElementById('createProductForm');
-
-  if (productForm) {
-    productForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      
-      // Validate form first
-      if (!validateForm(productForm)) {
-        return;
-      }
-      
-      // Show confirmation modal
-      showModal(
-        'Confirm Product Addition',
-        'Are you sure you want to add this product to the inventory?',
-        () => submitProduct(productForm)
-      );
-    });
-  }
-
-  // Handle edit modal save button
-  const saveEditBtn = document.getElementById('saveEdit');
-  if (saveEditBtn) {
-    saveEditBtn.addEventListener('click', () => {
-      const editForm = document.getElementById('editProductForm');
-      if (!validateEditForm(editForm)) {
-        return;
-      }
-      
-      showModal(
-        'Confirm Product Update',
-        'Are you sure you want to update this product?',
-        () => updateProduct()
-      );
-    });
-  }
-}
-
-// ==========================
-// Close Modal on Outside Click
-// ==========================
-window.addEventListener('click', (event) => {
-  const confirmModal = document.getElementById('confirmationModal');
-  const editModal = document.getElementById('editModal');
-  
-  if (event.target === confirmModal) {
-    closeModal();
-  }
-  
-  if (event.target === editModal) {
-    closeEditModal();
-  }
-});
-
-// ==========================
-// Initialize on page load
-// ==========================
-document.addEventListener('DOMContentLoaded', () => {
-  initProducts();
-});

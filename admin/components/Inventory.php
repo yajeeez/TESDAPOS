@@ -59,9 +59,6 @@ session_start();
             <option value="snack">Snack</option>
             <option value="others">Others</option>
           </select>
-          <button id="refreshInventoryBtn" onclick="refreshInventoryData()" class="btn btn-modern-primary" style="margin-left: 1rem; padding: 0.5rem 1rem;">
-            <i class="fas fa-sync-alt"></i> Refresh Inventory
-          </button>
         </div>
         <div id="inventoryList"></div>
       </section>

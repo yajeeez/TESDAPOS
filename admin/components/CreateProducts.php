@@ -51,39 +51,111 @@ session_start();
 
       <!-- Create Products Section -->
       <section id="products" class="page-section">
-        <form id="createProductForm">
-          <div class="form-grid">
-            <label>
-              Product Name:
-              <input type="text" name="productName" required pattern="[A-Za-z ]+">
-            </label>
-            <label>
-              Category:
-              <select name="category" required>
-                <option value="">-- Select Category --</option>
-                <option value="food">Food</option>
-                <option value="beverage">Beverage</option>
-                <option value="snacks">Snacks</option>
-                <option value="others">Others</option>
-              </select>
-            </label>
-            <label>
-              Price:
-              <input type="number" name="price" min="0" required>
-            </label>
-            <label>
-              Stock Quantity:
-              <input type="number" name="stock" min="0" required>
-            </label>
-            <label>
-              Upload Photo:
-              <input type="file" name="photo" accept="image/*">
-            </label>
+        <div class="section-header">
+          <div class="header-content">
+            <div class="icon-container">
+              <i class="fas fa-plus-circle"></i>
+            </div>
+            <div class="header-text">
+              <h2>Create New Product</h2>
+              <p class="subtitle">Add a new product to your inventory</p>
+            </div>
           </div>
-          <button type="submit" class="btn-submit">
-            <i class="fas fa-plus-circle"></i> Add Product
-          </button>
-        </form>
+        </div>
+        
+        <div class="form-container">
+          <form id="createProductForm">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="productName">
+                  <i class="fas fa-tag"></i>
+                  Product Name
+                </label>
+                <input type="text" id="productName" name="productName" required pattern="[A-Za-z ]+" placeholder="Enter product name">
+              </div>
+              
+              <div class="form-group">
+                <label for="category">
+                  <i class="fas fa-list"></i>
+                  Category
+                </label>
+                <select id="category" name="category" required>
+                  <option value="">-- Select Category --</option>
+                  <option value="food">Food</option>
+                  <option value="beverage">Beverage</option>
+                  <option value="snack">Snack</option>
+                  <option value="others">Others</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label for="price">
+                  <i class="fas fa-peso-sign"></i>
+                  Price
+                </label>
+                <input type="number" id="price" name="price" min="0" step="0.01" required placeholder="0.00">
+              </div>
+              
+              <div class="form-group">
+                <label for="stock">
+                  <i class="fas fa-boxes"></i>
+                  Stock Quantity
+                </label>
+                <input type="number" id="stock" name="stock" min="0" required placeholder="0">
+              </div>
+              
+              <div class="form-group photo-upload-group">
+                <label for="photo">
+                  <i class="fas fa-camera"></i>
+                  Product Photo
+                </label>
+                <div class="file-upload-container">
+                  <input type="file" id="photo" name="photo" accept="image/*">
+                  <div class="file-upload-display">
+                    <div class="upload-icon">
+                      <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <div class="upload-text">
+                      <span class="upload-main">Click to upload photo</span>
+                      <span class="upload-sub">or drag and drop</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="form-group preview-group">
+                <label>
+                  <i class="fas fa-eye"></i>
+                  Photo Preview
+                </label>
+                <div id="photoPreview" class="photo-preview">
+                  <div class="preview-placeholder">
+                    <i class="fas fa-image"></i>
+                    <span>No image selected</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="form-actions">
+              <button type="reset" class="btn btn-secondary">
+                <div class="btn-content">
+                  <i class="fas fa-undo"></i>
+                  <span>Reset Form</span>
+                </div>
+                <div class="btn-ripple"></div>
+              </button>
+              
+              <button type="submit" class="btn btn-primary">
+                <div class="btn-content">
+                  <i class="fas fa-plus-circle"></i>
+                  <span>Add Product</span>
+                </div>
+                <div class="btn-ripple"></div>
+              </button>
+            </div>
+          </form>
+        </div>
       </section>
 
     </main>
