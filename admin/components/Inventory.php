@@ -174,37 +174,20 @@ session_start();
 
   <!-- Confirmation Modal -->
   <div id="confirmationModal" class="modal">
-    <div class="modal-content modern-modal confirmation-modal">
-      <div class="modal-header confirmation-header">
-        <div class="icon-container warning-icon">
-          <i class="fas fa-exclamation-triangle"></i>
+    <div class="modal-content modern-modal delete-modal">
+      <div class="modal-body delete-confirmation-body">
+        <div class="delete-icon-container">
+          <i class="fas fa-trash-alt"></i>
         </div>
-        <div class="header-text">
-          <h3 id="modalTitle">Confirm Action</h3>
-          <p class="subtitle">This action requires your confirmation</p>
-        </div>
-        <button class="close-btn" onclick="closeConfirmationModal()">
-          <i class="fas fa-times"></i>
-        </button>
+        <h3 class="delete-title">Delete Product?</h3>
+        <p id="modalMessage" class="delete-message">This action cannot be undone.</p>
       </div>
       
-      <div class="modal-body confirmation-body">
-        <div class="warning-content">
-          <div class="warning-illustration">
-            <i class="fas fa-trash-alt"></i>
-          </div>
-          <p id="modalMessage" class="warning-message">Are you sure you want to proceed?</p>
-          <p class="warning-note">This action cannot be undone.</p>
-        </div>
-      </div>
-      
-      <div class="modal-footer confirmation-footer">
-        <button id="modalCancel" class="btn btn-secondary" onclick="closeConfirmationModal()">
-          <i class="fas fa-times"></i>
+      <div class="modal-footer delete-footer">
+        <button id="modalCancel" class="btn btn-cancel" onclick="closeConfirmationModal()">
           Cancel
         </button>
-        <button id="modalConfirm" class="btn btn-danger">
-          <i class="fas fa-trash"></i>
+        <button id="modalConfirm" class="btn btn-delete">
           Delete
         </button>
       </div>

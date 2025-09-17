@@ -827,6 +827,144 @@ input[type="file"]:hover {
   }
 }
 
+/* === Modern Delete Modal Styles === */
+.delete-modal {
+  max-width: 400px;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3),
+              0 0 0 1px rgba(255, 255, 255, 0.1);
+  background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+  border: none;
+}
+
+.delete-confirmation-body {
+  padding: 2.5rem 2rem 1.5rem 2rem;
+  text-align: center;
+  background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+}
+
+.delete-icon-container {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1.5rem auto;
+  background: linear-gradient(145deg, #fee2e2 0%, #fecaca 100%);
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid #fca5a5;
+  box-shadow: 0 8px 25px rgba(239, 68, 68, 0.25);
+  animation: deleteIconPulse 2s ease-in-out infinite;
+}
+
+.delete-icon-container i {
+  font-size: 2.2rem;
+  color: #dc2626;
+  filter: drop-shadow(0 2px 4px rgba(220, 38, 38, 0.3));
+}
+
+.delete-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 0.75rem 0;
+  letter-spacing: -0.025em;
+}
+
+.delete-message {
+  font-size: 1rem;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+.delete-footer {
+  display: flex;
+  gap: 1rem;
+  padding: 1.5rem 2rem 2rem 2rem;
+  background: linear-gradient(145deg, #f8fafc 0%, #f1f5f9 100%);
+  border-top: 1px solid #e2e8f0;
+}
+
+.btn-cancel {
+  flex: 1;
+  background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+  color: #6b7280;
+  border: 2px solid #e5e7eb;
+  padding: 0.875rem 1.5rem;
+  border-radius: 14px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-cancel:hover {
+  background: linear-gradient(145deg, #f9fafb 0%, #f3f4f6 100%);
+  border-color: #d1d5db;
+  color: #374151;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.btn-delete {
+  flex: 1;
+  background: linear-gradient(145deg, #ef4444 0%, #dc2626 100%);
+  color: #ffffff;
+  border: 2px solid transparent;
+  padding: 0.875rem 1.5rem;
+  border-radius: 14px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
+}
+
+.btn-delete::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.6s ease;
+}
+
+.btn-delete:hover::before {
+  left: 100%;
+}
+
+.btn-delete:hover {
+  background: linear-gradient(145deg, #f87171 0%, #ef4444 100%);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(239, 68, 68, 0.5);
+}
+
+.btn-delete:active {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.6);
+}
+
+/* Delete Modal Animations */
+@keyframes deleteIconPulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 8px 25px rgba(239, 68, 68, 0.25);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 12px 35px rgba(239, 68, 68, 0.35);
+  }
+}
+
 /* === Toast Notification === */
 .toast {
   position: fixed;

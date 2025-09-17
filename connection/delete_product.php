@@ -1,15 +1,26 @@
 <?php
-// Start output buffering to prevent headers already sent errors
+// Prevent any output before JSON response
 ob_start();
 
-// Set proper headers for JSON response
-header('Content-Type: application/json');
+// Set JSON header immediately
+header('Content-Type: application/json; charset=utf-8');
+
+// Handle CORS
 header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: POST');
+header('Access-Control-Allow-Methods: POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
 
-// Include database configuration
-require_once '../config/database.php';
+// Handle preflight OPTIONS request
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
+
+// Clear any previous output
+ob_clean();
+
+// Initialize response
+$response = ['success' => false, 'error' => 'Unknown error'];
 
 try {
     // Check if request method is POST
@@ -18,69 +29,54 @@ try {
     }
 
     // Check if productId is provided
-    if (!isset($_POST['productId']) || empty($_POST['productId'])) {
+    if (!isset($_POST['productId']) || empty(trim($_POST['productId']))) {
         throw new Exception('Product ID is required');
     }
 
-    $productId = $_POST['productId'];
-
-    // Connect to MongoDB
-    $client = new MongoDB\Client($mongoUri);
-    $database = $client->selectDatabase($databaseName);
-    $collection = $database->selectCollection('products');
-
-    // Convert productId to ObjectId if it's a valid ObjectId string
-    if (preg_match('/^[a-f\d]{24}$/i', $productId)) {
-        $objectId = new MongoDB\BSON\ObjectId($productId);
-    } else {
-        // If it's not a valid ObjectId, treat it as a string
-        $objectId = $productId;
-    }
-
-    // Find the product first to get image info
-    $product = $collection->findOne(['_id' => $objectId]);
+    $productId = trim($_POST['productId']);
     
-    if (!$product) {
-        throw new Exception('Product not found');
+    // Validate product ID format (should be a valid MongoDB ObjectId)
+    if (strlen($productId) !== 24 || !ctype_xdigit($productId)) {
+        throw new Exception('Invalid product ID format. Expected 24-character hexadecimal string.');
     }
 
-    // Delete the product from database
-    $deleteResult = $collection->deleteOne(['_id' => $objectId]);
-
-    if ($deleteResult->getDeletedCount() === 0) {
-        throw new Exception('Failed to delete product from database');
+    // Include the MongoInventory class
+    require_once __DIR__ . '/MongoInventory.php';
+    
+    // Create MongoDB inventory instance
+    $mongoInventory = new MongoInventory();
+    
+    // First check if the product exists
+    $existingProduct = $mongoInventory->getProductById($productId);
+    
+    if (!$existingProduct['success']) {
+        throw new Exception('Product with ID "' . htmlspecialchars($productId) . '" not found in database');
     }
 
-    // If product had an image, try to delete it from file system
-    if (isset($product['image_path']) && !empty($product['image_path'])) {
-        $imagePath = '../' . $product['image_path'];
-        if (file_exists($imagePath)) {
-            unlink($imagePath);
-        }
+    // Attempt to delete the product using the MongoInventory class
+    $deleteResult = $mongoInventory->deleteProduct($productId);
+    
+    if ($deleteResult['success']) {
+        $response = [
+            'success' => true,
+            'message' => 'Product deleted successfully',
+            'deleted_id' => $productId,
+            'product_name' => $existingProduct['product']['product_name'] ?? 'Unknown Product'
+        ];
+    } else {
+        throw new Exception($deleteResult['message'] ?? 'Failed to delete product from database');
     }
 
-    // Return success response
-    $response = [
-        'success' => true,
-        'message' => 'Product deleted successfully',
-        'deleted_id' => $productId
-    ];
-
-    // Clean output buffer and send JSON response
-    ob_clean();
-    echo json_encode($response);
-    ob_end_flush();
-
-} catch (Exception $e) {
-    // Handle errors
+} catch (Exception $error) {
     $response = [
         'success' => false,
-        'error' => $e->getMessage()
+        'error' => $error->getMessage(),
+        'type' => 'error'
     ];
-
-    // Clean output buffer and send error response
-    ob_clean();
-    echo json_encode($response);
-    ob_end_flush();
 }
+
+// Clear output buffer and send clean JSON response
+ob_end_clean();
+echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+exit();
 ?>

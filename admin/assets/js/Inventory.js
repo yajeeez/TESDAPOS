@@ -12,34 +12,19 @@ function showConfirmationModal(title, message, confirmCallback, isDelete = false
   console.log('showConfirmationModal called:', { title, message, isDelete });
   
   const modal = document.getElementById('confirmationModal');
-  const modalTitle = document.getElementById('modalTitle');
   const modalMessage = document.getElementById('modalMessage');
   const confirmBtn = document.getElementById('modalConfirm');
   
-  if (!modal || !modalTitle || !modalMessage || !confirmBtn) {
-    console.error('Modal elements not found:', {
-      modal: !!modal,
-      modalTitle: !!modalTitle,
-      modalMessage: !!modalMessage,
-      confirmBtn: !!confirmBtn
-    });
+  if (!modal || !modalMessage || !confirmBtn) {
+    console.error('Modal elements not found');
     return;
   }
   
-  modalTitle.textContent = title;
+  // Set the message
   modalMessage.textContent = message;
   modal.style.display = 'block';
   
   console.log('Modal should now be visible');
-  
-  // Style button based on action type
-  if (isDelete) {
-    confirmBtn.className = 'btn btn-danger';
-    confirmBtn.innerHTML = '<i class="fas fa-trash"></i> Delete';
-  } else {
-    confirmBtn.className = 'btn btn-primary';
-    confirmBtn.innerHTML = '<i class="fas fa-check"></i> Confirm';
-  }
   
   // Remove any existing event listeners
   const newConfirmBtn = confirmBtn.cloneNode(true);
@@ -339,8 +324,8 @@ function deleteProduct(id) {
   
   // Show confirmation modal
   showConfirmationModal(
-    'Confirm Product Deletion',
-    `Are you sure you want to delete "${product.name}"? This action cannot be undone.`,
+    'Delete Product',
+    `Are you sure you want to delete "${product.name}"?`,
     () => performDelete(id),
     true // isDelete flag
   );
@@ -354,6 +339,9 @@ window.deleteProduct = deleteProduct;
 // ==========================
 async function performDelete(id) {
   try {
+    console.log('=== DELETE OPERATION STARTED ===');
+    console.log('Product ID to delete:', id);
+    
     const formData = new FormData();
     formData.append('productId', id);
     
@@ -362,22 +350,37 @@ async function performDelete(id) {
       body: formData
     });
     
+    console.log('Delete response status:', response.status);
+    
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     
-    const result = await response.json();
+    const responseText = await response.text();
+    console.log('Raw delete response:', responseText);
+    
+    let result;
+    try {
+      result = JSON.parse(responseText);
+    } catch (parseError) {
+      console.error('JSON parse error:', parseError);
+      console.error('Response text:', responseText);
+      throw new Error('Server returned invalid JSON. Check console for details.');
+    }
+    
+    console.log('Parsed delete result:', result);
     
     if (result.success) {
-      // Remove from local arrays
+      // Remove from local arrays immediately for better UX
       products = products.filter(p => p.id !== id);
       inventoryItems = inventoryItems.filter(i => i.id !== id);
       
-      // Re-render inventory
-      renderInventory();
+      // Re-render inventory to reflect changes
+      await renderInventory();
       
       // Show success message
       showToast('Product deleted successfully!', 'success');
+      console.log('Product deleted successfully:', result.deleted_id);
     } else {
       throw new Error(result.error || 'Failed to delete product');
     }
@@ -386,6 +389,8 @@ async function performDelete(id) {
     console.error('Error deleting product:', error);
     showToast('Error deleting product: ' + error.message, 'error');
   }
+  
+  console.log('=== DELETE OPERATION COMPLETED ===');
 }
 
 // ==========================
