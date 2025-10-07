@@ -17,14 +17,14 @@
     </div>
     <nav>
       <div class="cart-container">
-        <button class="cart-btn" onclick="toggleCart()">
+        <button class="cart-btn" onclick="event.stopPropagation(); toggleCart()">
           <i class="fas fa-shopping-cart"></i>
           <span class="cart-count" id="cartCount">0</span>
         </button>
-        <div class="cart-dropdown" id="cartDropdown">
+        <div class="cart-dropdown" id="cartDropdown" onclick="event.stopPropagation()">
           <div class="cart-header">
             <h3>Shopping Cart</h3>
-            <button class="close-cart" onclick="toggleCart()">
+            <button class="close-cart" onclick="event.stopPropagation(); toggleCart()">
               <i class="fas fa-times"></i>
             </button>
           </div>
@@ -35,7 +35,7 @@
             <div class="cart-total">
               <strong>Total: ₱<span id="cartTotal">0.00</span></strong>
             </div>
-            <button class="checkout-btn">Checkout</button>
+            <button class="checkout-btn" onclick="event.stopPropagation()">Checkout</button>
           </div>
         </div>
       </div>
@@ -45,8 +45,21 @@
 
   <!-- Order Section -->
   <section class="order-section">
-    <h1>Choose Your Meal</h1>
-    <p class="subtext">Select from our delicious food, refreshing beverages, and tasty snacks.</p>
+    <!-- Category Filters -->
+    <div class="category-filters">
+      <button class="filter-btn active" onclick="filterProducts('All')">
+        <i class="fas fa-th"></i> All
+      </button>
+      <button class="filter-btn" onclick="filterProducts('Food')">
+        <i class="fas fa-utensils"></i> Food
+      </button>
+      <button class="filter-btn" onclick="filterProducts('Beverage')">
+        <i class="fas fa-coffee"></i> Beverage
+      </button>
+      <button class="filter-btn" onclick="filterProducts('Snacks')">
+        <i class="fas fa-cookie-bite"></i> Snacks
+      </button>
+    </div>
 
     <div class="card-grid">
       <!-- Products will be loaded dynamically here -->

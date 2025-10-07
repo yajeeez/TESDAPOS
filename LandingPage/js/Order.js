@@ -113,8 +113,12 @@ async function fetchProducts() {
     }
 }
 
+// Store all products globally for filtering
+let allProducts = [];
+let currentFilter = 'All';
+
 // Function to display products in the card grid
-function displayProducts(products) {
+function displayProducts(products, filterCategory = 'All') {
     const cardGrid = document.querySelector('.card-grid');
     
     if (!products) {
@@ -127,22 +131,34 @@ function displayProducts(products) {
         return;
     }
     
-    if (products.length === 0) {
-        cardGrid.innerHTML = '<p class="empty-message">No products available at the moment.</p>';
+    // Store all products for filtering
+    allProducts = products;
+    
+    // Filter products based on category
+    let filteredProducts = products;
+    if (filterCategory !== 'All') {
+        filteredProducts = products.filter(product => 
+            product.category && product.category.toLowerCase() === filterCategory.toLowerCase()
+        );
+    }
+    
+    if (filteredProducts.length === 0) {
+        cardGrid.innerHTML = '<p class="empty-message">No products available in this category.</p>';
         return;
     }
     
-    console.log('Creating product cards for', products.length, 'products');
+    console.log('Creating product cards for', filteredProducts.length, 'products');
     
     // Clear the grid
     cardGrid.innerHTML = '';
     
     // Create a card for each product
-    products.forEach((product, index) => {
+    filteredProducts.forEach((product, index) => {
         console.log('Creating card for product', index, ':', product.product_name);
         
         const card = document.createElement('div');
         card.className = 'order-card';
+        card.setAttribute('data-category', product.category || 'others');
         
         // Construct image path - if no image, use a placeholder
         let imagePath = '../img/TESDALOGO.png'; // Default placeholder
@@ -152,20 +168,51 @@ function displayProducts(products) {
             console.log('Product image path:', imagePath);
         }
         
+        // Determine stock status
+        const quantity = parseInt(product.stock_quantity) || 0;
+        let stockBadge = '';
+        let stockClass = '';
+        let isDisabled = '';
+        
+        if (quantity === 0) {
+            stockBadge = '<div class="stock-badge out-of-stock"><i class="fas fa-times-circle"></i> Out of Stock</div>';
+            isDisabled = 'disabled';
+        } else if (quantity <= 5) {
+            stockBadge = `<div class="stock-badge low-stock"><i class="fas fa-exclamation-triangle"></i> ${quantity} left</div>`;
+        } else {
+            stockBadge = `<div class="stock-badge"><i class="fas fa-check-circle"></i> ${quantity} in stock</div>`;
+        }
+        
         card.innerHTML = `
             <img src="${imagePath}" alt="${product.product_name}" class="order-img" onerror="this.src='../img/TESDALOGO.png'; console.log('Image load error for product:', '${product.product_name}');">
             <h2>${product.product_name}</h2>
             <p>Category: ${product.category}</p>
+            ${stockBadge}
             <span class="price">₱${parseFloat(product.price).toFixed(2)}</span>
-            <button class="add-btn" onclick="addToCart('${product.id}', '${product.product_name}', ${product.price})">
-                Add to Cart
+            <button class="add-btn" ${isDisabled} onclick="addToCart('${product.id}', '${product.product_name}', ${product.price})">
+                ${quantity === 0 ? 'Out of Stock' : 'Add to Cart'}
             </button>
         `;
         
         cardGrid.appendChild(card);
     });
     
-    console.log('Finished creating', products.length, 'product cards');
+    console.log('Finished creating', filteredProducts.length, 'product cards');
+}
+
+// Function to filter products by category
+function filterProducts(category) {
+    console.log('Filtering by category:', category);
+    currentFilter = category;
+    
+    // Update active button
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    event.target.closest('.filter-btn').classList.add('active');
+    
+    // Re-display products with filter
+    displayProducts(allProducts, category);
 }
 
 // Cart functionality
@@ -231,7 +278,7 @@ function updateCartDisplay() {
     const cartTotal = document.getElementById('cartTotal');
     
     if (cart.length === 0) {
-        cartItems.innerHTML = '<div class="empty-cart">Your cart is empty</div>';
+        cartItems.innerHTML = '<div class="empty-cart" onclick="event.stopPropagation()">Your cart is empty</div>';
         cartFooter.style.display = 'none';
         return;
     }
@@ -245,16 +292,16 @@ function updateCartDisplay() {
     
     // Render cart items
     cartItems.innerHTML = cart.map(item => `
-        <div class="cart-item">
+        <div class="cart-item" onclick="event.stopPropagation()">
             <div class="cart-item-info">
                 <div class="cart-item-name">${item.name}</div>
                 <div class="cart-item-price">₱${item.price.toFixed(2)}</div>
             </div>
             <div class="cart-item-controls">
-                <button class="quantity-btn" onclick="updateQuantity('${item.id}', -1)">-</button>
+                <button class="quantity-btn" onclick="event.stopPropagation(); updateQuantity('${item.id}', -1)">-</button>
                 <span class="quantity">${item.quantity}</span>
-                <button class="quantity-btn" onclick="updateQuantity('${item.id}', 1)">+</button>
-                <button class="remove-item" onclick="removeFromCart('${item.id}')">Remove</button>
+                <button class="quantity-btn" onclick="event.stopPropagation(); updateQuantity('${item.id}', 1)">+</button>
+                <button class="remove-item" onclick="event.stopPropagation(); removeFromCart('${item.id}')">Remove</button>
             </div>
         </div>
     `).join('');
