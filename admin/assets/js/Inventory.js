@@ -241,16 +241,6 @@ async function renderInventory(forceRefresh = false) {
       <div class="card-body">
         <h4>${item.name}</h4>
         
-        <div class="product-info">
-          <div class="info-item">
-            <i class="fas fa-tag"></i>
-            <span>${item.category.charAt(0).toUpperCase() + item.category.slice(1)}</span>
-          </div>
-          <div class="info-item">
-            <i class="fas fa-cube"></i>
-            <span>Product</span>
-          </div>
-        </div>
         
         <div class="price-display">
           <div class="price-label">Price</div>

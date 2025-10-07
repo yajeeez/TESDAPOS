@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Database Connection</title>
+</head>
+<body>
+    <h1>Testing Database Connection</h1>
+    <button onclick="testDB()">Test Database Connection</button>
+    <div id="result"></div>
+
+    <script>
+        async function testDB() {
+            try {
+                document.getElementById('result').innerHTML = '<p>Testing database connection...</p>';
+                
+                // First test the general MongoDB connection
+                const testResponse = await fetch('../connection/test_mongo.php');
+                const testData = await testResponse.json();
+                
+                document.getElementById('result').innerHTML += '<p>MongoDB Connection: ' + (testData.success ? 'SUCCESS' : 'FAILED') + '</p>';
+                if (!testData.success) {
+                    document.getElementById('result').innerHTML += '<p>Error: ' + testData.message + '</p>';
+                    return;
+                }
+                
+                // Then test the products fetch
+                const productsResponse = await fetch('../connection/fetch_products.php');
+                const productsData = await productsResponse.json();
+                
+                document.getElementById('result').innerHTML += '<p>Products Fetch: ' + (productsData.success ? 'SUCCESS' : 'FAILED') + '</p>';
+                if (productsData.success) {
+                    document.getElementById('result').innerHTML += '<p>Products Count: ' + productsData.count + '</p>';
+                } else {
+                    document.getElementById('result').innerHTML += '<p>Error: ' + productsData.message + '</p>';
+                }
+            } catch (error) {
+                document.getElementById('result').innerHTML += '<p style="color: red;">Error: ' + error.message + '</p>';
+                console.error('Error details:', error);
+            }
+        }
+    </script>
+</body>
+</body>
+</html>

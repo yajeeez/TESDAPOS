@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Endpoint</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-result { margin: 10px 0; padding: 10px; border-radius: 5px; }
+        .success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+    </style>
+</head>
+<body>
+    <h1>Testing fetch_products.php endpoint</h1>
+    <button onclick="testEndpoint()">Test Endpoint</button>
+    <button onclick="testRelativePath()">Test Relative Path</button>
+    <div id="result"></div>
+
+    <script>
+        async function testEndpoint() {
+            try {
+                document.getElementById('result').innerHTML = '<p>Testing endpoint...</p>';
+                
+                const response = await fetch('../connection/fetch_products.php');
+                
+                document.getElementById('result').innerHTML += '<p>Response status: ' + response.status + '</p>';
+                document.getElementById('result').innerHTML += '<p>Response OK: ' + response.ok + '</p>';
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                document.getElementById('result').innerHTML += '<div class="test-result success"><pre>' + JSON.stringify(data, null, 2) + '</pre></div>';
+            } catch (error) {
+                document.getElementById('result').innerHTML += '<div class="test-result error"><p>Error: ' + error.message + '</p></div>';
+                console.error('Error details:', error);
+            }
+        }
+        
+        async function testRelativePath() {
+            try {
+                document.getElementById('result').innerHTML = '<p>Testing relative path construction...</p>';
+                
+                // Test the actual path that would be used
+                const path = '../connection/fetch_products.php';
+                document.getElementById('result').innerHTML += '<p>Path being used: ' + path + '</p>';
+                
+                // Try to fetch
+                const response = await fetch(path);
+                document.getElementById('result').innerHTML += '<p>Response status: ' + response.status + '</p>';
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById('result').innerHTML += '<div class="test-result success"><pre>' + JSON.stringify(data, null, 2) + '</pre></div>';
+                } else {
+                    document.getElementById('result').innerHTML += '<div class="test-result error"><p>Response not OK. Status: ' + response.status + '</p></div>';
+                }
+            } catch (error) {
+                document.getElementById('result').innerHTML += '<div class="test-result error"><p>Error: ' + error.message + '</p></div>';
+                console.error('Error details:', error);
+            }
+        }
+    </script>
+</body>
+</html>

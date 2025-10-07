@@ -158,7 +158,6 @@ body {
   display: flex;
   align-items: center;
   gap: 1rem;
-  margin-bottom: 2rem;
   padding: 1.5rem;
   background: linear-gradient(145deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.95) 100%);
   backdrop-filter: blur(20px);
@@ -250,10 +249,10 @@ body {
 
 #inventoryList {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 2rem;
-  margin-top: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 220px));
+  gap: 1rem;
   padding: 0.5rem;
+  justify-content: center;
 }
 
 /* Modern Inventory Card with Glassmorphism */
@@ -313,8 +312,9 @@ body {
 
 .inventory-card img {
   width: 100%;
-  height: 200px;
-  object-fit: cover;
+  height: 160px;
+  object-fit: contain;
+  object-position: center;
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   filter: brightness(1.1) contrast(1.05);
   background: linear-gradient(145deg, #f8fafc 0%, #e2e8f0 100%);
@@ -370,13 +370,13 @@ body {
 /* Badge Overlay for Category */
 .category-badge {
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: 8px;
+  right: 8px;
   background: linear-gradient(135deg, rgba(0, 74, 173, 0.9) 0%, rgba(0, 43, 128, 0.9) 100%);
   color: white;
-  padding: 0.4rem 0.8rem;
-  border-radius: 12px;
-  font-size: 0.75rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 8px;
+  font-size: 0.65rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -389,10 +389,10 @@ body {
 /* Stock Status Indicator */
 .stock-indicator {
   position: absolute;
-  top: 12px;
-  left: 12px;
-  width: 12px;
-  height: 12px;
+  top: 8px;
+  left: 8px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   border: 2px solid white;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
@@ -414,10 +414,10 @@ body {
 
 /* Card Body with Enhanced Typography */
 .inventory-card .card-body {
-  padding: 1.5rem;
+  padding: 0.75rem;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.4rem;
   flex: 1;
   background: linear-gradient(145deg, rgba(255, 255, 255, 0.6) 0%, rgba(248, 250, 252, 0.8) 100%);
   backdrop-filter: blur(10px);
@@ -438,11 +438,11 @@ body {
 }
 
 .inventory-card h4 {
-  font-size: 1.25rem;
+  font-size: 0.9rem;
   font-weight: 700;
   margin: 0;
   color: #1f2937;
-  line-height: 1.3;
+  line-height: 1.2;
   letter-spacing: -0.025em;
   background: linear-gradient(135deg, var(--tesda-blue) 0%, var(--tesda-dark-blue) 100%);
   -webkit-background-clip: text;
@@ -450,51 +450,15 @@ body {
   background-clip: text;
 }
 
-/* Product Info Grid */
-.product-info {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.5rem;
-  margin: 0.5rem 0;
-}
-
-.info-item {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 0.75rem;
-  background: rgba(248, 250, 252, 0.8);
-  border-radius: 10px;
-  border: 1px solid rgba(226, 232, 240, 0.6);
-  transition: all 0.3s ease;
-}
-
-.info-item:hover {
-  background: rgba(241, 245, 249, 0.9);
-  transform: translateY(-1px);
-}
-
-.info-item i {
-  color: var(--tesda-blue);
-  font-size: 0.85rem;
-  width: 16px;
-  text-align: center;
-}
-
-.info-item span {
-  font-size: 0.875rem;
-  color: #4b5563;
-  font-weight: 500;
-}
 
 /* Price Display with Emphasis */
 .price-display {
   background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
   border: 1px solid #86efac;
-  border-radius: 12px;
-  padding: 0.75rem;
+  border-radius: 8px;
+  padding: 0.4rem;
   text-align: center;
-  margin: 0.5rem 0;
+  margin: 0.3rem 0;
   position: relative;
   overflow: hidden;
 }
@@ -515,16 +479,16 @@ body {
 }
 
 .price-label {
-  font-size: 0.75rem;
+  font-size: 0.6rem;
   font-weight: 600;
   color: #065f46;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.15rem;
 }
 
 .price-value {
-  font-size: 1.5rem;
+  font-size: 1.1rem;
   font-weight: 800;
   color: #059669;
   line-height: 1;
@@ -538,9 +502,9 @@ body {
   justify-content: space-between;
   background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
   border: 1px solid #7dd3fc;
-  border-radius: 10px;
-  padding: 0.6rem 0.8rem;
-  margin: 0.5rem 0;
+  border-radius: 6px;
+  padding: 0.4rem 0.5rem;
+  margin: 0.3rem 0;
 }
 
 .stock-info {
@@ -555,7 +519,7 @@ body {
 }
 
 .stock-text {
-  font-size: 0.875rem;
+  font-size: 0.7rem;
   color: #0c4a6e;
   font-weight: 600;
 }
@@ -563,11 +527,11 @@ body {
 .stock-number {
   background: linear-gradient(135deg, var(--tesda-blue) 0%, var(--tesda-dark-blue) 100%);
   color: white;
-  padding: 0.25rem 0.6rem;
-  border-radius: 8px;
-  font-size: 0.8rem;
+  padding: 0.15rem 0.4rem;
+  border-radius: 5px;
+  font-size: 0.7rem;
   font-weight: 700;
-  min-width: 40px;
+  min-width: 30px;
   text-align: center;
   box-shadow: 0 2px 8px rgba(0, 74, 173, 0.3);
 }
@@ -576,24 +540,24 @@ body {
 .inventory-card .actions {
   margin-top: auto;
   display: flex;
-  gap: 0.75rem;
-  padding-top: 1rem;
+  gap: 0.4rem;
+  padding-top: 0.6rem;
   border-top: 1px solid rgba(226, 232, 240, 0.4);
 }
 
 .inventory-card .actions button {
   flex: 1;
-  padding: 0.875rem 1rem;
+  padding: 0.5rem 0.6rem;
   border: none;
-  border-radius: 14px;
-  font-size: 0.875rem;
+  border-radius: 8px;
+  font-size: 0.7rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 0.3rem;
   position: relative;
   overflow: hidden;
   text-transform: uppercase;
@@ -1410,8 +1374,8 @@ input[type="file"]:hover {
 /* === Responsive Design === */
 @media (max-width: 1200px) {
   #inventoryList {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 200px));
+    gap: 0.8rem;
   }
 }
 
@@ -1451,9 +1415,6 @@ input[type="file"]:hover {
     padding: 0.75rem;
   }
   
-  .product-info {
-    grid-template-columns: 1fr;
-  }
 }
 
 @media (max-width: 480px) {

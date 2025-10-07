@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Debug Order - TESDA POS</title>
+  <link rel="stylesheet" href="css/Order.css"/>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+  <style>
+    .debug-info {
+      background-color: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 4px;
+      padding: 15px;
+      margin: 20px 0;
+    }
+    .debug-info h3 {
+      margin-top: 0;
+      color: #495057;
+    }
+    .log-entry {
+      font-family: monospace;
+      font-size: 12px;
+      background-color: #e9ecef;
+      padding: 5px;
+      margin: 5px 0;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="logo">
+      <img src="../img/TESDALOGO.png" alt="Logo" class="logo-img"/>
+      <span>TESDA POS SYSTEM</span>
+    </div>
+    <nav>
+      <a href="LandingPage.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back</a>
+    </nav>
+  </header>
+
+  <!-- Debug Info -->
+  <div class="debug-info">
+    <h3>Debug Information</h3>
+    <div id="debug-log"></div>
+  </div>
+
+  <!-- Order Section -->
+  <section class="order-section">
+    <h1>Choose Your Meal</h1>
+    <p class="subtext">Select from our delicious food, refreshing beverages, and tasty snacks.</p>
+
+    <div class="card-grid">
+      <!-- Products will be loaded dynamically here -->
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 TESDA POS Food Ordering System | All Rights Reserved</p>
+  </footer>
+
+  <script>
+    // Debug logging function
+    function logDebug(message) {
+      const logDiv = document.getElementById('debug-log');
+      const entry = document.createElement('div');
+      entry.className = 'log-entry';
+      entry.textContent = new Date().toLocaleTimeString() + ': ' + message;
+      logDiv.appendChild(entry);
+      logDiv.scrollTop = logDiv.scrollHeight;
+    }
+    
+    // Function to fetch products from the database
+    async function fetchProducts() {
+      try {
+        logDebug('Fetching products from database...');
+        
+        // Try multiple endpoints with absolute paths
+        const urls = [
+          '/admin/fetch_products.php',
+          '/connection/fetch_products.php',
+          '../admin/fetch_products.php',
+          '../connection/fetch_products.php'
+        ];
+        
+        let response = null;
+        let urlUsed = null;
+        
+        // Try each URL until one works
+        for (const url of urls) {
+          try {
+            logDebug('Trying URL: ' + url);
+            const testResponse = await fetch(url, { method: 'HEAD', mode: 'cors' });
+            logDebug('HEAD request status for ' + url + ': ' + testResponse.status);
+            if (testResponse.ok) {
+              response = await fetch(url, { mode: 'cors' });
+              urlUsed = url;
+              logDebug('Successfully fetched from: ' + url);
+              break;
+            } else {
+              logDebug('HEAD request failed for ' + url + ' with status: ' + testResponse.status);
+            }
+          } catch (e) {
+            logDebug('URL not accessible: ' + url + ' Error: ' + e.message);
+          }
+        }
+        
+        if (!response) {
+          throw new Error('Could not access any product endpoint. Tried: ' + urls.join(', '));
+        }
+        
+        logDebug('Using URL: ' + urlUsed);
+        logDebug('Response status: ' + response.status);
+        logDebug('Response OK: ' + response.ok);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const contentType = response.headers.get('content-type');
+        logDebug('Content-Type: ' + contentType);
+        
+        const responseText = await response.text();
+        logDebug('Raw response text length: ' + responseText.length);
+        logDebug('Raw response text (first 200 chars): ' + responseText.substring(0, 200));
+        
+        // Try to parse JSON
+        let data;
+        try {
+          data = JSON.parse(responseText);
+          logDebug('Parsed data successfully');
+        } catch (parseError) {
+          logDebug('JSON parse error: ' + parseError.message);
+          logDebug('Raw response was: ' + responseText);
+          throw new Error('Invalid JSON response from server: ' + parseError.message);
+        }
+        
+        if (data.success) {
+          logDebug('Displaying ' + data.products.length + ' products');
+          displayProducts(data.products);
+        } else {
+          logDebug('Failed to fetch products: ' + data.message);
+          document.querySelector('.card-grid').innerHTML = '<p class="error-message">Failed to load products: ' + data.message + '</p>';
+        }
+      } catch (error) {
+        logDebug('Error fetching products: ' + error.message);
+        logDebug('Error stack: ' + error.stack);
+        document.querySelector('.card-grid').innerHTML = '<p class="error-message">Error loading products: ' + error.message + '</p>';
+      }
+    }
+
+    // Function to display products in the card grid
+    function displayProducts(products) {
+      const cardGrid = document.querySelector('.card-grid');
+      
+      if (!products) {
+        cardGrid.innerHTML = '<p class="error-message">No products data received.</p>';
+        return;
+      }
+      
+      if (!Array.isArray(products)) {
+        cardGrid.innerHTML = '<p class="error-message">Invalid products data format. Expected array, got: ' + typeof products + '</p>';
+        return;
+      }
+      
+      if (products.length === 0) {
+        cardGrid.innerHTML = '<p class="empty-message">No products available at the moment.</p>';
+        return;
+      }
+      
+      logDebug('Creating product cards for ' + products.length + ' products');
+      
+      // Clear the grid
+      cardGrid.innerHTML = '';
+      
+      // Create a card for each product
+      products.forEach((product, index) => {
+        logDebug('Creating card for product ' + index + ': ' + product.product_name);
+        
+        const card = document.createElement('div');
+        card.className = 'order-card';
+        
+        // Construct image path - if no image, use a placeholder
+        let imagePath = '../img/TESDALOGO.png'; // Default placeholder
+        if (product.image_path && product.image_path.trim() !== '') {
+          // Construct the correct relative path from LandingPage
+          imagePath = `../${product.image_path.replace(/^\/+/, '')}`;
+          logDebug('Product image path: ' + imagePath);
+        }
+        
+        card.innerHTML = `
+          <img src="${imagePath}" alt="${product.product_name}" class="order-img" onerror="this.src='../img/TESDALOGO.png'; console.log('Image load error for product:', '${product.product_name}');">
+          <h2>${product.product_name}</h2>
+          <p>Category: ${product.category}</p>
+          <span class="price">₱${parseFloat(product.price).toFixed(2)}</span>
+          <button class="add-btn" onclick="addToCart('${product.id}', '${product.product_name}', ${product.price})">
+            Add to Cart
+          </button>
+        `;
+        
+        cardGrid.appendChild(card);
+      });
+      
+      logDebug('Finished creating ' + products.length + ' product cards');
+    }
+
+    // Function to add product to cart (placeholder implementation)
+    function addToCart(productId, productName, price) {
+      alert(`Added to cart: ${productName} - ₱${price.toFixed(2)}`);
+      // In a real implementation, you would add the product to a cart array or send to backend
+    }
+
+    // Initialize the page when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      logDebug('Debug Order page loaded, fetching products...');
+      fetchProducts();
+    });
+  </script>
+</body>
+</html>

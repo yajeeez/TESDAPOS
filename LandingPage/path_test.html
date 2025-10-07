@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Path Test</title>
+</head>
+<body>
+    <h1>Testing Paths</h1>
+    <p>Current location: <span id="location"></span></p>
+    <p>Testing relative paths from this location:</p>
+    
+    <button onclick="testPath('../admin/fetch_products.php')">Test ../admin/fetch_products.php</button>
+    <button onclick="testPath('../connection/fetch_products.php')">Test ../connection/fetch_products.php</button>
+    <button onclick="testPath('/admin/fetch_products.php')">Test /admin/fetch_products.php</button>
+    <button onclick="testPath('/connection/fetch_products.php')">Test /connection/fetch_products.php</button>
+    
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('location').textContent = window.location.href;
+        
+        async function testPath(path) {
+            try {
+                document.getElementById('result').innerHTML = '<p>Testing: ' + path + '</p>';
+                const response = await fetch(path);
+                document.getElementById('result').innerHTML += '<p>Status: ' + response.status + '</p>';
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById('result').innerHTML += '<p>Success: ' + data.success + '</p>';
+                    document.getElementById('result').innerHTML += '<p>Count: ' + (data.count || 0) + '</p>';
+                } else {
+                    document.getElementById('result').innerHTML += '<p>Error: ' + response.statusText + '</p>';
+                }
+            } catch (error) {
+                document.getElementById('result').innerHTML += '<p style="color: red;">Exception: ' + error.message + '</p>';
+            }
+        }
+    </script>
+</body>
+</html>

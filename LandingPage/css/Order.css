@@ -155,6 +155,50 @@ header {
   transform: scale(1.07);
 }
 
+/* Error Messages */
+.error-container {
+  background: #fff3cd;
+  border: 2px solid #ffc107;
+  border-radius: 12px;
+  padding: 2rem;
+  margin: 2rem auto;
+  max-width: 600px;
+  text-align: center;
+}
+
+.error-message {
+  color: #856404;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.error-details {
+  color: #664d03;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+.error-hint {
+  color: #666;
+  font-size: 0.9rem;
+  font-style: italic;
+  margin-top: 1rem;
+}
+
+.empty-message {
+  background: #e7f3ff;
+  border: 2px solid var(--tesda-blue);
+  border-radius: 12px;
+  padding: 2rem;
+  margin: 2rem auto;
+  max-width: 600px;
+  text-align: center;
+  color: var(--tesda-dark);
+  font-size: 1.1rem;
+}
+
 /* Footer */
 footer {
   text-align: center;
