@@ -137,9 +137,17 @@ function displayProducts(products, filterCategory = 'All') {
     // Filter products based on category
     let filteredProducts = products;
     if (filterCategory !== 'All') {
-        filteredProducts = products.filter(product => 
-            product.category && product.category.toLowerCase() === filterCategory.toLowerCase()
-        );
+        filteredProducts = products.filter(product => {
+            if (!product.category) return false;
+            
+            const productCategory = product.category.toLowerCase();
+            const searchCategory = filterCategory.toLowerCase();
+            
+            // Handle both singular and plural forms (e.g., "Snack" and "Snacks")
+            return productCategory === searchCategory || 
+                   productCategory === searchCategory.replace(/s$/, '') ||
+                   productCategory + 's' === searchCategory;
+        });
     }
     
     if (filteredProducts.length === 0) {
