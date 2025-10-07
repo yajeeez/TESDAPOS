@@ -16,6 +16,29 @@
       <span>TESDA POS SYSTEM</span>
     </div>
     <nav>
+      <div class="cart-container">
+        <button class="cart-btn" onclick="toggleCart()">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+        <div class="cart-dropdown" id="cartDropdown">
+          <div class="cart-header">
+            <h3>Shopping Cart</h3>
+            <button class="close-cart" onclick="toggleCart()">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="cart-items" id="cartItems">
+            <div class="empty-cart">Your cart is empty</div>
+          </div>
+          <div class="cart-footer" id="cartFooter" style="display: none;">
+            <div class="cart-total">
+              <strong>Total: ₱<span id="cartTotal">0.00</span></strong>
+            </div>
+            <button class="checkout-btn">Checkout</button>
+          </div>
+        </div>
+      </div>
       <a href="LandingPage.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back</a>
     </nav>
   </header>

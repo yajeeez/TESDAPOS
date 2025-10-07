@@ -168,11 +168,165 @@ function displayProducts(products) {
     console.log('Finished creating', products.length, 'product cards');
 }
 
-// Function to add product to cart (placeholder implementation)
-function addToCart(productId, productName, price) {
-    alert(`Added to cart: ${productName} - ₱${price.toFixed(2)}`);
-    // In a real implementation, you would add the product to a cart array or send to backend
+// Cart functionality
+let cart = [];
+let cartOpen = false;
+
+// Function to toggle cart dropdown
+function toggleCart() {
+    const cartDropdown = document.getElementById('cartDropdown');
+    cartOpen = !cartOpen;
+    
+    if (cartOpen) {
+        cartDropdown.classList.add('active');
+        updateCartDisplay();
+    } else {
+        cartDropdown.classList.remove('active');
+    }
 }
+
+// Function to add product to cart
+function addToCart(productId, productName, price) {
+    // Check if product already exists in cart
+    const existingItem = cart.find(item => item.id === productId);
+    
+    if (existingItem) {
+        // Increase quantity if item already exists
+        existingItem.quantity += 1;
+    } else {
+        // Add new item to cart
+        cart.push({
+            id: productId,
+            name: productName,
+            price: parseFloat(price),
+            quantity: 1
+        });
+    }
+    
+    // Update cart count and display
+    updateCartCount();
+    updateCartDisplay();
+    
+    // Show success message
+    showCartMessage(`${productName} added to cart!`);
+}
+
+// Function to update cart count badge
+function updateCartCount() {
+    const cartCount = document.getElementById('cartCount');
+    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+    cartCount.textContent = totalItems;
+    
+    // Add bounce animation
+    cartCount.style.animation = 'none';
+    setTimeout(() => {
+        cartCount.style.animation = 'bounce 0.3s ease';
+    }, 10);
+}
+
+// Function to update cart display
+function updateCartDisplay() {
+    const cartItems = document.getElementById('cartItems');
+    const cartFooter = document.getElementById('cartFooter');
+    const cartTotal = document.getElementById('cartTotal');
+    
+    if (cart.length === 0) {
+        cartItems.innerHTML = '<div class="empty-cart">Your cart is empty</div>';
+        cartFooter.style.display = 'none';
+        return;
+    }
+    
+    // Show footer when cart has items
+    cartFooter.style.display = 'block';
+    
+    // Calculate total
+    const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    cartTotal.textContent = total.toFixed(2);
+    
+    // Render cart items
+    cartItems.innerHTML = cart.map(item => `
+        <div class="cart-item">
+            <div class="cart-item-info">
+                <div class="cart-item-name">${item.name}</div>
+                <div class="cart-item-price">₱${item.price.toFixed(2)}</div>
+            </div>
+            <div class="cart-item-controls">
+                <button class="quantity-btn" onclick="updateQuantity('${item.id}', -1)">-</button>
+                <span class="quantity">${item.quantity}</span>
+                <button class="quantity-btn" onclick="updateQuantity('${item.id}', 1)">+</button>
+                <button class="remove-item" onclick="removeFromCart('${item.id}')">Remove</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+// Function to update item quantity
+function updateQuantity(productId, change) {
+    const item = cart.find(item => item.id === productId);
+    if (!item) return;
+    
+    item.quantity += change;
+    
+    if (item.quantity <= 0) {
+        removeFromCart(productId);
+    } else {
+        updateCartCount();
+        updateCartDisplay();
+    }
+}
+
+// Function to remove item from cart
+function removeFromCart(productId) {
+    cart = cart.filter(item => item.id !== productId);
+    updateCartCount();
+    updateCartDisplay();
+}
+
+// Function to show cart message
+function showCartMessage(message) {
+    // Create temporary message element
+    const messageEl = document.createElement('div');
+    messageEl.style.cssText = `
+        position: fixed;
+        top: 100px;
+        right: 20px;
+        background: var(--tesda-blue);
+        color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        z-index: 10000;
+        font-weight: 600;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+    `;
+    messageEl.textContent = message;
+    
+    document.body.appendChild(messageEl);
+    
+    // Animate in
+    setTimeout(() => {
+        messageEl.style.transform = 'translateX(0)';
+    }, 100);
+    
+    // Remove after 3 seconds
+    setTimeout(() => {
+        messageEl.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+            document.body.removeChild(messageEl);
+        }, 300);
+    }, 3000);
+}
+
+// Close cart when clicking outside
+document.addEventListener('click', function(event) {
+    const cartContainer = document.querySelector('.cart-container');
+    const cartDropdown = document.getElementById('cartDropdown');
+    
+    if (cartOpen && !cartContainer.contains(event.target)) {
+        toggleCart();
+    }
+});
 
 // Initialize the page when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
