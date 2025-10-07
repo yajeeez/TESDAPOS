@@ -88,7 +88,7 @@ header.header-hidden {
   height: 100%;
   background: 
     rgba(0, 0, 0, 0.245)  /* overlay color */
-    url("/../img/ECABG.jpg") center center/cover no-repeat;
+    url("../../img/ECABG.jpg") center center/cover no-repeat;
   background-blend-mode: darken; /* or overlay, multiply, soft-light */
   filter: blur(6px);
   transform: scale(1.1);
