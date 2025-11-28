@@ -31,6 +31,7 @@ session_start();
         <li><a href="CreateProducts.php" class="active"><i class="fas fa-cart-plus"></i><span>Create Products</span></a></li>
         <li><a href="Inventory.php"><i class="fas fa-boxes"></i><span>Inventory</span></a></li>
         <li><a href="Transactions.php"><i class="fas fa-cash-register"></i><span>Transactions</span></a></li>
+        <li><a href="SalesReport.php"><i class="fas fa-chart-line"></i><span>Sales Report</span></a></li>
         <li><a href="Maintenance.php"><i class="fas fa-tools"></i><span>Maintenance</span></a></li>
         <li><a href="#" onclick="logout(event)"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></li>
       </ul>

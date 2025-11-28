@@ -15,6 +15,8 @@ session_start();
   <link rel="stylesheet" href="../assets/css/Transactions.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <div class="dashboard">
@@ -42,22 +44,105 @@ session_start();
       <!-- Topbar -->
       <div class="topbar">
         <div class="topbar-left">
-          <h2>Transactions</h2>
+          <h2>Sales Report & Transactions</h2>
         </div>
         <div class="topbar-right">
-          <input type="text" placeholder="Search..." class="search-input" />
+          <button class="btn-export" onclick="exportToCSV()" title="Export to CSV">
+            <i class="fas fa-file-csv"></i> Export CSV
+          </button>
+          <button class="btn-print" onclick="printSalesReport()" title="Print Report">
+            <i class="fas fa-print"></i> Print Report
+          </button>
         </div>
       </div>
 
+      <!-- Summary Cards -->
+      <div class="cards">
+        <div class="card">
+          <h3>Total Sales</h3>
+          <p id="summaryTotalSales">₱0.00</p>
+        </div>
+        <div class="card">
+          <h3>Transactions</h3>
+          <p id="summaryTransactionsCount">0</p>
+        </div>
+        <div class="card">
+          <h3>Items Sold</h3>
+          <p id="summaryItemsSold">0</p>
+        </div>
+        <div class="card">
+          <h3>Average Order</h3>
+          <p id="summaryAverageOrder">₱0.00</p>
+        </div>
+      </div>
+
+      <!-- Filter Section -->
+      <section class="page-section filter-section">
+        <h3 style="color: var(--tesda-blue); margin-bottom: 1rem;">
+          <i class="fas fa-filter"></i> Filter Sales Report
+        </h3>
+        <div class="filter-controls">
+          <div class="filter-group">
+            <label for="filterStartDate">Start Date</label>
+            <input type="date" id="filterStartDate" class="filter-input" />
+          </div>
+          <div class="filter-group">
+            <label for="filterEndDate">End Date</label>
+            <input type="date" id="filterEndDate" class="filter-input" />
+          </div>
+          <div class="filter-group">
+            <label for="filterCashier">Cashier</label>
+            <select id="filterCashier" class="filter-input">
+              <option value="">All Cashiers</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="filterStatus">Status</label>
+            <select id="filterStatus" class="filter-input">
+              <option value="">All Status</option>
+              <option value="Served">Served</option>
+              <option value="Pending">Pending</option>
+              <option value="Approved">Approved</option>
+              <option value="Canceled">Canceled</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="filterPaymentMethod">Payment Method</label>
+            <select id="filterPaymentMethod" class="filter-input">
+              <option value="">All Methods</option>
+              <option value="Cash">Cash</option>
+              <option value="Cashless">Cashless</option>
+            </select>
+          </div>
+          <div class="filter-actions">
+            <button class="btn-filter" onclick="applyFilters()">
+              <i class="fas fa-search"></i> Apply Filters
+            </button>
+            <button class="btn-reset" onclick="resetFilters()">
+              <i class="fas fa-redo"></i> Reset
+            </button>
+          </div>
+        </div>
+      </section>
+
       <!-- Transactions Section -->
       <section id="transactions" class="page-section">
+        <div class="section-header">
+          <h3 style="color: var(--tesda-blue); margin-bottom: 1rem;">
+            <i class="fas fa-cash-register"></i> Transaction Details
+          </h3>
+        </div>
         <div class="orders-table-container">
           <table class="orders-table">
             <thead>
               <tr>
                 <th>Order ID</th>
-                <th>Item</th>
+                <th>Date</th>
+                <th>Cashier</th>
+                <th>Items</th>
                 <th>Quantity</th>
+                <th>Payment Method</th>
+                <th>Total Amount</th>
                 <th>Status</th>
                 <th>Action</th>
               </tr>
@@ -73,6 +158,7 @@ session_start();
   </div>
 
   <!-- JS -->
+  <script src="../assets/js/AdminDashboard.js"></script>
   <script src="../assets/js/transactions.js"></script>
 </body>
 </html>

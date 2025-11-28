@@ -1,60 +1,179 @@
 // ==========================
+// Transactions & Sales Report Module
 // ==========================
-// Transactions Management
-// ==========================
-let orders = [];
-let menuItems = [];
 
-// ==========================
-// Logout Function
-// ==========================
-function logout(e) {
-  if (e) e.preventDefault();
-  if (confirm("Are you sure you want to logout?")) {
-    window.location.href = "/TESDAPOS/LandingPage/LandingPage.html"; 
+const transactionsData = [
+  {
+    id: 1001,
+    date: '2025-01-05',
+    cashier: 'Maria Santos',
+    paymentMethod: 'Cash',
+    status: 'Served',
+    items: [
+      { name: 'Pork Sinigang', quantity: 2, price: 150.0 },
+      { name: 'Iced Tea', quantity: 2, price: 35.0 }
+    ]
+  },
+  {
+    id: 1002,
+    date: '2025-01-07',
+    cashier: 'John Cruz',
+    paymentMethod: 'Cashless',
+    status: 'Served',
+    items: [
+      { name: 'Chicken Adobo', quantity: 3, price: 120.0 }
+    ]
+  },
+  {
+    id: 1003,
+    date: '2025-01-09',
+    cashier: 'Maria Santos',
+    paymentMethod: 'Cash',
+    status: 'Pending',
+    items: [
+      { name: 'Burger Steak', quantity: 4, price: 95.0 },
+      { name: 'Fries', quantity: 2, price: 45.0 }
+    ]
+  },
+  {
+    id: 1004,
+    date: '2025-01-11',
+    cashier: 'Anna Reyes',
+    paymentMethod: 'Cashless',
+    status: 'Served',
+    items: [
+      { name: 'Milk Tea', quantity: 5, price: 55.0 }
+    ]
+  },
+  {
+    id: 1005,
+    date: '2025-01-12',
+    cashier: 'John Cruz',
+    paymentMethod: 'Cash',
+    status: 'Approved',
+    items: [
+      { name: 'BBQ Skewers', quantity: 10, price: 35.0 },
+      { name: 'Rice', quantity: 10, price: 20.0 }
+    ]
   }
-}
+];
+
+let orders = [];
+let filteredTransactions = [];
+let salesTrendChart = null;
 
 const statusColors = {
-  'Pending': 'pending',
-  'Approved': 'approved',
-  'Served': 'served',
-  'Canceled': 'canceled'
+  Pending: 'pending',
+  Approved: 'approved',
+  Served: 'served',
+  Canceled: 'canceled'
 };
 
 // ==========================
-// Render Transactions
+// Utility Helpers
 // ==========================
+
+function transactionTotal(transaction) {
+  return transaction.items.reduce((sum, item) => sum + item.quantity * item.price, 0);
+}
+
+function transactionItemCount(transaction) {
+  return transaction.items.reduce((sum, item) => sum + item.quantity, 0);
+}
+
+function formatCurrency(value) {
+  return `₱${Number(value || 0).toFixed(2)}`;
+}
+
+function formatDisplayDate(dateString) {
+  return new Date(dateString).toLocaleDateString('en-PH', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  });
+}
+
+function formatInputDate(date) {
+  const year = date.getFullYear();
+  const month = `${date.getMonth() + 1}`.padStart(2, '0');
+  const day = `${date.getDate()}`.padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+function formatMonthLabel(key) {
+  const [year, month] = key.split('-');
+  const date = new Date(`${year}-${month}-01`);
+  return date.toLocaleDateString('en-PH', { month: 'long', year: 'numeric' });
+}
+
+// ==========================
+// Core Transactions Rendering
+// ==========================
+
+function initializeTransactionsData() {
+  orders = transactionsData.map((transaction) => {
+    const totalItems = transactionItemCount(transaction);
+    const firstItem = transaction.items[0]?.name || 'No Items';
+    const label = transaction.items.length > 1
+      ? `${firstItem} +${transaction.items.length - 1}`
+      : firstItem;
+
+    return {
+      id: transaction.id,
+      item: label,
+      quantity: totalItems,
+      status: transaction.status
+    };
+  });
+}
+
 function renderTransactions() {
   const tbody = document.getElementById('transactionsList');
   if (!tbody) return;
+
   tbody.innerHTML = '';
-  
-  if (orders.length === 0) {
+
+  const transactionsToRender = filteredTransactions.length > 0 ? filteredTransactions : transactionsData;
+
+  if (!transactionsToRender.length) {
     tbody.innerHTML = `
       <tr>
-        <td colspan="5" style="text-align: center; padding: 2rem; color: #666;">
-          No transactions found. Completed orders will appear here.
+        <td colspan="9" style="text-align: center; padding: 2rem; color: #666;">
+          <div class="empty-state">
+            <i class="fas fa-inbox"></i>
+            <p>No transactions found. Completed orders will appear here.</p>
+          </div>
         </td>
       </tr>
     `;
     return;
   }
-  
-  orders.forEach(order => {
+
+  transactionsToRender.forEach((transaction) => {
+    const total = transactionTotal(transaction);
+    const itemCount = transactionItemCount(transaction);
+    const firstItem = transaction.items[0]?.name || 'No Items';
+    const itemsLabel = transaction.items.length > 1
+      ? `${firstItem} +${transaction.items.length - 1} more`
+      : firstItem;
+
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td>${order.id}</td>
-      <td>${order.item}</td>
-      <td>${order.quantity}</td>
-      <td><span class="status ${statusColors[order.status]}">${order.status}</span></td>
+      <td><strong>#${transaction.id}</strong></td>
+      <td>${formatDisplayDate(transaction.date)}</td>
+      <td>${transaction.cashier}</td>
+      <td>${itemsLabel}</td>
+      <td>${itemCount}</td>
+      <td>${transaction.paymentMethod}</td>
+      <td><strong>${formatCurrency(total)}</strong></td>
+      <td><span class="status ${statusColors[transaction.status] || 'pending'}">${transaction.status}</span></td>
       <td>
-        <select onchange="updateOrderStatus(${order.id}, this.value)">
+        <select onchange="updateOrderStatus(${transaction.id}, this.value)">
           <option value="">Change Status</option>
-          <option value="Pending">Pending</option>
-          <option value="Approved">Approved</option>
-          <option value="Served">Served</option>
-          <option value="Canceled">Canceled</option>
+          <option value="Pending" ${transaction.status === 'Pending' ? 'selected' : ''}>Pending</option>
+          <option value="Approved" ${transaction.status === 'Approved' ? 'selected' : ''}>Approved</option>
+          <option value="Served" ${transaction.status === 'Served' ? 'selected' : ''}>Served</option>
+          <option value="Canceled" ${transaction.status === 'Canceled' ? 'selected' : ''}>Canceled</option>
         </select>
       </td>
     `;
@@ -62,93 +181,763 @@ function renderTransactions() {
   });
 }
 
-// ==========================
-// Update Order Status
-// ==========================
 function updateOrderStatus(orderId, newStatus) {
   if (!newStatus) return;
-  const order = orders.find(o => o.id === orderId);
+
+  const order = orders.find((o) => o.id === orderId);
   if (order) {
     order.status = newStatus;
-    renderTransactions();
-    showNotification(`Transaction #${orderId} status updated to ${newStatus}`);
   }
-}
 
-// ==========================
-// Show Transactions with Summary
-// ==========================
-function showTransactions() {
-  const section = document.getElementById('transactions');
-  if (!section) return;
-
-  const totalSales = orders.reduce((total, order) => {
-    const item = menuItems.find(i => i.name === order.item);
-    return item && order.status === 'Served' ? total + item.price * order.quantity : total;
-  }, 0);
-
-  // Update the page content if there's a transactions section
-  const existingContent = section.querySelector('.transactions-summary');
-  if (!existingContent) {
-    const summaryDiv = document.createElement('div');
-    summaryDiv.className = 'transactions-summary';
-    summaryDiv.innerHTML = `
-      <div style="background: var(--white); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-        <h3 style="color: var(--tesda-blue); margin-bottom: 0.5rem;">Transaction Summary</h3>
-        <p style="color: #333;">Total Sales from Transactions: <strong>₱${totalSales.toFixed(2)}</strong></p>
-        <button onclick="generateReceipt()" style="background: var(--tesda-blue); color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; margin-top: 0.5rem;">
-          <i class="fas fa-receipt"></i> Generate Receipt
-        </button>
-      </div>
-    `;
-    section.insertBefore(summaryDiv, section.firstChild);
+  const transaction = transactionsData.find((txn) => txn.id === orderId);
+  if (transaction) {
+    transaction.status = newStatus;
   }
-}
 
-// ==========================
-// Generate Receipt
-// ==========================
-function generateReceipt() {
-  const servedOrders = orders.filter(order => order.status === 'Served');
+  // Re-apply filters if active
+  if (filteredTransactions.length > 0) {
+    applyFilters();
+  } else {
+  renderTransactions();
+  }
   
-  if (servedOrders.length === 0) {
-    showNotification('No completed transactions to generate receipt for.', 'error');
+  updateSummaryCards();
+  showNotification(`Transaction #${orderId} status updated to ${newStatus}`);
+}
+
+function updateSummaryCards() {
+  const transactionsToUse = filteredTransactions.length > 0 ? filteredTransactions : transactionsData;
+  
+  const totalSales = transactionsToUse.reduce((sum, txn) => sum + transactionTotal(txn), 0);
+  const transactionCount = transactionsToUse.length;
+  const totalItems = transactionsToUse.reduce((sum, txn) => sum + transactionItemCount(txn), 0);
+  const averageOrder = transactionCount > 0 ? totalSales / transactionCount : 0;
+
+  const totalSalesEl = document.getElementById('summaryTotalSales');
+  const transactionsCountEl = document.getElementById('summaryTransactionsCount');
+  const itemsSoldEl = document.getElementById('summaryItemsSold');
+  const averageOrderEl = document.getElementById('summaryAverageOrder');
+
+  if (totalSalesEl) totalSalesEl.textContent = formatCurrency(totalSales);
+  if (transactionsCountEl) transactionsCountEl.textContent = transactionCount.toString();
+  if (itemsSoldEl) itemsSoldEl.textContent = totalItems.toString();
+  if (averageOrderEl) averageOrderEl.textContent = formatCurrency(averageOrder);
+}
+
+// generateReceipt function removed - use printSalesReport() for full report
+// or implement individual order printing if needed
+
+// ==========================
+// Sales Report Controls
+// ==========================
+
+function populateCashierFilter() {
+  const cashierSelect = document.getElementById('filterCashier');
+  if (!cashierSelect) return;
+
+  const currentValue = cashierSelect.value;
+  cashierSelect.innerHTML = '<option value="">All Cashiers</option>';
+
+  Array.from(new Set(transactionsData.map((txn) => txn.cashier)))
+    .sort()
+    .forEach((name) => {
+      const option = document.createElement('option');
+      option.value = name;
+      option.textContent = name;
+      cashierSelect.appendChild(option);
+    });
+
+  if (currentValue) {
+    cashierSelect.value = currentValue;
+  }
+}
+
+function initializeDateFilters() {
+  const startInput = document.getElementById('filterStartDate');
+  const endInput = document.getElementById('filterEndDate');
+  if (!startInput || !endInput || !transactionsData.length) return;
+
+  const timestamps = transactionsData.map((txn) => new Date(txn.date).getTime());
+  const minDate = new Date(Math.min(...timestamps));
+  const maxDate = new Date(Math.max(...timestamps));
+
+  startInput.value = formatInputDate(minDate);
+  endInput.value = formatInputDate(maxDate);
+}
+
+function applyFilters() {
+  const startInput = document.getElementById('filterStartDate');
+  const endInput = document.getElementById('filterEndDate');
+  const cashierSelect = document.getElementById('filterCashier');
+  const statusSelect = document.getElementById('filterStatus');
+  const paymentSelect = document.getElementById('filterPaymentMethod');
+
+  const startDate = startInput?.value ? new Date(startInput.value + 'T00:00:00') : null;
+  const endDate = endInput?.value ? new Date(endInput.value + 'T23:59:59') : null;
+  const cashier = cashierSelect?.value || '';
+  const status = statusSelect?.value || '';
+  const paymentMethod = paymentSelect?.value || '';
+
+  filteredTransactions = transactionsData.filter((txn) => {
+    const txnDate = new Date(txn.date + 'T00:00:00');
+    
+    // Date filter
+    if (startDate && txnDate < startDate) return false;
+    if (endDate && txnDate > endDate) return false;
+    
+    // Cashier filter
+    if (cashier && txn.cashier !== cashier) return false;
+    
+    // Status filter
+    if (status && txn.status !== status) return false;
+    
+    // Payment method filter
+    if (paymentMethod && txn.paymentMethod !== paymentMethod) return false;
+    
+    return true;
+  });
+
+  renderTransactions();
+  updateSummaryCards();
+  showNotification(`Filtered ${filteredTransactions.length} transaction(s)`, 'success');
+}
+
+function resetFilters() {
+  const startInput = document.getElementById('filterStartDate');
+  const endInput = document.getElementById('filterEndDate');
+  const cashierSelect = document.getElementById('filterCashier');
+  const statusSelect = document.getElementById('filterStatus');
+  const paymentSelect = document.getElementById('filterPaymentMethod');
+
+  // Reset date filters to show all data
+  if (transactionsData.length > 0) {
+    const timestamps = transactionsData.map((txn) => new Date(txn.date).getTime());
+    const minDate = new Date(Math.min(...timestamps));
+    const maxDate = new Date(Math.max(...timestamps));
+    
+    if (startInput) startInput.value = formatInputDate(minDate);
+    if (endInput) endInput.value = formatInputDate(maxDate);
+  } else {
+    if (startInput) startInput.value = '';
+    if (endInput) endInput.value = '';
+  }
+
+  if (cashierSelect) cashierSelect.value = '';
+  if (statusSelect) statusSelect.value = '';
+  if (paymentSelect) paymentSelect.value = '';
+
+  filteredTransactions = [...transactionsData];
+  renderTransactions();
+  updateSummaryCards();
+  showNotification('Filters reset', 'success');
+}
+
+// ==========================
+// CSV Export Function
+// ==========================
+
+function exportToCSV() {
+  const transactionsToExport = filteredTransactions.length > 0 ? filteredTransactions : transactionsData;
+  
+  if (!transactionsToExport.length) {
+    showNotification('No transactions to export', 'error');
     return;
   }
 
-  let receiptContent = '=== TESDA POS RECEIPT ===\\n';
-  receiptContent += `Date: ${new Date().toLocaleDateString()}\\n`;
-  receiptContent += `Time: ${new Date().toLocaleTimeString()}\\n`;
-  receiptContent += '\\n--- ITEMS ---\\n';
+  // CSV Headers
+  const headers = ['Order ID', 'Date', 'Cashier', 'Payment Method', 'Status', 'Items', 'Quantity', 'Total Amount'];
   
-  let total = 0;
-  servedOrders.forEach(order => {
-    const item = menuItems.find(i => i.name === order.item);
-    const price = item ? item.price : 0;
-    const subtotal = price * order.quantity;
-    total += subtotal;
+  // CSV Rows
+  const rows = transactionsToExport.map(txn => {
+    const items = txn.items.map(item => `${item.name} (${item.quantity}x)`).join('; ');
+    const total = transactionTotal(txn);
+    const itemCount = transactionItemCount(txn);
     
-    receiptContent += `${order.item} x${order.quantity} - ₱${subtotal.toFixed(2)}\\n`;
+    return [
+      txn.id,
+      formatDisplayDate(txn.date),
+      txn.cashier,
+      txn.paymentMethod,
+      txn.status,
+      `"${items}"`,
+      itemCount,
+      total.toFixed(2)
+    ];
   });
-  
-  receiptContent += '\\n--- TOTAL ---\\n';
-  receiptContent += `TOTAL AMOUNT: ₱${total.toFixed(2)}\\n`;
-  receiptContent += '\\nThank you for your business!\\n';
-  receiptContent += '=========================';
 
-  // Log to console and show notification
-  console.log(receiptContent);
-  showNotification('Receipt generated successfully! Check console for details.');
+  // Combine headers and rows
+  const csvContent = [
+    headers.join(','),
+    ...rows.map(row => row.join(','))
+  ].join('\n');
+
+  // Add BOM for UTF-8 support in Excel
+  const BOM = '\uFEFF';
+  const blob = new Blob([BOM + csvContent], { type: 'text/csv;charset=utf-8;' });
   
-  // You could also create a modal to display the receipt or trigger a print dialog
-  alert(receiptContent.replace(/\\n/g, '\\n'));
+  // Create download link
+  const link = document.createElement('a');
+  const url = URL.createObjectURL(blob);
+  link.setAttribute('href', url);
+  
+  // Generate filename with date range
+  const startDate = document.getElementById('filterStartDate')?.value || 'all';
+  const endDate = document.getElementById('filterEndDate')?.value || 'all';
+  const filename = `sales_report_${startDate}_to_${endDate}.csv`;
+  
+  link.setAttribute('download', filename);
+  link.style.visibility = 'hidden';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  
+  showNotification(`Exported ${transactionsToExport.length} transaction(s) to CSV`, 'success');
 }
 
 // ==========================
-// Notification System
+// Print Sales Report Function
 // ==========================
+
+function printSalesReport() {
+  const transactionsToPrint = filteredTransactions.length > 0 ? filteredTransactions : transactionsData;
+  
+  if (!transactionsToPrint.length) {
+    showNotification('No transactions to print', 'error');
+    return;
+  }
+
+  const printWindow = window.open('', '_blank', 'width=1200,height=800');
+  if (!printWindow) {
+    showNotification('Pop-up blocked. Please allow pop-ups to print.', 'error');
+    return;
+  }
+
+  // Calculate summary
+  const totalSales = transactionsToPrint.reduce((sum, txn) => sum + transactionTotal(txn), 0);
+  const transactionCount = transactionsToPrint.length;
+  const totalItems = transactionsToPrint.reduce((sum, txn) => sum + transactionItemCount(txn), 0);
+  const averageOrder = transactionCount > 0 ? totalSales / transactionCount : 0;
+
+  // Get filter info
+  const startDate = document.getElementById('filterStartDate')?.value || 'All';
+  const endDate = document.getElementById('filterEndDate')?.value || 'All';
+  const cashier = document.getElementById('filterCashier')?.value || 'All';
+  const status = document.getElementById('filterStatus')?.value || 'All';
+  const paymentMethod = document.getElementById('filterPaymentMethod')?.value || 'All';
+
+  // Generate table rows
+  const tableRows = transactionsToPrint.map(txn => {
+    const items = txn.items.map(item => `${item.name} (${item.quantity}x)`).join(', ');
+    const total = transactionTotal(txn);
+    const itemCount = transactionItemCount(txn);
+    
+    return `
+      <tr>
+        <td>#${txn.id}</td>
+        <td>${formatDisplayDate(txn.date)}</td>
+        <td>${txn.cashier}</td>
+        <td>${items}</td>
+        <td style="text-align:center;">${itemCount}</td>
+        <td>${txn.paymentMethod}</td>
+        <td style="text-align:right;">${formatCurrency(total)}</td>
+        <td>${txn.status}</td>
+      </tr>
+    `;
+  }).join('');
+
+  printWindow.document.write(`
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>Sales Report - TESDA POS</title>
+        <style>
+          @media print {
+            @page { margin: 1cm; }
+            body { margin: 0; }
+          }
+          body {
+            font-family: 'Inter', 'Arial', sans-serif;
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+          }
+          .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #004aad;
+            padding-bottom: 20px;
+          }
+          .header h1 {
+            color: #004aad;
+            margin: 0 0 10px 0;
+            font-size: 2rem;
+          }
+          .header p {
+            color: #666;
+            margin: 5px 0;
+          }
+          .summary {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+          }
+          .summary-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #004aad;
+          }
+          .summary-card h3 {
+            margin: 0 0 8px 0;
+            font-size: 0.9rem;
+            color: #666;
+            font-weight: 600;
+          }
+          .summary-card p {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #004aad;
+          }
+          .filters {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+          }
+          .filters h3 {
+            margin: 0 0 10px 0;
+            color: #004aad;
+            font-size: 1rem;
+          }
+          .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+          }
+          .filters-grid div {
+            display: flex;
+            gap: 10px;
+          }
+          .filters-grid strong {
+            min-width: 120px;
+          }
+          table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 0.9rem;
+          }
+          th {
+            background: #004aad;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            border: 1px solid #003d8f;
+          }
+          td {
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+          }
+          tr:nth-child(even) {
+            background: #f9f9f9;
+          }
+          .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #ddd;
+            text-align: center;
+            color: #666;
+            font-size: 0.85rem;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <h1>TESDA POS</h1>
+          <h2>Sales Report</h2>
+          <p>Generated on: ${new Date().toLocaleString('en-PH')}</p>
+        </div>
+
+        <div class="summary">
+          <div class="summary-card">
+            <h3>Total Sales</h3>
+            <p>${formatCurrency(totalSales)}</p>
+          </div>
+          <div class="summary-card">
+            <h3>Transactions</h3>
+            <p>${transactionCount}</p>
+          </div>
+          <div class="summary-card">
+            <h3>Items Sold</h3>
+            <p>${totalItems}</p>
+          </div>
+          <div class="summary-card">
+            <h3>Average Order</h3>
+            <p>${formatCurrency(averageOrder)}</p>
+          </div>
+        </div>
+
+        <div class="filters">
+          <h3>Filter Criteria</h3>
+          <div class="filters-grid">
+            <div><strong>Date Range:</strong> ${startDate} to ${endDate}</div>
+            <div><strong>Cashier:</strong> ${cashier}</div>
+            <div><strong>Status:</strong> ${status}</div>
+            <div><strong>Payment Method:</strong> ${paymentMethod}</div>
+          </div>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Date</th>
+              <th>Cashier</th>
+              <th>Items</th>
+              <th>Quantity</th>
+              <th>Payment Method</th>
+              <th>Total Amount</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${tableRows}
+          </tbody>
+          <tfoot>
+            <tr style="background: #f0f0f0; font-weight: bold;">
+              <td colspan="6" style="text-align: right; padding: 15px;">TOTAL:</td>
+              <td style="text-align: right; padding: 15px;">${formatCurrency(totalSales)}</td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
+
+        <div class="footer">
+          <p>This is a computer-generated report from TESDA POS System</p>
+        </div>
+
+        <script>
+          window.onload = function() {
+            window.print();
+            window.onafterprint = function() {
+              window.close();
+            };
+          };
+        </script>
+      </body>
+    </html>
+  `);
+
+  printWindow.document.close();
+}
+
+// Removed updateSalesReport - functionality moved to updateSummaryCards and renderTransactions
+
+function populateOrderSelect(transactions) {
+  const orderSelect = document.getElementById('reportOrderSelect');
+  if (!orderSelect) return;
+
+  const currentValue = orderSelect.value;
+  orderSelect.innerHTML = '<option value="">Select Order</option>';
+
+  transactions
+    .slice()
+    .sort((a, b) => new Date(b.date) - new Date(a.date))
+    .forEach((txn) => {
+      const option = document.createElement('option');
+      option.value = txn.id;
+      option.textContent = `${txn.id} — ${formatDisplayDate(txn.date)}`;
+      orderSelect.appendChild(option);
+    });
+
+  if (currentValue && transactions.some((txn) => txn.id.toString() === currentValue)) {
+    orderSelect.value = currentValue;
+  }
+}
+
+function clearOrderDetails() {
+  const card = document.getElementById('orderDetailsCard');
+  const tbody = document.getElementById('orderItemsBody');
+  if (card) card.hidden = true;
+  if (tbody) tbody.innerHTML = '';
+}
+
+function displayOrderDetails(orderId) {
+  const card = document.getElementById('orderDetailsCard');
+  const tbody = document.getElementById('orderItemsBody');
+  if (!card || !tbody) return;
+
+  if (!orderId) {
+    clearOrderDetails();
+    return;
+  }
+
+  const transaction = transactionsData.find((txn) => txn.id.toString() === orderId.toString());
+  if (!transaction) {
+    clearOrderDetails();
+    showNotification('Order details not found.', 'error');
+    return;
+  }
+
+  const title = document.getElementById('orderDetailsTitle');
+  const meta = document.getElementById('orderMeta');
+  const cashierEl = document.getElementById('orderCashier');
+  const paymentEl = document.getElementById('orderPaymentMethod');
+  const itemsEl = document.getElementById('orderTotalItems');
+  const amountEl = document.getElementById('orderTotalAmount');
+
+  if (title) title.textContent = `Order #${transaction.id}`;
+  if (meta) meta.textContent = `${formatDisplayDate(transaction.date)} • ${transaction.items.length} item(s)`;
+  if (cashierEl) cashierEl.textContent = transaction.cashier;
+  if (paymentEl) paymentEl.textContent = transaction.paymentMethod;
+  if (itemsEl) itemsEl.textContent = transactionItemCount(transaction).toString();
+  if (amountEl) amountEl.textContent = formatCurrency(transactionTotal(transaction));
+
+  renderOrderItems(transaction);
+  card.hidden = false;
+}
+
+function renderOrderItems(transaction) {
+  const tbody = document.getElementById('orderItemsBody');
+  if (!tbody) return;
+
+  tbody.innerHTML = '';
+
+  transaction.items.forEach((item) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${item.name}</td>
+      <td style="text-align:right;">${item.quantity}</td>
+      <td style="text-align:right;">${formatCurrency(item.price)}</td>
+      <td style="text-align:right;">${formatCurrency(item.price * item.quantity)}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function renderDailySummary(transactions) {
+  const tbody = document.querySelector('#dailySummaryTable tbody');
+  if (!tbody) return;
+
+  tbody.innerHTML = '';
+
+  if (!transactions.length) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = '<td colspan="4" style="text-align:center; color:#64748b;">No data for selected range.</td>';
+    tbody.appendChild(tr);
+    return;
+  }
+
+  const dailyMap = new Map();
+  transactions.forEach((txn) => {
+    const key = txn.date;
+    if (!dailyMap.has(key)) {
+      dailyMap.set(key, { transactions: 0, items: 0, total: 0 });
+    }
+    const summary = dailyMap.get(key);
+    summary.transactions += 1;
+    summary.items += transactionItemCount(txn);
+    summary.total += transactionTotal(txn);
+  });
+
+  Array.from(dailyMap.entries())
+    .sort((a, b) => new Date(b[0]) - new Date(a[0]))
+    .forEach(([date, summary]) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${formatDisplayDate(date)}</td>
+        <td>${summary.transactions}</td>
+        <td>${summary.items}</td>
+        <td>${formatCurrency(summary.total)}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+}
+
+function renderMonthlySummary(transactions) {
+  const tbody = document.querySelector('#monthlySummaryTable tbody');
+  if (!tbody) return;
+
+  tbody.innerHTML = '';
+
+  if (!transactions.length) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = '<td colspan="4" style="text-align:center; color:#64748b;">No data for selected range.</td>';
+    tbody.appendChild(tr);
+    return;
+  }
+
+  const monthlyMap = new Map();
+  transactions.forEach((txn) => {
+    const date = new Date(txn.date);
+    const key = `${date.getFullYear()}-${`${date.getMonth() + 1}`.padStart(2, '0')}`;
+    if (!monthlyMap.has(key)) {
+      monthlyMap.set(key, { transactions: 0, items: 0, total: 0 });
+    }
+    const summary = monthlyMap.get(key);
+    summary.transactions += 1;
+    summary.items += transactionItemCount(txn);
+    summary.total += transactionTotal(txn);
+  });
+
+  Array.from(monthlyMap.entries())
+    .sort((a, b) => new Date(`${b[0]}-01`) - new Date(`${a[0]}-01`))
+    .forEach(([monthKey, summary]) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${formatMonthLabel(monthKey)}</td>
+        <td>${summary.transactions}</td>
+        <td>${summary.items}</td>
+        <td>${formatCurrency(summary.total)}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+}
+
+function updateSalesTrendChart(transactions) {
+  const canvas = document.getElementById('salesTrendChart');
+  if (!canvas) return;
+
+  const dailyMap = new Map();
+  transactions.forEach((txn) => {
+    const key = txn.date;
+    dailyMap.set(key, (dailyMap.get(key) || 0) + transactionTotal(txn));
+  });
+
+  const sortedEntries = Array.from(dailyMap.entries()).sort((a, b) => new Date(a[0]) - new Date(b[0]));
+  const labels = sortedEntries.map(([date]) => formatDisplayDate(date));
+  const values = sortedEntries.map(([, total]) => Number(total.toFixed(2)));
+
+  if (salesTrendChart) {
+    salesTrendChart.destroy();
+  }
+
+  if (!labels.length) {
+    salesTrendChart = null;
+    return;
+  }
+
+  salesTrendChart = new Chart(canvas, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: 'Total Sales',
+          data: values,
+          borderColor: 'rgba(0, 74, 173, 1)',
+          backgroundColor: 'rgba(0, 74, 173, 0.15)',
+          fill: true,
+          tension: 0.3,
+          pointRadius: 4,
+          pointBackgroundColor: '#004aad'
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: true }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            callback: (value) => `₱${value}`
+          }
+        }
+      }
+    }
+  });
+}
+
+function printSelectedOrder() {
+  const orderSelect = document.getElementById('reportOrderSelect');
+  if (!orderSelect || !orderSelect.value) {
+    showNotification('Please select an order to print.', 'error');
+    return;
+  }
+
+  const transaction = transactionsData.find((txn) => txn.id.toString() === orderSelect.value);
+  if (!transaction) {
+    showNotification('Selected order not found.', 'error');
+    return;
+  }
+
+  const printWindow = window.open('', '_blank', 'width=720,height=900');
+  if (!printWindow) {
+    showNotification('Pop-up blocked. Please allow pop-ups to print.', 'error');
+    return;
+  }
+
+  const itemsRows = transaction.items
+    .map(
+      (item) => `
+        <tr>
+          <td>${item.name}</td>
+          <td style="text-align:right;">${item.quantity}</td>
+          <td style="text-align:right;">${formatCurrency(item.price)}</td>
+          <td style="text-align:right;">${formatCurrency(item.price * item.quantity)}</td>
+        </tr>
+      `
+    )
+    .join('');
+
+  printWindow.document.write(`
+    <html>
+      <head>
+        <title>Order #${transaction.id} Receipt</title>
+        <style>
+          body { font-family: 'Inter', sans-serif; padding: 24px; color: #1f2937; }
+          h1 { text-align: center; margin-bottom: 12px; }
+          h2 { margin-top: 0; }
+          .meta { margin-bottom: 16px; color: #475569; }
+          table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+          th, td { padding: 8px 10px; border: 1px solid #cbd5f5; }
+          th { background: #004aad; color: #fff; }
+          .totals { margin-top: 16px; text-align: right; font-size: 1.1rem; }
+        </style>
+      </head>
+      <body>
+        <h1>TESDA POS</h1>
+        <h2>Order #${transaction.id}</h2>
+        <div class="meta">
+          <div>Date: ${formatDisplayDate(transaction.date)}</div>
+          <div>Cashier: ${transaction.cashier}</div>
+          <div>Payment Method: ${transaction.paymentMethod}</div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Qty</th>
+              <th>Price</th>
+              <th>Subtotal</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${itemsRows}
+          </tbody>
+        </table>
+        <div class="totals">Total: <strong>${formatCurrency(transactionTotal(transaction))}</strong></div>
+        <script>window.print(); window.onafterprint = () => window.close();<\/script>
+      </body>
+    </html>
+  `);
+
+  printWindow.document.close();
+}
+
+// ==========================
+// Notification Toast
+// ==========================
+
 function showNotification(message, type = 'success') {
-  // Create toast if it doesn't exist
   let toast = document.getElementById('notificationToast');
   if (!toast) {
     toast = document.createElement('div');
@@ -162,51 +951,54 @@ function showNotification(message, type = 'success') {
     `;
     document.body.appendChild(toast);
   }
-  
+
   const toastMessage = document.getElementById('toastMessage');
-  toastMessage.textContent = message;
-  
+  if (toastMessage) {
+    toastMessage.textContent = message;
+  }
+
   if (type === 'error') {
     toast.style.background = '#dc3545';
   } else {
     toast.style.background = '#28a745';
   }
-  
+
   toast.classList.add('show');
-  
-  setTimeout(() => {
-    toast.classList.remove('show');
-  }, 3000);
+  setTimeout(() => toast.classList.remove('show'), 2800);
 }
 
 // ==========================
-// Fetch Transactions from Database (placeholder)
+// Logout Handler (shared)
 // ==========================
+
+function logout(e) {
+  if (e) e.preventDefault();
+  if (confirm('Are you sure you want to logout?')) {
+    window.location.href = '/TESDAPOS/LandingPage/LandingPage.html';
+  }
+}
+
+// ==========================
+// Initialization
+// ==========================
+
+function attachEventHandlers() {
+  // Event handlers are attached via onclick in HTML
+  // This function can be used for additional event listeners if needed
+}
+
 async function fetchTransactionsFromDB() {
   try {
-    console.log('Fetching transactions from database...');
-    
-    // Mock transactions for demonstration
-    orders = [
-      { id: 1001, item: 'Chicken Adobo', quantity: 2, status: 'Served' },
-      { id: 1002, item: 'Pork Sinigang', quantity: 1, status: 'Served' },
-      { id: 1003, item: 'Iced Tea', quantity: 3, status: 'Pending' },
-      { id: 1004, item: 'Milk Tea', quantity: 1, status: 'Served' }
-    ];
-    
-    // Mock menu items for price calculation
-    menuItems = [
-      { name: 'Chicken Adobo', price: 120.00 },
-      { name: 'Pork Sinigang', price: 150.00 },
-      { name: 'Iced Tea', price: 35.00 },
-      { name: 'Milk Tea', price: 45.00 }
-    ];
-    
+    console.log('Initializing transactions data...');
+    initializeTransactionsData();
+    filteredTransactions = [...transactionsData];
+    populateCashierFilter();
+    initializeDateFilters();
     renderTransactions();
-    showTransactions();
+    updateSummaryCards();
     return true;
   } catch (error) {
-    console.error('Error fetching transactions:', error);
+    console.error('Error initializing transactions:', error);
     return false;
   }
 }
@@ -216,6 +1008,7 @@ async function fetchTransactionsFromDB() {
 // ==========================
 document.addEventListener('DOMContentLoaded', async () => {
   await fetchTransactionsFromDB();
-  renderTransactions();
-  showTransactions();
+  attachEventHandlers();
+  console.log('Sales Report & Transactions module initialized');
 });
+

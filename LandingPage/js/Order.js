@@ -191,13 +191,51 @@ function displayProducts(products, filterCategory = 'All') {
             stockBadge = `<div class="stock-badge"><i class="fas fa-check-circle"></i> ${quantity} in stock</div>`;
         }
         
+        // Check if product is a drink/beverage
+        const isBeverage = product.category && (
+            product.category.toLowerCase() === 'beverage' || 
+            product.category.toLowerCase() === 'beverages' ||
+            product.category.toLowerCase() === 'drink' ||
+            product.category.toLowerCase() === 'drinks'
+        );
+        
+        // Size options for beverages
+        let sizeSelector = '';
+        if (isBeverage && quantity > 0) {
+            const basePrice = parseFloat(product.price);
+            const sizePrices = {
+                small: basePrice,
+                medium: basePrice * 1.3,
+                large: basePrice * 1.6
+            };
+            
+            sizeSelector = `
+                <div class="size-selector" data-product-id="${product.id}">
+                    <label class="size-label">Size:</label>
+                    <div class="size-options">
+                        <button class="size-btn active" data-size="small" data-price="${sizePrices.small.toFixed(2)}" onclick="selectSize('${product.id}', 'small', ${sizePrices.small})">
+                            Small
+                        </button>
+                        <button class="size-btn" data-size="medium" data-price="${sizePrices.medium.toFixed(2)}" onclick="selectSize('${product.id}', 'medium', ${sizePrices.medium})">
+                            Medium
+                        </button>
+                        <button class="size-btn" data-size="large" data-price="${sizePrices.large.toFixed(2)}" onclick="selectSize('${product.id}', 'large', ${sizePrices.large})">
+                            Large
+                        </button>
+                    </div>
+                    <div class="size-price-display" id="price-${product.id}">₱${sizePrices.small.toFixed(2)}</div>
+                </div>
+            `;
+        }
+        
         card.innerHTML = `
             <img src="${imagePath}" alt="${product.product_name}" class="order-img" onerror="this.src='../img/TESDALOGO.png'; console.log('Image load error for product:', '${product.product_name}');">
             <h2>${product.product_name}</h2>
             <p>Category: ${product.category}</p>
             ${stockBadge}
-            <span class="price">₱${parseFloat(product.price).toFixed(2)}</span>
-            <button class="add-btn" ${isDisabled} onclick="addToCart('${product.id}', '${product.product_name}', ${product.price})">
+            ${sizeSelector}
+            ${!isBeverage ? `<span class="price">₱${parseFloat(product.price).toFixed(2)}</span>` : ''}
+            <button class="add-btn" ${isDisabled} onclick="addToCart('${product.id}', '${product.product_name}', ${product.price}, '${isBeverage ? 'small' : ''}')" data-product-id="${product.id}">
                 ${quantity === 0 ? 'Out of Stock' : 'Add to Cart'}
             </button>
         `;
@@ -240,22 +278,73 @@ function toggleCart() {
     }
 }
 
+// Function to select size for beverages
+function selectSize(productId, size, price) {
+    // Update active size button
+    const sizeSelector = document.querySelector(`.size-selector[data-product-id="${productId}"]`);
+    if (sizeSelector) {
+        sizeSelector.querySelectorAll('.size-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        sizeSelector.querySelector(`.size-btn[data-size="${size}"]`).classList.add('active');
+        
+        // Update price display
+        const priceDisplay = document.getElementById(`price-${productId}`);
+        if (priceDisplay) {
+            priceDisplay.textContent = `₱${price.toFixed(2)}`;
+        }
+        
+        // Update add button to use selected size and price
+        const addBtn = document.querySelector(`.add-btn[data-product-id="${productId}"]`);
+        if (addBtn) {
+            addBtn.setAttribute('data-selected-size', size);
+            addBtn.setAttribute('data-selected-price', price);
+        }
+    }
+}
+
 // Function to add product to cart
-function addToCart(productId, productName, price) {
-    // Check if product already exists in cart
-    const existingItem = cart.find(item => item.id === productId);
+function addToCart(productId, productName, basePrice, size = '') {
+    // Get selected size and price if it's a beverage
+    const addBtn = document.querySelector(`.add-btn[data-product-id="${productId}"]`);
+    let selectedSize = size;
+    let finalPrice = parseFloat(basePrice);
+    
+    if (addBtn && addBtn.getAttribute('data-selected-size')) {
+        selectedSize = addBtn.getAttribute('data-selected-size');
+        finalPrice = parseFloat(addBtn.getAttribute('data-selected-price'));
+    }
+    
+    // Create unique cart item ID that includes size for beverages
+    const cartItemId = selectedSize ? `${productId}_${selectedSize}` : productId;
+    
+    // Check if product with same size already exists in cart
+    const existingItem = cart.find(item => {
+        if (selectedSize) {
+            return item.id === productId && item.size === selectedSize;
+        }
+        return item.id === productId && !item.size;
+    });
     
     if (existingItem) {
         // Increase quantity if item already exists
         existingItem.quantity += 1;
     } else {
         // Add new item to cart
-        cart.push({
+        const cartItem = {
             id: productId,
+            cartItemId: cartItemId,
             name: productName,
-            price: parseFloat(price),
+            price: finalPrice,
             quantity: 1
-        });
+        };
+        
+        // Add size info if it's a beverage
+        if (selectedSize) {
+            cartItem.size = selectedSize;
+        }
+        
+        cart.push(cartItem);
     }
     
     // Update cart count and display
@@ -263,7 +352,8 @@ function addToCart(productId, productName, price) {
     updateCartDisplay();
     
     // Show success message
-    showCartMessage(`${productName} added to cart!`);
+    const sizeText = selectedSize ? ` (${selectedSize.charAt(0).toUpperCase() + selectedSize.slice(1)})` : '';
+    showCartMessage(`${productName}${sizeText} added to cart!`);
 }
 
 // Function to update cart count badge
@@ -299,14 +389,16 @@ function updateCartDisplay() {
     cartTotal.textContent = total.toFixed(2);
     
     // Render cart items
-    cartItems.innerHTML = cart.map(item => `
+    cartItems.innerHTML = cart.map(item => {
+        const sizeText = item.size ? ` <span class="cart-item-size">(${item.size.charAt(0).toUpperCase() + item.size.slice(1)})</span>` : '';
+        return `
         <div class="cart-item" onclick="event.stopPropagation()">
             <div class="cart-item-info">
-                <div class="cart-item-name">${item.name}</div>
+                <div class="cart-item-name">${item.name}${sizeText}</div>
                 <div class="cart-item-price">₱${item.price.toFixed(2)} × ${item.quantity}</div>
             </div>
             <div class="cart-item-controls">
-                <button class="quantity-btn" onclick="event.stopPropagation(); updateQuantity('${item.id}', -1)">
+                <button class="quantity-btn" onclick="event.stopPropagation(); updateQuantity('${item.cartItemId}', -1)">
                     <i class="fas fa-minus"></i>
                 </button>
                 <input type="number" 
@@ -315,28 +407,29 @@ function updateCartDisplay() {
                        min="1" 
                        max="999"
                        onclick="event.stopPropagation();"
-                       onchange="event.stopPropagation(); setQuantity('${item.id}', this.value)"
+                       onchange="event.stopPropagation(); setQuantity('${item.cartItemId}', this.value)"
                        onkeydown="event.stopPropagation();">
-                <button class="quantity-btn" onclick="event.stopPropagation(); updateQuantity('${item.id}', 1)">
+                <button class="quantity-btn" onclick="event.stopPropagation(); updateQuantity('${item.cartItemId}', 1)">
                     <i class="fas fa-plus"></i>
                 </button>
-                <button class="remove-item" onclick="event.stopPropagation(); removeFromCart('${item.id}')">
+                <button class="remove-item" onclick="event.stopPropagation(); removeFromCart('${item.cartItemId}')">
                     <i class="fas fa-trash"></i>
                 </button>
             </div>
         </div>
-    `).join('');
+        `;
+    }).join('');
 }
 
 // Function to update item quantity
-function updateQuantity(productId, change) {
-    const item = cart.find(item => item.id === productId);
+function updateQuantity(cartItemId, change) {
+    const item = cart.find(item => item.cartItemId === cartItemId);
     if (!item) return;
     
     item.quantity += change;
     
     if (item.quantity <= 0) {
-        removeFromCart(productId);
+        removeFromCart(cartItemId);
     } else {
         updateCartCount();
         updateCartDisplay();
@@ -344,8 +437,8 @@ function updateQuantity(productId, change) {
 }
 
 // Function to set quantity directly from input
-function setQuantity(productId, newQuantity) {
-    const item = cart.find(item => item.id === productId);
+function setQuantity(cartItemId, newQuantity) {
+    const item = cart.find(item => item.cartItemId === cartItemId);
     if (!item) return;
     
     // Parse and validate quantity
@@ -364,12 +457,13 @@ function setQuantity(productId, newQuantity) {
 }
 
 // Function to remove item from cart
-function removeFromCart(productId) {
-    const item = cart.find(item => item.id === productId);
+function removeFromCart(cartItemId) {
+    const item = cart.find(item => item.cartItemId === cartItemId);
     if (item) {
-        showCartMessage(`${item.name} removed from cart`);
+        const sizeText = item.size ? ` (${item.size})` : '';
+        showCartMessage(`${item.name}${sizeText} removed from cart`);
     }
-    cart = cart.filter(item => item.id !== productId);
+    cart = cart.filter(item => item.cartItemId !== cartItemId);
     updateCartCount();
     updateCartDisplay();
 }

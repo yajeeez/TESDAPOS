@@ -90,20 +90,6 @@ session_start();
       <canvas id="pieChart"></canvas>
     </div>
 
-  </div>
-</section>
-
-
-
-
-
-      
-
-    </main>
-  </div>
-
-
-
   <!-- JS -->
   <script src="../assets/js/AdminDashboard.js"></script>
 </body>

@@ -58,6 +58,9 @@ require_once __DIR__ . '/session.php';
                         <a href="<?php echo APP_URL; ?>/cashier/orders.php">
                             <i class="fas fa-shopping-cart"></i> Orders
                         </a>
+                        <a href="<?php echo APP_URL; ?>/admin/components/CashierSalesReport.php">
+                            <i class="fas fa-chart-line"></i> Sales Report
+                        </a>
                     <?php elseif (SessionManager::getUserRole() === 'inventory'): ?>
                         <a href="<?php echo APP_URL; ?>/inventory/dashboard.php">
                             <i class="fas fa-boxes"></i> Inventory

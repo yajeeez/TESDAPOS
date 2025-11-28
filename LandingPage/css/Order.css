@@ -241,6 +241,7 @@ nav {
   color: var(--tesda-dark);
   padding: 2px;
   transition: all 0.3s ease;
+  appearance: textfield;
   -moz-appearance: textfield;
 }
 
@@ -481,9 +482,9 @@ nav {
 /* Cards */
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 1rem;
-  padding: 0 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.25rem;
+  padding: 0 1rem 2rem;
   max-width: 1400px;
   margin: 0 auto;
 }
@@ -492,14 +493,15 @@ nav {
   background: var(--card-bg);
   border-radius: 12px;
   box-shadow: 0 4px 12px var(--shadow);
-  padding: 0.8rem 0.6rem;
+  padding: 1rem;
   text-align: center;
   backdrop-filter: blur(10px);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   position: relative;
   overflow: hidden;
-  max-width: 200px;
-  margin: 0 auto;
+  min-height: 340px;
+  display: flex;
+  flex-direction: column;
 }
 
 .order-card:hover {
@@ -508,12 +510,12 @@ nav {
 }
 
 .order-img {
-  width: 100%;
-  height: 120px;
+  width: 198.67px;
+  height: 160px;
   border-radius: 8px;
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
-  margin-bottom: 0.6rem;
+  margin: 0 auto 0.6rem;
   transition: transform 0.3s ease;
   background: linear-gradient(145deg, #f8fafc 0%, #e2e8f0 100%);
 }
@@ -571,6 +573,11 @@ nav {
   margin-bottom: 0.6rem;
 }
 
+.order-card .add-btn {
+  margin-top: auto;
+  width: 100%;
+}
+
 .add-btn {
   background: var(--tesda-blue);
   color: white;
@@ -598,6 +605,70 @@ nav {
 .add-btn:disabled:hover {
   transform: none;
   background: #ccc;
+}
+
+/* Size Selector for Beverages */
+.size-selector {
+  margin: 0.5rem 0;
+  padding: 0.5rem 0;
+}
+
+.size-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--tesda-dark);
+  margin-bottom: 0.4rem;
+  text-align: center;
+}
+
+.size-options {
+  display: flex;
+  gap: 0.4rem;
+  justify-content: center;
+  margin-bottom: 0.4rem;
+}
+
+.size-btn {
+  flex: 1;
+  padding: 6px 8px;
+  border: 2px solid var(--tesda-blue);
+  background: white;
+  color: var(--tesda-blue);
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.7rem;
+  transition: all 0.3s ease;
+  text-transform: capitalize;
+}
+
+.size-btn:hover {
+  background: var(--tesda-accent);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 86, 179, 0.2);
+}
+
+.size-btn.active {
+  background: var(--tesda-blue);
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 86, 179, 0.3);
+  transform: translateY(-1px);
+}
+
+.size-price-display {
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--tesda-blue);
+  margin-top: 0.3rem;
+}
+
+.cart-item-size {
+  font-size: 0.85rem;
+  color: #666;
+  font-weight: 500;
+  text-transform: capitalize;
 }
 
 /* Error Messages */
@@ -647,19 +718,13 @@ nav {
 /* Responsive Design */
 @media (max-width: 1400px) {
   .card-grid {
-    grid-template-columns: repeat(5, 1fr);
-  }
-}
-
-@media (max-width: 1200px) {
-  .card-grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   }
 }
 
 @media (max-width: 900px) {
   .card-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   }
   
   .category-filters {
@@ -674,7 +739,7 @@ nav {
 
 @media (max-width: 600px) {
   .card-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   }
   
   .filter-btn {
@@ -846,4 +911,289 @@ footer {
   position: relative;
   z-index: 10;
   box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+}
+
+/* ============================================
+   PRINT STYLES - Letter Size (8.5" x 11")
+   Optimized for lunch and dinner menus
+   ============================================ */
+@media print {
+  /* Page Setup - Letter Size */
+  @page {
+    size: letter;
+    margin: 0.5in;
+  }
+
+  /* Hide non-essential elements */
+  header,
+  .category-filters,
+  .cart-container,
+  .cart-dropdown,
+  .cart-btn,
+  .back-btn,
+  .add-btn,
+  .modal-overlay,
+  footer,
+  button:not(.print-btn),
+  nav,
+  .print-btn {
+    display: none !important;
+  }
+
+  /* Reset body for print */
+  body {
+    background: white;
+    color: #000;
+    margin: 0;
+    padding: 0;
+    font-size: 11pt;
+    line-height: 1.4;
+  }
+
+  /* Order section adjustments */
+  .order-section {
+    padding: 0;
+    margin: 0;
+    text-align: left;
+  }
+
+  /* Print header */
+  .order-section::before {
+    content: "TESDA POS - Food & Beverage Menu";
+    display: block;
+    font-size: 24pt;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 3px solid #000;
+    page-break-after: avoid;
+    color: #000;
+  }
+
+  /* Grid layout for print - 2 columns optimal for letter size */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    max-width: 100%;
+    page-break-inside: avoid;
+    align-items: start;
+  }
+
+  /* Order card styling for print */
+  .order-card {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 0;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    box-shadow: none;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    min-height: 0;
+    overflow: hidden;
+    max-width: 100%;
+    backdrop-filter: none;
+    position: relative;
+  }
+
+  /* Image sizing for print - compact but visible */
+  .order-img {
+    width: 100%;
+    height: 110px;
+    object-fit: contain;
+    object-position: center;
+    border-radius: 6px;
+    margin-bottom: 6px;
+    border: 1px solid #eee;
+    display: block;
+    background: #f8f9fa;
+  }
+
+  /* Typography for print */
+  .order-card h2 {
+    font-size: 13pt;
+    font-weight: 700;
+    color: #000;
+    margin: 6px 0 4px;
+    line-height: 1.2;
+    page-break-after: avoid;
+  }
+
+  .order-card p {
+    font-size: 9.5pt;
+    color: #333;
+    margin: 2px 0;
+    line-height: 1.3;
+    flex-grow: 1;
+  }
+
+  /* Stock badge styling for print */
+  .stock-badge {
+    font-size: 8pt;
+    padding: 3px 8px;
+    margin-bottom: 4px;
+    border: 1px solid #ddd;
+    background: #f8f9fa;
+    color: #333;
+  }
+
+  /* Size selector for print */
+  .size-selector {
+    margin: 4px 0;
+    padding: 0;
+  }
+
+  .size-label {
+    font-size: 8pt;
+    margin-bottom: 2px;
+  }
+
+  .size-options {
+    display: flex;
+    gap: 3px;
+    margin-bottom: 3px;
+  }
+
+  .size-btn {
+    padding: 3px 6px;
+    font-size: 7pt;
+    border: 1px solid #ddd;
+    background: #f8f9fa;
+    color: #333;
+  }
+
+  .size-btn.active {
+    background: #333;
+    color: white;
+    border-color: #333;
+  }
+
+  .size-price-display {
+    font-size: 9pt;
+    margin-top: 2px;
+  }
+
+  .stock-badge.low-stock {
+    background: #fff3cd;
+    color: #856404;
+    border-color: #ffc107;
+  }
+
+  .stock-badge.out-of-stock {
+    background: #f8d7da;
+    color: #721c24;
+    border-color: #dc3545;
+  }
+
+  /* Price styling */
+  .price {
+    font-size: 11pt;
+    font-weight: bold;
+    color: #000;
+    margin-top: 4px;
+    padding-top: 4px;
+    border-top: 1px solid #eee;
+    page-break-before: avoid;
+  }
+
+  /* Prevent page breaks in awkward places */
+  .order-card:last-child {
+    page-break-after: auto;
+  }
+
+  /* Print-specific optimizations */
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Avoid breaking items across pages */
+  .order-card {
+    orphans: 2;
+    widows: 2;
+  }
+
+  /* Optimize for better print quality */
+  img {
+    max-width: 100%;
+    height: auto;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  
+  /* Fix appearance property warning */
+  .quantity-input {
+    appearance: textfield;
+    -moz-appearance: textfield;
+  }
+
+  /* Remove any hover effects */
+  .order-card:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .order-card:hover .order-img {
+    transform: none;
+  }
+}
+
+/* Additional print optimizations for better layout */
+@media print and (orientation: portrait) {
+  .card-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .order-card {
+    padding: 8px;
+  }
+
+  .order-img {
+    height: 100px;
+  }
+
+  .order-card h2 {
+    font-size: 12pt;
+  }
+
+  .order-card p {
+    font-size: 9pt;
+  }
+
+  .price {
+    font-size: 10pt;
+  }
+}
+
+/* Landscape orientation support */
+@media print and (orientation: landscape) {
+  .card-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  .order-img {
+    height: 100px;
+  }
+
+  .order-card h2 {
+    font-size: 12pt;
+  }
+
+  .order-card p {
+    font-size: 9pt;
+  }
+
+  .price {
+    font-size: 10pt;
+  }
 }
