@@ -35,7 +35,14 @@
             <div class="cart-total">
               <strong>Total: ₱<span id="cartTotal">0.00</span></strong>
             </div>
-            <button class="checkout-btn" onclick="event.stopPropagation()">Checkout</button>
+            <div class="cart-actions">
+              <button class="cancel-order-btn" onclick="event.stopPropagation(); cancelOrder()">
+                <i class="fas fa-times-circle"></i> Cancel Order
+              </button>
+              <button class="checkout-btn" onclick="event.stopPropagation()">
+                <i class="fas fa-check-circle"></i> Checkout
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -70,6 +77,25 @@
   <footer>
     <p>© 2025 TESDA POS Food Ordering System | All Rights Reserved</p>
   </footer>
+
+  <!-- Confirmation Modal -->
+  <div class="modal-overlay" id="confirmModal" onclick="closeConfirmModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <div class="modal-icon">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+      <h3 class="modal-title">Cancel Order?</h3>
+      <p class="modal-message">Are you sure you want to cancel your entire order? This will clear all items from your cart.</p>
+      <div class="modal-actions">
+        <button class="modal-btn modal-cancel" onclick="closeConfirmModal()">
+          <i class="fas fa-arrow-left"></i> Keep Order
+        </button>
+        <button class="modal-btn modal-confirm" onclick="confirmCancelOrder()">
+          <i class="fas fa-trash-alt"></i> Yes, Cancel
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- JS -->
   <script src="js/Order.js"></script>

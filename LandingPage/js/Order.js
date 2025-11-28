@@ -303,13 +303,26 @@ function updateCartDisplay() {
         <div class="cart-item" onclick="event.stopPropagation()">
             <div class="cart-item-info">
                 <div class="cart-item-name">${item.name}</div>
-                <div class="cart-item-price">₱${item.price.toFixed(2)}</div>
+                <div class="cart-item-price">₱${item.price.toFixed(2)} × ${item.quantity}</div>
             </div>
             <div class="cart-item-controls">
-                <button class="quantity-btn" onclick="event.stopPropagation(); updateQuantity('${item.id}', -1)">-</button>
-                <span class="quantity">${item.quantity}</span>
-                <button class="quantity-btn" onclick="event.stopPropagation(); updateQuantity('${item.id}', 1)">+</button>
-                <button class="remove-item" onclick="event.stopPropagation(); removeFromCart('${item.id}')">Remove</button>
+                <button class="quantity-btn" onclick="event.stopPropagation(); updateQuantity('${item.id}', -1)">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <input type="number" 
+                       class="quantity-input" 
+                       value="${item.quantity}" 
+                       min="1" 
+                       max="999"
+                       onclick="event.stopPropagation();"
+                       onchange="event.stopPropagation(); setQuantity('${item.id}', this.value)"
+                       onkeydown="event.stopPropagation();">
+                <button class="quantity-btn" onclick="event.stopPropagation(); updateQuantity('${item.id}', 1)">
+                    <i class="fas fa-plus"></i>
+                </button>
+                <button class="remove-item" onclick="event.stopPropagation(); removeFromCart('${item.id}')">
+                    <i class="fas fa-trash"></i>
+                </button>
             </div>
         </div>
     `).join('');
@@ -330,32 +343,99 @@ function updateQuantity(productId, change) {
     }
 }
 
+// Function to set quantity directly from input
+function setQuantity(productId, newQuantity) {
+    const item = cart.find(item => item.id === productId);
+    if (!item) return;
+    
+    // Parse and validate quantity
+    let quantity = parseInt(newQuantity);
+    
+    // Ensure quantity is valid
+    if (isNaN(quantity) || quantity < 1) {
+        quantity = 1;
+    } else if (quantity > 999) {
+        quantity = 999;
+    }
+    
+    item.quantity = quantity;
+    updateCartCount();
+    updateCartDisplay();
+}
+
 // Function to remove item from cart
 function removeFromCart(productId) {
+    const item = cart.find(item => item.id === productId);
+    if (item) {
+        showCartMessage(`${item.name} removed from cart`);
+    }
     cart = cart.filter(item => item.id !== productId);
     updateCartCount();
     updateCartDisplay();
 }
 
+// Function to cancel entire order (clear cart)
+function cancelOrder() {
+    if (cart.length === 0) return;
+    
+    // Show custom confirmation modal
+    const modal = document.getElementById('confirmModal');
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
+}
+
+// Function to close confirmation modal
+function closeConfirmModal() {
+    const modal = document.getElementById('confirmModal');
+    modal.classList.remove('active');
+    document.body.style.overflow = ''; // Restore scrolling
+}
+
+// Function to confirm and execute order cancellation
+function confirmCancelOrder() {
+    cart = [];
+    updateCartCount();
+    updateCartDisplay();
+    closeConfirmModal();
+    showCartMessage('Order cancelled. Cart cleared.', 'error');
+}
+
 // Function to show cart message
-function showCartMessage(message) {
+function showCartMessage(message, type = 'success') {
     // Create temporary message element
     const messageEl = document.createElement('div');
+    
+    // Set color based on type
+    let bgColor = 'var(--tesda-blue)';
+    let icon = '<i class="fas fa-check-circle"></i>';
+    
+    if (type === 'error') {
+        bgColor = '#dc3545';
+        icon = '<i class="fas fa-times-circle"></i>';
+    } else if (type === 'warning') {
+        bgColor = '#ffc107';
+        icon = '<i class="fas fa-exclamation-triangle"></i>';
+    }
+    
     messageEl.style.cssText = `
         position: fixed;
         top: 100px;
         right: 20px;
-        background: var(--tesda-blue);
+        background: ${bgColor};
         color: white;
-        padding: 12px 20px;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        padding: 14px 24px;
+        border-radius: 10px;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.25);
         z-index: 10000;
         font-weight: 600;
-        transform: translateX(100%);
-        transition: transform 0.3s ease;
+        transform: translateX(400px);
+        transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 0.95rem;
     `;
-    messageEl.textContent = message;
+    messageEl.innerHTML = `${icon} <span>${message}</span>`;
     
     document.body.appendChild(messageEl);
     
@@ -366,10 +446,12 @@ function showCartMessage(message) {
     
     // Remove after 3 seconds
     setTimeout(() => {
-        messageEl.style.transform = 'translateX(100%)';
+        messageEl.style.transform = 'translateX(400px)';
         setTimeout(() => {
-            document.body.removeChild(messageEl);
-        }, 300);
+            if (document.body.contains(messageEl)) {
+                document.body.removeChild(messageEl);
+            }
+        }, 400);
     }, 3000);
 }
 
