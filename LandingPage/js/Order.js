@@ -774,6 +774,9 @@ function simulateCardSwipe() {
         const transactionId = 'TXN' + Date.now().toString().slice(-8);
         document.getElementById('transactionId').textContent = transactionId;
         
+        // Display total amount
+        document.getElementById('cardTotalAmount').textContent = paymentTotal.toFixed(2);
+        
         // Mark as swiped
         cardSwiped = true;
         
