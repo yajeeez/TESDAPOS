@@ -1,0 +1,520 @@
+[
+    {
+        "timestamp": "2025-11-29 18:05:48",
+        "action": "page_access",
+        "details": "Maintenance page accessed",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:05:49",
+        "action": "page_access",
+        "details": "Maintenance page accessed",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:05:53",
+        "action": "page_access",
+        "details": "Maintenance page accessed",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:05:55",
+        "action": "page_access",
+        "details": "Maintenance page accessed",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:06:00",
+        "action": "page_access",
+        "details": "Maintenance page accessed",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:06:00",
+        "action": "audit_view",
+        "details": "Audit trail viewed - 5 entries",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:07:08",
+        "action": "page_access",
+        "details": "Maintenance page accessed",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:07:14",
+        "action": "page_access",
+        "details": "Maintenance page accessed",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:07:27",
+        "action": "page_access",
+        "details": "Maintenance page accessed",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:07:41",
+        "action": "page_access",
+        "details": "Maintenance page accessed",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:08:05",
+        "action": "page_access",
+        "details": "Maintenance page accessed",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:08:20",
+        "action": "page_access",
+        "details": "Maintenance page accessed",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:08:42",
+        "action": "page_access",
+        "details": "Maintenance page accessed",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:08:56",
+        "action": "page_access",
+        "details": "Maintenance page accessed",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:09:11",
+        "action": "page_access",
+        "details": "Maintenance page accessed",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:09:29",
+        "action": "page_access",
+        "details": "Maintenance page accessed",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:09:37",
+        "action": "page_access",
+        "details": "Maintenance page accessed",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:10:39",
+        "action": "page_access",
+        "details": "Maintenance page accessed",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:11:16",
+        "action": "page_access",
+        "details": "Maintenance page accessed",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:11:17",
+        "action": "system_check",
+        "details": "System health check performed - Status: error",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:11:24",
+        "action": "page_access",
+        "details": "Maintenance page accessed",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:11:24",
+        "action": "system_check",
+        "details": "System health check performed - Status: error",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:11:26",
+        "action": "page_access",
+        "details": "Maintenance page accessed",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:11:26",
+        "action": "system_check",
+        "details": "System health check performed - Status: error",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:11:29",
+        "action": "system_check",
+        "details": "System health check performed - Status: error",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:11:33",
+        "action": "system_check",
+        "details": "System health check performed - Status: error",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:11:34",
+        "action": "system_check",
+        "details": "System health check performed - Status: error",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:11:35",
+        "action": "system_check",
+        "details": "System health check performed - Status: error",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:11:48",
+        "action": "page_access",
+        "details": "Maintenance page accessed",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:11:49",
+        "action": "system_check",
+        "details": "System health check performed - Status: error",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:11:51",
+        "action": "system_check",
+        "details": "System health check performed - Status: error",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:11:52",
+        "action": "system_check",
+        "details": "System health check performed - Status: error",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:11:55",
+        "action": "system_check",
+        "details": "System health check performed - Status: error",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:11:56",
+        "action": "system_check",
+        "details": "System health check performed - Status: error",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:11:57",
+        "action": "system_check",
+        "details": "System health check performed - Status: error",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:11:57",
+        "action": "system_check",
+        "details": "System health check performed - Status: error",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:12:10",
+        "action": "system_check",
+        "details": "System health check performed - Status: error",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT; Windows NT 10.0; en-PH) WindowsPowerShell\/5.1.26100.7019"
+    },
+    {
+        "timestamp": "2025-11-29 18:12:39",
+        "action": "system_check",
+        "details": "System health check performed - Status: error",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT; Windows NT 10.0; en-PH) WindowsPowerShell\/5.1.26100.7019"
+    },
+    {
+        "timestamp": "2025-11-29 18:12:53",
+        "action": "page_access",
+        "details": "Maintenance page accessed",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:12:54",
+        "action": "system_check",
+        "details": "System health check performed - Status: healthy",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:13:02",
+        "action": "system_check",
+        "details": "System health check performed - Status: healthy",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT; Windows NT 10.0; en-PH) WindowsPowerShell\/5.1.26100.7019"
+    },
+    {
+        "timestamp": "2025-11-29 18:13:02",
+        "action": "system_check",
+        "details": "System health check performed - Status: healthy",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:13:07",
+        "action": "page_access",
+        "details": "Maintenance page accessed",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:13:07",
+        "action": "system_check",
+        "details": "System health check performed - Status: healthy",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:13:15",
+        "action": "system_check",
+        "details": "System health check performed - Status: healthy",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:13:19",
+        "action": "system_check",
+        "details": "System health check performed - Status: healthy",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:13:24",
+        "action": "system_check",
+        "details": "System health check performed - Status: healthy",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:13:27",
+        "action": "page_access",
+        "details": "Maintenance page accessed",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:13:28",
+        "action": "system_check",
+        "details": "System health check performed - Status: healthy",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:13:34",
+        "action": "backup",
+        "details": "Backup created: backup_2025-11-29_18-13-34.json (Size: 0.01 MB)",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT; Windows NT 10.0; en-PH) WindowsPowerShell\/5.1.26100.7019"
+    },
+    {
+        "timestamp": "2025-11-29 18:13:45",
+        "action": "audit_view",
+        "details": "Audit trail viewed - 50 entries",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT; Windows NT 10.0; en-PH) WindowsPowerShell\/5.1.26100.7019"
+    },
+    {
+        "timestamp": "2025-11-29 18:13:48",
+        "action": "page_access",
+        "details": "Maintenance page accessed",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:13:49",
+        "action": "system_check",
+        "details": "System health check performed - Status: healthy",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:14:02",
+        "action": "backup",
+        "details": "Backup created: backup_2025-11-29_18-14-02.json (Size: 0.01 MB)",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:14:04",
+        "action": "backup",
+        "details": "Backup created: backup_2025-11-29_18-14-04.json (Size: 0.01 MB)",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:14:20",
+        "action": "page_access",
+        "details": "Maintenance page accessed",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:14:20",
+        "action": "system_check",
+        "details": "System health check performed - Status: healthy",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:14:25",
+        "action": "page_access",
+        "details": "Maintenance page accessed",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:14:25",
+        "action": "page_access",
+        "details": "Maintenance page accessed",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:14:25",
+        "action": "page_access",
+        "details": "Maintenance page accessed",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:14:26",
+        "action": "page_access",
+        "details": "Maintenance page accessed",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:14:26",
+        "action": "page_access",
+        "details": "Maintenance page accessed",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:14:26",
+        "action": "page_access",
+        "details": "Maintenance page accessed",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:14:26",
+        "action": "page_access",
+        "details": "Maintenance page accessed",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:14:26",
+        "action": "system_check",
+        "details": "System health check performed - Status: healthy",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:14:32",
+        "action": "system_check",
+        "details": "System health check performed - Status: healthy",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:14:34",
+        "action": "audit_view",
+        "details": "Audit trail viewed - 66 entries",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:15:20",
+        "action": "page_access",
+        "details": "Maintenance page accessed",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:15:21",
+        "action": "system_check",
+        "details": "System health check performed - Status: healthy",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:15:30",
+        "action": "page_access",
+        "details": "Maintenance page accessed",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:15:30",
+        "action": "system_check",
+        "details": "System health check performed - Status: healthy",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:15:37",
+        "action": "page_access",
+        "details": "Maintenance page accessed",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:15:38",
+        "action": "system_check",
+        "details": "System health check performed - Status: healthy",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-11-29 18:16:40",
+        "action": "page_access",
+        "details": "Maintenance page accessed",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    }
+]

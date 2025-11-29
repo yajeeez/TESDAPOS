@@ -1,5 +1,4 @@
 // ==========================
-// ==========================
 // Maintenance Management
 // ==========================
 
@@ -14,73 +13,346 @@ function logout(e) {
 }
 
 // ==========================
-// Show Maintenance Content
+// System Check Functions
 // ==========================
-function showMaintenance() {
-  const section = document.getElementById('maintenance');
-  if (!section) {
-    // If no section element, create content in maintenanceContent div
-    const maintenanceContent = document.getElementById('maintenanceContent');
-    if (maintenanceContent) {
-      maintenanceContent.innerHTML = `
-        <div style="text-align: center; padding: 2rem;">
-          <h2>Maintenance Module</h2>
-          <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem; flex-wrap: wrap;">
-            <button onclick="performBackup()" class="maintenance-btn">
-              <i class="fas fa-database"></i> Backup Data
-            </button>
-            <button onclick="viewAuditTrail()" class="maintenance-btn">
-              <i class="fas fa-list"></i> View Audit Trail
-            </button>
-          </div>
-        </div>
-      `;
+function runSystemCheck() {
+  showNotification('Running system health check...', 'info');
+  
+  fetch('Maintenance.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: 'action=system_check'
+  })
+  .then(response => {
+    // Check if response is actually JSON
+    const contentType = response.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+      throw new Error('Server returned non-JSON response');
     }
-    return;
+    return response.json();
+  })
+  .then(data => {
+    if (data.success) {
+      displaySystemCheckResults(data.checks, data.overall_status);
+      updateSystemStatus(data.overall_status);
+      showNotification('System check completed', 'success');
+    } else {
+      showNotification('System check failed: ' + (data.message || 'Unknown error'), 'error');
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    showNotification('System check failed: ' + error.message, 'error');
+  });
+}
+
+function displaySystemCheckResults(checks, overallStatus) {
+  const resultsDiv = document.getElementById('checkResults');
+  const panelDiv = document.getElementById('systemCheckResults');
+  
+  let html = '';
+  for (const [key, check] of Object.entries(checks)) {
+    const statusClass = check.status;
+    const icon = statusClass === 'healthy' ? 'fa-check-circle' : 
+                 statusClass === 'warning' ? 'fa-exclamation-triangle' : 
+                 'fa-times-circle';
+    
+    html += `
+      <div class="check-item ${statusClass}">
+        <div class="check-icon">
+          <i class="fas ${icon}"></i>
+        </div>
+        <div class="check-details">
+          <strong>${key.replace('_', ' ').toUpperCase()}</strong>
+          <span>${check.message}</span>
+        </div>
+      </div>
+    `;
   }
   
-  section.innerHTML = `
-    <h2>Maintenance Module</h2>
-    <div class="maintenance-actions">
-      <button onclick="performBackup()" class="maintenance-btn">
-        <i class="fas fa-database"></i> Backup Data
-      </button>
-      <button onclick="viewAuditTrail()" class="maintenance-btn">
-        <i class="fas fa-list"></i> View Audit Trail
-      </button>
-    </div>
-  `;
+  resultsDiv.innerHTML = html;
+  panelDiv.style.display = 'block';
+}
+
+function updateSystemStatus(status) {
+  const statusElement = document.getElementById('healthStatus');
+  const statusCard = document.getElementById('systemStatus');
+  
+  if (status === 'healthy') {
+    statusElement.textContent = 'All systems operational';
+    statusCard.style.borderLeftColor = '#28a745';
+  } else if (status === 'warning') {
+    statusElement.textContent = 'Some issues detected';
+    statusCard.style.borderLeftColor = '#ffc107';
+  } else {
+    statusElement.textContent = 'Critical issues found';
+    statusCard.style.borderLeftColor = 'var(--danger)';
+  }
 }
 
 // ==========================
-// Perform System Backup
+// Backup Functions
 // ==========================
 function performBackup() {
   showNotification('Starting system backup...', 'info');
   
-  // Simulate backup process
-  setTimeout(() => {
-    showNotification('System backup completed successfully!');
-    console.log('System backup completed at:', new Date().toLocaleString());
-  }, 2000);
+  fetch('Maintenance.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: 'action=backup'
+  })
+  .then(response => {
+    const contentType = response.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+      throw new Error('Server returned non-JSON response');
+    }
+    return response.json();
+  })
+  .then(data => {
+    if (data.success) {
+      showNotification(`Backup completed: ${data.file} (${formatFileSize(data.size)})`, 'success');
+      updateBackupStatus();
+      loadBackupHistory();
+    } else {
+      showNotification(`Backup failed: ${data.message}`, 'error');
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    showNotification('Backup failed: ' + error.message, 'error');
+  });
+}
+
+function updateBackupStatus() {
+  const statusElement = document.getElementById('backupStatus');
+  statusElement.textContent = 'Last backup: ' + new Date().toLocaleString();
+}
+
+function loadBackupHistory() {
+  // Load actual backup files from server
+  fetch('Maintenance.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: 'action=list_backups'
+  })
+  .then(response => {
+    const contentType = response.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+      throw new Error('Server returned non-JSON response');
+    }
+    return response.json();
+  })
+  .then(data => {
+    displayBackupHistory(data.backups || []);
+  })
+  .catch(error => {
+    console.error('Error loading backup history:', error);
+    // Fallback to showing recent backup if any
+    const backupList = document.getElementById('backupList');
+    backupList.innerHTML = '<p style="text-align: center; padding: 1rem; color: #666;">Unable to load backup history</p>';
+  });
+}
+
+function displayBackupHistory(backups) {
+  const backupList = document.getElementById('backupList');
+  const panelDiv = document.getElementById('backupHistory');
+  
+  if (backups.length === 0) {
+    backupList.innerHTML = '<p style="text-align: center; padding: 2rem; color: #666;">No backups found</p>';
+  } else {
+    let html = '';
+    backups.forEach(backup => {
+      html += `
+        <div class="backup-item">
+          <div class="backup-info">
+            <strong>${backup.name}</strong>
+            <span>Created: ${backup.timestamp} | Size: ${backup.size}</span>
+          </div>
+          <div class="backup-actions">
+            <button class="btn btn-info" onclick="downloadBackup('${backup.name}')">
+              <i class="fas fa-download"></i> Download
+            </button>
+            <button class="btn btn-danger" onclick="deleteBackup('${backup.name}')">
+              <i class="fas fa-trash"></i> Delete
+            </button>
+          </div>
+        </div>
+      `;
+    });
+    backupList.innerHTML = html;
+  }
+  
+  panelDiv.style.display = 'block';
+}
+
+function downloadBackup(filename) {
+  showNotification(`Downloading ${filename}...`, 'info');
+  
+  fetch('Maintenance.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: `action=download_backup&filename=${encodeURIComponent(filename)}`
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      // Create a temporary link to download the file
+      const link = document.createElement('a');
+      link.href = data.download_url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      showNotification(`Downloaded ${filename}`, 'success');
+    } else {
+      showNotification(`Download failed: ${data.message}`, 'error');
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    showNotification('Download failed', 'error');
+  });
+}
+
+function deleteBackup(filename) {
+  if (!confirm(`Are you sure you want to delete ${filename}?`)) {
+    return;
+  }
+  
+  showNotification(`Deleting ${filename}...`, 'info');
+  
+  fetch('Maintenance.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: `action=delete_backup&filename=${encodeURIComponent(filename)}`
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      showNotification(`Deleted ${filename}`, 'success');
+      loadBackupHistory(); // Refresh the backup list
+    } else {
+      showNotification(`Delete failed: ${data.message}`, 'error');
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    showNotification('Delete failed', 'error');
+  });
 }
 
 // ==========================
-// View Audit Trail
+// Audit Trail Functions
 // ==========================
 function viewAuditTrail() {
   showNotification('Loading audit trail...', 'info');
   
-  // Simulate audit trail loading
-  setTimeout(() => {
-    showNotification('Audit trail loaded. Check console for details.');
-    console.log('=== AUDIT TRAIL ===');
-    console.log('2024-01-15 10:30:00 - Admin logged in');
-    console.log('2024-01-15 10:32:15 - Product "Chicken Adobo" updated');
-    console.log('2024-01-15 10:35:20 - Order #1001 status changed to Approved');
-    console.log('2024-01-15 10:40:10 - Inventory updated for product ID: 123');
-    console.log('=== END AUDIT TRAIL ===');
-  }, 1500);
+  fetch('Maintenance.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: 'action=audit_trail'
+  })
+  .then(response => {
+    const contentType = response.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+      throw new Error('Server returned non-JSON response');
+    }
+    return response.json();
+  })
+  .then(data => {
+    if (data.success) {
+      displayAuditTrail(data.data);
+      showNotification('Audit trail loaded', 'success');
+    } else {
+      showNotification('Failed to load audit trail: ' + (data.message || 'Unknown error'), 'error');
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    showNotification('Failed to load audit trail: ' + error.message, 'error');
+  });
+}
+
+function displayAuditTrail(auditData) {
+  const auditList = document.getElementById('auditList');
+  const panelDiv = document.getElementById('auditTrailDisplay');
+  
+  if (auditData.length === 0) {
+    auditList.innerHTML = '<p style="text-align: center; padding: 2rem; color: #666;">No audit records found</p>';
+  } else {
+    let html = '';
+    auditData.forEach(entry => {
+      html += `
+        <div class="audit-item">
+          <div class="audit-time">${entry.timestamp}</div>
+          <div class="audit-details">
+            <div class="audit-action">${entry.action}</div>
+            <div class="audit-description">${entry.details}</div>
+            <div class="audit-meta">IP: ${entry.ip} | User Agent: ${entry.user_agent.substring(0, 50)}...</div>
+          </div>
+        </div>
+      `;
+    });
+    auditList.innerHTML = html;
+  }
+  
+  panelDiv.style.display = 'block';
+  
+  // Setup search functionality
+  setupAuditSearch();
+}
+
+function setupAuditSearch() {
+  const searchInput = document.getElementById('auditSearch');
+  const filterSelect = document.getElementById('auditFilter');
+  
+  if (searchInput) {
+    searchInput.addEventListener('input', filterAuditTrail);
+  }
+  
+  if (filterSelect) {
+    filterSelect.addEventListener('change', filterAuditTrail);
+  }
+}
+
+function filterAuditTrail() {
+  const searchTerm = document.getElementById('auditSearch').value.toLowerCase();
+  const filterValue = document.getElementById('auditFilter').value;
+  const auditItems = document.querySelectorAll('.audit-item');
+  
+  auditItems.forEach(item => {
+    const action = item.querySelector('.audit-action').textContent.toLowerCase();
+    const details = item.querySelector('.audit-description').textContent.toLowerCase();
+    
+    const matchesSearch = !searchTerm || action.includes(searchTerm) || details.includes(searchTerm);
+    const matchesFilter = !filterValue || action.includes(filterValue.toLowerCase());
+    
+    item.style.display = matchesSearch && matchesFilter ? 'flex' : 'none';
+  });
+}
+
+// ==========================
+// Utility Functions
+// ==========================
+function formatFileSize(bytes) {
+  if (bytes === 0) return '0 Bytes';
+  const k = 1024;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 }
 
 // ==========================
@@ -130,5 +402,11 @@ function showNotification(message, type = 'success') {
 // Initialize on page load
 // ==========================
 document.addEventListener('DOMContentLoaded', () => {
-  showMaintenance();
+  // System check will only run when user clicks the button
+  // No automatic execution on page load
+  
+  // Setup automatic refresh for system status (optional - comment out if not needed)
+  // setInterval(() => {
+  //   runSystemCheck();
+  // }, 300000); // Check every 5 minutes
 });

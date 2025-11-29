@@ -30,6 +30,13 @@ class MongoInventory {
     }
     
     /**
+     * Get the MongoDB collection
+     */
+    public function getCollection() {
+        return $this->collection;
+    }
+    
+    /**
      * Add a new product to inventory
      */
     public function addProduct($productData) {
