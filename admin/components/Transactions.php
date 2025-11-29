@@ -12,6 +12,7 @@ session_start();
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>TESDA POS - Transactions</title>
+  <link rel="icon" type="image/x-icon" href="../../favicon.ico">
   <link rel="stylesheet" href="../assets/css/Transactions.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
@@ -63,6 +64,7 @@ session_start();
             <thead>
               <tr>
                 <th>Order ID</th>
+                <th>Transaction ID</th>
                 <th>Date</th>
                 <th>Cashier</th>
                 <th>Items</th>
@@ -82,6 +84,11 @@ session_start();
 
     </main>
   </div>
+
+  <!-- Generate Report Button -->
+  <button class="generate-report-btn" onclick="generateReport()">
+    <i class="fas fa-file-export"></i> Generate Report
+  </button>
 
   <!-- JS -->
   <script src="../assets/js/AdminDashboard.js"></script>

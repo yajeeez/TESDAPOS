@@ -133,6 +133,7 @@ function renderTransactions() {
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td><strong>#${transaction.order_id || transaction.id}</strong></td>
+      <td>${transaction.transaction_id || 'N/A'}</td>
       <td>${formatDisplayDate(transaction.created_at || transaction.date)}</td>
       <td>${transaction.cashier_name || 'N/A'}</td>
       <td>${itemsLabel}</td>
@@ -141,13 +142,9 @@ function renderTransactions() {
       <td><strong>${formatCurrency(total)}</strong></td>
       <td><span class="status ${statusColors[transaction.status] || 'pending'}">${transaction.status || 'Pending'}</span></td>
       <td>
-        <select onchange="updateOrderStatus('${transaction.order_id || transaction.id}', this.value)">
-          <option value="">Change Status</option>
-          <option value="Pending" ${transaction.status === 'Pending' ? 'selected' : ''}>Pending</option>
-          <option value="Approved" ${transaction.status === 'Approved' ? 'selected' : ''}>Approved</option>
-          <option value="Served" ${transaction.status === 'Served' ? 'selected' : ''}>Served</option>
-          <option value="Canceled" ${transaction.status === 'Canceled' ? 'selected' : ''}>Canceled</option>
-        </select>
+        <button class="action-btn" onclick="generateTransactionReport('${transaction.order_id || transaction.id}')" title="Generate Report">
+          <i class="fas fa-file-export"></i>
+        </button>
       </td>
     `;
     tbody.appendChild(tr);
@@ -368,16 +365,19 @@ function exportToCSV() {
       `${item.name || item.product_name} (${item.quantity}x @ ₱${item.price})`
     ).join('; ');
 
+    // Ensure payment method shows full value
+    const paymentMethod = transaction.payment_method || 'Cash';
+    const fullPaymentMethod = paymentMethod.length > 15 ? paymentMethod : paymentMethod;
+
     return [
       transaction.order_id || transaction.id || '',
       transaction.created_at ? new Date(transaction.created_at).toLocaleDateString() : (transaction.date || ''),
       transaction.cashier_name || '',
-      'Walk-in', // Default customer name since it's not in database
+      fullPaymentMethod, // Use the full payment method value
       transaction.status || 'Pending',
-      transaction.payment_method || 'Cash',
-      transaction.total_amount || '0.00',
+      `"${itemsDetails}"`, // Items details wrapped in quotes
       itemsCount.toString(),
-      `"${itemsDetails}"`
+      transaction.total_amount || '0.00'
     ];
   });
 
@@ -1054,6 +1054,387 @@ async function fetchTransactionsFromDB() {
     showNotification('Failed to load transactions from database. Please refresh the page.', 'error');
     return false;
   }
+}
+
+// ==========================
+// Individual Transaction Report Function
+// ==========================
+
+function generateTransactionReport(orderId) {
+  const transaction = transactionsData.find((txn) => 
+    (txn.order_id && txn.order_id === orderId) || 
+    (txn.id && txn.id === orderId)
+  );
+  
+  if (!transaction) {
+    showNotification('Transaction not found', 'error');
+    return;
+  }
+
+  // Create a modal using the Order.css confirmation modal structure
+  const modal = document.createElement('div');
+  modal.className = 'modal-overlay';
+  modal.id = 'transactionReportModal';
+
+  modal.innerHTML = `
+    <div class="modal-content">
+      <div class="modal-icon report-icon">
+        <i class="fas fa-file-export"></i>
+      </div>
+      <h3 class="modal-title">Generate Transaction Report</h3>
+      <p class="modal-message">Choose the format for Order #${orderId} report:</p>
+      <div class="modal-actions">
+        <button class="modal-btn modal-print" onclick="printTransactionReport('${orderId}'); closeTransactionModal();">
+          <i class="fas fa-print"></i> Print Receipt
+        </button>
+        <button class="modal-btn modal-export" onclick="exportTransactionToCSV('${orderId}'); closeTransactionModal();">
+          <i class="fas fa-file-csv"></i> Export to CSV
+        </button>
+        <button class="modal-btn modal-close" onclick="closeTransactionModal();">
+          <i class="fas fa-times"></i> Close
+        </button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  // Trigger animation
+  setTimeout(() => {
+    modal.classList.add('active');
+  }, 10);
+
+  // Close modal when clicking outside
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      closeTransactionModal();
+    }
+  });
+
+  // Function to close modal (added to global scope)
+  window.closeTransactionModal = function() {
+    modal.classList.remove('active');
+    setTimeout(() => {
+      if (document.body.contains(modal)) {
+        document.body.removeChild(modal);
+      }
+      delete window.closeTransactionModal;
+    }, 300);
+  };
+}
+
+function printTransactionReport(orderId) {
+  const transaction = transactionsData.find((txn) => 
+    (txn.order_id && txn.order_id === orderId) || 
+    (txn.id && txn.id === orderId)
+  );
+  
+  if (!transaction) {
+    showNotification('Transaction not found', 'error');
+    return;
+  }
+
+  const printWindow = window.open('', '_blank', 'width=720,height=900');
+  if (!printWindow) {
+    showNotification('Pop-up blocked. Please allow pop-ups to print.', 'error');
+    return;
+  }
+
+  const items = transaction.items || [];
+  const itemsRows = items.map(item => `
+    <tr>
+      <td>${item.name || item.product_name || 'Unknown Item'}</td>
+      <td style="text-align:right;">${item.quantity || 1}</td>
+      <td style="text-align:right;">${formatCurrency(item.price || 0)}</td>
+      <td style="text-align:right;">${formatCurrency((item.price || 0) * (item.quantity || 1))}</td>
+    </tr>
+  `).join('');
+
+  const total = transactionTotal(transaction);
+  const itemCount = transactionItemCount(transaction);
+
+  printWindow.document.write(`
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>Transaction Report #${orderId} - TESDA POS</title>
+        <style>
+          @media print {
+            @page { margin: 1cm; }
+            body { margin: 0; }
+          }
+          body {
+            font-family: 'Inter', 'Arial', sans-serif;
+            padding: 24px;
+            color: #1f2937;
+            line-height: 1.6;
+          }
+          .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #004aad;
+            padding-bottom: 20px;
+          }
+          .header h1 {
+            color: #004aad;
+            margin: 0 0 10px 0;
+            font-size: 2rem;
+          }
+          .header h2 {
+            color: #333;
+            margin: 0;
+            font-size: 1.2rem;
+          }
+          .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+          }
+          .info-item {
+            display: flex;
+            justify-content: space-between;
+          }
+          .info-label {
+            font-weight: 600;
+            color: #666;
+          }
+          .info-value {
+            color: #333;
+          }
+          table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+          }
+          th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+          }
+          th {
+            background: #004aad;
+            color: white;
+            font-weight: 600;
+          }
+          .totals {
+            margin-top: 20px;
+            text-align: right;
+            font-size: 1.1rem;
+            font-weight: bold;
+          }
+          .footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #666;
+            font-size: 0.85rem;
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <h1>TESDA POS</h1>
+          <h2>Transaction Report</h2>
+        </div>
+
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="info-label">Order ID:</span>
+            <span class="info-value">#${orderId}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Transaction ID:</span>
+            <span class="info-value">${transaction.transaction_id || 'N/A'}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Date:</span>
+            <span class="info-value">${formatDisplayDate(transaction.created_at || transaction.date)}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Cashier:</span>
+            <span class="info-value">${transaction.cashier_name || 'N/A'}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Payment Method:</span>
+            <span class="info-value">${transaction.payment_method || 'N/A'}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Status:</span>
+            <span class="info-value">${transaction.status || 'Pending'}</span>
+          </div>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th style="text-align:right;">Quantity</th>
+              <th style="text-align:right;">Price</th>
+              <th style="text-align:right;">Subtotal</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${itemsRows}
+          </tbody>
+        </table>
+
+        <div class="totals">
+          <div>Total Items: ${itemCount}</div>
+          <div>Total Amount: ${formatCurrency(total)}</div>
+        </div>
+
+        <div class="footer">
+          <p>This is a computer-generated report from TESDA POS System</p>
+          <p>Generated on: ${new Date().toLocaleString('en-PH')}</p>
+        </div>
+
+        <script>
+          window.onload = function() {
+            window.print();
+            window.onafterprint = function() {
+              window.close();
+            };
+          };
+        </script>
+      </body>
+    </html>
+  `);
+
+  printWindow.document.close();
+}
+
+function exportTransactionToCSV(orderId) {
+  const transaction = transactionsData.find((txn) => 
+    (txn.order_id && txn.order_id === orderId) || 
+    (txn.id && txn.id === orderId)
+  );
+  
+  if (!transaction) {
+    showNotification('Transaction not found', 'error');
+    return;
+  }
+
+  const items = transaction.items || [];
+  const headers = ['Order ID', 'Transaction ID', 'Date', 'Cashier', 'Payment Method', 'Status', 'Item Name', 'Quantity', 'Price', 'Subtotal'];
+  
+  // Ensure payment method shows full value
+  const paymentMethod = transaction.payment_method || 'Cash';
+  const fullPaymentMethod = paymentMethod.length > 15 ? paymentMethod : paymentMethod;
+  
+  const csvRows = items.map(item => [
+    orderId,
+    transaction.transaction_id || 'N/A',
+    transaction.created_at ? new Date(transaction.created_at).toLocaleDateString() : (transaction.date || ''),
+    transaction.cashier_name || 'N/A',
+    fullPaymentMethod, // Use the full payment method value
+    transaction.status || 'Pending',
+    item.name || item.product_name || 'Unknown Item',
+    item.quantity || 1,
+    item.price || 0,
+    (item.price || 0) * (item.quantity || 1)
+  ]);
+
+  // Add summary row at the end
+  csvRows.push([
+    orderId,
+    transaction.transaction_id || 'N/A',
+    transaction.created_at ? new Date(transaction.created_at).toLocaleDateString() : (transaction.date || ''),
+    transaction.cashier_name || 'N/A',
+    fullPaymentMethod, // Use the full payment method value
+    transaction.status || 'Pending',
+    'TOTAL',
+    transactionItemCount(transaction).toString(),
+    '',
+    transactionTotal(transaction)
+  ]);
+
+  const csvContent = [
+    headers.join(','),
+    ...csvRows.map(row => row.map(cell => `"${cell}"`).join(','))
+  ].join('\n');
+
+  const BOM = '\uFEFF';
+  const blob = new Blob([BOM + csvContent], { type: 'text/csv;charset=utf-8;' });
+  
+  const link = document.createElement('a');
+  const url = URL.createObjectURL(blob);
+  link.setAttribute('href', url);
+  link.setAttribute('download', `transaction_${orderId}_report.csv`);
+  link.style.visibility = 'hidden';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  
+  showNotification(`Transaction #${orderId} exported to CSV`, 'success');
+}
+
+// ==========================
+// Generate Report Function
+// ==========================
+
+function generateReport() {
+  const transactionsToExport = filteredTransactions.length > 0 ? filteredTransactions : transactionsData;
+  
+  if (!transactionsToExport.length) {
+    showNotification('No transactions to generate report', 'error');
+    return;
+  }
+
+  // Create a modal using the Order.css confirmation modal structure
+  const modal = document.createElement('div');
+  modal.className = 'modal-overlay';
+  modal.id = 'mainReportModal';
+
+  modal.innerHTML = `
+    <div class="modal-content">
+      <div class="modal-icon report-icon">
+        <i class="fas fa-file-export"></i>
+      </div>
+      <h3 class="modal-title">Generate Report</h3>
+      <p class="modal-message">Choose the format for your sales report:</p>
+      <div class="modal-actions">
+        <button class="modal-btn modal-print" onclick="printSalesReport(); closeReportModal();">
+          <i class="fas fa-print"></i> Print Report
+        </button>
+        <button class="modal-btn modal-export" onclick="exportToCSV(); closeReportModal();">
+          <i class="fas fa-file-csv"></i> Export to CSV
+        </button>
+        <button class="modal-btn modal-close" onclick="closeReportModal();">
+          <i class="fas fa-times"></i> Close
+        </button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  // Trigger animation
+  setTimeout(() => {
+    modal.classList.add('active');
+  }, 10);
+
+  // Close modal when clicking outside
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      closeReportModal();
+    }
+  });
+
+  // Function to close modal (added to global scope)
+  window.closeReportModal = function() {
+    modal.classList.remove('active');
+    setTimeout(() => {
+      if (document.body.contains(modal)) {
+        document.body.removeChild(modal);
+      }
+      delete window.closeReportModal;
+    }, 300);
+  };
 }
 
 // ==========================
