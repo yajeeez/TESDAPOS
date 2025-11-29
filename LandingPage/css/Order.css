@@ -161,7 +161,7 @@ nav {
 }
 
 .cart-items {
-  max-height: 300px;
+  max-height: 220px;
   overflow-y: auto;
   padding: 1rem;
 }
@@ -492,7 +492,7 @@ nav {
 /* Cards */
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1.25rem;
   padding: 0 1rem 2rem;
   max-width: 1400px;
@@ -501,6 +501,14 @@ nav {
   box-sizing: border-box;
 }
 
+/* Center cards when there are only 1-3 products (modern browsers) */
+.card-grid:has(.order-card:nth-child(1):nth-last-child(1)),
+.card-grid:has(.order-card:nth-child(1):nth-last-child(2)),
+.card-grid:has(.order-card:nth-child(1):nth-last-child(3)) {
+  grid-template-columns: repeat(auto-fit, minmax(220px, auto));
+  justify-content: start;
+  justify-items: start;
+}
 
 .order-card {
   background: var(--card-bg);
@@ -517,6 +525,17 @@ nav {
   flex-direction: column;
 }
 
+/* Limit card width to 240px when there are only 1, 2, or 3 products */
+.order-card:nth-child(1):nth-last-child(1),
+.order-card:nth-child(1):nth-last-child(2),
+.order-card:nth-child(2):nth-last-child(1),
+.order-card:nth-child(1):nth-last-child(3),
+.order-card:nth-child(2):nth-last-child(2),
+.order-card:nth-child(3):nth-last-child(1) {
+  max-width: 240px;
+  width: 240px;
+  justify-self: start;
+}
 
 .order-card:hover {
   transform: translateY(-8px);
@@ -732,13 +751,13 @@ nav {
 /* Responsive Design */
 @media (max-width: 1400px) {
   .card-grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   }
 }
 
 @media (max-width: 900px) {
   .card-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   }
   
   .category-filters {
@@ -753,7 +772,7 @@ nav {
 
 @media (max-width: 600px) {
   .card-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   }
   
   .filter-btn {

@@ -412,7 +412,7 @@ function updateCartDisplay() {
                 <button class="quantity-btn" onclick="event.stopPropagation(); updateQuantity('${item.cartItemId}', 1)">
                     <i class="fas fa-plus"></i>
                 </button>
-                <button class="remove-item" onclick="event.stopPropagation(); removeFromCart('${item.cartItemId}')">
+                <button class="remove-item" onclick="event.stopPropagation(); showRemoveItemModal('${item.cartItemId}')">
                     <i class="fas fa-trash"></i>
                 </button>
             </div>
@@ -454,6 +454,47 @@ function setQuantity(cartItemId, newQuantity) {
     item.quantity = quantity;
     updateCartCount();
     updateCartDisplay();
+}
+
+// Variable to store the cart item ID for removal confirmation
+let itemToRemove = null;
+
+// Function to show remove item confirmation modal
+function showRemoveItemModal(cartItemId) {
+    const item = cart.find(item => item.cartItemId === cartItemId);
+    if (!item) return;
+    
+    // Store the item ID for confirmation
+    itemToRemove = cartItemId;
+    
+    // Update modal message with item name
+    const sizeText = item.size ? ` (${item.size.charAt(0).toUpperCase() + item.size.slice(1)})` : '';
+    const messageEl = document.getElementById('removeItemMessage');
+    if (messageEl) {
+        messageEl.textContent = `Are you sure you want to remove "${item.name}${sizeText}" from your cart?`;
+    }
+    
+    // Show modal
+    const modal = document.getElementById('removeItemModal');
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
+}
+
+// Function to close remove item modal
+function closeRemoveItemModal() {
+    const modal = document.getElementById('removeItemModal');
+    modal.classList.remove('active');
+    document.body.style.overflow = ''; // Restore scrolling
+    itemToRemove = null; // Clear the stored item ID
+}
+
+// Function to confirm and execute item removal
+function confirmRemoveItem() {
+    if (itemToRemove) {
+        removeFromCart(itemToRemove);
+        itemToRemove = null; // Clear after removal
+    }
+    closeRemoveItemModal();
 }
 
 // Function to remove item from cart

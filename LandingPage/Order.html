@@ -24,7 +24,7 @@
         </button>
         <div class="cart-dropdown" id="cartDropdown" onclick="event.stopPropagation()">
           <div class="cart-header">
-            <h3>Shopping Cart</h3>
+            <h3>Cart</h3>
             <button class="close-cart" onclick="event.stopPropagation(); toggleCart()">
               <i class="fas fa-times"></i>
             </button>
@@ -79,7 +79,7 @@
     <p>© 2025 TESDA POS Food Ordering System | All Rights Reserved</p>
   </footer>
 
-  <!-- Confirmation Modal -->
+  <!-- Confirmation Modal for Cancel Order -->
   <div class="modal-overlay" id="confirmModal" onclick="closeConfirmModal()">
     <div class="modal-content" onclick="event.stopPropagation()">
       <div class="modal-icon">
@@ -93,6 +93,25 @@
         </button>
         <button class="modal-btn modal-confirm" onclick="confirmCancelOrder()">
           <i class="fas fa-trash-alt"></i> Yes, Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirmation Modal for Remove Item -->
+  <div class="modal-overlay" id="removeItemModal" onclick="closeRemoveItemModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <div class="modal-icon">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+      <h3 class="modal-title">Remove Item?</h3>
+      <p class="modal-message" id="removeItemMessage">Are you sure you want to remove this item from your cart?</p>
+      <div class="modal-actions">
+        <button class="modal-btn modal-cancel" onclick="closeRemoveItemModal()">
+          <i class="fas fa-arrow-left"></i> Keep Item
+        </button>
+        <button class="modal-btn modal-confirm" onclick="confirmRemoveItem()">
+          <i class="fas fa-trash-alt"></i> Yes, Remove
         </button>
       </div>
     </div>
