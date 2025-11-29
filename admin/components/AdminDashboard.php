@@ -12,6 +12,7 @@ session_start();
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>TESDA POS Admin</title>
+  <link rel="icon" href="../../img/TESDAG.png" type="image/png">
   <link rel="stylesheet" href="../assets/css/AdminDashboard.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
@@ -99,8 +100,6 @@ session_start();
               <select id="filterStatus" class="filter-input" style="padding: 0.6rem; border: 1px solid #ddd; border-radius: 6px; font-size: 0.9rem;">
                 <option value="">All Status</option>
                 <option value="Served">Served</option>
-                <option value="Pending">Pending</option>
-                <option value="Approved">Approved</option>
                 <option value="Canceled">Canceled</option>
               </select>
             </div>
@@ -109,8 +108,14 @@ session_start();
               <select id="filterPaymentMethod" class="filter-input" style="padding: 0.6rem; border: 1px solid #ddd; border-radius: 6px; font-size: 0.9rem;">
                 <option value="">All Methods</option>
                 <option value="Cash">Cash</option>
-                <option value="Cashless">Cashless</option>
+                <option value="Cashless">Credit or Debit Card</option>
               </select>
+            </div>
+            <div class="filter-group" style="display: flex; flex-direction: column; gap: 0.5rem;">
+              <label style="font-size: 0.85rem; font-weight: 600; color: #555; opacity: 0;">Export</label>
+              <button id="exportCsvBtn" class="export-btn" style="padding: 0.69rem; border: 1px solid #ddd; border-radius: 6px; font-size: 0.9rem; background: var(--tesda-blue); color: #ddd; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" onmouseover="this.style.background='linear-gradient(135deg, var(--tesda-dark), var(--tesda-blue))'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(0,0,0,0.2)'; this.style.border='1px solid var(--tesda-dark)'; this.style.color='#0f2940'" onmouseout="this.style.background='var(--tesda-blue)'; this.style.transform='translateY(0px)'; this.style.boxShadow='0 2px 4px rgba(0,0,0,0.1)'; this.style.border='1px solid #ddd'; this.style.color='#ddd'">
+                <i class="fas fa-file-csv"></i> Export CSV
+              </button>
             </div>
            
           </div>
@@ -121,13 +126,13 @@ session_start();
 
           <!-- Bar Chart -->
           <div class="chart-box">
-            <h3>Dashboard Metrics (Bar Chart)</h3>
+            <h3>Dashboard Metrics Overview (Bar Chart)</h3>
             <canvas id="barChart"></canvas>
           </div>
 
           <!-- Pie Chart -->
           <div class="chart-box">
-            <h3>Orders Status Distribution (Pie Chart)</h3>
+            <h3>All Metrics Distribution (Pie Chart)</h3>
             <canvas id="pieChart"></canvas>
           </div>
 
@@ -160,6 +165,13 @@ session_start();
       if (typeof fetchTransactionsFromDB === 'function') {
         await fetchTransactionsFromDB();
         updateSummaryCards();
+        
+        // Refresh charts after transactions are loaded
+        setTimeout(() => {
+          if (typeof refreshCharts === 'function') {
+            refreshCharts();
+          }
+        }, 1000);
       }
     });
   </script>

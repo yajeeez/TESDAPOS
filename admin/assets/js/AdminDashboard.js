@@ -24,6 +24,19 @@ let dashboardMetrics = {
   lowStockItems: 0
 };
 
+// Status and Payment Method Distributions
+let statusDistribution = {
+  Pending: 0,
+  Approved: 0,
+  Served: 0,
+  Canceled: 0
+};
+
+let paymentMethodDistribution = {
+  Cash: 0,
+  "Credit or Debit Card": 0
+};
+
 function initCharts() {
   const barCanvas = document.getElementById('barChart');
   const pieCanvas = document.getElementById('pieChart');
@@ -82,46 +95,179 @@ function initCharts() {
   const barCtx = barCanvas.getContext('2d');
   const pieCtx = pieCanvas.getContext('2d');
 
-  const initialData = [
-    dashboardMetrics.totalSales,
-    dashboardMetrics.ordersToday,
+  // Get all metrics including status and payment distributions
+  const allMetrics = calculateAllMetrics();
+
+  // Prepare data for bar chart - combine all metrics
+  const barLabels = [
+    'Total Sales (₱K)', 
+    'Orders Today', 
+    'Total Products', 
+    'Low Stock Items',
+    'Served',
+    'Canceled',
+    'Cash',
+    'Credit or Debit Card'
+  ];
+  
+  // Normalize sales to thousands for better visualization
+  const barData = [
+    allMetrics.totalSales / 1000, // Sales in thousands
+    allMetrics.ordersToday,
     dashboardMetrics.totalProducts,
-    dashboardMetrics.lowStockItems
+    dashboardMetrics.lowStockItems,
+    allMetrics.statusDistribution.Served,
+    allMetrics.statusDistribution.Canceled,
+    allMetrics.paymentMethodDistribution.Cash,
+    allMetrics.paymentMethodDistribution["Credit or Debit Card"]
   ];
 
-  // Bar Chart
+  const barColors = [
+    '#4CAF50',  // Total Sales - Green
+    '#2196F3',  // Orders Today - Blue
+    '#FF9800',  // Total Products - Orange
+    '#F44336',  // Low Stock Items - Red
+    '#4CAF50',  // Served - Green
+    '#F44336',  // Canceled - Red
+    '#4CAF50',  // Cash - Green
+    '#2196F3'   // Credit or Debit Card - Blue
+  ];
+
+  // Bar Chart - All Metrics
   barChart = new Chart(barCtx, {
     type: 'bar',
     data: {
-      labels: ['Total Sales', 'Orders Today', 'Total Products', 'Low Stock Items'],
+      labels: barLabels,
       datasets: [{
         label: 'Dashboard Metrics',
-        data: initialData,
-        backgroundColor: ['#4CAF50', '#2196F3', '#FF9800', '#F44336']
+        data: barData,
+        backgroundColor: barColors
       }]
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: { y: { beginAtZero: true } }
+      plugins: { 
+        legend: { display: false },
+        title: {
+          display: true,
+          text: 'Dashboard Metrics Overview'
+        },
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              let label = context.label || '';
+              if (label) {
+                label += ': ';
+              }
+              if (context.parsed.y !== null) {
+                // Format sales differently
+                if (label.includes('Total Sales')) {
+                  label += '₱' + (context.parsed.y * 1000).toLocaleString('en-PH', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                } else {
+                  label += context.parsed.y;
+                }
+              }
+              return label;
+            }
+          }
+        }
+      },
+      scales: { 
+        y: { 
+          beginAtZero: true
+        } 
+      }
     }
   });
 
-  // Pie Chart
+  // Prepare data for pie chart - combine all metrics (as counts/values)
+  const pieLabels = [
+    'Total Sales',
+    'Orders Today',
+    'Total Products',
+    'Low Stock Items',
+    'Served',
+    'Canceled',
+    'Cash',
+    'Credit or Debit Card'
+  ];
+
+  // Normalize values for pie chart (using percentages or absolute values)
+  const pieData = [
+    Math.min(allMetrics.totalSales / 100, 100), // Normalize sales
+    allMetrics.ordersToday,
+    dashboardMetrics.totalProducts,
+    dashboardMetrics.lowStockItems,
+    allMetrics.statusDistribution.Served,
+    allMetrics.statusDistribution.Canceled,
+    allMetrics.paymentMethodDistribution.Cash,
+    allMetrics.paymentMethodDistribution["Credit or Debit Card"]
+  ];
+
+  const pieColors = [
+    '#4CAF50',  // Total Sales - Green
+    '#2196F3',  // Orders Today - Blue
+    '#FF9800',  // Total Products - Orange
+    '#F44336',  // Low Stock Items - Red
+    '#4CAF50',  // Served - Green
+    '#F44336',  // Canceled - Red
+    '#4CAF50',  // Cash - Green
+    '#2196F3'   // Credit or Debit Card - Blue
+  ];
+
+  // Pie Chart - All Metrics Distribution
   pieChart = new Chart(pieCtx, {
     type: 'pie',
     data: {
-      labels: ['Total Sales', 'Orders Today', 'Total Products', 'Low Stock Items'],
+      labels: pieLabels,
       datasets: [{
-        data: initialData,
-        backgroundColor: ['#4CAF50', '#2196F3', '#FF9800', '#F44336']
+        data: pieData,
+        backgroundColor: pieColors
       }]
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      plugins: { legend: { position: 'bottom' } }
+      plugins: { 
+        legend: { 
+          position: 'right',
+          labels: {
+            boxWidth: 15,
+            padding: 10,
+            font: {
+              size: 11
+            }
+          }
+        },
+        title: {
+          display: true,
+          text: 'All Metrics Distribution'
+        },
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              let label = context.label || '';
+              if (label) {
+                label += ': ';
+              }
+              if (context.parsed !== null) {
+                const value = context.parsed;
+                if (label.includes('Total Sales')) {
+                  label += '₱' + (value * 100).toLocaleString('en-PH', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                } else {
+                  label += value;
+                }
+                // Add percentage
+                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                const percentage = ((value / total) * 100).toFixed(1);
+                label += ' (' + percentage + '%)';
+              }
+              return label;
+            }
+          }
+        }
+      }
     }
   });
 }
@@ -132,6 +278,113 @@ function initCharts() {
 function formatCurrencyDashboard(value) {
   const num = Number(value || 0);
   return `₱${num.toFixed(2)}`;
+}
+
+// ==========================
+// Get Filtered Transactions (respects filter selections)
+// ==========================
+function getFilteredTransactions() {
+  // Prefer filteredTransactions (from transactions.js) if it exists, otherwise use transactionsData
+  // filteredTransactions may be empty array if filters exclude everything, which is valid
+  let transactions = [];
+  
+  if (typeof filteredTransactions !== 'undefined' && Array.isArray(filteredTransactions)) {
+    // Use filteredTransactions even if empty (means filters excluded everything)
+    transactions = filteredTransactions;
+  } else if (typeof transactionsData !== 'undefined' && Array.isArray(transactionsData)) {
+    // Fallback to all transactions if filteredTransactions doesn't exist yet
+    transactions = transactionsData;
+  } else if (typeof orders !== 'undefined' && Array.isArray(orders)) {
+    transactions = orders;
+  }
+  
+  return transactions;
+}
+
+// ==========================
+// Calculate All Dashboard Metrics from Filtered Transactions
+// ==========================
+function calculateAllMetrics() {
+  const transactions = getFilteredTransactions();
+  
+  // Initialize metrics
+  const metrics = {
+    totalSales: 0,
+    ordersToday: 0,
+    totalProducts: dashboardMetrics.totalProducts || 0,
+    lowStockItems: dashboardMetrics.lowStockItems || 0,
+    statusDistribution: {
+      Pending: 0,
+      Approved: 0,
+      Served: 0,
+      Canceled: 0
+    },
+    paymentMethodDistribution: {
+      Cash: 0,
+      "Credit or Debit Card": 0
+    }
+  };
+
+  // Calculate from filtered transactions
+  const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
+  
+  transactions.forEach(transaction => {
+    // Calculate total sales
+    if (transaction.items && Array.isArray(transaction.items)) {
+      const transactionTotal = transaction.items.reduce((sum, item) => {
+        return sum + (item.quantity || 0) * (item.price || 0);
+      }, 0);
+      metrics.totalSales += transactionTotal;
+    } else if (transaction.total_amount) {
+      metrics.totalSales += parseFloat(transaction.total_amount) || 0;
+    }
+
+    // Count orders today
+    const transactionDate = transaction.date || (transaction.created_at ? new Date(transaction.created_at).toISOString().split('T')[0] : null);
+    if (transactionDate === today) {
+      metrics.ordersToday++;
+    }
+
+    // Count by status
+    const status = transaction.status || 'Pending';
+    if (metrics.statusDistribution.hasOwnProperty(status)) {
+      metrics.statusDistribution[status]++;
+    } else {
+      metrics.statusDistribution.Pending++;
+    }
+
+    // Count by payment method - map all cashless variations to Cashless
+    const paymentMethod = transaction.paymentMethod || transaction.payment_method || 'Cash';
+    if (paymentMethod === 'Cash' || paymentMethod === 'cash') {
+      metrics.paymentMethodDistribution.Cash++;
+    } else if (paymentMethod === 'Cashless' || paymentMethod === 'cashless' || paymentMethod === 'Credit or Debit Card' || paymentMethod === 'credit or debit card' || paymentMethod === 'Credit/Debit Card' || paymentMethod === 'card' || paymentMethod === 'Card') {
+      metrics.paymentMethodDistribution["Credit or Debit Card"]++;
+    } else {
+      metrics.paymentMethodDistribution.Cash++;
+    }
+  });
+
+  // Update global distributions
+  statusDistribution = metrics.statusDistribution;
+  paymentMethodDistribution = metrics.paymentMethodDistribution;
+  
+  return metrics;
+}
+
+// ==========================
+// Calculate Status Distribution from Transactions
+// ==========================
+function calculateStatusDistribution() {
+  const allMetrics = calculateAllMetrics();
+  return allMetrics.statusDistribution;
+}
+
+// ==========================
+// Calculate Payment Method Distribution from Transactions
+// ==========================
+function calculatePaymentMethodDistribution() {
+  const allMetrics = calculateAllMetrics();
+  return allMetrics.paymentMethodDistribution;
 }
 
 // ==========================
@@ -219,11 +472,21 @@ async function refreshDashboardData() {
   try {
     console.log('Refreshing dashboard data...');
     await updateDashboardCards();
-    if (barChart && pieChart) {
-      updateCharts();
-    }
+    // Wait a bit for transactions data to be available
+    setTimeout(() => {
+      if (barChart && pieChart) {
+        updateCharts();
+      }
+    }, 500);
   } catch (error) {
     console.error('Error refreshing dashboard data:', error);
+  }
+}
+
+// Function to refresh charts - can be called externally after transactions load
+function refreshCharts() {
+  if (barChart && pieChart) {
+    updateCharts();
   }
 }
 
@@ -252,17 +515,215 @@ async function updateDashboardCards() {
 function updateCharts() {
   if (!barChart || !pieChart) return;
 
-  const chartData = [
-    dashboardMetrics.totalSales,
-    dashboardMetrics.ordersToday,
+  // Get all updated metrics from filtered transactions
+  const allMetrics = calculateAllMetrics();
+  
+  // Prepare bar chart data
+  const barLabels = [
+    'Total Sales (₱K)', 
+    'Orders Today', 
+    'Total Products', 
+    'Low Stock Items',
+    'Served',
+    'Canceled',
+    'Cash',
+    'Credit or Debit Card'
+  ];
+  
+  const barData = [
+    allMetrics.totalSales / 1000, // Sales in thousands
+    allMetrics.ordersToday,
     dashboardMetrics.totalProducts,
-    dashboardMetrics.lowStockItems
+    dashboardMetrics.lowStockItems,
+    allMetrics.statusDistribution.Served,
+    allMetrics.statusDistribution.Canceled,
+    allMetrics.paymentMethodDistribution.Cash,
+    allMetrics.paymentMethodDistribution["Credit or Debit Card"]
   ];
 
-  barChart.data.datasets[0].data = chartData;
-  pieChart.data.datasets[0].data = chartData;
+  const barColors = [
+    '#4CAF50',  // Total Sales - Green
+    '#2196F3',  // Orders Today - Blue
+    '#FF9800',  // Total Products - Orange
+    '#F44336',  // Low Stock Items - Red
+    '#4CAF50',  // Served - Green
+    '#F44336',  // Canceled - Red
+    '#4CAF50',  // Cash - Green
+    '#2196F3'   // Credit or Debit Card - Blue
+  ];
+
+  // Prepare pie chart data
+  const pieLabels = [
+    'Total Sales',
+    'Orders Today',
+    'Total Products',
+    'Low Stock Items',
+    'Served',
+    'Canceled',
+    'Cash',
+    'Credit or Debit Card'
+  ];
+
+  const pieData = [
+    Math.min(allMetrics.totalSales / 100, 100), // Normalize sales
+    allMetrics.ordersToday,
+    dashboardMetrics.totalProducts,
+    dashboardMetrics.lowStockItems,
+    allMetrics.statusDistribution.Served,
+    allMetrics.statusDistribution.Canceled,
+    allMetrics.paymentMethodDistribution.Cash,
+    allMetrics.paymentMethodDistribution["Credit or Debit Card"]
+  ];
+
+  const pieColors = [
+    '#4CAF50',  // Total Sales - Green
+    '#2196F3',  // Orders Today - Blue
+    '#FF9800',  // Total Products - Orange
+    '#F44336',  // Low Stock Items - Red
+    '#4CAF50',  // Served - Green
+    '#F44336',  // Canceled - Red
+    '#4CAF50',  // Cash - Green
+    '#2196F3'   // Credit or Debit Card - Blue
+  ];
+
+  // Update Bar Chart
+  barChart.data.labels = barLabels;
+  barChart.data.datasets[0].data = barData;
+  barChart.data.datasets[0].backgroundColor = barColors;
   barChart.update();
+
+  // Update Pie Chart
+  pieChart.data.labels = pieLabels;
+  pieChart.data.datasets[0].data = pieData;
+  pieChart.data.datasets[0].backgroundColor = pieColors;
   pieChart.update();
+}
+
+// ==========================
+// Attach Filter Event Listeners for Chart Updates
+// ==========================
+function attachFilterListeners() {
+  // Listen to filter input changes and trigger applyFilters, then update charts
+  const filterInputs = [
+    'filterStartDate',
+    'filterCashier',
+    'filterStatus',
+    'filterPaymentMethod'
+  ];
+
+  filterInputs.forEach(inputId => {
+    const input = document.getElementById(inputId);
+    if (input) {
+      // Add change event listener
+      input.addEventListener('change', () => {
+        // Call applyFilters if it exists to update filteredTransactions
+        if (typeof applyFilters === 'function') {
+          applyFilters();
+        }
+        // Update charts after filters are applied
+        setTimeout(() => {
+          if (barChart && pieChart) {
+            updateCharts();
+          }
+        }, 150);
+      });
+    }
+  });
+
+  // Wrap applyFilters to also update charts
+  if (typeof window.applyFilters === 'function') {
+    const originalApplyFilters = window.applyFilters;
+    window.applyFilters = function() {
+      const result = originalApplyFilters.apply(this, arguments);
+      setTimeout(() => {
+        if (typeof refreshCharts === 'function') {
+          refreshCharts();
+        }
+      }, 150);
+      return result;
+    };
+  }
+
+  // Wrap resetFilters to also update charts
+  if (typeof window.resetFilters === 'function') {
+    const originalResetFilters = window.resetFilters;
+    window.resetFilters = function() {
+      const result = originalResetFilters.apply(this, arguments);
+      setTimeout(() => {
+        if (typeof refreshCharts === 'function') {
+          refreshCharts();
+        }
+      }, 150);
+      return result;
+    };
+  }
+}
+
+// ==========================
+// Export Sales Report to CSV
+// ==========================
+function exportSalesReportToCSV() {
+  const transactions = getFilteredTransactions();
+  
+  if (!transactions || transactions.length === 0) {
+    alert('No sales data available to export.');
+    return;
+  }
+
+  // Create CSV headers
+  const headers = [
+    'Order ID',
+    'Date',
+    'Cashier',
+    'Customer Name',
+    'Status',
+    'Payment Method',
+    'Total Amount',
+    'Items Count',
+    'Items Details'
+  ];
+
+  // Convert transactions to CSV rows
+  const csvRows = transactions.map(transaction => {
+    const items = transaction.items || [];
+    const itemsCount = items.length;
+    const itemsDetails = items.map(item => 
+      `${item.name || item.product_name} (${item.quantity}x @ ₱${item.price})`
+    ).join('; ');
+
+    return [
+      transaction.order_id || transaction.id || '',
+      transaction.date || (transaction.created_at ? new Date(transaction.created_at).toLocaleDateString() : ''),
+      transaction.cashier || transaction.staff_name || '',
+      transaction.customer_name || 'Walk-in',
+      transaction.status || 'Pending',
+      transaction.paymentMethod || transaction.payment_method || 'Cash',
+      transaction.total_amount || '0.00',
+      itemsCount.toString(),
+      `"${itemsDetails}"`
+    ];
+  });
+
+  // Combine headers and rows
+  const csvContent = [headers, ...csvRows]
+    .map(row => row.join(','))
+    .join('\n');
+
+  // Create blob and download
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  const url = URL.createObjectURL(blob);
+  
+  // Generate filename with current date
+  const today = new Date().toISOString().split('T')[0];
+  const filename = `sales_report_${today}.csv`;
+  
+  link.setAttribute('href', url);
+  link.setAttribute('download', filename);
+  link.style.visibility = 'hidden';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 }
 
 // ==========================
@@ -279,6 +740,17 @@ function initDashboard() {
   initCharts();
   chartsInitialized = true;
   refreshDashboardData();
+  
+  // Attach filter listeners after a short delay to ensure DOM is ready
+  setTimeout(() => {
+    attachFilterListeners();
+  }, 500);
+
+  // Attach export CSV button listener
+  const exportBtn = document.getElementById('exportCsvBtn');
+  if (exportBtn) {
+    exportBtn.addEventListener('click', exportSalesReportToCSV);
+  }
   
   // Auto-refresh every 5 minutes
   setInterval(refreshDashboardData, 5 * 60 * 1000);
