@@ -59,77 +59,23 @@ session_start();
         <div class="cards">
           <div class="card">
             <h3>Total Sales</h3>
-            <p id="dashboardTotalSales">₱25,000</p>
+            <p id="dashboardTotalSales">₱0.00</p>
           </div>
           <div class="card">
             <h3>Orders Today</h3>
-            <p id="dashboardOrdersToday">45</p>
+            <p id="dashboardOrdersToday">0</p>
           </div>
           <div class="card">
-            <h3>Active Trainees</h3>
-            <p id="dashboardActiveTrainees">120</p>
+            <h3>Total Products</h3>
+            <p id="dashboardTotalProducts">0</p>
           </div>
           <div class="card">
             <h3>Low Stock Items</h3>
-            <p id="dashboardLowStock">8</p>
+            <p id="dashboardLowStock">0</p>
           </div>
         </div>
 
-        <!-- Charts Container -->
-        <div class="charts-container">
-
-          <!-- Bar Chart -->
-          <div class="chart-box">
-            <h3>Dashboard Metrics (Bar Chart)</h3>
-            <canvas id="barChart"></canvas>
-          </div>
-
-          <!-- Pie Chart -->
-          <div class="chart-box">
-            <h3>Orders Status Distribution (Pie Chart)</h3>
-            <canvas id="pieChart"></canvas>
-          </div>
-
-        </div>
-      </section>
-
-      <!-- Sales Report Section -->
-      <section id="salesReport" class="page-section">
-        <div class="topbar" style="margin-bottom: 1.5rem;">
-          <div class="topbar-left">
-            <h2 style="color: var(--tesda-blue); margin: 0;">
-              <i class="fas fa-chart-line"></i> Sales Report
-            </h2>
-          </div>
-          <div class="topbar-right">
-            <button class="btn-export" onclick="exportToCSV()" title="Export to CSV" style="padding: 0.6rem 1.2rem; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 0.5rem; color: white; background: #28a745;">
-              <i class="fas fa-file-csv"></i> Export CSV
-            </button>
-            <button class="btn-print" onclick="printSalesReport()" title="Print Report" style="padding: 0.6rem 1.2rem; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 0.5rem; color: white; background: var(--tesda-blue);">
-              <i class="fas fa-print"></i> Print Report
-            </button>
-          </div>
-        </div>
-
-        <!-- Sales Summary Cards -->
-        <div class="cards">
-          <div class="card">
-            <h3>Total Sales</h3>
-            <p id="summaryTotalSales">₱0.00</p>
-          </div>
-          <div class="card">
-            <h3>Transactions</h3>
-            <p id="summaryTransactionsCount">0</p>
-          </div>
-          <div class="card">
-            <h3>Items Sold</h3>
-            <p id="summaryItemsSold">0</p>
-          </div>
-          <div class="card">
-            <h3>Average Order</h3>
-            <p id="summaryAverageOrder">₱0.00</p>
-          </div>
-        </div>
+       
 
         <!-- Filter Section -->
         <div class="filter-section" style="background: var(--white); padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
@@ -169,15 +115,25 @@ session_start();
                 <option value="Cashless">Cashless</option>
               </select>
             </div>
-            <div class="filter-actions" style="display: flex; gap: 0.75rem; grid-column: 1 / -1; margin-top: 0.5rem;">
-              <button class="btn-filter" onclick="applyFilters()" style="padding: 0.7rem 1.5rem; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 0.5rem; color: white; background: var(--tesda-blue);">
-                <i class="fas fa-search"></i> Apply Filters
-              </button>
-              <button class="btn-reset" onclick="resetFilters()" style="padding: 0.7rem 1.5rem; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 0.5rem; color: white; background: #6c757d;">
-                <i class="fas fa-redo"></i> Reset
-              </button>
-            </div>
+           
           </div>
+        </div>
+
+        <!-- Charts Container -->
+        <div class="charts-container">
+
+          <!-- Bar Chart -->
+          <div class="chart-box">
+            <h3>Dashboard Metrics (Bar Chart)</h3>
+            <canvas id="barChart"></canvas>
+          </div>
+
+          <!-- Pie Chart -->
+          <div class="chart-box">
+            <h3>Orders Status Distribution (Pie Chart)</h3>
+            <canvas id="pieChart"></canvas>
+          </div>
+
         </div>
       </section>
 

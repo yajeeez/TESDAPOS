@@ -13,9 +13,15 @@ function logout(e) {
 }
 
 // ==========================
-// Charts (Chart.js)
+// Charts (Chart.js) & Metrics
 // ==========================
 let barChart, pieChart;
+let dashboardMetrics = {
+  totalSales: 0,
+  ordersToday: 0,
+  totalProducts: 0,
+  lowStockItems: 0
+};
 
 function initCharts() {
   const barCtx = document.getElementById('barChart')?.getContext('2d');
@@ -26,14 +32,21 @@ function initCharts() {
     return;
   }
 
+  const initialData = [
+    dashboardMetrics.totalSales,
+    dashboardMetrics.ordersToday,
+    dashboardMetrics.totalProducts,
+    dashboardMetrics.lowStockItems
+  ];
+
   // Bar Chart
   barChart = new Chart(barCtx, {
     type: 'bar',
     data: {
-      labels: ['Total Sales', 'Orders Today', 'Active Trainees', 'Low Stock Items'],
+      labels: ['Total Sales', 'Orders Today', 'Total Products', 'Low Stock Items'],
       datasets: [{
         label: 'Dashboard Metrics',
-        data: [25000, 45, 120, 8],
+        data: initialData,
         backgroundColor: ['#4CAF50', '#2196F3', '#FF9800', '#F44336']
       }]
     },
@@ -49,9 +62,9 @@ function initCharts() {
   pieChart = new Chart(pieCtx, {
     type: 'pie',
     data: {
-      labels: ['Total Sales', 'Orders Today', 'Active Trainees', 'Low Stock Items'],
+      labels: ['Total Sales', 'Orders Today', 'Total Products', 'Low Stock Items'],
       datasets: [{
-        data: [25000, 45, 120, 8],
+        data: initialData,
         backgroundColor: ['#4CAF50', '#2196F3', '#FF9800', '#F44336']
       }]
     },
@@ -64,12 +77,98 @@ function initCharts() {
 }
 
 // ==========================
+// Helper: format currency
+// ==========================
+function formatCurrencyDashboard(value) {
+  const num = Number(value || 0);
+  return `₱${num.toFixed(2)}`;
+}
+
+// ==========================
+// Fetch metrics from orders & inventory
+// ==========================
+async function computeDashboardMetrics() {
+  const metrics = {
+    totalSales: 0,
+    ordersToday: 0,
+    totalProducts: 0,
+    lowStockItems: 0
+  };
+
+  // Orders / sales (from MongoDB Orders collection)
+  try {
+    const response = await fetch('../../connection/fetch_dashboard_metrics.php', {
+      method: 'GET',
+      headers: {
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache'
+      }
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      if (data.success) {
+        metrics.totalSales = data.totalSales || 0;
+        metrics.ordersToday = data.ordersToday || 0;
+      }
+    }
+  } catch (e) {
+    console.error('Error fetching order metrics from database:', e);
+    // Fallback to transactions module if available
+    try {
+      if (typeof getDashboardOrderMetrics === 'function') {
+        const orderMetrics = getDashboardOrderMetrics();
+        metrics.totalSales = orderMetrics.totalSales || 0;
+        metrics.ordersToday = orderMetrics.ordersToday || 0;
+      }
+    } catch (fallbackError) {
+      console.error('Error with fallback order metrics:', fallbackError);
+    }
+  }
+
+  // Inventory metrics (from Mongo inventory via existing endpoint)
+  try {
+    const response = await fetch('../../connection/fetch_products.php', {
+      method: 'GET',
+      headers: {
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache'
+      }
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      if (data.success && Array.isArray(data.products)) {
+        const products = data.products;
+        metrics.totalProducts = data.count ?? products.length;
+
+        // Low stock items: stock quantity < 10
+        metrics.lowStockItems = products.filter(p => {
+          const stock =
+            typeof p.stock_quantity !== 'undefined'
+              ? Number(p.stock_quantity)
+              : typeof p.stock !== 'undefined'
+                ? Number(p.stock)
+                : 0;
+          return stock > 0 && stock < 10;
+        }).length;
+      }
+    }
+  } catch (e) {
+    console.error('Error fetching inventory metrics for dashboard:', e);
+  }
+
+  dashboardMetrics = metrics;
+  return metrics;
+}
+
+// ==========================
 // Dashboard Data Management
 // ==========================
 async function refreshDashboardData() {
   try {
     console.log('Refreshing dashboard data...');
-    updateDashboardCards();
+    await updateDashboardCards();
     if (barChart && pieChart) {
       updateCharts();
     }
@@ -78,22 +177,40 @@ async function refreshDashboardData() {
   }
 }
 
-function updateDashboardCards() {
-  const cards = document.querySelectorAll('.card p');
-  if (cards.length >= 4) {
-    const todayOrders = 45 + Math.floor(Math.random() * 10);
-    cards[0].textContent = '₱25,000';
-    cards[1].textContent = todayOrders.toString();
-    cards[2].textContent = '120';
-    cards[3].textContent = '8';
+async function updateDashboardCards() {
+  await computeDashboardMetrics();
+
+  const totalSalesEl = document.getElementById('dashboardTotalSales');
+  const ordersTodayEl = document.getElementById('dashboardOrdersToday');
+  const totalProductsEl = document.getElementById('dashboardTotalProducts');
+  const lowStockEl = document.getElementById('dashboardLowStock');
+
+  if (totalSalesEl) {
+    totalSalesEl.textContent = formatCurrencyDashboard(dashboardMetrics.totalSales);
+  }
+  if (ordersTodayEl) {
+    ordersTodayEl.textContent = dashboardMetrics.ordersToday.toString();
+  }
+  if (totalProductsEl) {
+    totalProductsEl.textContent = dashboardMetrics.totalProducts.toString();
+  }
+  if (lowStockEl) {
+    lowStockEl.textContent = dashboardMetrics.lowStockItems.toString();
   }
 }
 
 function updateCharts() {
   if (!barChart || !pieChart) return;
-  const newData = [25000, 45 + Math.floor(Math.random() * 10), 120, 8];
-  barChart.data.datasets[0].data = newData;
-  pieChart.data.datasets[0].data = newData;
+
+  const chartData = [
+    dashboardMetrics.totalSales,
+    dashboardMetrics.ordersToday,
+    dashboardMetrics.totalProducts,
+    dashboardMetrics.lowStockItems
+  ];
+
+  barChart.data.datasets[0].data = chartData;
+  pieChart.data.datasets[0].data = chartData;
   barChart.update();
   pieChart.update();
 }
@@ -110,9 +227,5 @@ function initDashboard() {
   setInterval(refreshDashboardData, 5 * 60 * 1000);
 }
 
-// ==========================
-// Initialize on page load
-// ==========================
-document.addEventListener('DOMContentLoaded', () => {
-  initDashboard();
-});
+// Note: The actual initialization of initDashboard is handled
+// inside AdminDashboard.php after transactions.js has loaded.

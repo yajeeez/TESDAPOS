@@ -61,6 +61,91 @@ class MongoOrders {
             return ['success' => false, 'message' => 'Error: ' . $e->getMessage()];
         }
     }
+
+    /**
+     * Get total sales from all orders
+     */
+    public function getTotalSales() {
+        try {
+            $pipeline = [
+                [
+                    '$group' => [
+                        '_id' => null,
+                        'totalSales' => ['$sum' => '$total_amount']
+                    ]
+                ]
+            ];
+
+            $result = $this->collection->aggregate($pipeline)->toArray();
+            
+            if (!empty($result) && isset($result[0]['totalSales'])) {
+                return (float) $result[0]['totalSales'];
+            }
+            
+            return 0.0;
+        } catch (Exception $e) {
+            error_log("Error getting total sales: " . $e->getMessage());
+            return 0.0;
+        }
+    }
+
+    /**
+     * Get count of orders created today (based on server's local timezone)
+     */
+    public function getOrdersToday() {
+        try {
+            // Get server's default timezone
+            $timezone = date_default_timezone_get();
+            
+            // Get start and end of today in server's local timezone
+            $todayStart = new \DateTime('today', new \DateTimeZone($timezone));
+            $todayEnd = new \DateTime('tomorrow', new \DateTimeZone($timezone));
+            
+            // Convert to UTC for MongoDB query (MongoDB stores dates in UTC)
+            $todayStart->setTimezone(new \DateTimeZone('UTC'));
+            $todayEnd->setTimezone(new \DateTimeZone('UTC'));
+            
+            $startUTCDateTime = new UTCDateTime($todayStart->getTimestamp() * 1000);
+            $endUTCDateTime = new UTCDateTime($todayEnd->getTimestamp() * 1000);
+            
+            $filter = [
+                'created_at' => [
+                    '$gte' => $startUTCDateTime,
+                    '$lt' => $endUTCDateTime
+                ]
+            ];
+            
+            $count = $this->collection->countDocuments($filter);
+            return (int) $count;
+        } catch (Exception $e) {
+            error_log("Error getting orders today: " . $e->getMessage());
+            return 0;
+        }
+    }
+
+    /**
+     * Get dashboard metrics (total sales and orders today)
+     */
+    public function getDashboardMetrics() {
+        try {
+            $totalSales = $this->getTotalSales();
+            $ordersToday = $this->getOrdersToday();
+            
+            return [
+                'success' => true,
+                'totalSales' => $totalSales,
+                'ordersToday' => $ordersToday
+            ];
+        } catch (Exception $e) {
+            error_log("Error getting dashboard metrics: " . $e->getMessage());
+            return [
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage(),
+                'totalSales' => 0.0,
+                'ordersToday' => 0
+            ];
+        }
+    }
 }
 
 ?>

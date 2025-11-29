@@ -100,6 +100,24 @@ function formatInputDate(date) {
   return `${year}-${month}-${day}`;
 }
 
+// ==========================
+// Expose compact metrics for dashboard
+// ==========================
+function getDashboardOrderMetrics() {
+  const transactionsToUse = filteredTransactions.length > 0 ? filteredTransactions : transactionsData;
+
+  const totalSales = transactionsToUse.reduce((sum, txn) => sum + transactionTotal(txn), 0);
+
+  const today = new Date();
+  const todayKey = formatInputDate(today);
+  const ordersToday = transactionsToUse.filter(txn => txn.date === todayKey).length;
+
+  return {
+    totalSales,
+    ordersToday
+  };
+}
+
 function formatMonthLabel(key) {
   const [year, month] = key.split('-');
   const date = new Date(`${year}-${month}-01`);
