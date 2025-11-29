@@ -40,7 +40,7 @@
               <button class="cancel-order-btn" onclick="event.stopPropagation(); cancelOrder()">
                 <i class="fas fa-times-circle"></i> Cancel Order
               </button>
-              <button class="checkout-btn" onclick="event.stopPropagation()">
+              <button class="checkout-btn" onclick="event.stopPropagation(); openPaymentModal()">
                 <i class="fas fa-check-circle"></i> Checkout
               </button>
             </div>
@@ -112,6 +112,114 @@
         </button>
         <button class="modal-btn modal-confirm" onclick="confirmRemoveItem()">
           <i class="fas fa-trash-alt"></i> Yes, Remove
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Payment Modal -->
+  <div class="modal-overlay" id="paymentModal" onclick="closePaymentModal()">
+    <div class="payment-modal-content" onclick="event.stopPropagation()">
+      <div class="payment-modal-header">
+        <h3 class="payment-modal-title">
+          <i class="fas fa-credit-card"></i> Payment
+        </h3>
+        <button class="close-payment-modal" onclick="closePaymentModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <div class="payment-modal-body">
+        <!-- Order Summary -->
+        <div class="order-summary-section">
+          <h4>Order Summary</h4>
+          <div class="order-items-list" id="paymentOrderItems">
+            <!-- Order items will be inserted here -->
+          </div>
+          <div class="order-total-section">
+            <div class="total-row">
+              <span>Subtotal:</span>
+              <span>₱<span id="paymentSubtotal">0.00</span></span>
+            </div>
+            <div class="total-row">
+              <span>Total:</span>
+              <span class="total-amount">₱<span id="paymentTotal">0.00</span></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Payment Method Selection -->
+        <div class="payment-method-section">
+          <h4>Select Payment Method</h4>
+          <div class="payment-method-options">
+            <button class="payment-method-btn" data-method="cash" onclick="selectPaymentMethod('cash')">
+              <i class="fas fa-money-bill-wave"></i>
+              <span>Cash</span>
+            </button>
+            <button class="payment-method-btn" data-method="card" onclick="selectPaymentMethod('card')">
+              <i class="fas fa-credit-card"></i>
+              <span>Credit/Debit Card</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Cash Payment Section -->
+        <div class="payment-section" id="cashPaymentSection" style="display: none;">
+          <div class="payment-input-group">
+            <label for="cashAmount">Amount Received:</label>
+            <div class="cash-input-wrapper">
+              <span class="currency-symbol">₱</span>
+              <input type="number" id="cashAmount" placeholder="0.00" step="0.01" min="0" oninput="calculateChange()">
+            </div>
+          </div>
+          <div class="change-display">
+            <span>Change:</span>
+            <span class="change-amount">₱<span id="changeAmount">0.00</span></span>
+          </div>
+        </div>
+
+        <!-- Card Payment Section -->
+        <div class="payment-section" id="cardPaymentSection" style="display: none;">
+          <div class="card-swipe-container">
+            <div class="card-reader">
+              <div class="card-reader-header">
+                <i class="fas fa-microchip"></i>
+                <span>Card Reader</span>
+              </div>
+              <div class="card-slot">
+                <div class="swipe-indicator" id="swipeIndicator">
+                  <i class="fas fa-arrow-right"></i>
+                  <span>Please swipe your card</span>
+                </div>
+                <div class="card-swipe-area" id="cardSwipeArea">
+                  <div class="swipe-line"></div>
+                </div>
+              </div>
+              <button class="swipe-btn" id="simulateSwipeBtn" onclick="simulateCardSwipe()">
+                <i class="fas fa-hand-pointer"></i> Simulate Card Swipe
+              </button>
+            </div>
+            <div class="card-info" id="cardInfo" style="display: none;">
+              <div class="card-status success">
+                <i class="fas fa-check-circle"></i>
+                <span>Card read successfully!</span>
+              </div>
+              <div class="card-details">
+                <p><strong>Card Number:</strong> **** **** **** 1234</p>
+                <p><strong>Cardholder:</strong> John Doe</p>
+                <p><strong>Transaction ID:</strong> <span id="transactionId"></span></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="payment-modal-footer">
+        <button class="payment-btn payment-cancel" onclick="closePaymentModal()">
+          <i class="fas fa-times"></i> Cancel
+        </button>
+        <button class="payment-btn payment-confirm" id="confirmPaymentBtn" onclick="processPayment()" disabled>
+          <i class="fas fa-check"></i> Process Payment
         </button>
       </div>
     </div>

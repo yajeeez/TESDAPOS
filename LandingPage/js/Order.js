@@ -600,6 +600,254 @@ document.addEventListener('click', function(event) {
     }
 });
 
+// Payment Modal Functions
+let selectedPaymentMethod = null;
+let cardSwiped = false;
+let paymentTotal = 0;
+
+// Function to open payment modal
+function openPaymentModal() {
+    if (cart.length === 0) {
+        showCartMessage('Your cart is empty. Add items before checkout.', 'warning');
+        return;
+    }
+    
+    const modal = document.getElementById('paymentModal');
+    const cartTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    paymentTotal = cartTotal;
+    
+    // Reset payment state
+    selectedPaymentMethod = null;
+    cardSwiped = false;
+    
+    // Update order summary
+    updatePaymentOrderSummary();
+    
+    // Update totals
+    document.getElementById('paymentSubtotal').textContent = cartTotal.toFixed(2);
+    document.getElementById('paymentTotal').textContent = cartTotal.toFixed(2);
+    
+    // Reset UI
+    document.querySelectorAll('.payment-method-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    document.getElementById('cashPaymentSection').style.display = 'none';
+    document.getElementById('cardPaymentSection').style.display = 'none';
+    document.getElementById('cardInfo').style.display = 'none';
+    document.getElementById('confirmPaymentBtn').disabled = true;
+    document.getElementById('cashAmount').value = '';
+    document.getElementById('changeAmount').textContent = '0.00';
+    
+    // Reset card swipe area
+    const swipeLine = document.querySelector('.swipe-line');
+    if (swipeLine) {
+        swipeLine.classList.remove('swiping');
+    }
+    cardSwiped = false;
+    
+    // Show modal
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+// Function to close payment modal
+function closePaymentModal() {
+    const modal = document.getElementById('paymentModal');
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+    
+    // Reset state
+    selectedPaymentMethod = null;
+    cardSwiped = false;
+}
+
+// Function to update payment order summary
+function updatePaymentOrderSummary() {
+    const orderItemsList = document.getElementById('paymentOrderItems');
+    
+    if (cart.length === 0) {
+        orderItemsList.innerHTML = '<p>No items in cart</p>';
+        return;
+    }
+    
+    orderItemsList.innerHTML = cart.map(item => {
+        const sizeText = item.size ? ` (${item.size.charAt(0).toUpperCase() + item.size.slice(1)})` : '';
+        const itemTotal = (item.price * item.quantity).toFixed(2);
+        return `
+            <div class="payment-order-item">
+                <div>
+                    <div class="payment-order-item-name">${item.name}${sizeText}</div>
+                    <div class="payment-order-item-details">₱${item.price.toFixed(2)} × ${item.quantity}</div>
+                </div>
+                <div class="payment-order-item-price">₱${itemTotal}</div>
+            </div>
+        `;
+    }).join('');
+}
+
+// Function to select payment method
+function selectPaymentMethod(method) {
+    selectedPaymentMethod = method;
+    
+    // Update button states
+    document.querySelectorAll('.payment-method-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.getAttribute('data-method') === method) {
+            btn.classList.add('active');
+        }
+    });
+    
+    // Show/hide payment sections
+    if (method === 'cash') {
+        document.getElementById('cashPaymentSection').style.display = 'block';
+        document.getElementById('cardPaymentSection').style.display = 'none';
+        document.getElementById('cardInfo').style.display = 'none';
+        
+        // Check if we can enable payment button
+        const cashAmount = parseFloat(document.getElementById('cashAmount').value) || 0;
+        if (cashAmount >= paymentTotal) {
+            document.getElementById('confirmPaymentBtn').disabled = false;
+        } else {
+            document.getElementById('confirmPaymentBtn').disabled = true;
+        }
+    } else if (method === 'card') {
+        document.getElementById('cashPaymentSection').style.display = 'none';
+        document.getElementById('cardPaymentSection').style.display = 'block';
+        
+        // Enable payment button only if card is swiped
+        document.getElementById('confirmPaymentBtn').disabled = !cardSwiped;
+    }
+}
+
+// Function to calculate change for cash payment
+function calculateChange() {
+    const cashAmount = parseFloat(document.getElementById('cashAmount').value) || 0;
+    const change = cashAmount - paymentTotal;
+    
+    document.getElementById('changeAmount').textContent = change >= 0 ? change.toFixed(2) : '0.00';
+    
+    // Enable/disable confirm button based on sufficient cash
+    const confirmBtn = document.getElementById('confirmPaymentBtn');
+    if (selectedPaymentMethod === 'cash') {
+        if (cashAmount >= paymentTotal) {
+            confirmBtn.disabled = false;
+            document.getElementById('changeAmount').style.color = '#28a745';
+        } else {
+            confirmBtn.disabled = true;
+            document.getElementById('changeAmount').style.color = '#dc3545';
+        }
+    }
+}
+
+// Function to simulate card swipe
+function simulateCardSwipe() {
+    if (cardSwiped) {
+        return; // Already swiped
+    }
+    
+    const swipeArea = document.getElementById('cardSwipeArea');
+    const swipeLine = swipeArea.querySelector('.swipe-line');
+    const swipeIndicator = document.getElementById('swipeIndicator');
+    const cardInfo = document.getElementById('cardInfo');
+    const swipeBtn = document.getElementById('simulateSwipeBtn');
+    
+    // Disable button
+    swipeBtn.disabled = true;
+    swipeBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+    
+    // Hide indicator
+    if (swipeIndicator) {
+        swipeIndicator.style.opacity = '0.3';
+    }
+    
+    // Animate swipe line
+    if (swipeLine) {
+        swipeLine.classList.add('swiping');
+    }
+    
+    // Simulate processing delay
+    setTimeout(() => {
+        // Show card info
+        cardInfo.style.display = 'block';
+        
+        // Generate random transaction ID
+        const transactionId = 'TXN' + Date.now().toString().slice(-8);
+        document.getElementById('transactionId').textContent = transactionId;
+        
+        // Mark as swiped
+        cardSwiped = true;
+        
+        // Update button
+        swipeBtn.disabled = false;
+        swipeBtn.innerHTML = '<i class="fas fa-check-circle"></i> Card Swiped';
+        swipeBtn.style.background = '#28a745';
+        
+        // Remove swipe animation
+        if (swipeLine) {
+            swipeLine.classList.remove('swiping');
+        }
+        
+        // Enable payment button
+        if (selectedPaymentMethod === 'card') {
+            document.getElementById('confirmPaymentBtn').disabled = false;
+        }
+        
+        // Show success message
+        showCartMessage('Card read successfully!', 'success');
+    }, 2000);
+}
+
+// Function to process payment
+function processPayment() {
+    if (!selectedPaymentMethod) {
+        showCartMessage('Please select a payment method', 'warning');
+        return;
+    }
+    
+    if (selectedPaymentMethod === 'cash') {
+        const cashAmount = parseFloat(document.getElementById('cashAmount').value) || 0;
+        if (cashAmount < paymentTotal) {
+            showCartMessage('Insufficient cash amount', 'error');
+            return;
+        }
+    } else if (selectedPaymentMethod === 'card') {
+        if (!cardSwiped) {
+            showCartMessage('Please swipe your card first', 'warning');
+            return;
+        }
+    }
+    
+    // Disable confirm button during processing
+    const confirmBtn = document.getElementById('confirmPaymentBtn');
+    confirmBtn.disabled = true;
+    confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+    
+    // Simulate payment processing
+    setTimeout(() => {
+        // Show success message
+        showCartMessage('Payment processed successfully!', 'success');
+        
+        // Clear cart
+        cart = [];
+        updateCartCount();
+        updateCartDisplay();
+        
+        // Close modals
+        closePaymentModal();
+        if (cartOpen) {
+            toggleCart();
+        }
+        
+        // Reset button
+        confirmBtn.innerHTML = '<i class="fas fa-check"></i> Process Payment';
+        
+        // Show completion message
+        setTimeout(() => {
+            showCartMessage('Order completed! Thank you for your purchase.', 'success');
+        }, 500);
+    }, 2000);
+}
+
 // Initialize the page when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Order page loaded, fetching products...');

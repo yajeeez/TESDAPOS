@@ -2,6 +2,15 @@
 document.addEventListener("DOMContentLoaded", function () {
   const buttons = document.querySelectorAll(".feature-toggle-btn");
   const descs = document.querySelectorAll(".feature-toggle-desc");
+
+  // If this page doesn't have the feature toggle elements, skip this block
+  if (buttons.length === 0 || descs.length === 0) {
+    console.warn(
+      "Feature toggle elements not found (.feature-toggle-btn / .feature-toggle-desc). Skipping toggle initialization."
+    );
+    return;
+  }
+
   function showDesc(idx) {
     descs.forEach((d, i) => {
       d.classList.remove("active");
@@ -10,14 +19,20 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
     buttons.forEach((b) => b.classList.remove("active"));
-    buttons[idx].classList.add("active");
+
+    // Guard against invalid index
+    if (buttons[idx]) {
+      buttons[idx].classList.add("active");
+    }
   }
+
   buttons.forEach((btn, idx) => {
     btn.addEventListener("click", function () {
       showDesc(idx);
     });
   });
-  // Show the first by default
+
+  // Show the first by default (only safe because we know there is at least one)
   showDesc(0);
 });
 
@@ -122,129 +137,152 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // Carousel logic using images from HTML
-const track = document.getElementById("carousel-track");
-let carouselImageElements = Array.from(track.querySelectorAll(".carousel-img"));
-let carouselImages = carouselImageElements.map((img) => img.src);
+document.addEventListener("DOMContentLoaded", function () {
+  const track = document.getElementById("carousel-track");
 
-let currentIndex = 0;
+  // If this page doesn't have the carousel, skip this whole block
+  if (!track) {
+    console.warn(
+      "Carousel track element with ID 'carousel-track' not found. Skipping carousel initialization."
+    );
+    return;
+  }
 
-function renderImages() {
-  // For infinite effect, clone last and first images
-  const images = [
-    carouselImages[carouselImages.length - 1], // last
-    ...carouselImages,
-    carouselImages[0], // first
-  ];
+  let carouselImageElements = Array.from(
+    track.querySelectorAll(".carousel-img")
+  );
+  let carouselImages = carouselImageElements.map((img) => img.src);
 
-  track.innerHTML = images
-    .map(
-      (src, i) =>
-        `<img src="${src}" class="carousel-img" data-index="${
-          i - 1
-        }" draggable="false" />`
-    )
-    .join("");
+  // If no images are present, skip carousel logic
+  if (carouselImages.length === 0) {
+    console.warn(
+      "No '.carousel-img' elements found inside '#carousel-track'. Skipping carousel initialization."
+    );
+    return;
+  }
 
-  // Update carouselImageElements after rendering
-  carouselImageElements = Array.from(track.querySelectorAll(".carousel-img"));
+  let currentIndex = 0;
 
-  // Set initial position to the first real image
-  track.style.transition = "none";
-  track.style.transform = `translateX(-100%)`;
-  currentIndex = 0;
-}
+  function renderImages() {
+    // For infinite effect, clone last and first images
+    const images = [
+      carouselImages[carouselImages.length - 1], // last
+      ...carouselImages,
+      carouselImages[0], // first
+    ];
 
-function moveToIndex(index) {
-  currentIndex = index;
-  track.style.transition = "transform 0.5s ease";
-  track.style.transform = `translateX(-${(index + 1) * 100}%)`;
-}
+    track.innerHTML = images
+      .map(
+        (src, i) =>
+          `<img src="${src}" class="carousel-img" data-index="${
+            i - 1
+          }" draggable="false" />`
+      )
+      .join("");
 
-function handleTransitionEnd() {
-  // Loop logic
-  if (currentIndex < 0) {
-    currentIndex = carouselImages.length - 1;
-    track.style.transition = "none";
-    track.style.transform = `translateX(-${(currentIndex + 1) * 100}%)`;
-  } else if (currentIndex >= carouselImages.length) {
-    currentIndex = 0;
+    // Update carouselImageElements after rendering
+    carouselImageElements = Array.from(
+      track.querySelectorAll(".carousel-img")
+    );
+
+    // Set initial position to the first real image
     track.style.transition = "none";
     track.style.transform = `translateX(-100%)`;
-  }
-}
-
-function nextImage() {
-  moveToIndex(currentIndex + 1);
-}
-
-function prevImage() {
-  moveToIndex(currentIndex - 1);
-}
-
-track.addEventListener("transitionend", handleTransitionEnd);
-
-// Touch support
-let startX = 0;
-let isDragging = false;
-
-track.addEventListener("touchstart", (e) => {
-  startX = e.touches[0].clientX;
-  isDragging = true;
-});
-
-track.addEventListener("touchmove", (e) => {
-  if (!isDragging) return;
-  const diff = e.touches[0].clientX - startX;
-  track.style.transition = "none";
-  track.style.transform = `translateX(calc(-${
-    (currentIndex + 1) * 100
-  }% + ${diff}px))`;
-});
-
-track.addEventListener("touchend", (e) => {
-  isDragging = false;
-  const diff = e.changedTouches[0].clientX - startX;
-  if (diff > 50) {
-    prevImage();
-  } else if (diff < -50) {
-    nextImage();
-  } else {
-    moveToIndex(currentIndex);
-  }
-});
-
-// Initialize
-renderImages();
-
-// Auto-slide
-let autoSlideInterval = null;
-let timeoutId = null;
-
-function startAutoSlide() {
-  autoSlideInterval = setInterval(() => {
-    nextImage();
-  }, 3000);
-}
-
-function stopAutoSlide() {
-  clearInterval(autoSlideInterval);
-}
-
-function resetCarouselAfterTimeout() {
-  timeoutId = setTimeout(() => {
-    stopAutoSlide();
     currentIndex = 0;
-    track.style.transition = "none";
-    track.style.transform = `translateX(-100%)`;
-    setTimeout(() => {
-      startAutoSlide();
-    }, 100);
-    resetCarouselAfterTimeout();
-  }, 60000);
-}
+  }
 
-startAutoSlide();
-resetCarouselAfterTimeout();
+  function moveToIndex(index) {
+    currentIndex = index;
+    track.style.transition = "transform 0.5s ease";
+    track.style.transform = `translateX(-${(index + 1) * 100}%)`;
+  }
+
+  function handleTransitionEnd() {
+    // Loop logic
+    if (currentIndex < 0) {
+      currentIndex = carouselImages.length - 1;
+      track.style.transition = "none";
+      track.style.transform = `translateX(-${(currentIndex + 1) * 100}%)`;
+    } else if (currentIndex >= carouselImages.length) {
+      currentIndex = 0;
+      track.style.transition = "none";
+      track.style.transform = `translateX(-100%)`;
+    }
+  }
+
+  function nextImage() {
+    moveToIndex(currentIndex + 1);
+  }
+
+  function prevImage() {
+    moveToIndex(currentIndex - 1);
+  }
+
+  track.addEventListener("transitionend", handleTransitionEnd);
+
+  // Touch support
+  let startX = 0;
+  let isDragging = false;
+
+  track.addEventListener("touchstart", (e) => {
+    startX = e.touches[0].clientX;
+    isDragging = true;
+  });
+
+  track.addEventListener("touchmove", (e) => {
+    if (!isDragging) return;
+    const diff = e.touches[0].clientX - startX;
+    track.style.transition = "none";
+    track.style.transform = `translateX(calc(-${
+      (currentIndex + 1) * 100
+    }% + ${diff}px))`;
+  });
+
+  track.addEventListener("touchend", (e) => {
+    isDragging = false;
+    const diff = e.changedTouches[0].clientX - startX;
+    if (diff > 50) {
+      prevImage();
+    } else if (diff < -50) {
+      nextImage();
+    } else {
+      moveToIndex(currentIndex);
+    }
+  });
+
+  // Initialize
+  renderImages();
+
+  // Auto-slide
+  let autoSlideInterval = null;
+  let timeoutId = null;
+
+  function startAutoSlide() {
+    autoSlideInterval = setInterval(() => {
+      nextImage();
+    }, 3000);
+  }
+
+  function stopAutoSlide() {
+    clearInterval(autoSlideInterval);
+  }
+
+  function resetCarouselAfterTimeout() {
+    timeoutId = setTimeout(() => {
+      stopAutoSlide();
+      currentIndex = 0;
+      track.style.transition = "none";
+      track.style.transform = `translateX(-100%)`;
+      setTimeout(() => {
+        startAutoSlide();
+      }, 100);
+      resetCarouselAfterTimeout();
+    }, 60000);
+  }
+
+  startAutoSlide();
+  resetCarouselAfterTimeout();
+});
 
 // Simple scroll spy functionality
 window.addEventListener("scroll", () => {
