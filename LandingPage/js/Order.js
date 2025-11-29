@@ -739,6 +739,17 @@ function calculateChange() {
     }
 }
 
+// Helper to generate realistic-looking transaction IDs for card payments
+function generateCardTransactionId() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const datePart = `${year}${month}${day}`; // e.g. 20251129
+    const randomPart = Math.floor(100000 + Math.random() * 900000); // 6-digit number
+    return `TXN-${datePart}-${randomPart}`; // e.g. TXN-20251129-345678
+}
+
 // Function to simulate card swipe
 function simulateCardSwipe() {
     if (cardSwiped) {
@@ -769,9 +780,36 @@ function simulateCardSwipe() {
     setTimeout(() => {
         // Show card info
         cardInfo.style.display = 'block';
-        
-        // Generate random transaction ID
-        const transactionId = 'TXN' + Date.now().toString().slice(-8);
+
+        // Generate random masked card number (**** **** **** 1234)
+        const last4 = Math.floor(1000 + Math.random() * 9000);
+        const maskedCardNumber = `**** **** **** ${last4}`;
+        const cardNumberEl = document.getElementById('cardNumber');
+        if (cardNumberEl) {
+            cardNumberEl.textContent = maskedCardNumber;
+        }
+
+        // Generate random cardholder name
+        const sampleNames = [
+            'Miguel Santos',
+            'Maria Cruz',
+            'Joshua Dela Rosa',
+            'Angela Reyes',
+            'Patricia Bautista',
+            'Jasmine Lopez',
+            'Mark Villanueva',
+            'Andrea Castillo',
+            'Carlo Ramirez',
+            'Ria Mendoza'
+        ];
+        const randomName = sampleNames[Math.floor(Math.random() * sampleNames.length)];
+        const cardHolderEl = document.getElementById('cardHolder');
+        if (cardHolderEl) {
+            cardHolderEl.textContent = randomName;
+        }
+
+        // Generate realistic transaction ID
+        const transactionId = generateCardTransactionId();
         document.getElementById('transactionId').textContent = transactionId;
         
         // Display total amount
@@ -801,49 +839,141 @@ function simulateCardSwipe() {
 }
 
 // Function to process payment
-function processPayment() {
+async function processPayment() {
     if (!selectedPaymentMethod) {
         showCartMessage('Please select a payment method', 'warning');
         return;
     }
     
+    let cashAmount = null;
+    let changeAmount = null;
+    let transactionId = '';
+    let cardNumber = null;
+    let cardHolder = null;
+
     if (selectedPaymentMethod === 'cash') {
-        const cashAmount = parseFloat(document.getElementById('cashAmount').value) || 0;
+        cashAmount = parseFloat(document.getElementById('cashAmount').value) || 0;
         if (cashAmount < paymentTotal) {
             showCartMessage('Insufficient cash amount', 'error');
             return;
         }
+        const changeText = document.getElementById('changeAmount').textContent || '0';
+        changeAmount = parseFloat(changeText) || 0;
+        // Simple transaction id for cash payments
+        transactionId = 'CASH' + Date.now().toString().slice(-8);
     } else if (selectedPaymentMethod === 'card') {
         if (!cardSwiped) {
             showCartMessage('Please swipe your card first', 'warning');
             return;
         }
+        const txnEl = document.getElementById('transactionId');
+        transactionId = txnEl ? txnEl.textContent.trim() : '';
+        if (!transactionId) {
+            transactionId = generateCardTransactionId();
+        }
+
+        const cardNumberEl = document.getElementById('cardNumber');
+        const cardHolderEl = document.getElementById('cardHolder');
+        cardNumber = cardNumberEl ? cardNumberEl.textContent.trim() : null;
+        cardHolder = cardHolderEl ? cardHolderEl.textContent.trim() : null;
+
+        // For card payments, store cash_amount as total and change_amount as 0
+        cashAmount = paymentTotal;
+        changeAmount = 0;
     }
     
     // Disable confirm button during processing
     const confirmBtn = document.getElementById('confirmPaymentBtn');
     confirmBtn.disabled = true;
     confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-    
-    // Simulate payment processing
-    setTimeout(() => {
-        // Clear cart
+
+    try {
+        // Prepare order payload
+        const orderItems = cart.map(item => ({
+            product_id: item.id,
+            name: item.name,
+            size: item.size || null,
+            price: item.price,
+            quantity: item.quantity,
+            subtotal: item.price * item.quantity
+        }));
+
+        const orderPayload = {
+            items: orderItems,
+            payment_method: selectedPaymentMethod,
+            total_amount: paymentTotal,
+            cash_amount: cashAmount,
+            change_amount: changeAmount,
+            transaction_id: transactionId,
+            card_number: cardNumber,
+            card_holder: cardHolder
+        };
+
+        // Try multiple possible URLs (similar pattern as fetchProducts)
+        const urls = [
+            '/TESDAPOS/connection/save_order.php',
+            '/connection/save_order.php'
+        ];
+
+        let response = null;
+        let urlUsed = null;
+
+        for (const url of urls) {
+            try {
+                response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(orderPayload)
+                });
+                if (response.ok) {
+                    urlUsed = url;
+                    break;
+                }
+            } catch (e) {
+                console.error('Error calling', url, e);
+            }
+        }
+
+        if (!response) {
+            throw new Error('Could not reach order endpoint.');
+        }
+
+        const text = await response.text();
+        let data;
+        try {
+            data = JSON.parse(text);
+        } catch (e) {
+            console.error('Invalid JSON response from save_order.php:', text);
+            throw new Error('Invalid response from server when saving order.');
+        }
+
+        if (!data.success) {
+            throw new Error(data.message || 'Failed to save order.');
+        }
+
+        // Clear cart after successful save
         cart = [];
         updateCartCount();
         updateCartDisplay();
-        
+
         // Close modals
         closePaymentModal();
         if (cartOpen) {
             toggleCart();
         }
-        
-        // Reset button
-        confirmBtn.innerHTML = '<i class="fas fa-check"></i> Process Payment';
-        
+
         // Show completion message
         showCartMessage('Order completed! Thank you for your purchase.', 'success');
-    }, 2000);
+    } catch (error) {
+        console.error('Error processing/saving order:', error);
+        showCartMessage('Failed to save order: ' + error.message, 'error');
+    } finally {
+        // Reset button
+        confirmBtn.innerHTML = '<i class="fas fa-check"></i> Process Payment';
+        confirmBtn.disabled = false;
+    }
 }
 
 // Initialize the page when DOM is loaded
