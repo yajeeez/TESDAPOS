@@ -317,7 +317,6 @@ function applyFilters() {
 
   renderTransactions();
   updateSummaryCards();
-  showNotification(`Filtered ${filteredTransactions.length} transaction(s)`, 'success');
 }
 
 function resetFilters() {
