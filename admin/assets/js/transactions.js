@@ -1007,8 +1007,25 @@ async function fetchTransactionsFromDB() {
 // Initialize on page load
 // ==========================
 document.addEventListener('DOMContentLoaded', async () => {
-  await fetchTransactionsFromDB();
-  attachEventHandlers();
-  console.log('Sales Report & Transactions module initialized');
+  // Check if we're on the transactions page or dashboard
+  const isTransactionsPage = document.getElementById('transactionsList') !== null;
+  const isDashboardPage = document.getElementById('salesReport') !== null;
+  
+  if (isTransactionsPage || isDashboardPage) {
+    await fetchTransactionsFromDB();
+    
+    // Only render transactions table on transactions page
+    if (isTransactionsPage) {
+      renderTransactions();
+    }
+    
+    // Update summary cards on dashboard
+    if (isDashboardPage) {
+      updateSummaryCards();
+    }
+    
+    attachEventHandlers();
+    console.log('Sales Report & Transactions module initialized');
+  }
 });
 

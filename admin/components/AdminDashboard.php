@@ -53,44 +53,162 @@ session_start();
       </div>
 
       <!-- Dashboard Section -->
-<section id="dashboard" class="page-section">
+      <section id="dashboard" class="page-section">
 
-  <!-- Summary Cards -->
-  <div class="cards">
-    <div class="card">
-      <h3>Total Sales</h3>
-      <p>₱25,000</p>
-    </div>
-    <div class="card">
-      <h3>Orders Today</h3>
-      <p>45</p>
-    </div>
-    <div class="card">
-      <h3>Active Trainees</h3>
-      <p>120</p>
-    </div>
-    <div class="card">
-      <h3>Low Stock Items</h3>
-      <p>8</p>
-    </div>
+        <!-- Summary Cards -->
+        <div class="cards">
+          <div class="card">
+            <h3>Total Sales</h3>
+            <p id="dashboardTotalSales">₱25,000</p>
+          </div>
+          <div class="card">
+            <h3>Orders Today</h3>
+            <p id="dashboardOrdersToday">45</p>
+          </div>
+          <div class="card">
+            <h3>Active Trainees</h3>
+            <p id="dashboardActiveTrainees">120</p>
+          </div>
+          <div class="card">
+            <h3>Low Stock Items</h3>
+            <p id="dashboardLowStock">8</p>
+          </div>
+        </div>
+
+        <!-- Charts Container -->
+        <div class="charts-container">
+
+          <!-- Bar Chart -->
+          <div class="chart-box">
+            <h3>Dashboard Metrics (Bar Chart)</h3>
+            <canvas id="barChart"></canvas>
+          </div>
+
+          <!-- Pie Chart -->
+          <div class="chart-box">
+            <h3>Orders Status Distribution (Pie Chart)</h3>
+            <canvas id="pieChart"></canvas>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Sales Report Section -->
+      <section id="salesReport" class="page-section">
+        <div class="topbar" style="margin-bottom: 1.5rem;">
+          <div class="topbar-left">
+            <h2 style="color: var(--tesda-blue); margin: 0;">
+              <i class="fas fa-chart-line"></i> Sales Report
+            </h2>
+          </div>
+          <div class="topbar-right">
+            <button class="btn-export" onclick="exportToCSV()" title="Export to CSV" style="padding: 0.6rem 1.2rem; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 0.5rem; color: white; background: #28a745;">
+              <i class="fas fa-file-csv"></i> Export CSV
+            </button>
+            <button class="btn-print" onclick="printSalesReport()" title="Print Report" style="padding: 0.6rem 1.2rem; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 0.5rem; color: white; background: var(--tesda-blue);">
+              <i class="fas fa-print"></i> Print Report
+            </button>
+          </div>
+        </div>
+
+        <!-- Sales Summary Cards -->
+        <div class="cards">
+          <div class="card">
+            <h3>Total Sales</h3>
+            <p id="summaryTotalSales">₱0.00</p>
+          </div>
+          <div class="card">
+            <h3>Transactions</h3>
+            <p id="summaryTransactionsCount">0</p>
+          </div>
+          <div class="card">
+            <h3>Items Sold</h3>
+            <p id="summaryItemsSold">0</p>
+          </div>
+          <div class="card">
+            <h3>Average Order</h3>
+            <p id="summaryAverageOrder">₱0.00</p>
+          </div>
+        </div>
+
+        <!-- Filter Section -->
+        <div class="filter-section" style="background: var(--white); padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+          <h3 style="color: var(--tesda-blue); margin-bottom: 1rem;">
+            <i class="fas fa-filter"></i> Filter Sales Report
+          </h3>
+          <div class="filter-controls" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; align-items: end;">
+            <div class="filter-group" style="display: flex; flex-direction: column; gap: 0.5rem;">
+              <label for="filterStartDate" style="font-size: 0.85rem; font-weight: 600; color: #555;">Start Date</label>
+              <input type="date" id="filterStartDate" class="filter-input" style="padding: 0.6rem; border: 1px solid #ddd; border-radius: 6px; font-size: 0.9rem;" />
+            </div>
+            <div class="filter-group" style="display: flex; flex-direction: column; gap: 0.5rem;">
+              <label for="filterEndDate" style="font-size: 0.85rem; font-weight: 600; color: #555;">End Date</label>
+              <input type="date" id="filterEndDate" class="filter-input" style="padding: 0.6rem; border: 1px solid #ddd; border-radius: 6px; font-size: 0.9rem;" />
+            </div>
+            <div class="filter-group" style="display: flex; flex-direction: column; gap: 0.5rem;">
+              <label for="filterCashier" style="font-size: 0.85rem; font-weight: 600; color: #555;">Cashier</label>
+              <select id="filterCashier" class="filter-input" style="padding: 0.6rem; border: 1px solid #ddd; border-radius: 6px; font-size: 0.9rem;">
+                <option value="">All Cashiers</option>
+              </select>
+            </div>
+            <div class="filter-group" style="display: flex; flex-direction: column; gap: 0.5rem;">
+              <label for="filterStatus" style="font-size: 0.85rem; font-weight: 600; color: #555;">Status</label>
+              <select id="filterStatus" class="filter-input" style="padding: 0.6rem; border: 1px solid #ddd; border-radius: 6px; font-size: 0.9rem;">
+                <option value="">All Status</option>
+                <option value="Served">Served</option>
+                <option value="Pending">Pending</option>
+                <option value="Approved">Approved</option>
+                <option value="Canceled">Canceled</option>
+              </select>
+            </div>
+            <div class="filter-group" style="display: flex; flex-direction: column; gap: 0.5rem;">
+              <label for="filterPaymentMethod" style="font-size: 0.85rem; font-weight: 600; color: #555;">Payment Method</label>
+              <select id="filterPaymentMethod" class="filter-input" style="padding: 0.6rem; border: 1px solid #ddd; border-radius: 6px; font-size: 0.9rem;">
+                <option value="">All Methods</option>
+                <option value="Cash">Cash</option>
+                <option value="Cashless">Cashless</option>
+              </select>
+            </div>
+            <div class="filter-actions" style="display: flex; gap: 0.75rem; grid-column: 1 / -1; margin-top: 0.5rem;">
+              <button class="btn-filter" onclick="applyFilters()" style="padding: 0.7rem 1.5rem; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 0.5rem; color: white; background: var(--tesda-blue);">
+                <i class="fas fa-search"></i> Apply Filters
+              </button>
+              <button class="btn-reset" onclick="resetFilters()" style="padding: 0.7rem 1.5rem; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 0.5rem; color: white; background: #6c757d;">
+                <i class="fas fa-redo"></i> Reset
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+
+
+
+      
+
+    </main>
   </div>
 
-  <!-- Charts Container -->
-  <div class="charts-container">
 
-    <!-- Bar Chart -->
-    <div class="chart-box">
-      <h3>Dashboard Metrics (Bar Chart)</h3>
-      <canvas id="barChart"></canvas>
-    </div>
-
-    <!-- Pie Chart -->
-    <div class="chart-box">
-      <h3>Orders Status Distribution (Pie Chart)</h3>
-      <canvas id="pieChart"></canvas>
-    </div>
 
   <!-- JS -->
   <script src="../assets/js/AdminDashboard.js"></script>
+  <script src="../assets/js/transactions.js"></script>
+  <script>
+    // Initialize sales report in dashboard
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Initialize dashboard charts
+      if (typeof initDashboard === 'function') {
+        initDashboard();
+      }
+      
+      // Initialize sales report
+      if (typeof fetchTransactionsFromDB === 'function') {
+        await fetchTransactionsFromDB();
+        updateSummaryCards();
+      }
+    });
+  </script>
 </body>
 </html>
