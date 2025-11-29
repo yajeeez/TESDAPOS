@@ -37,103 +37,7 @@ let paymentMethodDistribution = {
   "Credit or Debit Card": 0
 };
 
-// ==========================
-// Calculate All Dashboard Metrics from Database
-// ==========================
-async function calculateAllMetrics() {
-  // Initialize metrics
-  const metrics = {
-    totalSales: 0,
-    ordersToday: 0,
-    totalProducts: dashboardMetrics.totalProducts || 0,
-    lowStockItems: dashboardMetrics.lowStockItems || 0,
-    statusDistribution: {
-      Pending: 0,
-      Approved: 0,
-      Served: 0,
-      Canceled: 0
-    },
-    paymentMethodDistribution: {
-      Cash: 0,
-      "Credit or Debit Card": 0
-    }
-  };
-
-  // Fetch real order data from database
-  try {
-    const response = await fetch('/TESDAPOS/admin/fetch_orders.php');
-    const data = await response.json();
-    
-    if (data.success && data.orders) {
-      const transactions = data.orders;
-      const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
-      
-      transactions.forEach(transaction => {
-        // Calculate total sales
-        if (transaction.total_amount) {
-          metrics.totalSales += parseFloat(transaction.total_amount) || 0;
-        }
-
-        // Count orders today - use the same reliable method as the dashboard card
-        const transactionDate = transaction.created_at ? new Date(transaction.created_at).toISOString().split('T')[0] : null;
-        if (transactionDate === today) {
-          metrics.ordersToday++;
-        }
-
-        // Count by status
-        const status = transaction.status || 'Pending';
-        if (metrics.statusDistribution.hasOwnProperty(status)) {
-          metrics.statusDistribution[status]++;
-        } else {
-          metrics.statusDistribution.Pending++;
-        }
-
-        // Count by payment method
-        const paymentMethod = transaction.payment_method || 'Cash';
-        if (paymentMethod === 'Cash' || paymentMethod === 'cash') {
-          metrics.paymentMethodDistribution.Cash++;
-        } else if (paymentMethod === 'card' || paymentMethod === 'Card' || paymentMethod === 'Credit or Debit Card') {
-          metrics.paymentMethodDistribution["Credit or Debit Card"]++;
-        } else {
-          metrics.paymentMethodDistribution.Cash++;
-        }
-      });
-    }
-  } catch (error) {
-    console.error('Error fetching order data for charts:', error);
-    // Fallback to dashboard metrics if database fetch fails
-    metrics.totalSales = dashboardMetrics.totalSales || 0;
-    metrics.ordersToday = dashboardMetrics.ordersToday || 0;
-  }
-
-  // IMPORTANT: Use the same reliable data source as the working dashboard card
-  // This ensures the charts show the same "Orders Today" count as the card
-  try {
-    const dashboardResponse = await fetch('/TESDAPOS/connection/fetch_dashboard_metrics.php');
-    const dashboardData = await dashboardResponse.json();
-    
-    if (dashboardData.success) {
-      // Override with the reliable dashboard metrics
-      metrics.totalSales = dashboardData.totalSales || metrics.totalSales;
-      metrics.ordersToday = dashboardData.ordersToday || metrics.ordersToday;
-      
-      // Also update the global dashboard metrics for consistency
-      dashboardMetrics.totalSales = dashboardData.totalSales || dashboardMetrics.totalSales;
-      dashboardMetrics.ordersToday = dashboardData.ordersToday || dashboardMetrics.ordersToday;
-    }
-  } catch (error) {
-    console.error('Error fetching dashboard metrics for charts:', error);
-    // Keep the values calculated from fetch_orders.php as fallback
-  }
-
-  // Update global distributions
-  statusDistribution = metrics.statusDistribution;
-  paymentMethodDistribution = metrics.paymentMethodDistribution;
-  
-  return metrics;
-}
-
-async function initCharts() {
+function initCharts() {
   const barCanvas = document.getElementById('barChart');
   const pieCanvas = document.getElementById('pieChart');
 
@@ -191,8 +95,8 @@ async function initCharts() {
   const barCtx = barCanvas.getContext('2d');
   const pieCtx = pieCanvas.getContext('2d');
 
-  // Get all metrics including status and payment distributions from database
-  const allMetrics = await calculateAllMetrics();
+  // Get all metrics including status and payment distributions
+  const allMetrics = calculateAllMetrics();
 
   // Prepare data for bar chart - combine all metrics
   const barLabels = [
@@ -393,26 +297,91 @@ function getFilteredTransactions() {
   } else if (typeof orders !== 'undefined' && Array.isArray(orders)) {
     transactions = orders;
   }
+
+  // ==========================
+  // Get Filtered Transactions (respects filter selections)
+  // ==========================
+  function getFilteredTransactions() {
+    // Prefer filteredTransactions (from transactions.js) if it exists, otherwise use transactionsData
+    // filteredTransactions may be empty array if filters exclude everything, which is valid
+    let transactions = [];
+    
+    if (typeof filteredTransactions !== 'undefined' && Array.isArray(filteredTransactions)) {
+      // Use filteredTransactions even if empty (means filters excluded everything)
+      transactions = filteredTransactions;
+    } else if (typeof transactionsData !== 'undefined' && Array.isArray(transactionsData)) {
+      // Fallback to all transactions if filteredTransactions doesn't exist yet
+    }
+  };
+
+  // Fetch real order data from database
+  try {
+    const response = await fetch('/TESDAPOS/admin/fetch_orders.php');
+    const data = await response.json();
+    
+    if (data.success && data.orders) {
+      const transactions = data.orders;
+      const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
+      
+      transactions.forEach(transaction => {
+        // Calculate total sales
+        if (transaction.total_amount) {
+          metrics.totalSales += parseFloat(transaction.total_amount) || 0;
+        }
+
+        // Count orders today
+        const transactionDate = transaction.created_at ? new Date(transaction.created_at).toISOString().split('T')[0] : null;
+        if (transactionDate === today) {
+          metrics.ordersToday++;
+        }
+
+        // Count by status
+        const status = transaction.status || 'Pending';
+        if (metrics.statusDistribution.hasOwnProperty(status)) {
+          metrics.statusDistribution[status]++;
+        } else {
+          metrics.statusDistribution.Pending++;
+        }
+
+        // Count by payment method
+        const paymentMethod = transaction.payment_method || 'Cash';
+        if (paymentMethod === 'Cash' || paymentMethod === 'cash') {
+          metrics.paymentMethodDistribution.Cash++;
+        } else if (paymentMethod === 'card' || paymentMethod === 'Card' || paymentMethod === 'Credit or Debit Card') {
+          metrics.paymentMethodDistribution["Credit or Debit Card"]++;
+        } else {
+          metrics.paymentMethodDistribution.Cash++;
+        }
+      });
+    }
+  } catch (error) {
+    console.error('Error fetching order data for charts:', error);
+    // Fallback to dashboard metrics if database fetch fails
+    metrics.totalSales = dashboardMetrics.totalSales || 0;
+    metrics.ordersToday = dashboardMetrics.ordersToday || 0;
+  }
+
+  // Update global distributions
+  statusDistribution = metrics.statusDistribution;
+  paymentMethodDistribution = metrics.paymentMethodDistribution;
   
-  return transactions;
+  return metrics;
 }
 
 // ==========================
 // Calculate Status Distribution from Transactions
 // ==========================
 function calculateStatusDistribution() {
-  // Since calculateAllMetrics is async, we need to handle this differently
-  // For now, return the global statusDistribution that gets updated by calculateAllMetrics
-  return statusDistribution;
+  const allMetrics = calculateAllMetrics();
+  return allMetrics.statusDistribution;
 }
 
 // ==========================
 // Calculate Payment Method Distribution from Transactions
 // ==========================
 function calculatePaymentMethodDistribution() {
-  // Since calculateAllMetrics is async, we need to handle this differently
-  // For now, return the global paymentMethodDistribution that gets updated by calculateAllMetrics
-  return paymentMethodDistribution;
+  const allMetrics = calculateAllMetrics();
+  return allMetrics.paymentMethodDistribution;
 }
 
 // ==========================
@@ -540,11 +509,11 @@ async function updateDashboardCards() {
   }
 }
 
-async function updateCharts() {
+function updateCharts() {
   if (!barChart || !pieChart) return;
 
-  // Get all updated metrics from database
-  const allMetrics = await calculateAllMetrics();
+  // Get all updated metrics from filtered transactions
+  const allMetrics = calculateAllMetrics();
   
   // Prepare bar chart data
   const barLabels = [
