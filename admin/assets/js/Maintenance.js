@@ -32,12 +32,6 @@ function showMaintenance() {
             <button onclick="viewAuditTrail()" class="maintenance-btn">
               <i class="fas fa-list"></i> View Audit Trail
             </button>
-            <button onclick="clearCache()" class="maintenance-btn">
-              <i class="fas fa-broom"></i> Clear Cache
-            </button>
-            <button onclick="systemHealth()" class="maintenance-btn">
-              <i class="fas fa-heartbeat"></i> System Health
-            </button>
           </div>
         </div>
       `;
@@ -53,12 +47,6 @@ function showMaintenance() {
       </button>
       <button onclick="viewAuditTrail()" class="maintenance-btn">
         <i class="fas fa-list"></i> View Audit Trail
-      </button>
-      <button onclick="clearCache()" class="maintenance-btn">
-        <i class="fas fa-broom"></i> Clear Cache
-      </button>
-      <button onclick="systemHealth()" class="maintenance-btn">
-        <i class="fas fa-heartbeat"></i> System Health
       </button>
     </div>
   `;
@@ -93,74 +81,6 @@ function viewAuditTrail() {
     console.log('2024-01-15 10:40:10 - Inventory updated for product ID: 123');
     console.log('=== END AUDIT TRAIL ===');
   }, 1500);
-}
-
-// ==========================
-// Clear System Cache
-// ==========================
-function clearCache() {
-  showNotification('Clearing system cache...', 'info');
-  
-  // Clear localStorage and sessionStorage
-  try {
-    localStorage.clear();
-    sessionStorage.clear();
-    
-    // Force refresh product images
-    if (typeof refreshProductImages === 'function') {
-      refreshProductImages();
-    }
-    
-    setTimeout(() => {
-      showNotification('System cache cleared successfully!');
-      console.log('Cache cleared at:', new Date().toLocaleString());
-    }, 1000);
-  } catch (error) {
-    showNotification('Error clearing cache: ' + error.message, 'error');
-  }
-}
-
-// ==========================
-// Check System Health
-// ==========================
-function systemHealth() {
-  showNotification('Checking system health...', 'info');
-  
-  // Simulate health check
-  setTimeout(async () => {
-    const healthStatus = {
-      database: 'OK',
-      server: 'OK',
-      storage: 'OK',
-      memory: 'OK'
-    };
-    
-    try {
-      // Test database connection
-      const response = await fetch('/TESDAPOS/connection/test_db.php');
-      if (!response.ok) {
-        healthStatus.database = 'ERROR';
-      }
-    } catch (error) {
-      healthStatus.database = 'ERROR';
-    }
-    
-    const hasErrors = Object.values(healthStatus).some(status => status === 'ERROR');
-    
-    if (hasErrors) {
-      showNotification('System health check completed with warnings. Check console.', 'error');
-    } else {
-      showNotification('System health check passed - All systems operational!');
-    }
-    
-    console.log('=== SYSTEM HEALTH REPORT ===');
-    console.log('Database Connection:', healthStatus.database);
-    console.log('Server Status:', healthStatus.server);
-    console.log('Storage Status:', healthStatus.storage);
-    console.log('Memory Usage:', healthStatus.memory);
-    console.log('Check completed at:', new Date().toLocaleString());
-    console.log('=== END HEALTH REPORT ===');
-  }, 2000);
 }
 
 // ==========================
