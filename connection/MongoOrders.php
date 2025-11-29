@@ -28,6 +28,44 @@ class MongoOrders {
     }
 
     /**
+     * Get the MongoDB collection (for migration purposes)
+     */
+    public function getCollection() {
+        return $this->collection;
+    }
+
+    /**
+     * Get the next sequential order ID
+     */
+    private function getNextOrderId() {
+        try {
+            // Find the order with the highest order_id
+            $cursor = $this->collection->find(
+                ['order_id' => ['$exists' => true]],
+                ['sort' => ['order_id' => -1], 'limit' => 1]
+            );
+            
+            $highestOrderId = 0;
+            foreach ($cursor as $document) {
+                $order = (array) $document;
+                if (isset($order['order_id'])) {
+                    // Remove leading zeros and convert to integer
+                    $highestOrderId = (int) ltrim($order['order_id'], '0');
+                    break;
+                }
+            }
+            
+            // Increment and format with leading zeros
+            $nextOrderId = $highestOrderId + 1;
+            return str_pad($nextOrderId, 2, '0', STR_PAD_LEFT);
+        } catch (Exception $e) {
+            error_log("Error getting next order ID: " . $e->getMessage());
+            // If there's an error, start with 01
+            return '01';
+        }
+    }
+
+    /**
      * Save a new order document.
      *
      * Expected structure of $orderData:
@@ -40,6 +78,8 @@ class MongoOrders {
      */
     public function addOrder(array $orderData) {
         try {
+            // Generate and add order_id
+            $orderData['order_id'] = $this->getNextOrderId();
             $orderData['created_at'] = new UTCDateTime();
 
             $result = $this->collection->insertOne($orderData);
@@ -48,7 +88,8 @@ class MongoOrders {
                 return [
                     'success' => true,
                     'message' => 'Order saved successfully',
-                    'order_id' => (string) $result->getInsertedId()
+                    'order_id' => $orderData['order_id'],
+                    'inserted_id' => (string) $result->getInsertedId()
                 ];
             }
 
@@ -120,6 +161,53 @@ class MongoOrders {
         } catch (Exception $e) {
             error_log("Error getting orders today: " . $e->getMessage());
             return 0;
+        }
+    }
+
+    /**
+     * Get all orders with sequential order IDs
+     */
+    public function getAllOrders() {
+        try {
+            $cursor = $this->collection->find([], [
+                'sort' => ['order_id' => -1]
+            ]);
+            
+            $orders = [];
+            
+            foreach ($cursor as $document) {
+                $order = (array) $document;
+                
+                // Convert MongoDB's UTCDateTime to readable format
+                if (isset($order['created_at']) && $order['created_at'] instanceof UTCDateTime) {
+                    $order['created_at'] = $order['created_at']->toDateTime()->format('Y-m-d H:i:s');
+                }
+                
+                // Extract product names from items array for display
+                if (isset($order['items']) && is_array($order['items'])) {
+                    $productNames = [];
+                    foreach ($order['items'] as $item) {
+                        if (isset($item['name'])) {
+                            $productNames[] = $item['name'];
+                        }
+                    }
+                    $order['product_names'] = $productNames;
+                    $order['total_item_count'] = count($productNames);
+                }
+                
+                $orders[] = $order;
+            }
+            
+            return [
+                'success' => true,
+                'orders' => $orders
+            ];
+        } catch (Exception $e) {
+            error_log("Error getting all orders: " . $e->getMessage());
+            return [
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage()
+            ];
         }
     }
 
