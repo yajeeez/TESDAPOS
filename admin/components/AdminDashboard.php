@@ -161,10 +161,37 @@ session_start();
         initDashboard();
       }
       
-      // Initialize sales report
+      // Initialize sales report with real data
       if (typeof fetchTransactionsFromDB === 'function') {
         await fetchTransactionsFromDB();
         updateSummaryCards();
+        
+        // Add filter event listeners
+        const filterInputs = [
+          'filterStartDate',
+          'filterCashier', 
+          'filterStatus',
+          'filterPaymentMethod'
+        ];
+
+        filterInputs.forEach(inputId => {
+          const input = document.getElementById(inputId);
+          if (input) {
+            input.addEventListener('change', async () => {
+              // Apply filters to get new data
+              if (typeof applyFilters === 'function') {
+                applyFilters();
+              }
+              
+              // Update charts with filtered data
+              setTimeout(() => {
+                if (typeof refreshCharts === 'function') {
+                  refreshCharts();
+                }
+              }, 150);
+            });
+          }
+        });
         
         // Refresh charts after transactions are loaded
         setTimeout(() => {

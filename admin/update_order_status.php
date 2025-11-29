@@ -23,11 +23,11 @@ try {
     $newStatus = $data['status'];
     
     // Validate status
-    $allowedStatuses = ['Served', 'Canceled'];
+    $allowedStatuses = ['Pending', 'Approved', 'Served', 'Canceled'];
     if (!in_array($newStatus, $allowedStatuses)) {
         echo json_encode([
             'success' => false,
-            'message' => 'Invalid status. Allowed values: Served, Canceled'
+            'message' => 'Invalid status. Allowed values: Pending, Approved, Served, Canceled'
         ]);
         exit;
     }

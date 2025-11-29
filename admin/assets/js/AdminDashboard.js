@@ -61,11 +61,29 @@ async function calculateAllMetrics() {
 
   // Fetch real order data from database
   try {
-    const response = await fetch('/TESDAPOS/admin/fetch_orders.php');
-    const data = await response.json();
+    // Use filtered transactions if available, otherwise use all transactions
+    let transactions = [];
+    if (typeof filteredTransactions !== 'undefined' && Array.isArray(filteredTransactions)) {
+      // Always use filteredTransactions (even if empty) - this respects the applied filters
+      transactions = filteredTransactions;
+    }
     
-    if (data.success && data.orders) {
-      const transactions = data.orders;
+    // If no filtered transactions available, try to get all transactions
+    if (transactions.length === 0 && typeof transactionsData !== 'undefined' && Array.isArray(transactionsData)) {
+      transactions = transactionsData;
+    }
+    
+    // Final fallback to database fetch
+    if (transactions.length === 0) {
+      const response = await fetch('/TESDAPOS/admin/fetch_orders.php');
+      const data = await response.json();
+      
+      if (data.success && data.orders) {
+        transactions = data.orders;
+      }
+    }
+    
+    if (transactions.length > 0) {
       const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
       
       transactions.forEach(transaction => {
@@ -193,41 +211,53 @@ async function initCharts() {
 
   // Get all metrics including status and payment distributions from database
   const allMetrics = await calculateAllMetrics();
-
-  // Prepare data for bar chart - combine all metrics
-  const barLabels = [
-    'Total Sales (₱K)', 
-    'Orders Today', 
-    'Total Products', 
-    'Low Stock Items',
-    'Served',
-    'Canceled',
-    'Cash',
-    'Credit or Debit Card'
-  ];
   
-  // Normalize sales to thousands for better visualization
-  const barData = [
+  // Check active filters
+  const statusFilter = document.getElementById('filterStatus')?.value || '';
+  const paymentFilter = document.getElementById('filterPaymentMethod')?.value || '';
+  
+  // Prepare dynamic chart data based on filters
+  let barLabels = [];
+  let barData = [];
+  let barColors = [];
+  
+  // Always include base metrics
+  barLabels.push('Total Sales (₱K)', 'Orders Today', 'Total Products', 'Low Stock Items');
+  barData.push(
     allMetrics.totalSales / 1000, // Sales in thousands
     allMetrics.ordersToday,
     dashboardMetrics.totalProducts,
-    dashboardMetrics.lowStockItems,
-    allMetrics.statusDistribution.Served,
-    allMetrics.statusDistribution.Canceled,
-    allMetrics.paymentMethodDistribution.Cash,
-    allMetrics.paymentMethodDistribution["Credit or Debit Card"]
-  ];
-
-  const barColors = [
-    '#4CAF50',  // Total Sales - Green
-    '#2196F3',  // Orders Today - Blue
-    '#FF9800',  // Total Products - Orange
-    '#F44336',  // Low Stock Items - Red
-    '#4CAF50',  // Served - Green
-    '#F44336',  // Canceled - Red
-    '#4CAF50',  // Cash - Green
-    '#2196F3'   // Credit or Debit Card - Blue
-  ];
+    dashboardMetrics.lowStockItems
+  );
+  barColors.push('#4CAF50', '#2196F3', '#FF9800', '#F44336');
+  
+  // Add status-based data based on filter
+  // Only show status if no payment filter is active
+  if (paymentFilter === '' && (statusFilter === '' || statusFilter === 'Served')) {
+    barLabels.push('Served');
+    barData.push(allMetrics.statusDistribution.Served);
+    barColors.push('#4CAF50');
+  }
+  
+  if (paymentFilter === '' && (statusFilter === '' || statusFilter === 'Canceled')) {
+    barLabels.push('Canceled');
+    barData.push(allMetrics.statusDistribution.Canceled);
+    barColors.push('#F44336');
+  }
+  
+  // Add payment method-based data based on filter
+  // Only show payment methods if no status filter is active
+  if (statusFilter === '' && (paymentFilter === '' || paymentFilter === 'Cash')) {
+    barLabels.push('Cash');
+    barData.push(allMetrics.paymentMethodDistribution.Cash);
+    barColors.push('#4CAF50');
+  }
+  
+  if (statusFilter === '' && (paymentFilter === '' || paymentFilter === 'Cashless')) {
+    barLabels.push('Credit or Debit Card');
+    barData.push(allMetrics.paymentMethodDistribution["Credit or Debit Card"]);
+    barColors.push('#2196F3');
+  }
 
   // Bar Chart - All Metrics
   barChart = new Chart(barCtx, {
@@ -277,40 +307,48 @@ async function initCharts() {
     }
   });
 
-  // Prepare data for pie chart - combine all metrics (as counts/values)
-  const pieLabels = [
-    'Total Sales',
-    'Orders Today',
-    'Total Products',
-    'Low Stock Items',
-    'Served',
-    'Canceled',
-    'Cash',
-    'Credit or Debit Card'
-  ];
-
-  // Normalize values for pie chart (using percentages or absolute values)
-  const pieData = [
+  // Prepare dynamic pie chart data based on filters
+  let pieLabels = [];
+  let pieData = [];
+  let pieColors = [];
+  
+  // Always include base metrics
+  pieLabels.push('Total Sales', 'Orders Today', 'Total Products', 'Low Stock Items');
+  pieData.push(
     Math.min(allMetrics.totalSales / 100, 100), // Normalize sales
     allMetrics.ordersToday,
     dashboardMetrics.totalProducts,
-    dashboardMetrics.lowStockItems,
-    allMetrics.statusDistribution.Served,
-    allMetrics.statusDistribution.Canceled,
-    allMetrics.paymentMethodDistribution.Cash,
-    allMetrics.paymentMethodDistribution["Credit or Debit Card"]
-  ];
-
-  const pieColors = [
-    '#4CAF50',  // Total Sales - Green
-    '#2196F3',  // Orders Today - Blue
-    '#FF9800',  // Total Products - Orange
-    '#F44336',  // Low Stock Items - Red
-    '#4CAF50',  // Served - Green
-    '#F44336',  // Canceled - Red
-    '#4CAF50',  // Cash - Green
-    '#2196F3'   // Credit or Debit Card - Blue
-  ];
+    dashboardMetrics.lowStockItems
+  );
+  pieColors.push('#4CAF50', '#2196F3', '#FF9800', '#F44336');
+  
+  // Add status-based data based on filter
+  // Only show status if no payment filter is active
+  if (paymentFilter === '' && (statusFilter === '' || statusFilter === 'Served')) {
+    pieLabels.push('Served');
+    pieData.push(allMetrics.statusDistribution.Served);
+    pieColors.push('#4CAF50');
+  }
+  
+  if (paymentFilter === '' && (statusFilter === '' || statusFilter === 'Canceled')) {
+    pieLabels.push('Canceled');
+    pieData.push(allMetrics.statusDistribution.Canceled);
+    pieColors.push('#F44336');
+  }
+  
+  // Add payment method-based data based on filter
+  // Only show payment methods if no status filter is active
+  if (statusFilter === '' && (paymentFilter === '' || paymentFilter === 'Cash')) {
+    pieLabels.push('Cash');
+    pieData.push(allMetrics.paymentMethodDistribution.Cash);
+    pieColors.push('#4CAF50');
+  }
+  
+  if (statusFilter === '' && (paymentFilter === '' || paymentFilter === 'Cashless')) {
+    pieLabels.push('Credit or Debit Card');
+    pieData.push(allMetrics.paymentMethodDistribution["Credit or Debit Card"]);
+    pieColors.push('#2196F3');
+  }
 
   // Pie Chart - All Metrics Distribution
   pieChart = new Chart(pieCtx, {
@@ -546,73 +584,80 @@ async function updateCharts() {
   // Get all updated metrics from database
   const allMetrics = await calculateAllMetrics();
   
-  // Prepare bar chart data
-  const barLabels = [
-    'Total Sales (₱K)', 
-    'Orders Today', 
-    'Total Products', 
-    'Low Stock Items',
-    'Served',
-    'Canceled',
-    'Cash',
-    'Credit or Debit Card'
-  ];
+  // Check active filters
+  const statusFilter = document.getElementById('filterStatus')?.value || '';
+  const paymentFilter = document.getElementById('filterPaymentMethod')?.value || '';
   
-  const barData = [
+  // Prepare dynamic chart data based on filters
+  let barLabels = [];
+  let barData = [];
+  let barColors = [];
+  let pieLabels = [];
+  let pieData = [];
+  let pieColors = [];
+  
+  // Always include base metrics
+  barLabels.push('Total Sales (₱K)', 'Orders Today', 'Total Products', 'Low Stock Items');
+  barData.push(
     allMetrics.totalSales / 1000, // Sales in thousands
     allMetrics.ordersToday,
     dashboardMetrics.totalProducts,
-    dashboardMetrics.lowStockItems,
-    allMetrics.statusDistribution.Served,
-    allMetrics.statusDistribution.Canceled,
-    allMetrics.paymentMethodDistribution.Cash,
-    allMetrics.paymentMethodDistribution["Credit or Debit Card"]
-  ];
-
-  const barColors = [
-    '#4CAF50',  // Total Sales - Green
-    '#2196F3',  // Orders Today - Blue
-    '#FF9800',  // Total Products - Orange
-    '#F44336',  // Low Stock Items - Red
-    '#4CAF50',  // Served - Green
-    '#F44336',  // Canceled - Red
-    '#4CAF50',  // Cash - Green
-    '#2196F3'   // Credit or Debit Card - Blue
-  ];
-
-  // Prepare pie chart data
-  const pieLabels = [
-    'Total Sales',
-    'Orders Today',
-    'Total Products',
-    'Low Stock Items',
-    'Served',
-    'Canceled',
-    'Cash',
-    'Credit or Debit Card'
-  ];
-
-  const pieData = [
+    dashboardMetrics.lowStockItems
+  );
+  barColors.push('#4CAF50', '#2196F3', '#FF9800', '#F44336');
+  
+  pieLabels.push('Total Sales', 'Orders Today', 'Total Products', 'Low Stock Items');
+  pieData.push(
     Math.min(allMetrics.totalSales / 100, 100), // Normalize sales
     allMetrics.ordersToday,
     dashboardMetrics.totalProducts,
-    dashboardMetrics.lowStockItems,
-    allMetrics.statusDistribution.Served,
-    allMetrics.statusDistribution.Canceled,
-    allMetrics.paymentMethodDistribution.Cash,
-    allMetrics.paymentMethodDistribution["Credit or Debit Card"]
-  ];
-
-  const pieColors = [
-    '#4CAF50',  // Total Sales - Green
-    '#2196F3',  // Orders Today - Blue
-    '#FF9800',  // Total Products - Orange
-    '#F44336',  // Low Stock Items - Red
-    '#4CAF50',  // Served - Green
-    '#F44336',  // Canceled - Red
-    '#4CAF50',  // Cash - Green
-    '#2196F3'   // Credit or Debit Card - Blue
-  ];
+    dashboardMetrics.lowStockItems
+  );
+  pieColors.push('#4CAF50', '#2196F3', '#FF9800', '#F44336');
+  
+  // Add status-based data based on filter
+  // Only show status if no payment filter is active
+  if (paymentFilter === '' && (statusFilter === '' || statusFilter === 'Served')) {
+    barLabels.push('Served');
+    barData.push(allMetrics.statusDistribution.Served);
+    barColors.push('#4CAF50');
+    
+    pieLabels.push('Served');
+    pieData.push(allMetrics.statusDistribution.Served);
+    pieColors.push('#4CAF50');
+  }
+  
+  if (paymentFilter === '' && (statusFilter === '' || statusFilter === 'Canceled')) {
+    barLabels.push('Canceled');
+    barData.push(allMetrics.statusDistribution.Canceled);
+    barColors.push('#F44336');
+    
+    pieLabels.push('Canceled');
+    pieData.push(allMetrics.statusDistribution.Canceled);
+    pieColors.push('#F44336');
+  }
+  
+  // Add payment method-based data based on filter
+  // Only show payment methods if no status filter is active
+  if (statusFilter === '' && (paymentFilter === '' || paymentFilter === 'Cash')) {
+    barLabels.push('Cash');
+    barData.push(allMetrics.paymentMethodDistribution.Cash);
+    barColors.push('#4CAF50');
+    
+    pieLabels.push('Cash');
+    pieData.push(allMetrics.paymentMethodDistribution.Cash);
+    pieColors.push('#4CAF50');
+  }
+  
+  if (statusFilter === '' && (paymentFilter === '' || paymentFilter === 'Cashless')) {
+    barLabels.push('Credit or Debit Card');
+    barData.push(allMetrics.paymentMethodDistribution["Credit or Debit Card"]);
+    barColors.push('#2196F3');
+    
+    pieLabels.push('Credit or Debit Card');
+    pieData.push(allMetrics.paymentMethodDistribution["Credit or Debit Card"]);
+    pieColors.push('#2196F3');
+  }
 
   // Update Bar Chart
   barChart.data.labels = barLabels;

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chart Filter Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Chart Filter Test</h1>
+    
+    <div class="filter-controls">
+        <label for="filterStatus">Status:</label>
+        <select id="filterStatus">
+            <option value="">All Status</option>
+            <option value="Served">Served</option>
+            <option value="Canceled">Canceled</option>
+        </select>
+        
+        <label for="filterPaymentMethod">Payment Method:</label>
+        <select id="filterPaymentMethod">
+            <option value="">All Methods</option>
+            <option value="Cash">Cash</option>
+            <option value="Cashless">Credit or Debit Card</option>
+        </select>
+        
+        <button onclick="testFiltering()">Test Filter</button>
+    </div>
+    
+    <div style="display: flex; gap: 20px;">
+        <div style="width: 400px; height: 300px;">
+            <canvas id="barChart"></canvas>
+        </div>
+        <div style="width: 400px; height: 300px;">
+            <canvas id="pieChart"></canvas>
+        </div>
+    </div>
+    
+    <div id="result"></div>
+    
+    <script>
+        let barChart, pieChart;
+        
+        // Mock data for testing
+        const mockMetrics = {
+            totalSales: 15000,
+            ordersToday: 25,
+            totalProducts: 100,
+            lowStockItems: 8,
+            statusDistribution: {
+                Served: 20,
+                Canceled: 5
+            },
+            paymentMethodDistribution: {
+                Cash: 15,
+                "Credit or Debit Card": 10
+            }
+        };
+        
+        function createCharts() {
+            const statusFilter = document.getElementById('filterStatus').value;
+            const paymentFilter = document.getElementById('filterPaymentMethod').value;
+            
+            // Prepare dynamic chart data based on filters
+            let barLabels = [];
+            let barData = [];
+            let barColors = [];
+            let pieLabels = [];
+            let pieData = [];
+            let pieColors = [];
+            
+            // Always include base metrics
+            barLabels.push('Total Sales (₱K)', 'Orders Today', 'Total Products', 'Low Stock Items');
+            barData.push(
+                mockMetrics.totalSales / 1000,
+                mockMetrics.ordersToday,
+                mockMetrics.totalProducts,
+                mockMetrics.lowStockItems
+            );
+            barColors.push('#4CAF50', '#2196F3', '#FF9800', '#F44336');
+            
+            pieLabels.push('Total Sales', 'Orders Today', 'Total Products', 'Low Stock Items');
+            pieData.push(
+                Math.min(mockMetrics.totalSales / 100, 100),
+                mockMetrics.ordersToday,
+                mockMetrics.totalProducts,
+                mockMetrics.lowStockItems
+            );
+            pieColors.push('#4CAF50', '#2196F3', '#FF9800', '#F44336');
+            
+            // Add status-based data based on filter
+            if (statusFilter === '' || statusFilter === 'Served') {
+                barLabels.push('Served');
+                barData.push(mockMetrics.statusDistribution.Served);
+                barColors.push('#4CAF50');
+                
+                pieLabels.push('Served');
+                pieData.push(mockMetrics.statusDistribution.Served);
+                pieColors.push('#4CAF50');
+            }
+            
+            if (statusFilter === '' || statusFilter === 'Canceled') {
+                barLabels.push('Canceled');
+                barData.push(mockMetrics.statusDistribution.Canceled);
+                barColors.push('#F44336');
+                
+                pieLabels.push('Canceled');
+                pieData.push(mockMetrics.statusDistribution.Canceled);
+                pieColors.push('#F44336');
+            }
+            
+            // Add payment method-based data based on filter
+            if (paymentFilter === '' || paymentFilter === 'Cash') {
+                barLabels.push('Cash');
+                barData.push(mockMetrics.paymentMethodDistribution.Cash);
+                barColors.push('#4CAF50');
+                
+                pieLabels.push('Cash');
+                pieData.push(mockMetrics.paymentMethodDistribution.Cash);
+                pieColors.push('#4CAF50');
+            }
+            
+            if (paymentFilter === '' || paymentFilter === 'Cashless') {
+                barLabels.push('Credit or Debit Card');
+                barData.push(mockMetrics.paymentMethodDistribution["Credit or Debit Card"]);
+                barColors.push('#2196F3');
+                
+                pieLabels.push('Credit or Debit Card');
+                pieData.push(mockMetrics.paymentMethodDistribution["Credit or Debit Card"]);
+                pieColors.push('#2196F3');
+            }
+            
+            // Destroy existing charts
+            if (barChart) barChart.destroy();
+            if (pieChart) pieChart.destroy();
+            
+            // Create bar chart
+            const barCtx = document.getElementById('barChart').getContext('2d');
+            barChart = new Chart(barCtx, {
+                type: 'bar',
+                data: {
+                    labels: barLabels,
+                    datasets: [{
+                        label: 'Dashboard Metrics',
+                        data: barData,
+                        backgroundColor: barColors
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { 
+                        legend: { display: false },
+                        title: {
+                            display: true,
+                            text: 'Dashboard Metrics Overview'
+                        }
+                    },
+                    scales: { 
+                        y: { 
+                            beginAtZero: true
+                        } 
+                    }
+                }
+            });
+            
+            // Create pie chart
+            const pieCtx = document.getElementById('pieChart').getContext('2d');
+            pieChart = new Chart(pieCtx, {
+                type: 'pie',
+                data: {
+                    labels: pieLabels,
+                    datasets: [{
+                        data: pieData,
+                        backgroundColor: pieColors
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { 
+                        legend: { 
+                            position: 'right',
+                            labels: {
+                                boxWidth: 15,
+                                padding: 10,
+                                font: {
+                                    size: 11
+                                }
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'All Metrics Distribution'
+                        }
+                    }
+                }
+            });
+            
+            // Display results
+            document.getElementById('result').innerHTML = `
+                <h3>Filter Results:</h3>
+                <p><strong>Status Filter:</strong> ${statusFilter || 'All'}</p>
+                <p><strong>Payment Filter:</strong> ${paymentFilter || 'All'}</p>
+                <p><strong>Bar Chart Labels:</strong> ${barLabels.join(', ')}</p>
+                <p><strong>Pie Chart Labels:</strong> ${pieLabels.join(', ')}</p>
+            `;
+        }
+        
+        function testFiltering() {
+            createCharts();
+        }
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            createCharts();
+        });
+    </script>
+</body>
+</html>

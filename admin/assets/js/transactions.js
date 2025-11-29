@@ -2,65 +2,12 @@
 // Transactions & Sales Report Module
 // ==========================
 
-const transactionsData = [
-  {
-    id: 1001,
-    date: '2025-01-05',
-    cashier: 'Maria Santos',
-    paymentMethod: 'Cash',
-    status: 'Served',
-    items: [
-      { name: 'Pork Sinigang', quantity: 2, price: 150.0 },
-      { name: 'Iced Tea', quantity: 2, price: 35.0 }
-    ]
-  },
-  {
-    id: 1002,
-    date: '2025-01-07',
-    cashier: 'John Cruz',
-    paymentMethod: 'Cashless',
-    status: 'Served',
-    items: [
-      { name: 'Chicken Adobo', quantity: 3, price: 120.0 }
-    ]
-  },
-  {
-    id: 1003,
-    date: '2025-01-09',
-    cashier: 'Maria Santos',
-    paymentMethod: 'Cash',
-    status: 'Pending',
-    items: [
-      { name: 'Burger Steak', quantity: 4, price: 95.0 },
-      { name: 'Fries', quantity: 2, price: 45.0 }
-    ]
-  },
-  {
-    id: 1004,
-    date: '2025-01-11',
-    cashier: 'Anna Reyes',
-    paymentMethod: 'Cashless',
-    status: 'Served',
-    items: [
-      { name: 'Milk Tea', quantity: 5, price: 55.0 }
-    ]
-  },
-  {
-    id: 1005,
-    date: '2025-01-12',
-    cashier: 'John Cruz',
-    paymentMethod: 'Cash',
-    status: 'Approved',
-    items: [
-      { name: 'BBQ Skewers', quantity: 10, price: 35.0 },
-      { name: 'Rice', quantity: 10, price: 20.0 }
-    ]
-  }
-];
-
+// Global variables for transactions data
+let transactionsData = [];
 let orders = [];
 let filteredTransactions = [];
 let salesTrendChart = null;
+let allCashiers = [];
 
 const statusColors = {
   Pending: 'pending',
@@ -74,11 +21,11 @@ const statusColors = {
 // ==========================
 
 function transactionTotal(transaction) {
-  return transaction.items.reduce((sum, item) => sum + item.quantity * item.price, 0);
+  return parseFloat(transaction.total_amount) || 0;
 }
 
 function transactionItemCount(transaction) {
-  return transaction.items.reduce((sum, item) => sum + item.quantity, 0);
+  return parseInt(transaction.total_item_count) || 0;
 }
 
 function formatCurrency(value) {
@@ -86,7 +33,10 @@ function formatCurrency(value) {
 }
 
 function formatDisplayDate(dateString) {
-  return new Date(dateString).toLocaleDateString('en-PH', {
+  if (!dateString) return 'N/A';
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) return 'N/A';
+  return date.toLocaleDateString('en-PH', {
     year: 'numeric',
     month: 'short',
     day: 'numeric'
@@ -170,23 +120,28 @@ function renderTransactions() {
   transactionsToRender.forEach((transaction) => {
     const total = transactionTotal(transaction);
     const itemCount = transactionItemCount(transaction);
-    const firstItem = transaction.items[0]?.name || 'No Items';
-    const itemsLabel = transaction.items.length > 1
-      ? `${firstItem} +${transaction.items.length - 1} more`
-      : firstItem;
+    
+    // Get product names for display
+    let itemsLabel = 'No Items';
+    if (transaction.product_names && transaction.product_names.length > 0) {
+      const firstName = transaction.product_names[0];
+      itemsLabel = transaction.product_names.length > 1
+        ? `${firstName} +${transaction.product_names.length - 1} more`
+        : firstName;
+    }
 
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td><strong>#${transaction.id}</strong></td>
-      <td>${formatDisplayDate(transaction.date)}</td>
-      <td>${transaction.cashier}</td>
+      <td><strong>#${transaction.order_id || transaction.id}</strong></td>
+      <td>${formatDisplayDate(transaction.created_at || transaction.date)}</td>
+      <td>${transaction.cashier_name || 'N/A'}</td>
       <td>${itemsLabel}</td>
       <td>${itemCount}</td>
-      <td>${transaction.paymentMethod}</td>
+      <td>${transaction.payment_method || 'N/A'}</td>
       <td><strong>${formatCurrency(total)}</strong></td>
-      <td><span class="status ${statusColors[transaction.status] || 'pending'}">${transaction.status}</span></td>
+      <td><span class="status ${statusColors[transaction.status] || 'pending'}">${transaction.status || 'Pending'}</span></td>
       <td>
-        <select onchange="updateOrderStatus(${transaction.id}, this.value)">
+        <select onchange="updateOrderStatus('${transaction.order_id || transaction.id}', this.value)">
           <option value="">Change Status</option>
           <option value="Pending" ${transaction.status === 'Pending' ? 'selected' : ''}>Pending</option>
           <option value="Approved" ${transaction.status === 'Approved' ? 'selected' : ''}>Approved</option>
@@ -199,28 +154,51 @@ function renderTransactions() {
   });
 }
 
-function updateOrderStatus(orderId, newStatus) {
+async function updateOrderStatus(orderId, newStatus) {
   if (!newStatus) return;
 
-  const order = orders.find((o) => o.id === orderId);
-  if (order) {
-    order.status = newStatus;
-  }
+  try {
+    // Update status in database
+    const response = await fetch('/TESDAPOS/admin/update_order_status.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        order_id: orderId,
+        status: newStatus
+      })
+    });
 
-  const transaction = transactionsData.find((txn) => txn.id === orderId);
-  if (transaction) {
-    transaction.status = newStatus;
-  }
+    const result = await response.json();
+    
+    if (result.success) {
+      // Update local data
+      const transaction = transactionsData.find((txn) => 
+        (txn.order_id && txn.order_id === orderId) || 
+        (txn.id && txn.id === orderId)
+      );
+      
+      if (transaction) {
+        transaction.status = newStatus;
+      }
 
-  // Re-apply filters if active
-  if (filteredTransactions.length > 0) {
-    applyFilters();
-  } else {
-  renderTransactions();
+      // Re-apply filters if active
+      if (filteredTransactions.length > 0) {
+        applyFilters();
+      } else {
+        renderTransactions();
+      }
+      
+      updateSummaryCards();
+      showNotification(`Transaction #${orderId} status updated to ${newStatus}`);
+    } else {
+      showNotification(`Failed to update status: ${result.message}`, 'error');
+    }
+  } catch (error) {
+    console.error('Error updating order status:', error);
+    showNotification('Failed to update status. Please try again.', 'error');
   }
-  
-  updateSummaryCards();
-  showNotification(`Transaction #${orderId} status updated to ${newStatus}`);
 }
 
 function updateSummaryCards() {
@@ -256,14 +234,15 @@ function populateCashierFilter() {
   const currentValue = cashierSelect.value;
   cashierSelect.innerHTML = '<option value="">All Cashiers</option>';
 
-  Array.from(new Set(transactionsData.map((txn) => txn.cashier)))
-    .sort()
-    .forEach((name) => {
-      const option = document.createElement('option');
-      option.value = name;
-      option.textContent = name;
-      cashierSelect.appendChild(option);
-    });
+  // Use the fetched cashiers array
+  const cashiersToUse = allCashiers.length > 0 ? allCashiers : [];
+  
+  cashiersToUse.forEach((name) => {
+    const option = document.createElement('option');
+    option.value = name;
+    option.textContent = name;
+    cashierSelect.appendChild(option);
+  });
 
   if (currentValue) {
     cashierSelect.value = currentValue;
@@ -275,7 +254,13 @@ function initializeDateFilters() {
   const endInput = document.getElementById('filterEndDate');
   if (!startInput || !endInput || !transactionsData.length) return;
 
-  const timestamps = transactionsData.map((txn) => new Date(txn.date).getTime());
+  const timestamps = transactionsData.map((txn) => {
+    const date = new Date(txn.created_at || txn.date);
+    return date.getTime();
+  }).filter(ts => !isNaN(ts));
+  
+  if (timestamps.length === 0) return;
+  
   const minDate = new Date(Math.min(...timestamps));
   const maxDate = new Date(Math.max(...timestamps));
 
@@ -297,20 +282,25 @@ function applyFilters() {
   const paymentMethod = paymentSelect?.value || '';
 
   filteredTransactions = transactionsData.filter((txn) => {
-    const txnDate = new Date(txn.date + 'T00:00:00');
+    // Use created_at or date field
+    const txnDateString = txn.created_at || txn.date;
+    if (!txnDateString) return false;
+    
+    const txnDate = new Date(txnDateString);
+    if (isNaN(txnDate.getTime())) return false;
     
     // Date filter
     if (startDate && txnDate < startDate) return false;
     if (endDate && txnDate > endDate) return false;
     
     // Cashier filter
-    if (cashier && txn.cashier !== cashier) return false;
+    if (cashier && txn.cashier_name !== cashier) return false;
     
     // Status filter
     if (status && txn.status !== status) return false;
     
     // Payment method filter
-    if (paymentMethod && txn.paymentMethod !== paymentMethod) return false;
+    if (paymentMethod && txn.payment_method !== paymentMethod) return false;
     
     return true;
   });
@@ -328,12 +318,18 @@ function resetFilters() {
 
   // Reset date filters to show all data
   if (transactionsData.length > 0) {
-    const timestamps = transactionsData.map((txn) => new Date(txn.date).getTime());
-    const minDate = new Date(Math.min(...timestamps));
-    const maxDate = new Date(Math.max(...timestamps));
+    const timestamps = transactionsData.map((txn) => {
+      const date = new Date(txn.created_at || txn.date);
+      return date.getTime();
+    }).filter(ts => !isNaN(ts));
     
-    if (startInput) startInput.value = formatInputDate(minDate);
-    if (endInput) endInput.value = formatInputDate(maxDate);
+    if (timestamps.length > 0) {
+      const minDate = new Date(Math.min(...timestamps));
+      const maxDate = new Date(Math.max(...timestamps));
+      
+      if (startInput) startInput.value = formatInputDate(minDate);
+      if (endInput) endInput.value = formatInputDate(maxDate);
+    }
   } else {
     if (startInput) startInput.value = '';
     if (endInput) endInput.value = '';
@@ -364,28 +360,31 @@ function exportToCSV() {
   // CSV Headers
   const headers = ['Order ID', 'Date', 'Cashier', 'Payment Method', 'Status', 'Items', 'Quantity', 'Total Amount'];
   
-  // CSV Rows
-  const rows = transactionsToExport.map(txn => {
-    const items = txn.items.map(item => `${item.name} (${item.quantity}x)`).join('; ');
-    const total = transactionTotal(txn);
-    const itemCount = transactionItemCount(txn);
-    
+  // Convert transactions to CSV rows
+  const csvRows = transactionsToExport.map(transaction => {
+    const items = transaction.items || [];
+    const itemsCount = transaction.total_item_count || items.length;
+    const itemsDetails = items.map(item => 
+      `${item.name || item.product_name} (${item.quantity}x @ ₱${item.price})`
+    ).join('; ');
+
     return [
-      txn.id,
-      formatDisplayDate(txn.date),
-      txn.cashier,
-      txn.paymentMethod,
-      txn.status,
-      `"${items}"`,
-      itemCount,
-      total.toFixed(2)
+      transaction.order_id || transaction.id || '',
+      transaction.created_at ? new Date(transaction.created_at).toLocaleDateString() : (transaction.date || ''),
+      transaction.cashier_name || '',
+      'Walk-in', // Default customer name since it's not in database
+      transaction.status || 'Pending',
+      transaction.payment_method || 'Cash',
+      transaction.total_amount || '0.00',
+      itemsCount.toString(),
+      `"${itemsDetails}"`
     ];
   });
 
   // Combine headers and rows
   const csvContent = [
     headers.join(','),
-    ...rows.map(row => row.join(','))
+    ...csvRows.map(row => row.join(','))
   ].join('\n');
 
   // Add BOM for UTF-8 support in Excel
@@ -444,20 +443,20 @@ function printSalesReport() {
 
   // Generate table rows
   const tableRows = transactionsToPrint.map(txn => {
-    const items = txn.items.map(item => `${item.name} (${item.quantity}x)`).join(', ');
+    const items = txn.items ? txn.items.map(item => `${item.name} (${item.quantity}x)`).join(', ') : 'No items';
     const total = transactionTotal(txn);
     const itemCount = transactionItemCount(txn);
     
     return `
       <tr>
-        <td>#${txn.id}</td>
-        <td>${formatDisplayDate(txn.date)}</td>
-        <td>${txn.cashier}</td>
+        <td>#${txn.order_id || txn.id}</td>
+        <td>${formatDisplayDate(txn.created_at || txn.date)}</td>
+        <td>${txn.cashier_name || 'N/A'}</td>
         <td>${items}</td>
         <td style="text-align:center;">${itemCount}</td>
-        <td>${txn.paymentMethod}</td>
+        <td>${txn.payment_method || 'N/A'}</td>
         <td style="text-align:right;">${formatCurrency(total)}</td>
-        <td>${txn.status}</td>
+        <td>${txn.status || 'Pending'}</td>
       </tr>
     `;
   }).join('');
@@ -1006,16 +1005,53 @@ function attachEventHandlers() {
 
 async function fetchTransactionsFromDB() {
   try {
-    console.log('Initializing transactions data...');
-    initializeTransactionsData();
-    filteredTransactions = [...transactionsData];
-    populateCashierFilter();
-    initializeDateFilters();
-    renderTransactions();
-    updateSummaryCards();
-    return true;
+    console.log('Fetching transactions from database...');
+    
+    // Fetch all orders from database
+    const response = await fetch('/TESDAPOS/admin/fetch_filtered_orders.php', {
+      method: 'GET',
+      headers: {
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache'
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    
+    if (data.success && data.orders) {
+      // Update global variables with database data
+      transactionsData = data.orders;
+      allCashiers = data.cashiers || [];
+      
+      // Initialize filtered transactions with all data
+      filteredTransactions = [...transactionsData];
+      
+      // Initialize other components
+      initializeTransactionsData();
+      populateCashierFilter();
+      initializeDateFilters();
+      renderTransactions();
+      updateSummaryCards();
+      
+      console.log(`Loaded ${transactionsData.length} transactions from database`);
+      return true;
+    } else {
+      throw new Error(data.message || 'Failed to fetch orders');
+    }
   } catch (error) {
-    console.error('Error initializing transactions:', error);
+    console.error('Error fetching transactions from database:', error);
+    
+    // Fallback to empty data
+    transactionsData = [];
+    filteredTransactions = [];
+    allCashiers = [];
+    
+    // Show error notification
+    showNotification('Failed to load transactions from database. Please refresh the page.', 'error');
     return false;
   }
 }
