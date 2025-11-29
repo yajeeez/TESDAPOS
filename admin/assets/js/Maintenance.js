@@ -284,42 +284,34 @@ function deleteBackup(filename) {
 // Audit Trail Functions
 // ==========================
 function viewAuditTrail() {
-  showConfirmModal(
-    'View Audit Trail',
-    'Are you sure you want to view the audit trail?',
-    () => {
-      showNotification('Loading audit trail...', 'info');
-      
-      fetch('Maintenance.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: 'action=audit_trail'
-      })
-      .then(response => {
-        const contentType = response.headers.get('content-type');
-        if (!contentType || !contentType.includes('application/json')) {
-          throw new Error('Server returned non-JSON response');
-        }
-        return response.json();
-      })
-      .then(data => {
-        if (data.success) {
-          displayAuditTrail(data.data);
-          showNotification('Audit trail loaded', 'success');
-        } else {
-          showNotification('Failed to load audit trail: ' + (data.message || 'Unknown error'), 'error');
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        showNotification('Failed to load audit trail: ' + error.message, 'error');
-      });
+  showNotification('Loading audit trail...', 'info');
+  
+  fetch('Maintenance.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
     },
-    'fa-history',
-    'modal-audit'
-  );
+    body: 'action=audit_trail'
+  })
+  .then(response => {
+    const contentType = response.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+      throw new Error('Server returned non-JSON response');
+    }
+    return response.json();
+  })
+  .then(data => {
+    if (data.success) {
+      displayAuditTrail(data.data);
+      showNotification('Audit trail loaded', 'success');
+    } else {
+      showNotification('Failed to load audit trail: ' + (data.message || 'Unknown error'), 'error');
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    showNotification('Failed to load audit trail: ' + error.message, 'error');
+  });
 }
 
 function displayAuditTrail(auditData) {

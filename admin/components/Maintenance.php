@@ -509,13 +509,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
               <h4><i class="fas fa-user-shield"></i> Audit Trail</h4>
               <div class="audit-controls">
                 <input type="text" id="auditSearch" placeholder="Search audit logs..." class="search-input">
-                <select id="auditFilter" class="filter-select">
-                  <option value="">All Actions</option>
-                  <option value="backup">Backup</option>
-                  <option value="login">Login</option>
-                  <option value="order">Order</option>
-                  <option value="product">Product</option>
-                </select>
               </div>
               <div id="auditList" class="audit-list"></div>
             </div>
