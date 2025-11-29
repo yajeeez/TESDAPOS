@@ -997,7 +997,7 @@ footer {
   color: white !important;
   padding: 1.5rem 2rem;
   display: flex !important;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   position: relative;
   z-index: 1;
