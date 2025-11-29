@@ -203,17 +203,7 @@ function performSystemCheck() {
         $checks['upload_dir'] = ['status' => 'error', 'message' => 'Upload directory not writable'];
     }
     
-    // Check disk space
-    $freeSpace = disk_free_space(__DIR__);
-    $totalSpace = disk_total_space(__DIR__);
-    $usedPercent = (($totalSpace - $freeSpace) / $totalSpace) * 100;
-    
-    if ($usedPercent < 80) {
-        $checks['disk_space'] = ['status' => 'healthy', 'message' => 'Disk space: ' . round($usedPercent, 2) . '% used'];
-    } else {
-        $checks['disk_space'] = ['status' => 'warning', 'message' => 'Disk space: ' . round($usedPercent, 2) . '% used (High)'];
-    }
-    
+        
     // Check PHP version
     $phpVersion = PHP_VERSION;
     if (version_compare($phpVersion, '7.4.0', '>=')) {
@@ -466,7 +456,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
               </div>
               <div class="status-info">
                 <h4>System Health</h4>
-                <p id="healthStatus">Checking...</p>
+                <p id="healthStatus">Check your System's Health</p>
                 <button onclick="runSystemCheck()" class="btn btn-primary">
                   <i class="fas fa-sync"></i> Check System
                 </button>
@@ -534,6 +524,25 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
       </section>
 
     </main>
+  </div>
+
+  <!-- Confirmation Modal -->
+  <div id="confirmModal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-icon">
+        <i class="fas fa-question-circle"></i>
+      </div>
+      <h3 class="modal-title" id="modalTitle">Confirm Action</h3>
+      <p class="modal-message" id="modalMessage">Are you sure you want to proceed?</p>
+      <div class="modal-actions">
+        <button class="modal-btn modal-cancel" onclick="closeModal()">
+          <i class="fas fa-times"></i> Cancel
+        </button>
+        <button id="modalConfirmBtn" class="modal-btn modal-confirm">
+          <i class="fas fa-check"></i> Confirm
+        </button>
+      </div>
+    </div>
   </div>
 
   <!-- JS -->

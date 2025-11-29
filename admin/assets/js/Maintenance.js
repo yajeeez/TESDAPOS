@@ -16,36 +16,44 @@ function logout(e) {
 // System Check Functions
 // ==========================
 function runSystemCheck() {
-  showNotification('Running system health check...', 'info');
-  
-  fetch('Maintenance.php', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
+  showConfirmModal(
+    'System Check',
+    'Are you sure you want to run a system health check?',
+    () => {
+      showNotification('Running system health check...', 'info');
+      
+      fetch('Maintenance.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: 'action=system_check'
+      })
+      .then(response => {
+        // Check if response is actually JSON
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          throw new Error('Server returned non-JSON response');
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data.success) {
+          displaySystemCheckResults(data.checks, data.overall_status);
+          updateSystemStatus(data.overall_status);
+          showNotification('System check completed', 'success');
+        } else {
+          showNotification('System check failed: ' + (data.message || 'Unknown error'), 'error');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        showNotification('System check failed: ' + error.message, 'error');
+      });
     },
-    body: 'action=system_check'
-  })
-  .then(response => {
-    // Check if response is actually JSON
-    const contentType = response.headers.get('content-type');
-    if (!contentType || !contentType.includes('application/json')) {
-      throw new Error('Server returned non-JSON response');
-    }
-    return response.json();
-  })
-  .then(data => {
-    if (data.success) {
-      displaySystemCheckResults(data.checks, data.overall_status);
-      updateSystemStatus(data.overall_status);
-      showNotification('System check completed', 'success');
-    } else {
-      showNotification('System check failed: ' + (data.message || 'Unknown error'), 'error');
-    }
-  })
-  .catch(error => {
-    console.error('Error:', error);
-    showNotification('System check failed: ' + error.message, 'error');
-  });
+    'fa-heartbeat',
+    'modal-system'
+  );
 }
 
 function displaySystemCheckResults(checks, overallStatus) {
@@ -96,35 +104,43 @@ function updateSystemStatus(status) {
 // Backup Functions
 // ==========================
 function performBackup() {
-  showNotification('Starting system backup...', 'info');
-  
-  fetch('Maintenance.php', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
+  showConfirmModal(
+    'Create Backup',
+    'Are you sure you want to create a system backup?',
+    () => {
+      showNotification('Starting system backup...', 'info');
+      
+      fetch('Maintenance.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: 'action=backup'
+      })
+      .then(response => {
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          throw new Error('Server returned non-JSON response');
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data.success) {
+          showNotification(`Backup completed: ${data.file} (${formatFileSize(data.size)})`, 'success');
+          updateBackupStatus();
+          loadBackupHistory();
+        } else {
+          showNotification(`Backup failed: ${data.message}`, 'error');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        showNotification('Backup failed: ' + error.message, 'error');
+      });
     },
-    body: 'action=backup'
-  })
-  .then(response => {
-    const contentType = response.headers.get('content-type');
-    if (!contentType || !contentType.includes('application/json')) {
-      throw new Error('Server returned non-JSON response');
-    }
-    return response.json();
-  })
-  .then(data => {
-    if (data.success) {
-      showNotification(`Backup completed: ${data.file} (${formatFileSize(data.size)})`, 'success');
-      updateBackupStatus();
-      loadBackupHistory();
-    } else {
-      showNotification(`Backup failed: ${data.message}`, 'error');
-    }
-  })
-  .catch(error => {
-    console.error('Error:', error);
-    showNotification('Backup failed: ' + error.message, 'error');
-  });
+    'fa-database',
+    'modal-backup'
+  );
 }
 
 function updateBackupStatus() {
@@ -192,98 +208,118 @@ function displayBackupHistory(backups) {
 }
 
 function downloadBackup(filename) {
-  showNotification(`Downloading ${filename}...`, 'info');
-  
-  fetch('Maintenance.php', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    body: `action=download_backup&filename=${encodeURIComponent(filename)}`
-  })
-  .then(response => response.json())
-  .then(data => {
-    if (data.success) {
-      // Create a temporary link to download the file
-      const link = document.createElement('a');
-      link.href = data.download_url;
-      link.download = filename;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+  showConfirmModal(
+    'Download Backup',
+    `Are you sure you want to download ${filename}?`,
+    () => {
+      showNotification(`Downloading ${filename}...`, 'info');
       
-      showNotification(`Downloaded ${filename}`, 'success');
-    } else {
-      showNotification(`Download failed: ${data.message}`, 'error');
-    }
-  })
-  .catch(error => {
-    console.error('Error:', error);
-    showNotification('Download failed', 'error');
-  });
+      fetch('Maintenance.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `action=download_backup&filename=${encodeURIComponent(filename)}`
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          // Create a temporary link to download the file
+          const link = document.createElement('a');
+          link.href = data.download_url;
+          link.download = filename;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          
+          showNotification(`Downloaded ${filename}`, 'success');
+        } else {
+          showNotification(`Download failed: ${data.message}`, 'error');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        showNotification('Download failed', 'error');
+      });
+    },
+    'fa-download',
+    'modal-download'
+  );
 }
 
 function deleteBackup(filename) {
-  if (!confirm(`Are you sure you want to delete ${filename}?`)) {
-    return;
-  }
-  
-  showNotification(`Deleting ${filename}...`, 'info');
-  
-  fetch('Maintenance.php', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
+  showConfirmModal(
+    'Delete Backup',
+    `Are you sure you want to delete ${filename}? This action cannot be undone.`,
+    () => {
+      showNotification(`Deleting ${filename}...`, 'info');
+      
+      fetch('Maintenance.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `action=delete_backup&filename=${encodeURIComponent(filename)}`
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          showNotification(`Deleted ${filename}`, 'success');
+          loadBackupHistory(); // Refresh the backup list
+        } else {
+          showNotification(`Delete failed: ${data.message}`, 'error');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        showNotification('Delete failed', 'error');
+      });
     },
-    body: `action=delete_backup&filename=${encodeURIComponent(filename)}`
-  })
-  .then(response => response.json())
-  .then(data => {
-    if (data.success) {
-      showNotification(`Deleted ${filename}`, 'success');
-      loadBackupHistory(); // Refresh the backup list
-    } else {
-      showNotification(`Delete failed: ${data.message}`, 'error');
-    }
-  })
-  .catch(error => {
-    console.error('Error:', error);
-    showNotification('Delete failed', 'error');
-  });
+    'fa-trash',
+    'modal-confirm'
+  );
 }
 
 // ==========================
 // Audit Trail Functions
 // ==========================
 function viewAuditTrail() {
-  showNotification('Loading audit trail...', 'info');
-  
-  fetch('Maintenance.php', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
+  showConfirmModal(
+    'View Audit Trail',
+    'Are you sure you want to view the audit trail?',
+    () => {
+      showNotification('Loading audit trail...', 'info');
+      
+      fetch('Maintenance.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: 'action=audit_trail'
+      })
+      .then(response => {
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          throw new Error('Server returned non-JSON response');
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data.success) {
+          displayAuditTrail(data.data);
+          showNotification('Audit trail loaded', 'success');
+        } else {
+          showNotification('Failed to load audit trail: ' + (data.message || 'Unknown error'), 'error');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        showNotification('Failed to load audit trail: ' + error.message, 'error');
+      });
     },
-    body: 'action=audit_trail'
-  })
-  .then(response => {
-    const contentType = response.headers.get('content-type');
-    if (!contentType || !contentType.includes('application/json')) {
-      throw new Error('Server returned non-JSON response');
-    }
-    return response.json();
-  })
-  .then(data => {
-    if (data.success) {
-      displayAuditTrail(data.data);
-      showNotification('Audit trail loaded', 'success');
-    } else {
-      showNotification('Failed to load audit trail: ' + (data.message || 'Unknown error'), 'error');
-    }
-  })
-  .catch(error => {
-    console.error('Error:', error);
-    showNotification('Failed to load audit trail: ' + error.message, 'error');
-  });
+    'fa-history',
+    'modal-audit'
+  );
 }
 
 function displayAuditTrail(auditData) {
@@ -340,8 +376,47 @@ function filterAuditTrail() {
     const matchesSearch = !searchTerm || action.includes(searchTerm) || details.includes(searchTerm);
     const matchesFilter = !filterValue || action.includes(filterValue.toLowerCase());
     
-    item.style.display = matchesSearch && matchesFilter ? 'flex' : 'none';
+    // Show/hide item based on filters
+    item.style.display = matchesSearch && matchesFilter ? 'block' : 'none';
   });
+}
+
+// ==========================
+// Modal Functions
+// ==========================
+function showConfirmModal(title, message, onConfirm, iconClass = 'fa-question-circle', confirmBtnClass = 'modal-confirm') {
+const modal = document.getElementById('confirmModal');
+const modalTitle = document.getElementById('modalTitle');
+const modalMessage = document.getElementById('modalMessage');
+const confirmBtn = document.getElementById('modalConfirmBtn');
+const modalIcon = modal.querySelector('.modal-icon i');
+
+modalTitle.textContent = title;
+modalMessage.textContent = message;
+
+// Update icon
+modalIcon.className = `fas ${iconClass}`;
+
+// Update confirm button class
+confirmBtn.className = `modal-btn ${confirmBtnClass}`;
+
+// Remove any existing event listeners
+const newConfirmBtn = confirmBtn.cloneNode(true);
+confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
+
+// Add new event listener
+newConfirmBtn.addEventListener('click', () => {
+onConfirm();
+closeModal();
+});
+
+// Show modal with animation
+modal.classList.add('active');
+}
+
+function closeModal() {
+const modal = document.getElementById('confirmModal');
+modal.classList.remove('active');
 }
 
 // ==========================
