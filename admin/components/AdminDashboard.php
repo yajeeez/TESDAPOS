@@ -84,13 +84,10 @@ session_start();
           </h3>
           <div class="filter-controls" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; align-items: end;">
             <div class="filter-group" style="display: flex; flex-direction: column; gap: 0.5rem;">
-              <label for="filterStartDate" style="font-size: 0.85rem; font-weight: 600; color: #555;">Start Date</label>
+              <label for="filterStartDate" style="font-size: 0.85rem; font-weight: 600; color: #555;">Date</label>
               <input type="date" id="filterStartDate" class="filter-input" style="padding: 0.6rem; border: 1px solid #ddd; border-radius: 6px; font-size: 0.9rem;" />
             </div>
-            <div class="filter-group" style="display: flex; flex-direction: column; gap: 0.5rem;">
-              <label for="filterEndDate" style="font-size: 0.85rem; font-weight: 600; color: #555;">End Date</label>
-              <input type="date" id="filterEndDate" class="filter-input" style="padding: 0.6rem; border: 1px solid #ddd; border-radius: 6px; font-size: 0.9rem;" />
-            </div>
+
             <div class="filter-group" style="display: flex; flex-direction: column; gap: 0.5rem;">
               <label for="filterCashier" style="font-size: 0.85rem; font-weight: 600; color: #555;">Cashier</label>
               <select id="filterCashier" class="filter-input" style="padding: 0.6rem; border: 1px solid #ddd; border-radius: 6px; font-size: 0.9rem;">

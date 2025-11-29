@@ -16,6 +16,7 @@ function logout(e) {
 // Charts (Chart.js) & Metrics
 // ==========================
 let barChart, pieChart;
+let chartsInitialized = false; // Flag to prevent multiple initializations
 let dashboardMetrics = {
   totalSales: 0,
   ordersToday: 0,
@@ -24,13 +25,62 @@ let dashboardMetrics = {
 };
 
 function initCharts() {
-  const barCtx = document.getElementById('barChart')?.getContext('2d');
-  const pieCtx = document.getElementById('pieChart')?.getContext('2d');
+  const barCanvas = document.getElementById('barChart');
+  const pieCanvas = document.getElementById('pieChart');
 
-  if (!barCtx || !pieCtx) {
+  if (!barCanvas || !pieCanvas) {
     console.log('Chart canvases not found, skipping chart initialization');
     return;
   }
+
+  // Always check and destroy existing charts before creating new ones
+  // This prevents "Canvas is already in use" errors
+
+  // Check for existing Chart.js instances on the canvas elements using Chart.getChart()
+  // This is the proper way to detect if a chart is already registered on a canvas
+  const existingBarChart = Chart.getChart('barChart');
+  const existingPieChart = Chart.getChart('pieChart');
+
+  // Destroy any existing charts found via Chart.getChart()
+  if (existingBarChart) {
+    try {
+      existingBarChart.destroy();
+      console.log('Destroyed existing barChart instance found on canvas');
+    } catch (e) {
+      console.warn('Failed to destroy existing barChart instance:', e);
+    }
+  }
+
+  if (existingPieChart) {
+    try {
+      existingPieChart.destroy();
+      console.log('Destroyed existing pieChart instance found on canvas');
+    } catch (e) {
+      console.warn('Failed to destroy existing pieChart instance:', e);
+    }
+  }
+
+  // Also destroy our stored instances if they exist (as a safety measure)
+  if (barChart) {
+    try {
+      barChart.destroy();
+    } catch (e) {
+      console.warn('Failed to destroy stored barChart instance:', e);
+    }
+    barChart = null;
+  }
+  if (pieChart) {
+    try {
+      pieChart.destroy();
+    } catch (e) {
+      console.warn('Failed to destroy stored pieChart instance:', e);
+    }
+    pieChart = null;
+  }
+
+  // Get fresh context after destroying existing charts
+  const barCtx = barCanvas.getContext('2d');
+  const pieCtx = pieCanvas.getContext('2d');
 
   const initialData = [
     dashboardMetrics.totalSales,
@@ -219,8 +269,15 @@ function updateCharts() {
 // Initialize Dashboard
 // ==========================
 function initDashboard() {
+  // Prevent multiple initializations
+  if (chartsInitialized) {
+    console.log('Dashboard already initialized, skipping...');
+    return;
+  }
+
   console.log('Initializing Admin Dashboard...');
   initCharts();
+  chartsInitialized = true;
   refreshDashboardData();
   
   // Auto-refresh every 5 minutes
