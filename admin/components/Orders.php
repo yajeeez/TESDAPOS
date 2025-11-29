@@ -12,6 +12,7 @@ session_start();
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>TESDA POS - Manage Orders</title>
+  <link rel="icon" type="image/x-icon" href="../../img/ECALOGO.png">
   <link rel="stylesheet" href="../assets/css/Orders.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
@@ -58,6 +59,7 @@ session_start();
                 <th>Order ID</th>
                 <th>Item</th>
                 <th>Quantity</th>
+                <th>Amount</th>
                 <th>Status</th>
                 <th>Action</th>
               </tr>

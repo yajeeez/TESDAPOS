@@ -212,6 +212,46 @@ class MongoOrders {
     }
 
     /**
+     * Update order status
+     */
+    public function updateOrderStatus($orderId, $newStatus) {
+        try {
+            // Update by order_id or _id
+            $filter = [];
+            if (is_string($orderId) && strlen($orderId) === 24 && ctype_xdigit($orderId)) {
+                // Looks like a MongoDB _id
+                $filter['_id'] = new MongoDB\BSON\ObjectId($orderId);
+            } else {
+                // Treat as order_id
+                $filter['order_id'] = $orderId;
+            }
+            
+            $update = ['$set' => ['status' => $newStatus]];
+            
+            $result = $this->collection->updateOne($filter, $update);
+            
+            if ($result->getModifiedCount() === 1) {
+                return [
+                    'success' => true,
+                    'message' => 'Order status updated successfully'
+                ];
+            } else {
+                return [
+                    'success' => false,
+                    'message' => 'Order not found or no changes made'
+                ];
+            }
+            
+        } catch (MongoException $e) {
+            error_log("MongoDB error updating order status: " . $e->getMessage());
+            return ['success' => false, 'message' => 'MongoDB error: ' . $e->getMessage()];
+        } catch (Exception $e) {
+            error_log("General error updating order status: " . $e->getMessage());
+            return ['success' => false, 'message' => 'Error: ' . $e->getMessage()];
+        }
+    }
+
+    /**
      * Get dashboard metrics (total sales and orders today)
      */
     public function getDashboardMetrics() {

@@ -15,8 +15,6 @@ function logout(e) {
 }
 
 const statusColors = {
-  'Pending': 'pending',
-  'Approved': 'approved',
   'Served': 'served',
   'Canceled': 'canceled'
 };
@@ -61,14 +59,12 @@ function renderOrders() {
       <td>${itemDisplay}</td>
       <td>${order.total_item_count || order.quantity || 1}</td>
       <td>₱${(order.total_amount || 0).toFixed(2)}</td>
-      <td><span class="status ${statusColors[order.status] || 'pending'}">${order.status || 'Pending'}</span></td>
+      <td><span class="status ${statusColors[order.status] || 'served'}">${order.status || 'Served'}</span></td>
       <td>
-        <select onchange="updateOrderStatus('${order._id || order.id}', this.value)">
+        <select onchange="updateOrderStatus('${order.order_id || order._id || order.id}', this.value)">
           <option value="">Change Status</option>
-          <option value="Pending">Pending</option>
-          <option value="Approved">Approved</option>
-          <option value="Served">Served</option>
-          <option value="Canceled">Canceled</option>
+          <option value="Served" ${order.status === 'Served' ? 'selected' : ''}>Served</option>
+          <option value="Canceled" ${order.status === 'Canceled' ? 'selected' : ''}>Canceled</option>
         </select>
       </td>
     `;
@@ -81,50 +77,70 @@ function renderOrders() {
 // ==========================
 function updateOrderStatus(orderId, newStatus) {
   if (!newStatus) return;
-  const order = orders.find(o => (o._id === orderId) || (o.id === orderId));
+  
+  console.log('Updating order:', orderId, 'to status:', newStatus);
+  
+  // Convert orderId to string for consistent comparison
+  const orderIdStr = String(orderId);
+  
+  const order = orders.find(o => {
+    const orderOrderId = String(o.order_id || '');
+    const orderMongoId = String(o._id || '');
+    const orderIdField = String(o.id || '');
+    
+    return orderOrderId === orderIdStr || orderMongoId === orderIdStr || orderIdField === orderIdStr;
+  });
+  
   if (order) {
+    const oldStatus = order.status || 'Unknown';
+    console.log('Found order, updating status from', oldStatus, 'to', newStatus);
     order.status = newStatus;
+    
+    // Immediately update the display
     renderOrders();
     
-    // Show notification with order_id for better user experience
-    const displayId = order.order_id || order._id || order.id;
-    showNotification(`Order #${displayId} status updated to ${newStatus}`);
+    // Save to database
+    saveOrderStatusToDB(orderIdStr, newStatus).then(success => {
+      if (success) {
+        console.log(`Order #${order.order_id || order._id || order.id} status updated to ${newStatus}`);
+      } else {
+        // Revert status if save failed
+        order.status = oldStatus;
+        renderOrders();
+        console.error('Failed to update order status');
+      }
+    });
+  } else {
+    console.error('Order not found:', orderIdStr);
   }
 }
 
 // ==========================
-// Notification System
+// Save Order Status to Database
 // ==========================
-function showNotification(message, type = 'success') {
-  // Create toast if it doesn't exist
-  let toast = document.getElementById('notificationToast');
-  if (!toast) {
-    toast = document.createElement('div');
-    toast.id = 'notificationToast';
-    toast.className = 'toast';
-    toast.innerHTML = `
-      <div class="toast-content">
-        <i class="fas fa-check-circle"></i>
-        <span id="toastMessage"></span>
-      </div>
-    `;
-    document.body.appendChild(toast);
+async function saveOrderStatusToDB(orderId, newStatus) {
+  try {
+    const response = await fetch('/TESDAPOS/admin/update_order_status.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        order_id: orderId,
+        status: newStatus
+      })
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const result = await response.json();
+    return result.success;
+  } catch (error) {
+    console.error('Error saving order status:', error);
+    return false;
   }
-  
-  const toastMessage = document.getElementById('toastMessage');
-  toastMessage.textContent = message;
-  
-  if (type === 'error') {
-    toast.style.background = '#dc3545';
-  } else {
-    toast.style.background = '#28a745';
-  }
-  
-  toast.classList.add('show');
-  
-  setTimeout(() => {
-    toast.classList.remove('show');
-  }, 3000);
 }
 
 // ==========================
@@ -135,32 +151,24 @@ async function fetchOrdersFromDB() {
     console.log('Fetching orders from database...');
     
     const response = await fetch('/TESDAPOS/admin/fetch_orders.php');
-    const data = await response.json();
     
-    if (data.success) {
-      orders = data.orders;
-      console.log('Orders fetched successfully:', orders);
-    } else {
-      console.error('Error fetching orders:', data.message);
-      // Use mock data as fallback
-      orders = [
-        { order_id: '01', id: 1001, item: 'Chicken Adobo', quantity: 2, status: 'Pending' },
-        { order_id: '02', id: 1002, item: 'Pork Sinigang', quantity: 1, status: 'Approved' },
-        { order_id: '03', id: 1003, item: 'Iced Tea', quantity: 3, status: 'Served' }
-      ];
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
     
-    renderOrders();
-    return true;
+    const result = await response.json();
+    
+    if (result.success && result.orders) {
+      orders = result.orders;
+      renderOrders();
+      console.log(`Successfully fetched ${orders.length} orders`);
+      return true;
+    } else {
+      console.error('API returned error:', result.message || 'Unknown error');
+      return false;
+    }
   } catch (error) {
     console.error('Error fetching orders:', error);
-    // Use mock data as fallback
-    orders = [
-      { order_id: '01', id: 1001, item: 'Chicken Adobo', quantity: 2, status: 'Pending' },
-      { order_id: '02', id: 1002, item: 'Pork Sinigang', quantity: 1, status: 'Approved' },
-      { order_id: '03', id: 1003, item: 'Iced Tea', quantity: 3, status: 'Served' }
-    ];
-    renderOrders();
     return false;
   }
 }
@@ -170,5 +178,4 @@ async function fetchOrdersFromDB() {
 // ==========================
 document.addEventListener('DOMContentLoaded', async () => {
   await fetchOrdersFromDB();
-  renderOrders();
 });

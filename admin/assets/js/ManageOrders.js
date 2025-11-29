@@ -4,8 +4,6 @@
 let orders = [];
 
 const statusColors = {
-  'Pending': 'pending',
-  'Approved': 'approved',
   'Served': 'served',
   'Canceled': 'canceled'
 };
@@ -31,18 +29,22 @@ function renderOrders() {
   
   orders.forEach(order => {
     const tr = document.createElement('tr');
+    
+    // Extract product names from items array
+    const productNames = order.product_names || [];
+    const itemsDisplay = productNames.length > 0 ? productNames.join(', ') : 'No items';
+    const totalQuantity = order.total_item_count || 0;
+    
     tr.innerHTML = `
-      <td>${order.id}</td>
-      <td>${order.item}</td>
-      <td>${order.quantity}</td>
-      <td><span class="status ${statusColors[order.status]}">${order.status}</span></td>
+      <td>${order.order_id || order.id}</td>
+      <td>${itemsDisplay}</td>
+      <td>${totalQuantity}</td>
+      <td><span class="status ${statusColors[order.status] || 'pending'}">${order.status || 'Pending'}</span></td>
       <td>
-        <select onchange="updateOrderStatus(${order.id}, this.value)">
+        <select onchange="updateOrderStatus('${order.order_id || order.id}', this.value)">
           <option value="">Change Status</option>
-          <option value="Pending">Pending</option>
-          <option value="Approved">Approved</option>
-          <option value="Served">Served</option>
-          <option value="Canceled">Canceled</option>
+          <option value="Served" ${order.status === 'Served' ? 'selected' : ''}>Served</option>
+          <option value="Canceled" ${order.status === 'Canceled' ? 'selected' : ''}>Canceled</option>
         </select>
       </td>
     `;
@@ -55,13 +57,23 @@ function renderOrders() {
 // ==========================
 function updateOrderStatus(orderId, newStatus) {
   if (!newStatus) return;
-  const order = orders.find(o => o.id === orderId);
+  
+  // Find the order by order_id (string) or id (number)
+  const order = orders.find(o => 
+    (o.order_id && o.order_id === orderId) || 
+    (o.id && o.id.toString() === orderId.toString())
+  );
+  
   if (order) {
+    const oldStatus = order.status;
     order.status = newStatus;
     renderOrders();
     
     // Show notification
-    showNotification(`Order #${orderId} status updated to ${newStatus}`);
+    showNotification(`Order #${orderId} status updated from ${oldStatus} to ${newStatus}`);
+  } else {
+    console.error('Order not found:', orderId);
+    showNotification('Order not found', 'error');
   }
 }
 
@@ -105,22 +117,29 @@ function showNotification(message, type = 'success') {
 // ==========================
 async function fetchOrdersFromDB() {
   try {
-    // This would fetch from your orders API endpoint
-    // const response = await fetch('http://localhost/TESDAPOS/admin/fetch_orders.php');
-    // For now, we'll use mock data
-    
     console.log('Fetching orders from database...');
-    // Mock orders for demonstration
-    orders = [
-      { id: 1001, item: 'Chicken Adobo', quantity: 2, status: 'Pending' },
-      { id: 1002, item: 'Pork Sinigang', quantity: 1, status: 'Approved' },
-      { id: 1003, item: 'Iced Tea', quantity: 3, status: 'Served' }
-    ];
     
-    renderOrders();
-    return true;
+    const response = await fetch('http://localhost/TESDAPOS/admin/fetch_orders.php');
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const result = await response.json();
+    
+    if (result.success && result.orders) {
+      orders = result.orders;
+      renderOrders();
+      console.log(`Successfully fetched ${orders.length} orders`);
+      return true;
+    } else {
+      console.error('API returned error:', result.message || 'Unknown error');
+      showNotification('Failed to fetch orders: ' + (result.message || 'Unknown error'), 'error');
+      return false;
+    }
   } catch (error) {
     console.error('Error fetching orders:', error);
+    showNotification('Failed to connect to server. Please check your connection.', 'error');
     return false;
   }
 }
@@ -130,5 +149,4 @@ async function fetchOrdersFromDB() {
 // ==========================
 document.addEventListener('DOMContentLoaded', async () => {
   await fetchOrdersFromDB();
-  renderOrders();
 });
