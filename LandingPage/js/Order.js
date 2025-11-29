@@ -561,7 +561,7 @@ function showCartMessage(message, type = 'success') {
         padding: 14px 24px;
         border-radius: 10px;
         box-shadow: 0 6px 20px rgba(0,0,0,0.25);
-        z-index: 10000;
+        z-index: 10003;
         font-weight: 600;
         transform: translateX(400px);
         transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
@@ -827,9 +827,6 @@ function processPayment() {
     
     // Simulate payment processing
     setTimeout(() => {
-        // Show success message
-        showCartMessage('Payment processed successfully!', 'success');
-        
         // Clear cart
         cart = [];
         updateCartCount();
@@ -845,9 +842,7 @@ function processPayment() {
         confirmBtn.innerHTML = '<i class="fas fa-check"></i> Process Payment';
         
         // Show completion message
-        setTimeout(() => {
-            showCartMessage('Order completed! Thank you for your purchase.', 'success');
-        }, 500);
+        showCartMessage('Order completed! Thank you for your purchase.', 'success');
     }, 2000);
 }
 
