@@ -2,6 +2,35 @@ document.addEventListener('DOMContentLoaded', function() {
     const togglePassword = document.getElementById('toggle-password');
     const passwordInput = document.getElementById('password');
     
+    // Check for flash messages from session
+    function checkFlashMessages() {
+        // Try to get flash messages from URL parameters or session storage
+        const urlParams = new URLSearchParams(window.location.search);
+        const success = urlParams.get('success');
+        const error = urlParams.get('error');
+        
+        if (success) {
+            showFlashMessage('success', decodeURIComponent(success));
+        } else if (error) {
+            showFlashMessage('error', decodeURIComponent(error));
+        }
+    }
+    
+    // Flash message function
+    window.showFlashMessage = function(type, message) {
+        const flashElement = document.getElementById('flash-message');
+        if (flashElement) {
+            flashElement.className = 'flash-message ' + type;
+            flashElement.textContent = message;
+            flashElement.style.display = 'block';
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                flashElement.style.display = 'none';
+            }, 5000);
+        }
+    };
+    
     if (togglePassword && passwordInput) {
         // Start with eye-slash icon since password is initially hidden
         togglePassword.classList.remove('fa-eye');
@@ -21,6 +50,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Check for flash messages on page load
+    checkFlashMessages();
+    
     // Forgot Password functionality
     const getCodeText = document.querySelector('.get-code-text');
     const emailInput = document.getElementById('email');
@@ -74,13 +106,13 @@ document.addEventListener('DOMContentLoaded', function() {
             const email = emailInput.value.trim();
             
             if (!email) {
-                alert('Please enter your email address first.');
+                showFlashMessage('error', 'Please enter your email address first.');
                 emailInput.focus();
                 return;
             }
 
             if (!isValidGmailEmail(email)) {
-                alert('Please enter a valid Gmail address.');
+                showFlashMessage('error', 'Please enter a valid Gmail address.');
                 emailInput.focus();
                 return;
             }
@@ -106,7 +138,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     getCodeText.style.cursor = 'default';
                     getCodeText.style.pointerEvents = 'none';
                     
-                    alert('Verification code has been sent to your Gmail address.');
+                    showFlashMessage('success', 'Verification code has been sent to your Gmail address.');
                 } else {
                     throw new Error('Failed to send verification code');
                 }
@@ -121,7 +153,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 getCodeText.style.cursor = 'pointer';
                 getCodeText.style.pointerEvents = 'auto';
                 
-                alert('Failed to send verification code. Please check your Gmail and try again.');
+                showFlashMessage('error', 'Failed to send verification code. Please check your Gmail and try again.');
                 console.error('Error sending verification code:', error);
             }
         });
@@ -139,15 +171,29 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     async function sendVerificationCode(email) {
-        // This is a mock function - replace with actual API call
-        // Simulate API call with timeout
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                // Simulate success (90% success rate for demo)
-                // In production, this would be an actual API call
-                const mockSuccess = Math.random() > 0.1;
-                resolve(mockSuccess);
-            }, 2000); // 2 second delay to simulate network request
-        });
+        try {
+            const response = await fetch('send_verification_email.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: email
+                })
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                return true;
+            } else {
+                console.error('Server error:', result.message);
+                return false;
+            }
+            
+        } catch (error) {
+            console.error('Network error:', error);
+            return false;
+        }
     }
 });
