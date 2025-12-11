@@ -1,7 +1,22 @@
 <!DOCTYPE html>
 <?php
 // Start session and check authentication
-session_start();
+require_once __DIR__ . '/../../includes/session.php';
+
+// Require admin login
+SessionManager::requireLogin();
+
+// Check if user is admin
+if (SessionManager::getUserRole() !== 'admin') {
+    SessionManager::setFlashMessage('error', 'Access denied. Admin privileges required.');
+    header('Location: ../../public/components/login.html');
+    exit();
+}
+
+// Get user info
+$userName = SessionManager::getFullName();
+$userEmail = $_SESSION['email'] ?? '';
+$loginTime = $_SESSION['login_time'] ?? time();
 
 // Add any necessary PHP logic here
 
@@ -35,7 +50,7 @@ session_start();
         <li><a href="Inventory.php"><i class="fas fa-boxes"></i><span>Inventory</span></a></li>
         <li><a href="Transactions.php"><i class="fas fa-cash-register"></i><span>Transactions</span></a></li>
         <li><a href="Maintenance.php"><i class="fas fa-tools"></i><span>Maintenance</span></a></li>
-        <li><a href="#" onclick="logout(event)"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></li>
+        <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></li>
       </ul>
       
     </nav>
@@ -49,6 +64,10 @@ session_start();
           <h2>Dashboard</h2>
         </div>
         <div class="topbar-right">
+          <div class="user-info" style="display: flex; align-items: center; gap: 1rem; margin-right: 1rem;">
+            <span style="color: #666;">Welcome, <strong><?php echo htmlspecialchars($userName); ?></strong></span>
+            <small style="color: #999;"><?php echo htmlspecialchars($userEmail); ?></small>
+          </div>
           <input type="text" placeholder="Search..." class="search-input" />
         </div>
       </div>

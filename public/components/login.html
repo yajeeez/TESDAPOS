@@ -4,9 +4,42 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Login</title>
-  <link rel="stylesheet" href="../assets/css/login.css" />
+    <link rel="stylesheet" href="../assets/css/login.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
+    /* Flash message styles */
+    .flash-message {
+      display: none;
+      padding: 12px 20px;
+      margin-bottom: 20px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      animation: slideDown 0.3s ease-out;
+    }
+    
+    .flash-message.success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    
+    .flash-message.error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+    
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
     /* Header container with logo left + text center */
     .login-header {
       position: relative;
@@ -42,7 +75,6 @@
 }
 
 .forgot-password a:hover {
-  text-decoration: underline;
   color: #004080; /* darker blue hover */
 }
 
@@ -64,6 +96,9 @@
   <div class="background-overlay"></div>
 
   <div class="login-container">
+    <!-- Flash Messages -->
+    <div id="flash-message" class="flash-message"></div>
+    
     <!-- Logo on the left, Admin centered -->
     <div class="login-header">
       <h3>TESDA POS LOGIN</h3>
@@ -73,12 +108,12 @@
       <input type="hidden" name="role" value="admin">
       <div class="input-icon-group">
         <i class="fas fa-user"></i>
-        <input type="text" id="username" name="username" placeholder="Username" maxlength="11" required>
+        <input type="text" id="username" name="username" placeholder="Username" maxlength="11" autocomplete="username" required>
       </div>
 
       <div class="input-icon-group">
         <i class="fas fa-lock"></i>
-        <input type="password" id="password" name="password" placeholder="Password" maxlength="8" required>
+        <input type="password" id="password" name="password" placeholder="Password" maxlength="8" autocomplete="current-password" required>
         <i class="fas fa-eye" id="toggle-password" style="cursor: pointer;"></i>
       </div>
       <!-- Forgot Password link -->
@@ -97,5 +132,5 @@
 
   </div>
   <script src="../assets/js/login.js"></script>
-</body>
+  </body>
 </html>
