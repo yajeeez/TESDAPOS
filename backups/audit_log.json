@@ -201,5 +201,33 @@
         "details": "Maintenance page accessed",
         "ip": "::1",
         "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-12-11 16:42:17",
+        "action": "page_access",
+        "details": "Maintenance page accessed",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-12-11 16:44:57",
+        "action": "page_access",
+        "details": "Maintenance page accessed",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-12-11 16:45:00",
+        "action": "system_check",
+        "details": "System health check performed - Status: healthy",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
+    },
+    {
+        "timestamp": "2025-12-11 16:45:07",
+        "action": "audit_view",
+        "details": "Audit trail viewed - 32 entries",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/142.0.0.0 Safari\/537.36"
     }
 ]

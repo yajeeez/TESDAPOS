@@ -70,13 +70,6 @@ if (SessionManager::getUserRole() !== 'admin') {
       <section id="products" class="page-section">
         <div class="section-header">
           <div class="header-content">
-            <div class="icon-container">
-              <i class="fas fa-plus-circle"></i>
-            </div>
-            <div class="header-text">
-              <h2>Create New Product</h2>
-              <p class="subtitle">Add a new product to your inventory</p>
-            </div>
           </div>
         </div>
         
