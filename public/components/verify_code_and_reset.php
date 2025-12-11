@@ -74,13 +74,13 @@ function verifyCodeAndResetPassword($email, $code) {
         // Try to update in users collection first
         $userUpdate = $usersCollection->updateOne(
             ['email' => $email],
-            ['$set' => ['password' => password_hash($newPassword, PASSWORD_DEFAULT)]]
+            ['$set' => ['password' => $newPassword]]
         );
         
         // Try to update in admins collection
         $adminUpdate = $adminsCollection->updateOne(
             ['email' => $email],
-            ['$set' => ['password' => password_hash($newPassword, PASSWORD_DEFAULT)]]
+            ['$set' => ['password' => $newPassword]]
         );
         
         // Check if at least one update was successful

@@ -32,7 +32,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Find admin by username
         $admin = $collection->findOne(['username' => $username]);
         
-        if ($admin && password_verify($password, $admin['password'])) {
+        if ($admin) {
+            // Check if password is hashed or plain text
+            $passwordValid = false;
+            $storedPassword = $admin['password'];
+            
+            if (strpos($storedPassword, '$2y$') === 0 || strpos($storedPassword, '$2a$') === 0) {
+                // Password is hashed, verify using password_verify
+                $passwordValid = password_verify($password, $storedPassword);
+            } else {
+                // Password is plain text, compare directly
+                $passwordValid = ($storedPassword === $password);
+            }
+            
+            if ($passwordValid) {
             // Authentication successful - set session variables
             $_SESSION['user_id'] = (string) $admin['_id'];
             $_SESSION['username'] = $admin['username'];
@@ -44,13 +57,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Regenerate session ID for security
             SessionManager::regenerateId();
             
-            // Set success message
-            SessionManager::setFlashMessage('success', 'Login successful! Welcome, ' . $admin['full_name']);
-            
+                        
             // Redirect to admin dashboard
             header('Location: ../../admin/components/AdminDashboard.php');
             exit();
-            
+            } else {
+                // Authentication failed - wrong password
+                $error = urlencode('Invalid username or password');
+                header('Location: login.html?error=' . $error);
+                exit();
+            }
         } else {
             // Authentication failed
             $error = urlencode('Invalid username or password');
