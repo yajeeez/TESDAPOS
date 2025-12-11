@@ -24,15 +24,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     
     try {
-        // Connect to MongoDB admin database
+        // Connect to MongoDB TESDAPOS1 database
         $client = new Client(DB_URI);
-        $database = $client->selectDatabase('admin');
+        $database = $client->selectDatabase('TESDAPOS1');
         $collection = $database->selectCollection('admins');
         
         // Find admin by username
         $admin = $collection->findOne(['username' => $username]);
         
-        if ($admin && $admin['password'] === $password) {
+        if ($admin && password_verify($password, $admin['password'])) {
             // Authentication successful - set session variables
             $_SESSION['user_id'] = (string) $admin['_id'];
             $_SESSION['username'] = $admin['username'];
