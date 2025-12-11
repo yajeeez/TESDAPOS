@@ -70,13 +70,7 @@ function showToast(message, type = 'success') {
 // ==========================
 function logout(e) {
   if (e) e.preventDefault();
-  showConfirmationModal(
-    'Confirm Logout',
-    'Are you sure you want to logout?',
-    () => {
-      window.location.href = "/TESDAPOS/LandingPage/LandingPage.html";
-    }
-  );
+  window.location.href = "../../public/components/login.html";
 }
 
 // ==========================
