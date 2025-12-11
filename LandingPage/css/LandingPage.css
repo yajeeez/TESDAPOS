@@ -64,6 +64,27 @@ header.header-hidden {
   border-radius: 50%;
 }
 
+/* Login Button */
+.login-btn {
+  background: var(--text-light);
+  color: var(--tesda-blue);
+  padding: 8px 18px;
+  border-radius: 30px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+  border: none;
+  cursor: pointer;
+}
+
+.login-btn:hover {
+  background: var(--tesda-dark);
+  color: var(--text-light);
+  transform: translateX(4px);
+  border: 2px solid var(--tesda-accent);
+}
+
 
 
 /* Hero Section */

@@ -17,7 +17,7 @@ class SessionManager {
     
     public static function requireLogin() {
         if (!self::isLoggedIn()) {
-            header('Location: ' . APP_URL . '/LandingPage/LandingPage.html');
+            header('Location: ' . APP_URL . '/LandingPage/index.html');
             exit();
         }
     }
@@ -26,7 +26,7 @@ class SessionManager {
         self::requireLogin();
         
         if ($_SESSION['user_role'] !== $requiredRole) {
-            header('Location: ' . APP_URL . '/LandingPage/LandingPage.html');
+            header('Location: ' . APP_URL . '/LandingPage/index.html');
             exit();
         }
     }

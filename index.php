@@ -21,12 +21,12 @@ if (isset($_SESSION['user_role']) && isset($_SESSION['user_id'])) {
             header('Location: menu/menu.html');
             break;
         default:
-            header('Location: LandingPage/LandingPage.html');
+            header('Location: LandingPage/index.html');
     }
     exit();
 }
 
 // If not logged in, redirect to landing page
-header('Location: LandingPage/LandingPage.html');
+header('Location: LandingPage/index.html');
 exit();
 ?> 

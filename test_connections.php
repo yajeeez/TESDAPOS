@@ -36,7 +36,7 @@ $requiredFiles = [
     'includes/navigation.php' => 'Navigation component',
     'connection/mongo/connection.php' => 'MongoDB connection',
     'admin/dashboard.php' => 'Admin dashboard',
-    'LandingPage/LandingPage.html' => 'Landing page',
+    'LandingPage/index.html' => 'Landing page',
     'menu/menu.html' => 'Menu system',
     'composer.json' => 'Dependencies file'
 ];
