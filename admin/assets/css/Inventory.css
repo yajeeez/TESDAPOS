@@ -36,7 +36,7 @@ body {
 
 /* === Sidebar Styles === */
 .sidebar {
-  width: 180px;
+  width: 220px;
   background: linear-gradient(180deg, var(--tesda-blue), var(--tesda-dark-blue));
   padding: 1rem 0.5rem;
   box-shadow: 4px 0 20px rgba(0,0,0,0.3);
