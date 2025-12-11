@@ -10,12 +10,17 @@
     /* Flash message styles */
     .flash-message {
       display: none;
+      position: absolute;
+      top: 20px;
+      right: 20px;
       padding: 12px 20px;
-      margin-bottom: 20px;
       border-radius: 6px;
       font-size: 14px;
       font-weight: 500;
-      animation: slideDown 0.3s ease-out;
+      z-index: 1000;
+      max-width: 300px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      animation: slideInRight 0.3s ease-out;
     }
     
     .flash-message.success {
@@ -30,14 +35,28 @@
       border: 1px solid #f5c6cb;
     }
     
-    @keyframes slideDown {
+    /* Input field error styles */
+    .input-error {
+      border: 2px solid #dc3545 !important;
+      background-color: #fff8f8 !important;
+    }
+    
+    .input-error-message {
+      color: #dc3545;
+      font-size: 0.8rem;
+      margin-top: 5px;
+      display: block;
+      font-weight: 500;
+    }
+    
+    @keyframes slideInRight {
       from {
         opacity: 0;
-        transform: translateY(-10px);
+        transform: translateX(100px);
       }
       to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateX(0);
       }
     }
     /* Header container with logo left + text center */
@@ -93,11 +112,12 @@
     </style>
 </head>
 <body>
-  <div class="background-overlay"></div>
-
-  <div class="login-container">
+  <div class="background-overlay">
     <!-- Flash Messages -->
     <div id="flash-message" class="flash-message"></div>
+  </div>
+
+  <div class="login-container">
     
     <!-- Logo on the left, Admin centered -->
     <div class="login-header">
@@ -108,12 +128,12 @@
       <input type="hidden" name="role" value="admin">
       <div class="input-icon-group">
         <i class="fas fa-user"></i>
-        <input type="text" id="username" name="username" placeholder="Username" maxlength="11" autocomplete="username" required>
+        <input type="text" id="username" name="username" placeholder="Username" maxlength="11" autocomplete="username">
       </div>
 
       <div class="input-icon-group">
         <i class="fas fa-lock"></i>
-        <input type="password" id="password" name="password" placeholder="Password" maxlength="8" autocomplete="current-password" required>
+        <input type="password" id="password" name="password" placeholder="Password" maxlength="8" autocomplete="current-password">
         <i class="fas fa-eye" id="toggle-password" style="cursor: pointer;"></i>
       </div>
       <!-- Forgot Password link -->

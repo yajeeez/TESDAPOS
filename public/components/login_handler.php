@@ -18,8 +18,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     // Validate input
     if (empty($username) || empty($password)) {
-        SessionManager::setFlashMessage('error', 'Username and password are required');
-        header('Location: login.html');
+        $error = urlencode('Username and password are required');
+        header('Location: login.html?error=' . $error);
         exit();
     }
     
@@ -53,16 +53,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
         } else {
             // Authentication failed
-            SessionManager::setFlashMessage('error', 'Invalid username or password');
-            header('Location: login.html');
+            $error = urlencode('Invalid username or password');
+            header('Location: login.html?error=' . $error);
             exit();
         }
         
     } catch (Exception $e) {
         // Database error
         error_log("Login error: " . $e->getMessage());
-        SessionManager::setFlashMessage('error', 'Database error. Please try again.');
-        header('Location: login.html');
+        $error = urlencode('Database error. Please try again.');
+        header('Location: login.html?error=' . $error);
         exit();
     }
     
