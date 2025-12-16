@@ -228,6 +228,12 @@ function populateCashierFilter() {
   const cashierSelect = document.getElementById('filterCashier');
   if (!cashierSelect) return;
 
+  // Check if dropdown already has cashier options (more than just "All Cashiers")
+  if (cashierSelect.options.length > 1) {
+    console.log('🔄 Cashier dropdown already populated, skipping transactions.js override');
+    return;
+  }
+
   const currentValue = cashierSelect.value;
   cashierSelect.innerHTML = '<option value="">All Cashiers</option>';
 

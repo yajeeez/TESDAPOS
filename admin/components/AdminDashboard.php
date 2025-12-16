@@ -75,7 +75,7 @@ $loginTime = $_SESSION['login_time'] ?? time();
             <span style="color: #666;">Welcome, <strong><?php echo htmlspecialchars($userName); ?></strong></span>
             <small style="color: #999;"><?php echo htmlspecialchars($userEmail); ?></small>
           </div>
-          <input type="text" placeholder="Search..." class="search-input" />
+          <input type="text" id="searchInput" name="search" placeholder="Search..." class="search-input" />
         </div>
       </div>
 
@@ -112,18 +112,18 @@ $loginTime = $_SESSION['login_time'] ?? time();
           <div class="filter-controls" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; align-items: end;">
             <div class="filter-group" style="display: flex; flex-direction: column; gap: 0.5rem;">
               <label for="filterStartDate" style="font-size: 0.85rem; font-weight: 600; color: #555;">Date</label>
-              <input type="date" id="filterStartDate" class="filter-input" style="padding: 0.6rem; border: 1px solid #ddd; border-radius: 6px; font-size: 0.9rem;" />
+              <input type="date" id="filterStartDate" name="filterStartDate" class="filter-input" style="padding: 0.6rem; border: 1px solid #ddd; border-radius: 6px; font-size: 0.9rem;" />
             </div>
 
             <div class="filter-group" style="display: flex; flex-direction: column; gap: 0.5rem;">
               <label for="filterCashier" style="font-size: 0.85rem; font-weight: 600; color: #555;">Cashier</label>
-              <select id="filterCashier" class="filter-input" style="padding: 0.6rem; border: 1px solid #ddd; border-radius: 6px; font-size: 0.9rem;">
+              <select id="filterCashier" name="filterCashier" class="filter-input" style="padding: 0.6rem; border: 1px solid #ddd; border-radius: 6px; font-size: 0.9rem;">
                 <option value="">All Cashiers</option>
               </select>
             </div>
             <div class="filter-group" style="display: flex; flex-direction: column; gap: 0.5rem;">
               <label for="filterStatus" style="font-size: 0.85rem; font-weight: 600; color: #555;">Status</label>
-              <select id="filterStatus" class="filter-input" style="padding: 0.6rem; border: 1px solid #ddd; border-radius: 6px; font-size: 0.9rem;">
+              <select id="filterStatus" name="filterStatus" class="filter-input" style="padding: 0.6rem; border: 1px solid #ddd; border-radius: 6px; font-size: 0.9rem;">
                 <option value="">All Status</option>
                 <option value="Served">Served</option>
                 <option value="Canceled">Canceled</option>
@@ -131,7 +131,7 @@ $loginTime = $_SESSION['login_time'] ?? time();
             </div>
             <div class="filter-group" style="display: flex; flex-direction: column; gap: 0.5rem;">
               <label for="filterPaymentMethod" style="font-size: 0.85rem; font-weight: 600; color: #555;">Payment Method</label>
-              <select id="filterPaymentMethod" class="filter-input" style="padding: 0.6rem; border: 1px solid #ddd; border-radius: 6px; font-size: 0.9rem;">
+              <select id="filterPaymentMethod" name="filterPaymentMethod" class="filter-input" style="padding: 0.6rem; border: 1px solid #ddd; border-radius: 6px; font-size: 0.9rem;">
                 <option value="">All Methods</option>
                 <option value="Cash">Cash</option>
                 <option value="Cashless">Credit or Debit Card</option>
@@ -143,6 +143,7 @@ $loginTime = $_SESSION['login_time'] ?? time();
                 <i class="fas fa-file-csv"></i> Export CSV
               </button>
             </div>
+
            
           </div>
         </div>
@@ -180,8 +181,80 @@ $loginTime = $_SESSION['login_time'] ?? time();
   <script src="../assets/js/AdminDashboard.js"></script>
   <script src="../assets/js/transactions.js"></script>
   <script>
+    // Function to load cashiers into dropdown
+    async function loadCashiers() {
+      try {
+        console.log('🔄 Loading cashiers...');
+        const response = await fetch('../fetch_cashiers.php');
+        console.log('📡 Response status:', response.status);
+        const data = await response.json();
+        console.log('📊 Response data:', data);
+        
+        if (data.success) {
+          const cashierSelect = document.getElementById('filterCashier');
+          console.log('🎯 Found cashier select element:', cashierSelect);
+          console.log('📋 Current innerHTML before:', cashierSelect.innerHTML);
+          
+          // Clear existing options except "All Cashiers"
+          cashierSelect.innerHTML = '<option value="">All Cashiers</option>';
+          
+          // Add cashier options
+          data.cashiers.forEach((cashier, index) => {
+            console.log(`➕ Adding cashier ${index + 1}:`, cashier);
+            const option = document.createElement('option');
+            option.value = cashier.username;
+            option.textContent = `${cashier.name} (${cashier.username})`;
+            cashierSelect.appendChild(option);
+          });
+          
+          console.log('📋 Final innerHTML after:', cashierSelect.innerHTML);
+          console.log('🔢 Total options count:', cashierSelect.options.length);
+          console.log('✅ Loaded', data.cashiers.length, 'cashiers');
+        } else {
+          console.error('❌ Failed to load cashiers:', data.error);
+          // Show error in dropdown
+          const cashierSelect = document.getElementById('filterCashier');
+          cashierSelect.innerHTML = '<option value="">Error loading cashiers</option>';
+        }
+      } catch (error) {
+        console.error('❌ Error loading cashiers:', error);
+        
+        // Fallback: Add hardcoded cashiers if fetch fails
+        console.log('🔄 Using fallback cashier data...');
+        const cashierSelect = document.getElementById('filterCashier');
+        cashierSelect.innerHTML = '<option value="">All Cashiers</option>';
+        
+        const fallbackCashiers = [
+          {username: 'cashier1', name: 'Cashier One'},
+          {username: 'cashier2', name: 'Cashier Two'},
+          {username: 'cashier3', name: 'Cashier Three'},
+          {username: 'cashier4', name: 'Cashier Four'},
+          {username: 'cashier5', name: 'Cashier Five'}
+        ];
+        
+        fallbackCashiers.forEach(cashier => {
+          const option = document.createElement('option');
+          option.value = cashier.username;
+          option.textContent = `${cashier.name} (${cashier.username})`;
+          cashierSelect.appendChild(option);
+        });
+        
+        console.log('✅ Fallback cashiers loaded');
+      }
+    }
+
+
+
     // Initialize sales report in dashboard
     document.addEventListener('DOMContentLoaded', async () => {
+      console.log('🚀 Dashboard loaded, starting initialization...');
+      
+      // Small delay to ensure DOM is fully ready
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      // Load cashiers first
+      await loadCashiers();
+      
       // Initialize dashboard charts
       if (typeof initDashboard === 'function') {
         initDashboard();
