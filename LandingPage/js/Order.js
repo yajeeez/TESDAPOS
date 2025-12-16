@@ -823,6 +823,8 @@ async function processPayment() {
         selectedPaymentMethod = 'Cash';
         cashAmount = paymentTotal;
         changeAmount = 0;
+        // Generate transaction ID for cash payment
+        transactionId = generateCardTransactionId();
     } else if (selectedPaymentMethod === 'card') {
         if (!cardSwiped) {
             showCartMessage('Please swipe your card first or proceed without payment method', 'warning');
@@ -846,6 +848,8 @@ async function processPayment() {
         // Default to cash
         cashAmount = paymentTotal;
         changeAmount = 0;
+        // Generate transaction ID for cash payment
+        transactionId = generateCardTransactionId();
     }
     
     // Disable confirm button during processing
