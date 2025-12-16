@@ -1,0 +1,169 @@
+:root {
+  --tesda-blue: #004aad;
+  --tesda-dark-blue: #002b80;
+  --tesda-light-blue: #1e5fff;
+  --tesda-yellow: #ffc107;
+  --white: #fff;
+  --gray: #f5f6fa;
+  --danger: #e63946;
+  --danger-dark: #d62828;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+body {
+  background: linear-gradient(135deg, var(--tesda-blue), var(--tesda-dark-blue));
+  color: var(--white);
+  height: 100vh;
+  display: flex;
+  overflow: hidden;
+}
+.dashboard {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+.sidebar {
+  width: 220px;
+  background: linear-gradient(180deg, var(--tesda-blue), var(--tesda-dark-blue));
+  padding: 1rem 0.5rem;
+  box-shadow: 4px 0 20px rgba(0,0,0,0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: width 0.3s ease;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.sidebar::-webkit-scrollbar { display: none; }
+.sidebar-logo img.tesda-logo {
+  width: 140px;
+  margin-bottom: 1.5rem;
+  transition: transform 0.5s ease;
+}
+.sidebar-logo img.tesda-logo:hover {
+  transform: scale(1.06) rotate(2deg);
+}
+.sidebar ul {
+  list-style: none;
+  width: 100%;
+}
+.sidebar ul li {
+  margin-bottom: 5px;
+}
+.sidebar ul li a {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  color: #dce3ff;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-size: 0.8rem;
+}
+.sidebar ul li a:hover {
+  background: rgba(255,255,255,0.15);
+  color: var(--tesda-yellow);
+  transform: translateX(5px);
+}
+.sidebar ul li a.active {
+  background: var(--tesda-dark-blue);
+  color: var(--tesda-yellow);
+}
+.main {
+  flex: 1;
+  background: var(--gray);
+  padding: 1rem;
+  overflow-y: auto;
+}
+.main::-webkit-scrollbar { width: 8px; }
+.main::-webkit-scrollbar-thumb { background: var(--tesda-blue); border-radius: 6px; }
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+.topbar-left {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.topbar-left h2 {
+  color: var(--tesda-blue);
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+.search-input {
+  padding: 0.6rem 1rem;
+  border-radius: 20px;
+  border: none;
+  width: 250px;
+  font-size: 0.95rem;
+  transition: 0.3s;
+}
+.search-input:focus {
+  width: 300px;
+  outline: 2px solid var(--tesda-light-blue);
+}
+.page-section {
+  background: var(--white);
+  color: #333;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.card {
+  background: var(--tesda-blue);
+  color: var(--white);
+  padding: 1rem;
+  border-radius: 10px;
+  text-align: center;
+}
+.card h3 {
+  font-size: 1rem;
+  margin-bottom: 0.3rem;
+}
+.card p {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: var(--tesda-yellow);
+}
+.charts-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 20px;
+  margin-top: 1.5rem;
+}
+.chart-box {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  min-height: 350px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.chart-box canvas {
+  width: 100% !important;
+  height: 300px !important;
+}
+.chart-box h3 {
+  text-align: center;
+  color: var(--tesda-blue);
+  margin-bottom: 10px;
+}
