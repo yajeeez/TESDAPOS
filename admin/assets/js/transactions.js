@@ -339,6 +339,11 @@ function applyFilters() {
 
   console.log('✅ Filtered transactions:', filteredTransactions.length, 'out of', transactionsData.length);
 
+  // Show notification if no results found
+  if (filteredTransactions.length === 0 && transactionsData.length > 0) {
+    console.log('ℹ️ No transactions match the current filters. Showing empty state.');
+  }
+
   renderTransactions();
   updateSummaryCards();
 }

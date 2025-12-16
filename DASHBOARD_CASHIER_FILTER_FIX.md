@@ -74,6 +74,23 @@
   - Ensures `filteredTransactions` is properly set before any filtering occurs
   - Added logging to confirm initialization
 
+## Zero Data Handling Changes
+
+### 1. `admin/assets/js/AdminDashboard.js`
+- **Function**: `calculateAllMetrics()`
+  - Removed check for `filteredTransactions.length > 0` - now accepts empty arrays
+  - Added console log when no transactions found
+  - Added final metrics logging for debugging
+  - Metrics remain at 0 when no data exists
+- **Function**: `initCharts()` - Pie Chart Tooltip
+  - Added division by zero check in percentage calculation
+  - Shows "0%" instead of "NaN%" when total is 0
+
+### 2. `admin/assets/js/transactions.js`
+- **Function**: `applyFilters()`
+  - Added console log when filters result in no matches
+  - Helps identify when a cashier has no data vs filter issue
+
 ## Database Schema
 
 The Orders collection in MongoDB uses the following fields for cashier tracking:
@@ -105,6 +122,16 @@ The Orders collection in MongoDB uses the following fields for cashier tracking:
    - Extracts date from `created_at` field
    - Compares dates and counts only "Served" orders from today
 
+## Zero Data Handling
+
+When a cashier has no transactions or filters exclude all data:
+- All metrics display as 0 (Total Sales: ₱0.00, Orders Today: 0)
+- Bar chart shows all bars at 0 height
+- Pie chart displays with all segments at 0
+- Pie chart tooltip handles division by zero (shows 0% instead of NaN)
+- Console logs show "ℹ️ No transactions found. All metrics will be 0."
+- Transaction table shows empty state message
+
 ## Testing
 
 To verify the fixes:
@@ -115,16 +142,23 @@ To verify the fixes:
    - Verify metrics update to show only that cashier's data
    - Check console logs for filter application
 
-2. **Test Orders Today**:
+2. **Test Cashier with No Data**:
+   - Select a cashier who has no served orders
+   - Verify all metrics show 0
+   - Verify charts display properly with zero values
+   - Check console for "No transactions found" message
+
+3. **Test Orders Today**:
    - Create some test orders with status "Served" today
    - Refresh dashboard
    - Verify "Orders Today" shows correct count
    - Apply cashier filter and verify count updates
 
-3. **Test Combined Filters**:
+4. **Test Combined Filters**:
    - Apply multiple filters (cashier + status + date)
    - Verify all metrics update correctly
    - Check that charts reflect filtered data
+   - Test with filters that exclude all data
 
 ## Console Logging
 

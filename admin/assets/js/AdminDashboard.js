@@ -63,11 +63,12 @@ async function calculateAllMetrics() {
     let transactions = [];
     
     // Check if filteredTransactions exists and has been initialized
-    if (typeof filteredTransactions !== 'undefined' && Array.isArray(filteredTransactions) && filteredTransactions.length > 0) {
+    if (typeof filteredTransactions !== 'undefined' && Array.isArray(filteredTransactions)) {
       // Use filteredTransactions - it's already filtered by applyFilters()
+      // This can be empty array if cashier has no data
       transactions = filteredTransactions;
       console.log('📊 Using filteredTransactions:', transactions.length);
-    } else if (typeof transactionsData !== 'undefined' && Array.isArray(transactionsData) && transactionsData.length > 0) {
+    } else if (typeof transactionsData !== 'undefined' && Array.isArray(transactionsData)) {
       // Use all transactions if no filter is applied
       transactions = transactionsData;
       console.log('📊 Using all transactionsData:', transactions.length);
@@ -82,9 +83,8 @@ async function calculateAllMetrics() {
       }
     }
     
-    // Don't apply additional filters here - filteredTransactions is already filtered by applyFilters()
-    // Just use the transactions as-is
-    
+    // Process transactions if any exist
+    // If transactions is empty (cashier has no data), metrics will remain at 0
     if (transactions.length > 0) {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
@@ -128,6 +128,9 @@ async function calculateAllMetrics() {
           }
         }
       });
+    } else {
+      // No transactions found - cashier has no data or filters excluded everything
+      console.log('ℹ️ No transactions found. All metrics will be 0.');
     }
   } catch (error) {
     console.error('Error fetching order data for charts:', error);
@@ -139,6 +142,13 @@ async function calculateAllMetrics() {
   // Update global distributions
   statusDistribution = metrics.statusDistribution;
   paymentMethodDistribution = metrics.paymentMethodDistribution;
+  
+  console.log('📈 Final metrics:', {
+    totalSales: metrics.totalSales,
+    ordersToday: metrics.ordersToday,
+    statusDistribution: metrics.statusDistribution,
+    paymentMethodDistribution: metrics.paymentMethodDistribution
+  });
   
   return metrics;
 }
@@ -384,10 +394,14 @@ async function initCharts() {
                 } else {
                   label += value;
                 }
-                // Add percentage
+                // Add percentage (handle division by zero)
                 const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                const percentage = ((value / total) * 100).toFixed(1);
-                label += ' (' + percentage + '%)';
+                if (total > 0) {
+                  const percentage = ((value / total) * 100).toFixed(1);
+                  label += ' (' + percentage + '%)';
+                } else {
+                  label += ' (0%)';
+                }
               }
               return label;
             }
