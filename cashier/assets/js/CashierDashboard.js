@@ -162,11 +162,11 @@ async function initDashboard() {
     barChart = new Chart(barCanvas, {
       type: 'bar',
       data: {
-        labels: ['Total Sales (₱)', 'Served Orders', 'Canceled Orders', 'Cash Payments', 'Card Payments'],
+        labels: ['Total Sales (₱K)', 'Served Orders', 'Canceled Orders', 'Cash Payments', 'Card Payments'],
         datasets: [{
           label: 'Metrics',
           data: [
-            dashboardMetrics.totalSales,
+            dashboardMetrics.totalSales / 1000, // Convert to thousands
             pieData.served,
             pieData.canceled,
             pieData.cash,
@@ -185,9 +185,9 @@ async function initDashboard() {
                 const label = context.label || '';
                 const value = context.parsed.y;
                 
-                // Format Total Sales with currency
+                // Format Total Sales with currency (multiply back by 1000)
                 if (label.includes('Total Sales')) {
-                  return 'Total Sales: ₱' + value.toFixed(2);
+                  return 'Total Sales: ₱' + (value * 1000).toLocaleString('en-PH', {minimumFractionDigits: 2, maximumFractionDigits: 2});
                 }
                 
                 return label + ': ' + value;
@@ -203,7 +203,7 @@ async function initDashboard() {
     pieChart = new Chart(pieCanvas, {
       type: 'pie',
       data: {
-        labels: ['Served Orders', 'Canceled Orders', 'Cash Payments', 'Card Payments', 'Total Sales (₱100s)'],
+        labels: ['Served Orders', 'Canceled Orders', 'Cash Payments', 'Card Payments', 'Total Sales'],
         datasets: [{
           data: [
             pieData.served,
@@ -254,7 +254,7 @@ async function refreshCharts() {
   
   if (barChart) {
     barChart.data.datasets[0].data = [
-      dashboardMetrics.totalSales,
+      dashboardMetrics.totalSales / 1000, // Convert to thousands
       pieData.served,
       pieData.canceled,
       pieData.cash,
