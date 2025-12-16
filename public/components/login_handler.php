@@ -29,13 +29,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $database = $client->selectDatabase('TESDAPOS1');
         $collection = $database->selectCollection('admins');
         
-        // Find admin by username
-        $admin = $collection->findOne(['username' => $username]);
+        // Find user by username or email (support both login methods)
+        $user = $collection->findOne([
+            '$or' => [
+                ['username' => $username],
+                ['email' => $username]
+            ]
+        ]);
         
-        if ($admin) {
+        if ($user) {
             // Check if password is hashed or plain text
             $passwordValid = false;
-            $storedPassword = $admin['password'];
+            $storedPassword = $user['password'];
             
             if (strpos($storedPassword, '$2y$') === 0 || strpos($storedPassword, '$2a$') === 0) {
                 // Password is hashed, verify using password_verify
@@ -46,21 +51,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             
             if ($passwordValid) {
-            // Authentication successful - set session variables
-            $_SESSION['user_id'] = (string) $admin['_id'];
-            $_SESSION['username'] = $admin['username'];
-            $_SESSION['full_name'] = $admin['full_name'];
-            $_SESSION['email'] = $admin['email'];
-            $_SESSION['user_role'] = 'admin';
-            $_SESSION['login_time'] = time();
-            
-            // Regenerate session ID for security
-            SessionManager::regenerateId();
-            
-                        
-            // Redirect to admin dashboard
-            header('Location: ../../admin/components/AdminDashboard.php');
-            exit();
+                // Authentication successful - set session variables
+                $_SESSION['user_id'] = (string) $user['_id'];
+                $_SESSION['username'] = $user['username'] ?? $user['email'];
+                $_SESSION['full_name'] = $user['name'] ?? $user['full_name'] ?? 'User';
+                $_SESSION['email'] = $user['email'];
+                $_SESSION['user_role'] = $user['role'] ?? 'admin';
+                $_SESSION['login_time'] = time();
+                
+                // Regenerate session ID for security
+                SessionManager::regenerateId();
+                
+                // Role-based redirection
+                $userRole = $user['role'] ?? 'admin';
+                
+                if ($userRole === 'admin') {
+                    // Redirect to admin dashboard
+                    header('Location: ../../admin/components/AdminDashboard.php');
+                    exit();
+                } elseif ($userRole === 'cashier') {
+                    // Redirect to cashier dashboard
+                    header('Location: ../../cashier/components/CashierDashboard.php');
+                    exit();
+                } else {
+                    // Unknown role, default to admin dashboard
+                    header('Location: ../../admin/components/AdminDashboard.php');
+                    exit();
+                }
             } else {
                 // Authentication failed - wrong password
                 $error = urlencode('Invalid username or password');
@@ -68,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 exit();
             }
         } else {
-            // Authentication failed
+            // Authentication failed - user not found
             $error = urlencode('Invalid username or password');
             header('Location: login.html?error=' . $error);
             exit();

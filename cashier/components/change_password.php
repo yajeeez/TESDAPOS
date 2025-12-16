@@ -45,10 +45,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             $client = new Client(DB_URI);
             $database = $client->selectDatabase(DB_NAME);
-            $cashiersCollection = $database->selectCollection('cashiers');
+            $adminsCollection = $database->selectCollection('admins');
             
             // Verify current password
-            $cashier = $cashiersCollection->findOne(['email' => $userEmail]);
+            $cashier = $adminsCollection->findOne(['email' => $userEmail]);
             
             if (!$cashier) {
                 SessionManager::setFlashMessage('error', 'Cashier account not found.');
@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     SessionManager::setFlashMessage('error', 'Current password is incorrect.');
                 } else {
                     // Update password with plain text (no hashing)
-                    $result = $cashiersCollection->updateOne(
+                    $result = $adminsCollection->updateOne(
                         ['email' => $userEmail],
                         ['$set' => ['password' => $newPassword]]
                     );
