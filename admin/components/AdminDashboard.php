@@ -136,6 +136,7 @@ $loginTime = $_SESSION['login_time'] ?? time();
                 <option value="Cashless">Credit or Debit Card</option>
               </select>
             </div>
+
             <div class="filter-group" style="display: flex; flex-direction: column; gap: 0.5rem;">
               <label style="font-size: 0.85rem; font-weight: 600; color: #555; opacity: 0;">Export</label>
               <button id="exportCsvBtn" class="export-btn" style="padding: 0.69rem; border: 1px solid #ddd; border-radius: 6px; font-size: 0.9rem; background: var(--tesda-blue); color: #ddd; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" onmouseover="this.style.background='linear-gradient(135deg, var(--tesda-dark), var(--tesda-blue))'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(0,0,0,0.2)'; this.style.border='1px solid var(--tesda-dark)'; this.style.color='#0f2940'" onmouseout="this.style.background='var(--tesda-blue)'; this.style.transform='translateY(0px)'; this.style.boxShadow='0 2px 4px rgba(0,0,0,0.1)'; this.style.border='1px solid #ddd'; this.style.color='#ddd'">
@@ -321,6 +322,7 @@ $loginTime = $_SESSION['login_time'] ?? time();
         }
       });
       
+
       // Refresh charts after transactions are loaded
       setTimeout(() => {
         if (typeof refreshCharts === 'function') {

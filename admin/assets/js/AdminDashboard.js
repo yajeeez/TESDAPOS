@@ -3,6 +3,65 @@
 // ==========================
 
 // ==========================
+// Notification System
+// ==========================
+function showDashboardNotification(message, type = 'info') {
+  // Create or get notification element
+  let notification = document.getElementById('dashboardNotification');
+  
+  if (!notification) {
+    notification = document.createElement('div');
+    notification.id = 'dashboardNotification';
+    notification.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 10000;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      max-width: 400px;
+      opacity: 0;
+      transform: translateX(400px);
+      transition: all 0.3s ease;
+    `;
+    document.body.appendChild(notification);
+  }
+  
+  // Set color based on type
+  const colors = {
+    info: { bg: '#3498db', text: '#fff' },
+    success: { bg: '#27ae60', text: '#fff' },
+    warning: { bg: '#f39c12', text: '#fff' },
+    error: { bg: '#e74c3c', text: '#fff' }
+  };
+  
+  const color = colors[type] || colors.info;
+  notification.style.backgroundColor = color.bg;
+  notification.style.color = color.text;
+  notification.innerHTML = `
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <i class="fas fa-${type === 'info' ? 'info-circle' : type === 'success' ? 'check-circle' : type === 'warning' ? 'exclamation-triangle' : 'times-circle'}"></i>
+      <span>${message}</span>
+    </div>
+  `;
+  
+  // Show notification
+  setTimeout(() => {
+    notification.style.opacity = '1';
+    notification.style.transform = 'translateX(0)';
+  }, 10);
+  
+  // Hide after 4 seconds
+  setTimeout(() => {
+    notification.style.opacity = '0';
+    notification.style.transform = 'translateX(400px)';
+  }, 4000);
+}
+
+// ==========================
 // Logout
 // ==========================
 function logout(e) {
@@ -592,6 +651,27 @@ async function updateDashboardCards() {
   }
   if (lowStockEl) {
     lowStockEl.textContent = dashboardMetrics.lowStockItems.toString();
+  }
+  
+  // Check if any filters are active and show notification if no data
+  const dateFilter = document.getElementById('filterStartDate')?.value;
+  const cashierFilter = document.getElementById('filterCashier')?.value;
+  const statusFilter = document.getElementById('filterStatus')?.value;
+  const paymentFilter = document.getElementById('filterPaymentMethod')?.value;
+  
+  const hasActiveFilters = dateFilter || cashierFilter || statusFilter || paymentFilter;
+  const hasNoData = filteredMetrics.totalSales === 0 && 
+                    filteredMetrics.ordersToday === 0 && 
+                    filteredMetrics.statusDistribution.Served === 0;
+  
+  if (hasActiveFilters && hasNoData) {
+    const filterDesc = [];
+    if (dateFilter) filterDesc.push(`Date: ${dateFilter}`);
+    if (cashierFilter) filterDesc.push(`Cashier: ${cashierFilter}`);
+    if (statusFilter) filterDesc.push(`Status: ${statusFilter}`);
+    if (paymentFilter) filterDesc.push(`Payment: ${paymentFilter}`);
+    
+    console.log('⚠️ No data found for active filters:', filterDesc.join(', '));
   }
 }
 

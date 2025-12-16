@@ -200,30 +200,99 @@ $loginTime = time();
       const statusSelect = document.getElementById('filterStatus');
       const paymentSelect = document.getElementById('filterPaymentMethod');
 
-      const startDate = startInput?.value ? new Date(startInput.value + 'T00:00:00') : null;
+      const filterDateStr = startInput?.value || ''; // YYYY-MM-DD format
       const status = statusSelect?.value || '';
       const paymentMethod = paymentSelect?.value || '';
+
+      console.log('🔍 Applying filters:', { filterDate: filterDateStr, status, paymentMethod });
 
       filteredTransactions = transactionsData.filter((txn) => {
         const txnDateString = txn.created_at || txn.date;
         if (!txnDateString) return false;
         
-        const txnDate = new Date(txnDateString);
-        if (isNaN(txnDate.getTime())) return false;
+        // Extract just the date part (YYYY-MM-DD) from transaction date
+        // Handle format: "2025-12-16 05:50:45" or "2025-12-16T05:50:45"
+        const txnDateOnly = txnDateString.split(' ')[0].split('T')[0];
         
-        // Date filter
-        if (startDate && txnDate < startDate) return false;
+        // Date filter - exact match on date only
+        if (filterDateStr && txnDateOnly !== filterDateStr) {
+          return false;
+        }
         
         // Status filter
         if (status && txn.status !== status) return false;
         
         // Payment method filter
-        if (paymentMethod && txn.payment_method !== paymentMethod) return false;
+        if (paymentMethod) {
+          const txnPayment = txn.payment_method || 'Cash';
+          if (paymentMethod === 'Cashless' || paymentMethod === 'Credit or Debit Card') {
+            if (txnPayment !== 'card' && txnPayment !== 'Card' && txnPayment !== 'Credit or Debit Card' && txnPayment !== 'Cashless') {
+              return false;
+            }
+          } else if (paymentMethod === 'Cash') {
+            if (txnPayment !== 'Cash' && txnPayment !== 'cash') {
+              return false;
+            }
+          } else {
+            if (txnPayment !== paymentMethod) {
+              return false;
+            }
+          }
+        }
         
         return true;
       });
       
-      console.log(`Filtered to ${filteredTransactions.length} transactions`);
+      console.log(`✅ Filtered to ${filteredTransactions.length} transactions out of ${transactionsData.length}`);
+      
+      // Show notification if no data found
+      if (filteredTransactions.length === 0 && transactionsData.length > 0 && filterDateStr) {
+        showNoDataNotification(`Date: ${filterDateStr}`);
+      }
+    }
+    
+    function showNoDataNotification(filterInfo) {
+      let notification = document.getElementById('noDataNotification');
+      
+      if (!notification) {
+        notification = document.createElement('div');
+        notification.id = 'noDataNotification';
+        notification.style.cssText = `
+          position: fixed;
+          top: 80px;
+          right: 20px;
+          padding: 15px 20px;
+          border-radius: 8px;
+          background: #f39c12;
+          color: white;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+          z-index: 10000;
+          font-family: 'Inter', sans-serif;
+          font-size: 0.9rem;
+          max-width: 400px;
+          opacity: 0;
+          transform: translateX(400px);
+          transition: all 0.3s ease;
+        `;
+        document.body.appendChild(notification);
+      }
+      
+      notification.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <i class="fas fa-info-circle"></i>
+          <span>No transactions found for: ${filterInfo}</span>
+        </div>
+      `;
+      
+      setTimeout(() => {
+        notification.style.opacity = '1';
+        notification.style.transform = 'translateX(0)';
+      }, 10);
+      
+      setTimeout(() => {
+        notification.style.opacity = '0';
+        notification.style.transform = 'translateX(400px)';
+      }, 4000);
     }
     
     function exportToCSV() {

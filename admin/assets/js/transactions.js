@@ -278,8 +278,22 @@ function applyFilters() {
   const statusSelect = document.getElementById('filterStatus');
   const paymentSelect = document.getElementById('filterPaymentMethod');
 
-  const startDate = startInput?.value ? new Date(startInput.value + 'T00:00:00') : null;
-  const endDate = endInput?.value ? new Date(endInput.value + 'T23:59:59') : null;
+  // Handle single date input (for dashboard) or date range (for transactions page)
+  let startDate = null;
+  let endDate = null;
+  
+  if (startInput?.value) {
+    startDate = new Date(startInput.value + 'T00:00:00');
+    // If there's no end date input (dashboard), use the same date for end
+    if (!endInput) {
+      endDate = new Date(startInput.value + 'T23:59:59');
+    }
+  }
+  
+  if (endInput?.value) {
+    endDate = new Date(endInput.value + 'T23:59:59');
+  }
+  
   const cashier = cashierSelect?.value || '';
   const status = statusSelect?.value || '';
   const paymentMethod = paymentSelect?.value || '';
@@ -300,7 +314,7 @@ function applyFilters() {
     const txnDate = new Date(txnDateString);
     if (isNaN(txnDate.getTime())) return false;
     
-    // Date filter
+    // Date filter - if both dates are set, filter by range
     if (startDate && txnDate < startDate) return false;
     if (endDate && txnDate > endDate) return false;
     
@@ -342,6 +356,17 @@ function applyFilters() {
   // Show notification if no results found
   if (filteredTransactions.length === 0 && transactionsData.length > 0) {
     console.log('ℹ️ No transactions match the current filters. Showing empty state.');
+    
+    // Show a toast notification on dashboard
+    if (typeof showDashboardNotification === 'function') {
+      const filterDesc = [];
+      if (startDate) filterDesc.push(`date: ${startInput.value}`);
+      if (cashier) filterDesc.push(`cashier: ${cashier}`);
+      if (status) filterDesc.push(`status: ${status}`);
+      if (paymentMethod) filterDesc.push(`payment: ${paymentMethod}`);
+      
+      showDashboardNotification(`No transactions found for ${filterDesc.join(', ')}`, 'info');
+    }
   }
 
   renderTransactions();

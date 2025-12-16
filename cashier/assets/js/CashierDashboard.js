@@ -45,7 +45,9 @@ function currentDateKey() {
 
 function getTransactionsForMetrics() {
   let transactions = [];
-  if (typeof filteredTransactions !== 'undefined' && Array.isArray(filteredTransactions) && filteredTransactions.length > 0) {
+  
+  // Check if we have filtered transactions (even if empty array)
+  if (typeof filteredTransactions !== 'undefined' && Array.isArray(filteredTransactions)) {
     transactions = filteredTransactions;
     console.log('📊 Using filtered transactions:', filteredTransactions.length);
   } else if (typeof transactionsData !== 'undefined' && Array.isArray(transactionsData)) {
@@ -108,9 +110,9 @@ function updateDashboardCards() {
 }
 
 function buildPieChartData() {
-  // Use filtered transactions if available, otherwise use all transactions
+  // Use filtered transactions if available (even if empty), otherwise use all transactions
   let allTransactions = [];
-  if (typeof filteredTransactions !== 'undefined' && Array.isArray(filteredTransactions) && filteredTransactions.length > 0) {
+  if (typeof filteredTransactions !== 'undefined' && Array.isArray(filteredTransactions)) {
     allTransactions = filteredTransactions;
     console.log('📊 Using filtered transactions for chart:', filteredTransactions.length);
   } else if (typeof transactionsData !== 'undefined' && Array.isArray(transactionsData)) {
