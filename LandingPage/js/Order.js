@@ -634,9 +634,8 @@ function openPaymentModal() {
     document.getElementById('cashPaymentSection').style.display = 'none';
     document.getElementById('cardPaymentSection').style.display = 'none';
     document.getElementById('cardInfo').style.display = 'none';
-    document.getElementById('confirmPaymentBtn').disabled = true;
-    document.getElementById('cashAmount').value = '';
-    document.getElementById('changeAmount').textContent = '0.00';
+    // Button is always enabled since payment method is optional
+    document.getElementById('confirmPaymentBtn').disabled = false;
     
     // Reset card swipe area
     const swipeLine = document.querySelector('.swipe-line');
@@ -698,45 +697,19 @@ function selectPaymentMethod(method) {
     });
     
     // Show/hide payment sections
-    if (method === 'cash') {
-        document.getElementById('cashPaymentSection').style.display = 'block';
-        document.getElementById('cardPaymentSection').style.display = 'none';
-        document.getElementById('cardInfo').style.display = 'none';
-        
-        // Check if we can enable payment button
-        const cashAmount = parseFloat(document.getElementById('cashAmount').value) || 0;
-        if (cashAmount >= paymentTotal) {
-            document.getElementById('confirmPaymentBtn').disabled = false;
-        } else {
-            document.getElementById('confirmPaymentBtn').disabled = true;
-        }
-    } else if (method === 'card') {
+    if (method === 'card') {
         document.getElementById('cashPaymentSection').style.display = 'none';
         document.getElementById('cardPaymentSection').style.display = 'block';
         
-        // Enable payment button only if card is swiped
-        document.getElementById('confirmPaymentBtn').disabled = !cardSwiped;
+        // Button is always enabled since payment method is optional
+        document.getElementById('confirmPaymentBtn').disabled = false;
     }
 }
 
-// Function to calculate change for cash payment
+// Function to calculate change for cash payment (deprecated - cash payment removed)
 function calculateChange() {
-    const cashAmount = parseFloat(document.getElementById('cashAmount').value) || 0;
-    const change = cashAmount - paymentTotal;
-    
-    document.getElementById('changeAmount').textContent = change >= 0 ? change.toFixed(2) : '0.00';
-    
-    // Enable/disable confirm button based on sufficient cash
-    const confirmBtn = document.getElementById('confirmPaymentBtn');
-    if (selectedPaymentMethod === 'cash') {
-        if (cashAmount >= paymentTotal) {
-            confirmBtn.disabled = false;
-            document.getElementById('changeAmount').style.color = '#28a745';
-        } else {
-            confirmBtn.disabled = true;
-            document.getElementById('changeAmount').style.color = '#dc3545';
-        }
-    }
+    // This function is no longer used since cash payment option was removed
+    return;
 }
 
 // Helper to generate realistic-looking transaction IDs for card payments
@@ -828,10 +801,8 @@ function simulateCardSwipe() {
             swipeLine.classList.remove('swiping');
         }
         
-        // Enable payment button
-        if (selectedPaymentMethod === 'card') {
-            document.getElementById('confirmPaymentBtn').disabled = false;
-        }
+        // Button is always enabled since payment method is optional
+        document.getElementById('confirmPaymentBtn').disabled = false;
         
         // Show success message
         showCartMessage('Card read successfully!', 'success');
@@ -840,30 +811,21 @@ function simulateCardSwipe() {
 
 // Function to process payment
 async function processPayment() {
-    if (!selectedPaymentMethod) {
-        showCartMessage('Please select a payment method', 'warning');
-        return;
-    }
-    
+    // Payment method is optional - default to Cash if not selected
     let cashAmount = null;
     let changeAmount = null;
     let transactionId = '';
     let cardNumber = null;
     let cardHolder = null;
-
-    if (selectedPaymentMethod === 'cash') {
-        cashAmount = parseFloat(document.getElementById('cashAmount').value) || 0;
-        if (cashAmount < paymentTotal) {
-            showCartMessage('Insufficient cash amount', 'error');
-            return;
-        }
-        const changeText = document.getElementById('changeAmount').textContent || '0';
-        changeAmount = parseFloat(changeText) || 0;
-        // Simple transaction id for cash payments
-        transactionId = 'CASH' + Date.now().toString().slice(-8);
+    
+    // If no payment method selected, default to Cash
+    if (!selectedPaymentMethod) {
+        selectedPaymentMethod = 'Cash';
+        cashAmount = paymentTotal;
+        changeAmount = 0;
     } else if (selectedPaymentMethod === 'card') {
         if (!cardSwiped) {
-            showCartMessage('Please swipe your card first', 'warning');
+            showCartMessage('Please swipe your card first or proceed without payment method', 'warning');
             return;
         }
         const txnEl = document.getElementById('transactionId');
@@ -880,12 +842,16 @@ async function processPayment() {
         // For card payments, store cash_amount as total and change_amount as 0
         cashAmount = paymentTotal;
         changeAmount = 0;
+    } else {
+        // Default to cash
+        cashAmount = paymentTotal;
+        changeAmount = 0;
     }
     
     // Disable confirm button during processing
     const confirmBtn = document.getElementById('confirmPaymentBtn');
     confirmBtn.disabled = true;
-    confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+    confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Printing Receipt...';
 
     try {
         // Prepare order payload
@@ -966,12 +932,25 @@ async function processPayment() {
 
         // Show completion message
         showCartMessage('Order completed! Thank you for your purchase.', 'success');
+        
+        // Print receipt after successful order
+        printReceipt({
+            orderId: data.order_id || 'N/A',
+            transactionId: transactionId,
+            items: orderItems,
+            paymentMethod: selectedPaymentMethod,
+            totalAmount: paymentTotal,
+            cashAmount: cashAmount,
+            changeAmount: changeAmount,
+            cardNumber: cardNumber,
+            cardHolder: cardHolder
+        });
     } catch (error) {
         console.error('Error processing/saving order:', error);
         showCartMessage('Failed to save order: ' + error.message, 'error');
     } finally {
         // Reset button
-        confirmBtn.innerHTML = '<i class="fas fa-check"></i> Process Payment';
+        confirmBtn.innerHTML = '<i class="fas fa-print"></i> Print Receipt';
         confirmBtn.disabled = false;
     }
 }
@@ -981,3 +960,234 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('Order page loaded, fetching products...');
     fetchProducts();
 });
+
+
+// Function to print POS-style receipt
+function printReceipt(orderData) {
+    const receiptWindow = window.open('', '_blank', 'width=300,height=600');
+    
+    if (!receiptWindow) {
+        alert('Please allow popups to print receipt');
+        return;
+    }
+    
+    const currentDate = new Date();
+    const dateStr = currentDate.toLocaleDateString('en-PH', { 
+        year: 'numeric', 
+        month: 'short', 
+        day: 'numeric' 
+    });
+    const timeStr = currentDate.toLocaleTimeString('en-PH', { 
+        hour: '2-digit', 
+        minute: '2-digit',
+        hour12: true 
+    });
+    
+    // Calculate subtotal
+    const subtotal = orderData.items.reduce((sum, item) => sum + item.subtotal, 0);
+    
+    // Build items list
+    let itemsHtml = '';
+    orderData.items.forEach(item => {
+        const itemName = item.size ? `${item.name} (${item.size})` : item.name;
+        itemsHtml += `
+            <tr>
+                <td style="padding: 4px 0; text-align: left;">${itemName}</td>
+                <td style="padding: 4px 0; text-align: center;">${item.quantity}</td>
+                <td style="padding: 4px 0; text-align: right;">₱${item.price.toFixed(2)}</td>
+                <td style="padding: 4px 0; text-align: right;">₱${item.subtotal.toFixed(2)}</td>
+            </tr>
+        `;
+    });
+    
+    // Payment details
+    let paymentDetailsHtml = '';
+    if (orderData.paymentMethod === 'card') {
+        paymentDetailsHtml = `
+            <div style="margin-top: 10px; padding-top: 10px; border-top: 1px dashed #000;">
+                <p style="margin: 3px 0;"><strong>Payment Method:</strong> Credit/Debit Card</p>
+                ${orderData.cardNumber ? `<p style="margin: 3px 0;"><strong>Card:</strong> ${orderData.cardNumber}</p>` : ''}
+                ${orderData.cardHolder ? `<p style="margin: 3px 0;"><strong>Cardholder:</strong> ${orderData.cardHolder}</p>` : ''}
+                ${orderData.transactionId ? `<p style="margin: 3px 0;"><strong>Transaction ID:</strong> ${orderData.transactionId}</p>` : ''}
+            </div>
+        `;
+    } else if (orderData.paymentMethod === 'cash') {
+        paymentDetailsHtml = `
+            <div style="margin-top: 10px; padding-top: 10px; border-top: 1px dashed #000;">
+                <p style="margin: 3px 0;"><strong>Payment Method:</strong> Cash</p>
+                <p style="margin: 3px 0;"><strong>Cash Received:</strong> ₱${orderData.cashAmount.toFixed(2)}</p>
+                <p style="margin: 3px 0;"><strong>Change:</strong> ₱${orderData.changeAmount.toFixed(2)}</p>
+            </div>
+        `;
+    }
+    
+    const receiptHtml = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>Receipt - Order #${orderData.orderId}</title>
+            <style>
+                * {
+                    margin: 0;
+                    padding: 0;
+                    box-sizing: border-box;
+                }
+                body {
+                    font-family: 'Courier New', monospace;
+                    font-size: 11px;
+                    line-height: 1.4;
+                    padding: 10px;
+                    width: 280px;
+                    margin: 0 auto;
+                    background: white;
+                }
+                .receipt-header {
+                    text-align: center;
+                    margin-bottom: 15px;
+                    padding-bottom: 10px;
+                    border-bottom: 2px solid #000;
+                }
+                .receipt-header img {
+                    width: 60px;
+                    height: 60px;
+                    margin-bottom: 5px;
+                }
+                .receipt-header h1 {
+                    font-size: 16px;
+                    font-weight: bold;
+                    margin: 5px 0;
+                }
+                .receipt-header p {
+                    font-size: 10px;
+                    margin: 2px 0;
+                }
+                .receipt-info {
+                    margin-bottom: 10px;
+                    padding-bottom: 10px;
+                    border-bottom: 1px dashed #000;
+                }
+                .receipt-info p {
+                    margin: 3px 0;
+                    font-size: 11px;
+                }
+                .items-table {
+                    width: 100%;
+                    margin-bottom: 10px;
+                    border-collapse: collapse;
+                }
+                .items-table th {
+                    border-bottom: 1px solid #000;
+                    padding: 5px 0;
+                    text-align: left;
+                    font-size: 10px;
+                    font-weight: bold;
+                }
+                .items-table td {
+                    font-size: 10px;
+                }
+                .totals {
+                    margin-top: 10px;
+                    padding-top: 10px;
+                    border-top: 1px solid #000;
+                }
+                .totals p {
+                    display: flex;
+                    justify-content: space-between;
+                    margin: 5px 0;
+                    font-size: 11px;
+                }
+                .totals .grand-total {
+                    font-size: 14px;
+                    font-weight: bold;
+                    padding-top: 5px;
+                    border-top: 2px solid #000;
+                    margin-top: 5px;
+                }
+                .receipt-footer {
+                    text-align: center;
+                    margin-top: 15px;
+                    padding-top: 10px;
+                    border-top: 1px dashed #000;
+                    font-size: 10px;
+                }
+                @media print {
+                    body {
+                        width: 80mm;
+                        padding: 5mm;
+                    }
+                    .no-print {
+                        display: none;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="receipt-header">
+                <img src="../img/TESDALOGO.png" alt="TESDA Logo">
+                <h1>TESDA POS SYSTEM</h1>
+                <p>Food Ordering System</p>
+                <p>Thank you for your order!</p>
+            </div>
+            
+            <div class="receipt-info">
+                <p><strong>Order #:</strong> ${orderData.orderId}</p>
+                <p><strong>Date:</strong> ${dateStr}</p>
+                <p><strong>Time:</strong> ${timeStr}</p>
+            </div>
+            
+            <table class="items-table">
+                <thead>
+                    <tr>
+                        <th style="text-align: left;">Item</th>
+                        <th style="text-align: center;">Qty</th>
+                        <th style="text-align: right;">Price</th>
+                        <th style="text-align: right;">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${itemsHtml}
+                </tbody>
+            </table>
+            
+            <div class="totals">
+                <p>
+                    <span>Subtotal:</span>
+                    <span>₱${subtotal.toFixed(2)}</span>
+                </p>
+                <p class="grand-total">
+                    <span>TOTAL:</span>
+                    <span>₱${orderData.totalAmount.toFixed(2)}</span>
+                </p>
+            </div>
+            
+            ${paymentDetailsHtml}
+            
+            <div class="receipt-footer">
+                <p>This serves as your official receipt</p>
+                <p>Please keep for your records</p>
+                <p style="margin-top: 10px;">© 2025 TESDA POS System</p>
+            </div>
+            
+            <div class="no-print" style="text-align: center; margin-top: 20px;">
+                <button onclick="window.print()" style="padding: 10px 20px; background: #004aad; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 12px;">
+                    Print Receipt
+                </button>
+                <button onclick="window.close()" style="padding: 10px 20px; background: #666; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 12px; margin-left: 10px;">
+                    Close
+                </button>
+            </div>
+            
+            <script>
+                // Auto-print after a short delay
+                setTimeout(() => {
+                    window.print();
+                }, 500);
+            </script>
+        </body>
+        </html>
+    `;
+    
+    receiptWindow.document.write(receiptHtml);
+    receiptWindow.document.close();
+}

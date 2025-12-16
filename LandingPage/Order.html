@@ -147,12 +147,8 @@
 
         <!-- Payment Method Selection -->
         <div class="payment-method-section">
-          <h4>Select Payment Method</h4>
+          <h4>Select Payment Method (Optional)</h4>
           <div class="payment-method-options">
-            <button class="payment-method-btn" data-method="cash" onclick="selectPaymentMethod('cash')">
-              <i class="fas fa-money-bill-wave"></i>
-              <span>Cash</span>
-            </button>
             <button class="payment-method-btn" data-method="card" onclick="selectPaymentMethod('card')">
               <i class="fas fa-credit-card"></i>
               <span>Credit/Debit Card</span>
@@ -162,17 +158,6 @@
 
         <!-- Cash Payment Section -->
         <div class="payment-section" id="cashPaymentSection" style="display: none;">
-          <div class="payment-input-group">
-            <label for="cashAmount">Amount Received:</label>
-            <div class="cash-input-wrapper">
-              <span class="currency-symbol">₱</span>
-              <input type="number" id="cashAmount" placeholder="0.00" step="0.01" min="0" oninput="calculateChange()">
-            </div>
-          </div>
-          <div class="change-display">
-            <span>Change:</span>
-            <span class="change-amount">₱<span id="changeAmount">0.00</span></span>
-          </div>
         </div>
 
         <!-- Card Payment Section -->
@@ -212,8 +197,8 @@
         <button class="payment-btn payment-cancel" onclick="closePaymentModal()">
           <i class="fas fa-times"></i> Cancel
         </button>
-        <button class="payment-btn payment-confirm" id="confirmPaymentBtn" onclick="processPayment()" disabled>
-          <i class="fas fa-check"></i> Process Payment
+        <button class="payment-btn payment-confirm" id="confirmPaymentBtn" onclick="processPayment()">
+          <i class="fas fa-print"></i> Print Receipt
         </button>
       </div>
     </div>

@@ -995,7 +995,7 @@ footer {
 #paymentModal .payment-modal-header {
   background: linear-gradient(135deg, var(--tesda-blue) 0%, var(--tesda-dark) 100%) !important;
   color: white !important;
-  padding: 1.5rem 2rem;
+  padding: 0.5rem 2rem;
   display: flex !important;
   justify-content: center;
   align-items: center;
