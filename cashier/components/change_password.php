@@ -10,9 +10,14 @@ header('Pragma: no-cache');
 header('Expires: Sat, 26 Jul 1997 05:00:00 GMT');
 
 $cashierInfo = getCurrentCashierInfo();
-$userName = $cashierInfo['name'];
-$userEmail = $cashierInfo['email'];
-$userUsername = $cashierInfo['username'];
+$userName = $cashierInfLogin();
+
+// Check if user is cashier
+if (SessionManager::getUserRole() !== 'cashier') {
+    SessionManager::setFlashMessage('error', 'Access denied. Cashier privileges required.');
+    header('Location: ../../public/components/login.html');
+    exit();
+}
 
 // Get user info
 $userEmail = $_SESSION['email'] ?? '';

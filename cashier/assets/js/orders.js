@@ -67,13 +67,16 @@ function renderOrders() {
     // Use order_id if available, otherwise use id
     const displayId = order.order_id || order.id;
     
+    // Debug: Log served_by info for this order
+    console.log(`Order ${displayId} - served_by: "${order.served_by}", served_by_username: "${order.served_by_username}"`);
+    
     tr.innerHTML = `
       <td>${displayId}</td>
       <td>${itemDisplay}</td>
       <td>${order.total_item_count || order.quantity || 1}</td>
       <td>₱${(order.total_amount || 0).toFixed(2)}</td>
       <td><span class="status ${statusColors[order.status] || 'pending'}">${order.status || 'Pending'}</span></td>
-      <td>${order.served_by_username ? `<strong>${order.served_by_username}</strong>${order.action_type ? '<br><small style="color: #999;">(' + (order.action_type === 'served' ? 'Served' : 'Canceled') + ')</small>' : ''}${order.served_at ? '<br><small style="color: #666;">' + new Date(order.served_at).toLocaleString() + '</small>' : ''}` : '<span style="color: #999;">-</span>'}</td>
+      <td>${order.served_by ? order.served_by : (order.served_by_username ? order.served_by_username : '<span style="color: #999;">Not yet served</span>')}</td>
       <td>
         <select onchange="updateOrderStatus('${order.order_id || order._id || order.id}', this.value)">
           <option value="">Change Status</option>
