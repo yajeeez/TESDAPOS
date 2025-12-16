@@ -2,6 +2,35 @@ let barChart, pieChart
 let chartsInitialized = false
 let dashboardMetrics = { totalSales: 0, ordersToday: 0, totalProducts: 0, lowStockItems: 0 }
 
+// Fetch dashboard metrics from database
+async function fetchDashboardMetrics() {
+  try {
+    console.log('Fetching dashboard metrics...');
+    
+    // Fetch products metrics only (sales will be computed from transactionsData)
+    const productsResponse = await fetch('/TESDAPOS/connection/fetch_products.php');
+    if (!productsResponse.ok) {
+      throw new Error(`HTTP error! status: ${productsResponse.status}`);
+    }
+    const productsResult = await productsResponse.json();
+    
+    if (productsResult.success && productsResult.products) {
+      dashboardMetrics.totalProducts = productsResult.products.length;
+      // Count low stock items (stock < 10)
+      dashboardMetrics.lowStockItems = productsResult.products.filter(p => (p.stock || 0) < 10).length;
+      console.log('Products metrics fetched:', productsResult.products.length, 'products');
+    }
+    
+    // Sales metrics will be computed from transactionsData in computeDashboardMetrics()
+    // This ensures we use the cashier-specific orders that are already filtered
+    
+    return true;
+  } catch (error) {
+    console.error('Error fetching dashboard metrics:', error);
+    return false;
+  }
+}
+
 function formatCurrencyDashboard(v) {
   return `₱${Number(v || 0).toFixed(2)}`
 }
@@ -15,13 +44,22 @@ function currentDateKey() {
 }
 
 function getTransactionsForMetrics() {
+  let transactions = [];
   if (typeof filteredTransactions !== 'undefined' && Array.isArray(filteredTransactions) && filteredTransactions.length > 0) {
-    return filteredTransactions
+    transactions = filteredTransactions;
+    console.log('📊 Using filtered transactions:', filteredTransactions.length);
+  } else if (typeof transactionsData !== 'undefined' && Array.isArray(transactionsData)) {
+    transactions = transactionsData;
+    console.log('📊 Using all transactions:', transactionsData.length);
+  } else {
+    console.warn('⚠️ No transactions data available');
   }
-  if (typeof transactionsData !== 'undefined' && Array.isArray(transactionsData)) {
-    return transactionsData
-  }
-  return []
+  
+  // Only include Served orders for metrics (exclude Pending, Approved, and Canceled)
+  const servedOrders = transactions.filter(t => t.status === 'Served');
+  console.log('✅ Served orders for metrics:', servedOrders.length, 'out of', transactions.length);
+  
+  return servedOrders;
 }
 
 function computeDashboardMetrics() {
@@ -29,10 +67,17 @@ function computeDashboardMetrics() {
   const totalSales = tx.reduce((s, t) => s + (parseFloat(t.total_amount) || 0), 0)
   const key = currentDateKey()
   const ordersToday = tx.filter(t => (t.date === key) || (t.created_at && String(t.created_at).startsWith(key))).length
+  
+  // Update metrics with computed values
   dashboardMetrics.totalSales = totalSales
   dashboardMetrics.ordersToday = ordersToday
-  dashboardMetrics.totalProducts = 0
-  dashboardMetrics.lowStockItems = 0
+  
+  console.log('Computed metrics:', {
+    totalSales,
+    ordersToday,
+    servedOrdersCount: tx.length,
+    allTransactionsCount: typeof transactionsData !== 'undefined' ? transactionsData.length : 0
+  })
 }
 
 function updateDashboardCards() {
@@ -41,19 +86,45 @@ function updateDashboardCards() {
   const ordersTodayEl = document.getElementById('dashboardOrdersToday')
   const totalProductsEl = document.getElementById('dashboardTotalProducts')
   const lowStockEl = document.getElementById('dashboardLowStock')
-  if (totalSalesEl) totalSalesEl.textContent = formatCurrencyDashboard(dashboardMetrics.totalSales)
-  if (ordersTodayEl) ordersTodayEl.textContent = String(dashboardMetrics.ordersToday)
+  
+  if (totalSalesEl) {
+    totalSalesEl.textContent = formatCurrencyDashboard(dashboardMetrics.totalSales)
+    console.log('💰 Total Sales updated:', formatCurrencyDashboard(dashboardMetrics.totalSales))
+  }
+  if (ordersTodayEl) {
+    ordersTodayEl.textContent = String(dashboardMetrics.ordersToday)
+    console.log('📦 Orders Today updated:', dashboardMetrics.ordersToday)
+  }
   if (totalProductsEl) totalProductsEl.textContent = String(dashboardMetrics.totalProducts)
   if (lowStockEl) lowStockEl.textContent = String(dashboardMetrics.lowStockItems)
 }
 
-function buildStatusDistribution(tx) {
-  const dist = { Pending: 0, Approved: 0, Served: 0, Canceled: 0 }
-  tx.forEach(t => {
-    const s = t.status || 'Pending'
-    if (dist[s] !== undefined) dist[s] += 1
-  })
-  return dist
+function buildPieChartData() {
+  // Get all transactions for the cashier
+  let allTransactions = [];
+  if (typeof transactionsData !== 'undefined' && Array.isArray(transactionsData)) {
+    allTransactions = transactionsData;
+  }
+  
+  // Count Served and Canceled orders only
+  const served = allTransactions.filter(t => t.status === 'Served').length;
+  const canceled = allTransactions.filter(t => t.status === 'Canceled').length;
+  
+  // Count payment methods (only from Served orders)
+  const servedOrders = allTransactions.filter(t => t.status === 'Served');
+  const cash = servedOrders.filter(t => t.payment_method === 'Cash').length;
+  const card = servedOrders.filter(t => t.payment_method === 'Credit or Debit Card' || t.payment_method === 'card' || t.payment_method === 'Card').length;
+  
+  // Get total sales from Served orders
+  const totalSales = servedOrders.reduce((sum, t) => sum + (parseFloat(t.total_amount) || 0), 0);
+  
+  return {
+    served,
+    canceled,
+    cash,
+    card,
+    totalSales
+  };
 }
 
 function buildPaymentDistribution(tx) {
@@ -66,56 +137,132 @@ function buildPaymentDistribution(tx) {
   return dist
 }
 
-function initDashboard() {
+async function initDashboard() {
+  // Fetch products metrics from database
+  await fetchDashboardMetrics();
+  
   const barCanvas = document.getElementById('barChart')
   const pieCanvas = document.getElementById('pieChart')
+  
+  // Compute sales metrics from transactionsData (cashier-specific orders)
   computeDashboardMetrics()
+  updateDashboardCards()
+  
+  const pieData = buildPieChartData()
+  
   if (barCanvas) {
     barChart = new Chart(barCanvas, {
       type: 'bar',
       data: {
-        labels: ['Total Sales', 'Orders Today'],
+        labels: ['Total Sales (₱)', 'Served Orders', 'Canceled Orders', 'Cash Payments', 'Card Payments'],
         datasets: [{
           label: 'Metrics',
-          data: [dashboardMetrics.totalSales, dashboardMetrics.ordersToday],
-          backgroundColor: ['#004aad', '#ffc107']
+          data: [
+            dashboardMetrics.totalSales,
+            pieData.served,
+            pieData.canceled,
+            pieData.cash,
+            pieData.card
+          ],
+          backgroundColor: ['#9b59b6', '#3498db', '#e74c3c', '#27ae60', '#f39c12']
         }]
       },
       options: {
         responsive: true,
-        scales: { y: { beginAtZero: true } }
+        scales: { y: { beginAtZero: true } },
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                const label = context.label || '';
+                const value = context.parsed.y;
+                
+                // Format Total Sales with currency
+                if (label.includes('Total Sales')) {
+                  return 'Total Sales: ₱' + value.toFixed(2);
+                }
+                
+                return label + ': ' + value;
+              }
+            }
+          }
+        }
       }
     })
   }
-  const tx = getTransactionsForMetrics()
-  const status = buildStatusDistribution(tx)
+  
   if (pieCanvas) {
     pieChart = new Chart(pieCanvas, {
       type: 'pie',
       data: {
-        labels: ['Pending', 'Approved', 'Served', 'Canceled'],
+        labels: ['Served Orders', 'Canceled Orders', 'Cash Payments', 'Card Payments', 'Total Sales (₱100s)'],
         datasets: [{
-          data: [status.Pending, status.Approved, status.Served, status.Canceled],
-          backgroundColor: ['#f39c12', '#27ae60', '#3498db', '#e74c3c']
+          data: [
+            pieData.served,
+            pieData.canceled,
+            pieData.cash,
+            pieData.card,
+            pieData.totalSales / 100 // Normalize sales for display
+          ],
+          backgroundColor: ['#3498db', '#e74c3c', '#27ae60', '#f39c12', '#9b59b6']
         }]
       },
-      options: { responsive: true }
+      options: {
+        responsive: true,
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                const label = context.label || '';
+                const value = context.parsed;
+                
+                // Format Total Sales differently
+                if (label.includes('Total Sales')) {
+                  return label + ': ₱' + (value * 100).toFixed(2);
+                }
+                
+                return label + ': ' + value;
+              }
+            }
+          }
+        }
+      }
     })
   }
   chartsInitialized = true
 }
 
-function refreshCharts() {
+async function refreshCharts() {
   if (!barChart && !pieChart) return
+  
+  // Refresh products metrics from database
+  await fetchDashboardMetrics();
+  
+  // Compute sales metrics from transactionsData (cashier-specific orders)
   computeDashboardMetrics()
+  updateDashboardCards()
+  
+  const pieData = buildPieChartData()
+  
   if (barChart) {
-    barChart.data.datasets[0].data = [dashboardMetrics.totalSales, dashboardMetrics.ordersToday]
+    barChart.data.datasets[0].data = [
+      dashboardMetrics.totalSales,
+      pieData.served,
+      pieData.canceled,
+      pieData.cash,
+      pieData.card
+    ]
     barChart.update()
   }
-  const tx = getTransactionsForMetrics()
-  const status = buildStatusDistribution(tx)
+  
   if (pieChart) {
-    pieChart.data.datasets[0].data = [status.Pending, status.Approved, status.Served, status.Canceled]
+    pieChart.data.datasets[0].data = [
+      pieData.served,
+      pieData.canceled,
+      pieData.cash,
+      pieData.card,
+      pieData.totalSales / 100 // Normalize sales for display
+    ]
     pieChart.update()
   }
 }

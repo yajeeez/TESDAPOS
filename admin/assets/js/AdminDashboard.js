@@ -85,33 +85,36 @@ async function calculateAllMetrics() {
       const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
       
       transactions.forEach(transaction => {
-        // Calculate total sales
-        if (transaction.total_amount) {
+        const status = transaction.status || 'Pending';
+        
+        // Calculate total sales - exclude Pending and Canceled orders
+        if (status !== 'Pending' && status !== 'Canceled' && transaction.total_amount) {
           metrics.totalSales += parseFloat(transaction.total_amount) || 0;
         }
 
-        // Count orders today - use the same reliable method as the dashboard card
+        // Count orders today - exclude Pending and Canceled orders
         const transactionDate = transaction.created_at ? new Date(transaction.created_at).toISOString().split('T')[0] : null;
-        if (transactionDate === today) {
+        if (transactionDate === today && status !== 'Pending' && status !== 'Canceled') {
           metrics.ordersToday++;
         }
 
         // Count by status
-        const status = transaction.status || 'Pending';
         if (metrics.statusDistribution.hasOwnProperty(status)) {
           metrics.statusDistribution[status]++;
         } else {
           metrics.statusDistribution.Pending++;
         }
 
-        // Count by payment method
-        const paymentMethod = transaction.payment_method || 'Cash';
-        if (paymentMethod === 'Cash' || paymentMethod === 'cash') {
-          metrics.paymentMethodDistribution.Cash++;
-        } else if (paymentMethod === 'card' || paymentMethod === 'Card' || paymentMethod === 'Credit or Debit Card') {
-          metrics.paymentMethodDistribution["Credit or Debit Card"]++;
-        } else {
-          metrics.paymentMethodDistribution.Cash++;
+        // Count by payment method - exclude Pending and Canceled orders
+        if (status !== 'Pending' && status !== 'Canceled') {
+          const paymentMethod = transaction.payment_method || 'Cash';
+          if (paymentMethod === 'Cash' || paymentMethod === 'cash') {
+            metrics.paymentMethodDistribution.Cash++;
+          } else if (paymentMethod === 'card' || paymentMethod === 'Card' || paymentMethod === 'Credit or Debit Card') {
+            metrics.paymentMethodDistribution["Credit or Debit Card"]++;
+          } else {
+            metrics.paymentMethodDistribution.Cash++;
+          }
         }
       });
     }
@@ -230,17 +233,17 @@ async function initCharts() {
   barColors.push('#4CAF50', '#2196F3', '#FF9800', '#F44336');
   
   // Add status-based data based on filter
-  // Only show status if no payment filter is active
+  // Only show Served and Approved status (exclude Pending and Canceled from charts)
   if (paymentFilter === '' && (statusFilter === '' || statusFilter === 'Served')) {
     barLabels.push('Served');
     barData.push(allMetrics.statusDistribution.Served);
     barColors.push('#4CAF50');
   }
   
-  if (paymentFilter === '' && (statusFilter === '' || statusFilter === 'Canceled')) {
-    barLabels.push('Canceled');
-    barData.push(allMetrics.statusDistribution.Canceled);
-    barColors.push('#F44336');
+  if (paymentFilter === '' && (statusFilter === '' || statusFilter === 'Approved')) {
+    barLabels.push('Approved');
+    barData.push(allMetrics.statusDistribution.Approved);
+    barColors.push('#2196F3');
   }
   
   // Add payment method-based data based on filter
@@ -321,17 +324,17 @@ async function initCharts() {
   pieColors.push('#4CAF50', '#2196F3', '#FF9800', '#F44336');
   
   // Add status-based data based on filter
-  // Only show status if no payment filter is active
+  // Only show Served and Approved status (exclude Pending and Canceled from charts)
   if (paymentFilter === '' && (statusFilter === '' || statusFilter === 'Served')) {
     pieLabels.push('Served');
     pieData.push(allMetrics.statusDistribution.Served);
     pieColors.push('#4CAF50');
   }
   
-  if (paymentFilter === '' && (statusFilter === '' || statusFilter === 'Canceled')) {
-    pieLabels.push('Canceled');
-    pieData.push(allMetrics.statusDistribution.Canceled);
-    pieColors.push('#F44336');
+  if (paymentFilter === '' && (statusFilter === '' || statusFilter === 'Approved')) {
+    pieLabels.push('Approved');
+    pieData.push(allMetrics.statusDistribution.Approved);
+    pieColors.push('#2196F3');
   }
   
   // Add payment method-based data based on filter
@@ -614,7 +617,7 @@ async function updateCharts() {
   pieColors.push('#4CAF50', '#2196F3', '#FF9800', '#F44336');
   
   // Add status-based data based on filter
-  // Only show status if no payment filter is active
+  // Only show Served and Approved status (exclude Pending and Canceled from charts)
   if (paymentFilter === '' && (statusFilter === '' || statusFilter === 'Served')) {
     barLabels.push('Served');
     barData.push(allMetrics.statusDistribution.Served);
@@ -625,14 +628,14 @@ async function updateCharts() {
     pieColors.push('#4CAF50');
   }
   
-  if (paymentFilter === '' && (statusFilter === '' || statusFilter === 'Canceled')) {
-    barLabels.push('Canceled');
-    barData.push(allMetrics.statusDistribution.Canceled);
-    barColors.push('#F44336');
+  if (paymentFilter === '' && (statusFilter === '' || statusFilter === 'Approved')) {
+    barLabels.push('Approved');
+    barData.push(allMetrics.statusDistribution.Approved);
+    barColors.push('#2196F3');
     
-    pieLabels.push('Canceled');
-    pieData.push(allMetrics.statusDistribution.Canceled);
-    pieColors.push('#F44336');
+    pieLabels.push('Approved');
+    pieData.push(allMetrics.statusDistribution.Approved);
+    pieColors.push('#2196F3');
   }
   
   // Add payment method-based data based on filter

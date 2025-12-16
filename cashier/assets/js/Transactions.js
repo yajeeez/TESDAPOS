@@ -22,31 +22,64 @@ function transactionItemCount(t) {
 
 async function fetchTransactionsFromDB() {
   try {
-    const res = await fetch('/TESDAPOS/admin/fetch_filtered_orders.php', { method: 'GET', headers: { 'Cache-Control': 'no-cache', 'Pragma': 'no-cache' } })
-    if (!res.ok) throw new Error(`HTTP ${res.status}`)
-    const data = await res.json()
-    if (data.success && data.orders) {
-      transactionsData = data.orders
-      filteredTransactions = [...transactionsData]
-      renderTransactions()
-      return true
+    console.log('🔄 Fetching all transactions...');
+    
+    // Fetch ALL transactions (Served orders from all cashiers)
+    const res = await fetch('/TESDAPOS/admin/fetch_orders.php?status=Served', { 
+      method: 'GET', 
+      headers: { 
+        'Cache-Control': 'no-cache', 
+        'Pragma': 'no-cache' 
+      } 
+    });
+    
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status}`);
     }
-    throw new Error(data.message || 'Failed to fetch orders')
+    
+    const data = await res.json();
+    console.log('📦 Received data:', data);
+    
+    if (data.success && data.orders) {
+      transactionsData = data.orders;
+      filteredTransactions = [...transactionsData];
+      console.log(`✅ Loaded ${transactionsData.length} transactions from all cashiers`);
+      
+      // Log sample transaction to see structure
+      if (transactionsData.length > 0) {
+        console.log('📋 Sample transaction:', transactionsData[0]);
+      }
+      
+      renderTransactions();
+      return true;
+    }
+    throw new Error(data.message || 'Failed to fetch orders');
   } catch (e) {
-    transactionsData = []
-    filteredTransactions = []
-    renderTransactions()
-    return false
+    console.error('❌ Error fetching transactions:', e);
+    transactionsData = [];
+    filteredTransactions = [];
+    renderTransactions();
+    return false;
   }
 }
 
 function renderTransactions() {
   const tbody = document.getElementById('transactionsList')
-  if (!tbody) return
+  if (!tbody) {
+    console.warn('⚠️ transactionsList tbody not found');
+    return;
+  }
+  
   tbody.innerHTML = ''
   const list = filteredTransactions.length ? filteredTransactions : transactionsData
+  
+  console.log('🎨 Rendering transactions:', list.length);
+  
   if (!list.length) {
-    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:2rem; color:#666;">No transactions found.</td></tr>`
+    tbody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding:2rem; color:#666;">
+      <i class="fas fa-inbox" style="font-size: 3rem; opacity: 0.3; display: block; margin-bottom: 1rem;"></i>
+      No transactions found. Transactions will appear here after you serve orders.
+    </td></tr>`
     return
   }
   list.forEach(t => {
@@ -57,12 +90,15 @@ function renderTransactions() {
       const firstName = t.product_names[0]
       itemsLabel = t.product_names.length > 1 ? `${firstName} +${t.product_names.length - 1} more` : firstName
     }
+    // Get cashier name from various possible fields
+    const cashierName = t.cashier_name || t.served_by || t.served_by_username || '<span style="color: #999;">Unknown</span>';
+    
     const tr = document.createElement('tr')
     tr.innerHTML = `
       <td><strong>#${t.order_id || t.id}</strong></td>
       <td>${t.transaction_id || 'N/A'}</td>
       <td>${formatDisplayDate(t.created_at || t.date)}</td>
-      <td>${t.cashier_name || 'N/A'}</td>
+      <td>${cashierName}</td>
       <td>${itemsLabel}</td>
       <td>${itemCount}</td>
       <td>${t.payment_method || 'N/A'}</td>

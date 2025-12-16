@@ -29,8 +29,16 @@ if (!extension_loaded('mongodb')) {
 }
 
 try {
+    // Start session to get cashier info
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    
+    // Get cashier username from session if available
+    $cashierUsername = isset($_SESSION['cashier_username']) ? $_SESSION['cashier_username'] : null;
+    
     $mongoOrders = new MongoOrders();
-    $result = $mongoOrders->getDashboardMetrics();
+    $result = $mongoOrders->getDashboardMetrics($cashierUsername);
     
     ob_clean();
     echo json_encode($result, JSON_UNESCAPED_SLASHES);

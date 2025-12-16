@@ -10,17 +10,9 @@ header('Pragma: no-cache');
 header('Expires: Sat, 26 Jul 1997 05:00:00 GMT');
 
 $cashierInfo = getCurrentCashierInfo();
-$userName = $cashierInfLogin();
-
-// Check if user is cashier
-if (SessionManager::getUserRole() !== 'cashier') {
-    SessionManager::setFlashMessage('error', 'Access denied. Cashier privileges required.');
-    header('Location: ../../public/components/login.html');
-    exit();
-}
-
-// Get user info
-$userEmail = $_SESSION['email'] ?? '';
+$userName = $cashierInfo['name'];
+$userEmail = $cashierInfo['email'];
+$userUsername = $cashierInfo['username'];
 
 // Include MongoDB at the top level
 require_once __DIR__ . '/../../config/database.php';
@@ -344,6 +336,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <h2>TESDA POS</h2>
       <ul>
         <li><a href="CashierDashboard.php"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
+        <li><a href="Orders.php"><i class="fas fa-receipt"></i><span>Manage Orders</span></a></li>
         <li><a href="Transactions.php"><i class="fas fa-cash-register"></i><span>Transactions</span></a></li>
         <li><a href="change_password.php" class="active"><i class="fas fa-key"></i><span>Change Password</span></a></li>
         <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></li>

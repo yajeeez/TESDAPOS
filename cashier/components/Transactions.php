@@ -28,10 +28,10 @@ $userUsername = $cashierInfo['username'];
       </div>
       <h2>TESDA POS</h2>
       <ul>
-        <li><a href="CashierDashboard.php?username=<?php echo urlencode($userUsername); ?>"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
-        <li><a href="Orders.php?username=<?php echo urlencode($userUsername); ?>"><i class="fas fa-receipt"></i><span>Manage Orders</span></a></li>
-        <li><a href="Transactions.php?username=<?php echo urlencode($userUsername); ?>" class="active"><i class="fas fa-cash-register"></i><span>Transactions</span></a></li>
-        <li><a href="change_password.php?username=<?php echo urlencode($userUsername); ?>"><i class="fas fa-key"></i><span>Change Password</span></a></li>
+        <li><a href="CashierDashboard.php"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
+        <li><a href="Orders.php"><i class="fas fa-receipt"></i><span>Manage Orders</span></a></li>
+        <li><a href="Transactions.php" class="active"><i class="fas fa-cash-register"></i><span>Transactions</span></a></li>
+        <li><a href="change_password.php"><i class="fas fa-key"></i><span>Change Password</span></a></li>
         <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></li>
       </ul>
     </nav>

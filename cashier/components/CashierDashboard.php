@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <?php
-// Start without session guard
+// Require cashier authentication
+require_once __DIR__ . '/cashier_auth.php';
 
 // Prevent caching to avoid back navigation after logout
 header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
@@ -8,9 +9,7 @@ header('Cache-Control: post-check=0, pre-check=0', false);
 header('Pragma: no-cache');
 header('Expires: Sat, 26 Jul 1997 05:00:00 GMT');
 
-// Get cashier information from database
-require_once __DIR__ . '/cashier_auth.php';
-
+// Get cashier information from session
 $cashierInfo = getCurrentCashierInfo();
 $userName = $cashierInfo['name'];
 $userEmail = $cashierInfo['email'];
@@ -41,10 +40,10 @@ $loginTime = time();
       </div>
       <h2>TESDA POS</h2>
       <ul>
-        <li><a href="CashierDashboard.php?name=<?php echo urlencode($userName); ?>&email=<?php echo urlencode($userEmail); ?>&username=<?php echo urlencode($userUsername); ?>" class="active"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
-        <li><a href="Orders.php?name=<?php echo urlencode($userName); ?>&email=<?php echo urlencode($userEmail); ?>&username=<?php echo urlencode($userUsername); ?>"><i class="fas fa-receipt"></i><span>Manage Orders</span></a></li>
-        <li><a href="Transactions.php?name=<?php echo urlencode($userName); ?>&email=<?php echo urlencode($userEmail); ?>&username=<?php echo urlencode($userUsername); ?>"><i class="fas fa-cash-register"></i><span>Transactions</span></a></li>
-        <li><a href="change_password.php?name=<?php echo urlencode($userName); ?>&email=<?php echo urlencode($userEmail); ?>&username=<?php echo urlencode($userUsername); ?>"><i class="fas fa-key"></i><span>Change Password</span></a></li>
+        <li><a href="CashierDashboard.php" class="active"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
+        <li><a href="Orders.php"><i class="fas fa-receipt"></i><span>Manage Orders</span></a></li>
+        <li><a href="Transactions.php"><i class="fas fa-cash-register"></i><span>Transactions</span></a></li>
+        <li><a href="change_password.php"><i class="fas fa-key"></i><span>Change Password</span></a></li>
         <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></li>
       </ul>
     </nav>
@@ -149,46 +148,170 @@ $loginTime = time();
 
   <!-- JS -->
   <script src="../assets/js/CashierDashboard.js"></script>
-  <script src="../../admin/assets/js/transactions.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', async () => {
-      if (typeof initDashboard === 'function') {
-        initDashboard();
-      }
-      
-      if (typeof fetchTransactionsFromDB === 'function') {
-        await fetchTransactionsFromDB();
-        updateSummaryCards();
+    // Cashier-specific transaction fetching
+    let transactionsData = [];
+    let filteredTransactions = [];
+    
+    async function fetchTransactionsFromDB() {
+      try {
+        console.log('Fetching cashier-specific transactions...');
         
-        const filterInputs = [
-          'filterStartDate',
-          'filterCashier', 
-          'filterStatus',
-          'filterPaymentMethod'
-        ];
-
-        filterInputs.forEach(inputId => {
-          const input = document.getElementById(inputId);
-          if (input) {
-            input.addEventListener('change', async () => {
-              if (typeof applyFilters === 'function') {
-                applyFilters();
-              }
-              
-              setTimeout(() => {
-                if (typeof refreshCharts === 'function') {
-                  refreshCharts();
-                }
-              }, 150);
-            });
+        // Use cashier-specific endpoint that filters by logged-in cashier
+        const response = await fetch('/TESDAPOS/cashier/fetch_cashier_orders.php', {
+          method: 'GET',
+          headers: {
+            'Cache-Control': 'no-cache',
+            'Pragma': 'no-cache'
           }
         });
         
-        setTimeout(() => {
-          if (typeof refreshCharts === 'function') {
-            refreshCharts();
-          }
-        }, 1000);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        if (data.success && data.orders) {
+          transactionsData = data.orders;
+          filteredTransactions = [...transactionsData];
+          console.log(`Loaded ${transactionsData.length} transactions for cashier: ${data.cashier_username || 'unknown'}`);
+          return true;
+        } else {
+          throw new Error(data.message || 'Failed to fetch orders');
+        }
+      } catch (error) {
+        console.error('Error fetching cashier transactions:', error);
+        transactionsData = [];
+        filteredTransactions = [];
+        return false;
+      }
+    }
+    
+    function applyFilters() {
+      const startInput = document.getElementById('filterStartDate');
+      const statusSelect = document.getElementById('filterStatus');
+      const paymentSelect = document.getElementById('filterPaymentMethod');
+
+      const startDate = startInput?.value ? new Date(startInput.value + 'T00:00:00') : null;
+      const status = statusSelect?.value || '';
+      const paymentMethod = paymentSelect?.value || '';
+
+      filteredTransactions = transactionsData.filter((txn) => {
+        const txnDateString = txn.created_at || txn.date;
+        if (!txnDateString) return false;
+        
+        const txnDate = new Date(txnDateString);
+        if (isNaN(txnDate.getTime())) return false;
+        
+        // Date filter
+        if (startDate && txnDate < startDate) return false;
+        
+        // Status filter
+        if (status && txn.status !== status) return false;
+        
+        // Payment method filter
+        if (paymentMethod && txn.payment_method !== paymentMethod) return false;
+        
+        return true;
+      });
+      
+      console.log(`Filtered to ${filteredTransactions.length} transactions`);
+    }
+    
+    function exportToCSV() {
+      const transactionsToExport = filteredTransactions.length > 0 ? filteredTransactions : transactionsData;
+      
+      if (!transactionsToExport.length) {
+        alert('No transactions to export');
+        return;
+      }
+
+      const headers = ['Order ID', 'Date', 'Cashier', 'Payment Method', 'Status', 'Items', 'Quantity', 'Total Amount'];
+      
+      const csvRows = transactionsToExport.map(transaction => {
+        const items = transaction.items || [];
+        const itemsCount = transaction.total_item_count || items.length;
+        const itemsDetails = items.map(item => 
+          `${item.name || item.product_name} (${item.quantity}x @ ₱${item.price})`
+        ).join('; ');
+
+        const paymentMethod = transaction.payment_method || 'Cash';
+
+        return [
+          transaction.order_id || transaction.id || '',
+          transaction.created_at ? new Date(transaction.created_at).toLocaleDateString() : (transaction.date || ''),
+          transaction.cashier_name || '',
+          paymentMethod,
+          transaction.status || 'Pending',
+          `"${itemsDetails}"`,
+          itemsCount.toString(),
+          transaction.total_amount || '0.00'
+        ];
+      });
+
+      const csvContent = [
+        headers.join(','),
+        ...csvRows.map(row => row.join(','))
+      ].join('\n');
+
+      const BOM = '\uFEFF';
+      const blob = new Blob([BOM + csvContent], { type: 'text/csv;charset=utf-8;' });
+      
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      
+      const startDate = document.getElementById('filterStartDate')?.value || 'all';
+      const filename = `cashier_sales_report_${startDate}.csv`;
+      
+      link.setAttribute('download', filename);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      console.log(`Exported ${transactionsToExport.length} transaction(s) to CSV`);
+    }
+    
+    document.addEventListener('DOMContentLoaded', async () => {
+      console.log('🚀 Initializing Cashier Dashboard...');
+      
+      // First, fetch the cashier-specific transactions
+      const fetchSuccess = await fetchTransactionsFromDB();
+      console.log('📊 Transactions fetched:', fetchSuccess, 'Count:', transactionsData.length);
+      
+      // Then initialize the dashboard with the fetched data
+      if (typeof initDashboard === 'function') {
+        await initDashboard();
+        console.log('✅ Dashboard initialized');
+      }
+      
+      const filterInputs = [
+        'filterStartDate',
+        'filterStatus',
+        'filterPaymentMethod'
+      ];
+
+      filterInputs.forEach(inputId => {
+        const input = document.getElementById(inputId);
+        if (input) {
+          input.addEventListener('change', async () => {
+            applyFilters();
+            
+            setTimeout(() => {
+              if (typeof refreshCharts === 'function') {
+                refreshCharts();
+              }
+            }, 150);
+          });
+        }
+      });
+      
+      // Attach CSV export button
+      const exportBtn = document.getElementById('exportCsvBtn');
+      if (exportBtn) {
+        exportBtn.addEventListener('click', exportToCSV);
       }
     });
   </script>

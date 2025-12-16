@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../../vendor/autoload.php';
 require_once __DIR__ . '/../../config/database.php';
+require_once __DIR__ . '/../../includes/session.php';
 
 use MongoDB\Client;
 use MongoDB\Exception\Exception as MongoException;
@@ -84,28 +85,30 @@ class CashierAuth {
 }
 
 /**
- * Get current cashier info from URL parameters or default
+ * Require cashier login and return current cashier info from session
+ */
+function requireCashierLogin() {
+    SessionManager::requireLogin();
+    
+    // Check if user is cashier
+    if (SessionManager::getUserRole() !== 'cashier') {
+        SessionManager::setFlashMessage('error', 'Access denied. Cashier privileges required.');
+        header('Location: ../../public/components/login.html');
+        exit();
+    }
+}
+
+/**
+ * Get current cashier info from session
  */
 function getCurrentCashierInfo() {
-    $username = isset($_GET['username']) ? $_GET['username'] : 'cashier1';
+    requireCashierLogin();
     
-    try {
-        $cashierAuth = new CashierAuth();
-        $result = $cashierAuth->getCashierByUsername($username);
-        
-        if ($result['success']) {
-            return $result['cashier'];
-        }
-    } catch (Exception $e) {
-        error_log("Error getting current cashier info: " . $e->getMessage());
-    }
-    
-    // Fallback to default values
     return [
-        'username' => $username,
-        'name' => 'Cashier',
-        'email' => '',
-        'role' => 'cashier'
+        'username' => SessionManager::getUsername(),
+        'name' => SessionManager::getFullName(),
+        'email' => $_SESSION['email'] ?? '',
+        'role' => SessionManager::getUserRole()
     ];
 }
 ?>

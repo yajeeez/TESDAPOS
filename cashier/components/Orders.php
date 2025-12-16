@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <?php
-// Start without session guard for cashier
+// Require cashier authentication
+require_once __DIR__ . '/cashier_auth.php';
 
 // Prevent caching to avoid back navigation after logout
 header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
@@ -8,9 +9,7 @@ header('Cache-Control: post-check=0, pre-check=0', false);
 header('Pragma: no-cache');
 header('Expires: Sat, 26 Jul 1997 05:00:00 GMT');
 
-// Get cashier information from database
-require_once __DIR__ . '/cashier_auth.php';
-
+// Get cashier information from session
 $cashierInfo = getCurrentCashierInfo();
 $userName = $cashierInfo['name'];
 $userEmail = $cashierInfo['email'];
@@ -38,10 +37,10 @@ $userUsername = $cashierInfo['username'];
       </div>
       <h2>TESDA POS</h2>
       <ul>
-        <li><a href="CashierDashboard.php?name=<?php echo urlencode($userName); ?>&email=<?php echo urlencode($userEmail); ?>&username=<?php echo urlencode($userUsername); ?>"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
-        <li><a href="Orders.php?name=<?php echo urlencode($userName); ?>&email=<?php echo urlencode($userEmail); ?>&username=<?php echo urlencode($userUsername); ?>" class="active"><i class="fas fa-receipt"></i><span>Manage Orders</span></a></li>
-        <li><a href="Transactions.php?name=<?php echo urlencode($userName); ?>&email=<?php echo urlencode($userEmail); ?>&username=<?php echo urlencode($userUsername); ?>"><i class="fas fa-cash-register"></i><span>Transactions</span></a></li>
-        <li><a href="change_password.php?name=<?php echo urlencode($userName); ?>&email=<?php echo urlencode($userEmail); ?>&username=<?php echo urlencode($userUsername); ?>"><i class="fas fa-key"></i><span>Change Password</span></a></li>
+        <li><a href="CashierDashboard.php"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
+        <li><a href="Orders.php" class="active"><i class="fas fa-receipt"></i><span>Manage Orders</span></a></li>
+        <li><a href="Transactions.php"><i class="fas fa-cash-register"></i><span>Transactions</span></a></li>
+        <li><a href="change_password.php"><i class="fas fa-key"></i><span>Change Password</span></a></li>
         <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></li>
       </ul>
     </nav>

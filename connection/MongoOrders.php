@@ -109,11 +109,24 @@ class MongoOrders {
     }
 
     /**
-     * Get total sales from all orders
+     * Get total sales from all orders (only Served orders, excluding Pending and Canceled)
+     * Optionally filter by cashier username
      */
-    public function getTotalSales() {
+    public function getTotalSales($cashierUsername = null) {
         try {
+            $matchConditions = [
+                'status' => 'Served'  // Only count served orders
+            ];
+            
+            // Filter by cashier if provided
+            if ($cashierUsername) {
+                $matchConditions['served_by_username'] = $cashierUsername;
+            }
+            
             $pipeline = [
+                [
+                    '$match' => $matchConditions
+                ],
                 [
                     '$group' => [
                         '_id' => null,
@@ -137,8 +150,10 @@ class MongoOrders {
 
     /**
      * Get count of orders created today (based on server's local timezone)
+     * Excludes Pending and Canceled orders
+     * Optionally filter by cashier username
      */
-    public function getOrdersToday() {
+    public function getOrdersToday($cashierUsername = null) {
         try {
             // Get server's default timezone
             $timezone = date_default_timezone_get();
@@ -158,8 +173,14 @@ class MongoOrders {
                 'created_at' => [
                     '$gte' => $startUTCDateTime,
                     '$lt' => $endUTCDateTime
-                ]
+                ],
+                'status' => ['$nin' => ['Pending', 'Canceled']]  // Exclude Pending and Canceled
             ];
+            
+            // Filter by cashier if provided
+            if ($cashierUsername) {
+                $filter['served_by_username'] = $cashierUsername;
+            }
             
             $count = $this->collection->countDocuments($filter);
             return (int) $count;
@@ -316,11 +337,12 @@ class MongoOrders {
 
     /**
      * Get dashboard metrics (total sales and orders today)
+     * Optionally filter by cashier username
      */
-    public function getDashboardMetrics() {
+    public function getDashboardMetrics($cashierUsername = null) {
         try {
-            $totalSales = $this->getTotalSales();
-            $ordersToday = $this->getOrdersToday();
+            $totalSales = $this->getTotalSales($cashierUsername);
+            $ordersToday = $this->getOrdersToday($cashierUsername);
             
             return [
                 'success' => true,
