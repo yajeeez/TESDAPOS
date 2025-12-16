@@ -76,5 +76,6 @@
     "intelephense.files.exclude": [
         "**/node_modules/**",
         "**/vendor/**"
-    ]
+    ],
+    "kiroAgent.configureMCP": "Disabled"
 }
