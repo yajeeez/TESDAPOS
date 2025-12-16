@@ -108,13 +108,21 @@ function updateDashboardCards() {
 }
 
 function buildPieChartData() {
-  // Get all transactions for the cashier
+  // Use filtered transactions if available, otherwise use all transactions
   let allTransactions = [];
-  if (typeof transactionsData !== 'undefined' && Array.isArray(transactionsData)) {
+  if (typeof filteredTransactions !== 'undefined' && Array.isArray(filteredTransactions) && filteredTransactions.length > 0) {
+    allTransactions = filteredTransactions;
+    console.log('📊 Using filtered transactions for chart:', filteredTransactions.length);
+  } else if (typeof transactionsData !== 'undefined' && Array.isArray(transactionsData)) {
     allTransactions = transactionsData;
+    console.log('📊 Using all transactions for chart:', transactionsData.length);
   }
   
-  // Count Served and Canceled orders only
+  // Get active filters
+  const statusFilter = document.getElementById('filterStatus')?.value || '';
+  const paymentFilter = document.getElementById('filterPaymentMethod')?.value || '';
+  
+  // Count orders by status
   const served = allTransactions.filter(t => t.status === 'Served').length;
   const canceled = allTransactions.filter(t => t.status === 'Canceled').length;
   
@@ -131,7 +139,9 @@ function buildPieChartData() {
     canceled,
     cash,
     card,
-    totalSales
+    totalSales,
+    statusFilter,
+    paymentFilter
   };
 }
 
@@ -159,20 +169,51 @@ async function initDashboard() {
   const pieData = buildPieChartData()
   
   if (barCanvas) {
+    // Build dynamic labels and data based on filters
+    let barLabels = ['Total Sales (₱K)'];
+    let barData = [dashboardMetrics.totalSales / 1000];
+    let barColors = ['#9b59b6'];
+    
+    // Add status data based on filter
+    if (pieData.statusFilter === '') {
+      // Show all statuses
+      barLabels.push('Served Orders', 'Canceled Orders');
+      barData.push(pieData.served, pieData.canceled);
+      barColors.push('#3498db', '#e74c3c');
+    } else if (pieData.statusFilter === 'Served') {
+      barLabels.push('Served Orders');
+      barData.push(pieData.served);
+      barColors.push('#3498db');
+    } else if (pieData.statusFilter === 'Canceled') {
+      barLabels.push('Canceled Orders');
+      barData.push(pieData.canceled);
+      barColors.push('#e74c3c');
+    }
+    
+    // Add payment method data based on filter
+    if (pieData.paymentFilter === '') {
+      // Show all payment methods
+      barLabels.push('Cash Payments', 'Card Payments');
+      barData.push(pieData.cash, pieData.card);
+      barColors.push('#27ae60', '#f39c12');
+    } else if (pieData.paymentFilter === 'Cash') {
+      barLabels.push('Cash Payments');
+      barData.push(pieData.cash);
+      barColors.push('#27ae60');
+    } else if (pieData.paymentFilter === 'Cashless') {
+      barLabels.push('Card Payments');
+      barData.push(pieData.card);
+      barColors.push('#f39c12');
+    }
+    
     barChart = new Chart(barCanvas, {
       type: 'bar',
       data: {
-        labels: ['Total Sales (₱K)', 'Served Orders', 'Canceled Orders', 'Cash Payments', 'Card Payments'],
+        labels: barLabels,
         datasets: [{
           label: 'Metrics',
-          data: [
-            dashboardMetrics.totalSales / 1000, // Convert to thousands
-            pieData.served,
-            pieData.canceled,
-            pieData.cash,
-            pieData.card
-          ],
-          backgroundColor: ['#9b59b6', '#3498db', '#e74c3c', '#27ae60', '#f39c12']
+          data: barData,
+          backgroundColor: barColors
         }]
       },
       options: {
@@ -200,19 +241,50 @@ async function initDashboard() {
   }
   
   if (pieCanvas) {
+    // Build dynamic labels and data based on filters
+    let pieLabels = ['Total Sales'];
+    let pieData_values = [pieData.totalSales / 100]; // Normalize sales for display
+    let pieColors = ['#9b59b6'];
+    
+    // Add status data based on filter
+    if (pieData.statusFilter === '') {
+      // Show all statuses
+      pieLabels.push('Served Orders', 'Canceled Orders');
+      pieData_values.push(pieData.served, pieData.canceled);
+      pieColors.push('#3498db', '#e74c3c');
+    } else if (pieData.statusFilter === 'Served') {
+      pieLabels.push('Served Orders');
+      pieData_values.push(pieData.served);
+      pieColors.push('#3498db');
+    } else if (pieData.statusFilter === 'Canceled') {
+      pieLabels.push('Canceled Orders');
+      pieData_values.push(pieData.canceled);
+      pieColors.push('#e74c3c');
+    }
+    
+    // Add payment method data based on filter
+    if (pieData.paymentFilter === '') {
+      // Show all payment methods
+      pieLabels.push('Cash Payments', 'Card Payments');
+      pieData_values.push(pieData.cash, pieData.card);
+      pieColors.push('#27ae60', '#f39c12');
+    } else if (pieData.paymentFilter === 'Cash') {
+      pieLabels.push('Cash Payments');
+      pieData_values.push(pieData.cash);
+      pieColors.push('#27ae60');
+    } else if (pieData.paymentFilter === 'Cashless') {
+      pieLabels.push('Card Payments');
+      pieData_values.push(pieData.card);
+      pieColors.push('#f39c12');
+    }
+    
     pieChart = new Chart(pieCanvas, {
       type: 'pie',
       data: {
-        labels: ['Served Orders', 'Canceled Orders', 'Cash Payments', 'Card Payments', 'Total Sales'],
+        labels: pieLabels,
         datasets: [{
-          data: [
-            pieData.served,
-            pieData.canceled,
-            pieData.cash,
-            pieData.card,
-            pieData.totalSales / 100 // Normalize sales for display
-          ],
-          backgroundColor: ['#3498db', '#e74c3c', '#27ae60', '#f39c12', '#9b59b6']
+          data: pieData_values,
+          backgroundColor: pieColors
         }]
       },
       options: {
@@ -253,24 +325,90 @@ async function refreshCharts() {
   const pieData = buildPieChartData()
   
   if (barChart) {
-    barChart.data.datasets[0].data = [
-      dashboardMetrics.totalSales / 1000, // Convert to thousands
-      pieData.served,
-      pieData.canceled,
-      pieData.cash,
-      pieData.card
-    ]
-    barChart.update()
+    // Build dynamic labels and data based on filters
+    let barLabels = ['Total Sales (₱K)'];
+    let barData = [dashboardMetrics.totalSales / 1000];
+    let barColors = ['#9b59b6'];
+    
+    // Add status data based on filter
+    if (pieData.statusFilter === '') {
+      // Show all statuses
+      barLabels.push('Served Orders', 'Canceled Orders');
+      barData.push(pieData.served, pieData.canceled);
+      barColors.push('#3498db', '#e74c3c');
+    } else if (pieData.statusFilter === 'Served') {
+      barLabels.push('Served Orders');
+      barData.push(pieData.served);
+      barColors.push('#3498db');
+    } else if (pieData.statusFilter === 'Canceled') {
+      barLabels.push('Canceled Orders');
+      barData.push(pieData.canceled);
+      barColors.push('#e74c3c');
+    }
+    
+    // Add payment method data based on filter
+    if (pieData.paymentFilter === '') {
+      // Show all payment methods
+      barLabels.push('Cash Payments', 'Card Payments');
+      barData.push(pieData.cash, pieData.card);
+      barColors.push('#27ae60', '#f39c12');
+    } else if (pieData.paymentFilter === 'Cash') {
+      barLabels.push('Cash Payments');
+      barData.push(pieData.cash);
+      barColors.push('#27ae60');
+    } else if (pieData.paymentFilter === 'Cashless') {
+      barLabels.push('Card Payments');
+      barData.push(pieData.card);
+      barColors.push('#f39c12');
+    }
+    
+    barChart.data.labels = barLabels;
+    barChart.data.datasets[0].data = barData;
+    barChart.data.datasets[0].backgroundColor = barColors;
+    barChart.update();
   }
   
   if (pieChart) {
-    pieChart.data.datasets[0].data = [
-      pieData.served,
-      pieData.canceled,
-      pieData.cash,
-      pieData.card,
-      pieData.totalSales / 100 // Normalize sales for display
-    ]
-    pieChart.update()
+    // Build dynamic labels and data based on filters
+    let pieLabels = ['Total Sales'];
+    let pieData_values = [pieData.totalSales / 100]; // Normalize sales for display
+    let pieColors = ['#9b59b6'];
+    
+    // Add status data based on filter
+    if (pieData.statusFilter === '') {
+      // Show all statuses
+      pieLabels.push('Served Orders', 'Canceled Orders');
+      pieData_values.push(pieData.served, pieData.canceled);
+      pieColors.push('#3498db', '#e74c3c');
+    } else if (pieData.statusFilter === 'Served') {
+      pieLabels.push('Served Orders');
+      pieData_values.push(pieData.served);
+      pieColors.push('#3498db');
+    } else if (pieData.statusFilter === 'Canceled') {
+      pieLabels.push('Canceled Orders');
+      pieData_values.push(pieData.canceled);
+      pieColors.push('#e74c3c');
+    }
+    
+    // Add payment method data based on filter
+    if (pieData.paymentFilter === '') {
+      // Show all payment methods
+      pieLabels.push('Cash Payments', 'Card Payments');
+      pieData_values.push(pieData.cash, pieData.card);
+      pieColors.push('#27ae60', '#f39c12');
+    } else if (pieData.paymentFilter === 'Cash') {
+      pieLabels.push('Cash Payments');
+      pieData_values.push(pieData.cash);
+      pieColors.push('#27ae60');
+    } else if (pieData.paymentFilter === 'Cashless') {
+      pieLabels.push('Card Payments');
+      pieData_values.push(pieData.card);
+      pieColors.push('#f39c12');
+    }
+    
+    pieChart.data.labels = pieLabels;
+    pieChart.data.datasets[0].data = pieData_values;
+    pieChart.data.datasets[0].backgroundColor = pieColors;
+    pieChart.update();
   }
 }
