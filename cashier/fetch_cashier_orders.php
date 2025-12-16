@@ -4,13 +4,14 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET');
 header('Access-Control-Allow-Headers: Content-Type');
 
-// Start session to get cashier info
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+// Use the session manager
+require_once __DIR__ . '/../includes/session.php';
 
-// Check if cashier is logged in
-if (!isset($_SESSION['cashier_username'])) {
+// Start session
+SessionManager::start();
+
+// Check if user is logged in and is a cashier
+if (!SessionManager::isLoggedIn() || SessionManager::getUserRole() !== 'cashier') {
     echo json_encode([
         'success' => false,
         'message' => 'Unauthorized: No cashier session found'
@@ -22,7 +23,8 @@ require_once __DIR__ . '/../connection/MongoOrders.php';
 
 try {
     $mongoOrders = new MongoOrders();
-    $cashierUsername = $_SESSION['cashier_username'];
+    $cashierUsername = SessionManager::getUsername();
+    $cashierName = SessionManager::getFullName();
     
     // Get filter parameters from GET request
     $startDate = $_GET['start_date'] ?? null;
@@ -36,7 +38,7 @@ try {
     $filter = [
         '$or' => [
             ['served_by_username' => $cashierUsername],
-            ['served_by' => $_SESSION['cashier_name'] ?? $cashierUsername]
+            ['served_by' => $cashierName]
         ]
     ];
     
@@ -137,9 +139,10 @@ try {
     echo json_encode([
         'success' => true,
         'orders' => $orders,
-        'cashiers' => [$_SESSION['cashier_name'] ?? $cashierUsername], // Only this cashier
+        'cashiers' => [$cashierName], // Only this cashier
         'count' => count($orders),
-        'cashier_username' => $cashierUsername
+        'cashier_username' => $cashierUsername,
+        'cashier_name' => $cashierName
     ]);
     
 } catch (Exception $e) {

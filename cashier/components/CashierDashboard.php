@@ -155,7 +155,7 @@ $loginTime = time();
     
     async function fetchTransactionsFromDB() {
       try {
-        console.log('Fetching cashier-specific transactions...');
+        console.log('🔄 Fetching cashier-specific transactions...');
         
         // Use cashier-specific endpoint that filters by logged-in cashier
         const response = await fetch('/TESDAPOS/cashier/fetch_cashier_orders.php', {
@@ -175,13 +175,20 @@ $loginTime = time();
         if (data.success && data.orders) {
           transactionsData = data.orders;
           filteredTransactions = [...transactionsData];
-          console.log(`Loaded ${transactionsData.length} transactions for cashier: ${data.cashier_username || 'unknown'}`);
+          
+          // Count served orders and calculate total
+          const servedOrders = transactionsData.filter(t => t.status === 'Served');
+          const totalServedAmount = servedOrders.reduce((sum, t) => sum + (parseFloat(t.total_amount) || 0), 0);
+          
+          console.log(`✅ Loaded ${transactionsData.length} total orders for cashier: ${data.cashier_username || 'unknown'}`);
+          console.log(`💰 Served orders: ${servedOrders.length}, Total sales: ₱${totalServedAmount.toFixed(2)}`);
+          
           return true;
         } else {
           throw new Error(data.message || 'Failed to fetch orders');
         }
       } catch (error) {
-        console.error('Error fetching cashier transactions:', error);
+        console.error('❌ Error fetching cashier transactions:', error);
         transactionsData = [];
         filteredTransactions = [];
         return false;

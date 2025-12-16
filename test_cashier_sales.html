@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Cashier Sales Calculation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #0f2940;
+        }
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .metric-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #0f2940;
+        }
+        .metric-card h3 {
+            margin: 0 0 10px 0;
+            color: #666;
+            font-size: 14px;
+        }
+        .metric-card p {
+            margin: 0;
+            font-size: 24px;
+            font-weight: bold;
+            color: #0f2940;
+        }
+        .orders-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .orders-table th,
+        .orders-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .orders-table th {
+            background: #0f2940;
+            color: white;
+        }
+        .status {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .status.served {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .status.canceled {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        button {
+            background: #0f2940;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #1a3d5c;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Test Cashier Sales Calculation</h1>
+        <p>This page tests the cashier sales calculation by fetching orders and computing totals.</p>
+        
+        <button onclick="testSalesCalculation()">🔄 Fetch & Calculate Sales</button>
+        <button onclick="clearResults()">🗑️ Clear Results</button>
+        
+        <div id="results"></div>
+        
+        <div class="metrics" id="metrics" style="display: none;">
+            <div class="metric-card">
+                <h3>Total Orders</h3>
+                <p id="totalOrders">0</p>
+            </div>
+            <div class="metric-card">
+                <h3>Served Orders</h3>
+                <p id="servedOrders">0</p>
+            </div>
+            <div class="metric-card">
+                <h3>Pending Orders</h3>
+                <p id="pendingOrders">0</p>
+            </div>
+            <div class="metric-card">
+                <h3>Canceled Orders</h3>
+                <p id="canceledOrders">0</p>
+            </div>
+            <div class="metric-card" style="border-left-color: #28a745;">
+                <h3>Total Sales (Served Only)</h3>
+                <p id="totalSales">₱0.00</p>
+            </div>
+        </div>
+        
+        <table class="orders-table" id="ordersTable" style="display: none;">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Date</th>
+                    <th>Cashier</th>
+                    <th>Status</th>
+                    <th>Payment Method</th>
+                    <th>Total Amount</th>
+                </tr>
+            </thead>
+            <tbody id="ordersBody"></tbody>
+        </table>
+    </div>
+    
+    <script>
+        async function testSalesCalculation() {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<p>⏳ Fetching orders...</p>';
+            
+            try {
+                // Fetch cashier orders
+                const response = await fetch('/TESDAPOS/cashier/fetch_cashier_orders.php', {
+                    method: 'GET',
+                    headers: {
+                        'Cache-Control': 'no-cache',
+                        'Pragma': 'no-cache'
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (!data.success) {
+                    throw new Error(data.message || 'Failed to fetch orders');
+                }
+                
+                const orders = data.orders || [];
+                
+                // Calculate metrics
+                const totalOrders = orders.length;
+                const servedOrders = orders.filter(o => o.status === 'Served');
+                const pendingOrders = orders.filter(o => o.status === 'Pending' || o.status === 'Approved');
+                const canceledOrders = orders.filter(o => o.status === 'Canceled');
+                
+                // Calculate total sales from SERVED orders only
+                const totalSales = servedOrders.reduce((sum, order) => {
+                    return sum + (parseFloat(order.total_amount) || 0);
+                }, 0);
+                
+                // Update metrics display
+                document.getElementById('totalOrders').textContent = totalOrders;
+                document.getElementById('servedOrders').textContent = servedOrders.length;
+                document.getElementById('pendingOrders').textContent = pendingOrders.length;
+                document.getElementById('canceledOrders').textContent = canceledOrders.length;
+                document.getElementById('totalSales').textContent = `₱${totalSales.toFixed(2)}`;
+                
+                document.getElementById('metrics').style.display = 'grid';
+                
+                // Display orders table
+                const tbody = document.getElementById('ordersBody');
+                tbody.innerHTML = '';
+                
+                orders.forEach(order => {
+                    const row = document.createElement('tr');
+                    const statusClass = (order.status || 'pending').toLowerCase();
+                    
+                    row.innerHTML = `
+                        <td><strong>#${order.order_id || order.id}</strong></td>
+                        <td>${new Date(order.created_at).toLocaleDateString()}</td>
+                        <td>${order.cashier_name || order.served_by_username || 'N/A'}</td>
+                        <td><span class="status ${statusClass}">${order.status || 'Pending'}</span></td>
+                        <td>${order.payment_method || 'N/A'}</td>
+                        <td><strong>₱${(parseFloat(order.total_amount) || 0).toFixed(2)}</strong></td>
+                    `;
+                    tbody.appendChild(row);
+                });
+                
+                document.getElementById('ordersTable').style.display = 'table';
+                
+                resultsDiv.innerHTML = `
+                    <div class="success">
+                        ✅ Successfully fetched ${totalOrders} orders for cashier: ${data.cashier_username || 'unknown'}<br>
+                        💰 Total sales from ${servedOrders.length} served orders: <strong>₱${totalSales.toFixed(2)}</strong>
+                    </div>
+                `;
+                
+                console.log('📊 Sales Calculation Test Results:', {
+                    totalOrders,
+                    servedOrders: servedOrders.length,
+                    pendingOrders: pendingOrders.length,
+                    canceledOrders: canceledOrders.length,
+                    totalSales: `₱${totalSales.toFixed(2)}`,
+                    cashier: data.cashier_username
+                });
+                
+            } catch (error) {
+                console.error('❌ Error:', error);
+                resultsDiv.innerHTML = `
+                    <div class="error">
+                        ❌ Error: ${error.message}<br>
+                        <small>Make sure you're logged in as a cashier and the endpoint is accessible.</small>
+                    </div>
+                `;
+            }
+        }
+        
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+            document.getElementById('metrics').style.display = 'none';
+            document.getElementById('ordersTable').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

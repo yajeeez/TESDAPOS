@@ -58,13 +58,21 @@ function getTransactionsForMetrics() {
   // Only include Served orders for metrics (exclude Pending, Approved, and Canceled)
   const servedOrders = transactions.filter(t => t.status === 'Served');
   console.log('✅ Served orders for metrics:', servedOrders.length, 'out of', transactions.length);
+  console.log('💰 Total sales from served orders:', servedOrders.reduce((s, t) => s + (parseFloat(t.total_amount) || 0), 0));
   
   return servedOrders;
 }
 
 function computeDashboardMetrics() {
   const tx = getTransactionsForMetrics()
-  const totalSales = tx.reduce((s, t) => s + (parseFloat(t.total_amount) || 0), 0)
+  
+  // Calculate total sales from SERVED orders only
+  const totalSales = tx.reduce((s, t) => {
+    const amount = parseFloat(t.total_amount) || 0;
+    console.log(`Order ${t.order_id || t.id}: Status=${t.status}, Amount=₱${amount.toFixed(2)}`);
+    return s + amount;
+  }, 0);
+  
   const key = currentDateKey()
   const ordersToday = tx.filter(t => (t.date === key) || (t.created_at && String(t.created_at).startsWith(key))).length
   
@@ -72,8 +80,8 @@ function computeDashboardMetrics() {
   dashboardMetrics.totalSales = totalSales
   dashboardMetrics.ordersToday = ordersToday
   
-  console.log('Computed metrics:', {
-    totalSales,
+  console.log('💵 Computed metrics:', {
+    totalSales: `₱${totalSales.toFixed(2)}`,
     ordersToday,
     servedOrdersCount: tx.length,
     allTransactionsCount: typeof transactionsData !== 'undefined' ? transactionsData.length : 0
