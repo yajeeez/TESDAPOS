@@ -81,6 +81,11 @@ class MongoOrders {
             // Generate and add order_id
             $orderData['order_id'] = $this->getNextOrderId();
             $orderData['created_at'] = new UTCDateTime();
+            
+            // Set default status as Pending if not provided
+            if (!isset($orderData['status'])) {
+                $orderData['status'] = 'Pending';
+            }
 
             $result = $this->collection->insertOne($orderData);
 
@@ -195,6 +200,11 @@ class MongoOrders {
                     $order['total_item_count'] = count($productNames);
                 }
                 
+                // Convert served_at timestamp if exists
+                if (isset($order['served_at']) && $order['served_at'] instanceof UTCDateTime) {
+                    $order['served_at'] = $order['served_at']->toDateTime()->format('Y-m-d H:i:s');
+                }
+                
                 $orders[] = $order;
             }
             
@@ -212,9 +222,9 @@ class MongoOrders {
     }
 
     /**
-     * Update order status
+     * Update order status with optional cashier tracking
      */
-    public function updateOrderStatus($orderId, $newStatus) {
+    public function updateOrderStatus($orderId, $newStatus, $servedBy = null, $servedByUsername = null, $servedAt = null) {
         try {
             // Update by order_id or _id
             $filter = [];
@@ -226,11 +236,35 @@ class MongoOrders {
                 $filter['order_id'] = $orderId;
             }
             
-            $update = ['$set' => ['status' => $newStatus]];
+            // Base update
+            $updateData = ['status' => $newStatus];
+            
+            // Add cashier tracking if marking as served or canceled
+            if (($newStatus === 'Served' || $newStatus === 'Canceled') && $servedBy) {
+                $updateData['served_by'] = $servedBy;
+                $updateData['served_by_username'] = $servedByUsername;
+                $updateData['served_at'] = $servedAt ? new UTCDateTime(strtotime($servedAt) * 1000) : new UTCDateTime();
+                
+                // Add specific action field to distinguish between served and canceled
+                $updateData['action_type'] = $newStatus === 'Served' ? 'served' : 'canceled';
+            } elseif ($newStatus === 'Pending') {
+                // Clear served_by info if changing back to pending
+                $updateData['served_by'] = null;
+                $updateData['served_by_username'] = null;
+                $updateData['served_at'] = null;
+                $updateData['action_type'] = null;
+            }
+            
+            $update = ['$set' => $updateData];
             
             $result = $this->collection->updateOne($filter, $update);
             
             if ($result->getModifiedCount() === 1) {
+                // Track cashier performance for both served and canceled orders
+                if (($newStatus === 'Served' || $newStatus === 'Canceled') && $servedByUsername) {
+                    $this->trackCashierPerformance($servedByUsername, $orderId, $newStatus);
+                }
+                
                 return [
                     'success' => true,
                     'message' => 'Order status updated successfully'
@@ -248,6 +282,35 @@ class MongoOrders {
         } catch (Exception $e) {
             error_log("General error updating order status: " . $e->getMessage());
             return ['success' => false, 'message' => 'Error: ' . $e->getMessage()];
+        }
+    }
+
+    /**
+     * Track cashier performance when they serve orders
+     */
+    private function trackCashierPerformance($cashierUsername, $orderId, $status) {
+        try {
+            $cashierPerformanceCollection = $this->database->selectCollection('CashierPerformance');
+            
+            // Get order details for tracking
+            $order = $this->collection->findOne(['order_id' => $orderId]);
+            
+            if ($order) {
+                $performanceData = [
+                    'cashier_username' => $cashierUsername,
+                    'order_id' => $orderId,
+                    'status' => $status,
+                    'order_amount' => isset($order['total_amount']) ? $order['total_amount'] : 0,
+                    'served_at' => new UTCDateTime(),
+                    'date' => date('Y-m-d')
+                ];
+                
+                $cashierPerformanceCollection->insertOne($performanceData);
+                error_log("Tracked performance for cashier: $cashierUsername, order: $orderId");
+            }
+        } catch (Exception $e) {
+            error_log("Error tracking cashier performance: " . $e->getMessage());
+            // Don't fail the main operation if performance tracking fails
         }
     }
 

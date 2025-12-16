@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <?php
-// Start session and check authentication
-require_once __DIR__ . '/../../includes/session.php';
+// Start without session guard for cashier
 
 // Prevent caching to avoid back navigation after logout
 header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
@@ -9,17 +8,13 @@ header('Cache-Control: post-check=0, pre-check=0', false);
 header('Pragma: no-cache');
 header('Expires: Sat, 26 Jul 1997 05:00:00 GMT');
 
-// Require admin login
-SessionManager::requireLogin();
+// Get cashier information from database
+require_once __DIR__ . '/cashier_auth.php';
 
-// Check if user is admin
-if (SessionManager::getUserRole() !== 'admin') {
-    SessionManager::setFlashMessage('error', 'Access denied. Admin privileges required.');
-    header('Location: ../../public/components/login.html');
-    exit();
-}
-
-// Add any necessary PHP logic here
+$cashierInfo = getCurrentCashierInfo();
+$userName = $cashierInfo['name'];
+$userEmail = $cashierInfo['email'];
+$userUsername = $cashierInfo['username'];
 
 ?>
 <!DOCTYPE html>
@@ -27,8 +22,8 @@ if (SessionManager::getUserRole() !== 'admin') {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>TESDA POS - Manage Orders</title>
-  <link rel="icon" type="image/x-icon" href="../../img/ECALOGO.png">
+  <title>TESDA POS - Orders</title>
+  <link rel="icon" href="../../img/TESDAG.png" type="image/png">
   <link rel="stylesheet" href="../assets/css/Orders.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
@@ -43,14 +38,11 @@ if (SessionManager::getUserRole() !== 'admin') {
       </div>
       <h2>TESDA POS</h2>
       <ul>
-        <li><a href="AdminDashboard.php"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
-        <li><a href="Orders.php" class="active"><i class="fas fa-receipt"></i><span>Manage Orders</span></a></li>
-        <li><a href="CreateProducts.php"><i class="fas fa-cart-plus"></i><span>Create Products</span></a></li>
-        <li><a href="Inventory.php"><i class="fas fa-boxes"></i><span>Inventory</span></a></li>
-        <li><a href="Transactions.php"><i class="fas fa-cash-register"></i><span>Transactions</span></a></li>
-        <li><a href="Maintenance.php"><i class="fas fa-tools"></i><span>Maintenance</span></a></li>
-        <li><a href="change_password.php"><i class="fas fa-key"></i><span>Change Password</span></a></li>
-        <li><a href="#" onclick="logout(event)"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></li>
+        <li><a href="CashierDashboard.php?name=<?php echo urlencode($userName); ?>&email=<?php echo urlencode($userEmail); ?>&username=<?php echo urlencode($userUsername); ?>"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
+        <li><a href="Orders.php?name=<?php echo urlencode($userName); ?>&email=<?php echo urlencode($userEmail); ?>&username=<?php echo urlencode($userUsername); ?>" class="active"><i class="fas fa-receipt"></i><span>Orders</span></a></li>
+        <li><a href="Transactions.php?name=<?php echo urlencode($userName); ?>&email=<?php echo urlencode($userEmail); ?>&username=<?php echo urlencode($userUsername); ?>"><i class="fas fa-cash-register"></i><span>Transactions</span></a></li>
+        <li><a href="change_password.php?name=<?php echo urlencode($userName); ?>&email=<?php echo urlencode($userEmail); ?>&username=<?php echo urlencode($userUsername); ?>"><i class="fas fa-key"></i><span>Change Password</span></a></li>
+        <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></li>
       </ul>
     </nav>
 
@@ -60,11 +52,11 @@ if (SessionManager::getUserRole() !== 'admin') {
       <!-- Topbar -->
       <div class="topbar">
         <div class="topbar-left">
-          <h2>Manage Orders</h2>
+          <h2>Orders</h2>
         </div>
         <div class="topbar-right">
           <div class="user-info" style="display: flex; align-items: center; gap: 1rem; margin-right: 1rem;">
-            <span style="color: #666;">Welcome, <strong><?php echo htmlspecialchars(SessionManager::getFullName()); ?></strong></span>
+            <span style="color: #666;">Welcome, <strong><?php echo htmlspecialchars($userName); ?></strong></span>
           </div>
           <input type="text" placeholder="Search..." class="search-input" />
         </div>
@@ -97,11 +89,11 @@ if (SessionManager::getUserRole() !== 'admin') {
 
   <!-- JS -->
   <script>
-    // Pass admin info to JavaScript
-    window.adminInfo = {
-      name: '<?php echo htmlspecialchars(SessionManager::getFullName()); ?>',
-      email: '<?php echo htmlspecialchars($_SESSION['email'] ?? ''); ?>',
-      username: '<?php echo htmlspecialchars($_SESSION['username'] ?? 'admin'); ?>'
+    // Pass cashier info to JavaScript
+    window.cashierInfo = {
+      name: '<?php echo htmlspecialchars($userName); ?>',
+      email: '<?php echo htmlspecialchars($userEmail); ?>',
+      username: '<?php echo htmlspecialchars($userUsername); ?>'
     };
   </script>
   <script src="../assets/js/orders.js"></script>

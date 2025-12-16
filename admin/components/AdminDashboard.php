@@ -73,7 +73,6 @@ $loginTime = $_SESSION['login_time'] ?? time();
         <div class="topbar-right">
           <div class="user-info" style="display: flex; align-items: center; gap: 1rem; margin-right: 1rem;">
             <span style="color: #666;">Welcome, <strong><?php echo htmlspecialchars($userName); ?></strong></span>
-            <small style="color: #999;"><?php echo htmlspecialchars($userEmail); ?></small>
           </div>
           <input type="text" id="searchInput" name="search" placeholder="Search..." class="search-input" />
         </div>

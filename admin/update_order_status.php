@@ -22,6 +22,11 @@ try {
     $orderId = $data['order_id'];
     $newStatus = $data['status'];
     
+    // Get cashier info if provided
+    $servedBy = isset($data['served_by']) ? $data['served_by'] : null;
+    $servedByUsername = isset($data['served_by_username']) ? $data['served_by_username'] : null;
+    $servedAt = isset($data['served_at']) ? $data['served_at'] : null;
+    
     // Validate status
     $allowedStatuses = ['Pending', 'Approved', 'Served', 'Canceled'];
     if (!in_array($newStatus, $allowedStatuses)) {
@@ -34,8 +39,8 @@ try {
     
     $mongoOrders = new MongoOrders();
     
-    // Update the order status
-    $result = $mongoOrders->updateOrderStatus($orderId, $newStatus);
+    // Update the order status with cashier info
+    $result = $mongoOrders->updateOrderStatus($orderId, $newStatus, $servedBy, $servedByUsername, $servedAt);
     
     echo json_encode($result);
     

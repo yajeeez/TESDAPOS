@@ -1,6 +1,6 @@
 // ==========================
 // ==========================
-// Orders Management
+// Orders Management - Cashier
 // ==========================
 let orders = [];
 
@@ -17,6 +17,20 @@ const statusColors = {
   'Served': 'served',
   'Canceled': 'canceled'
 };
+
+// Get current cashier info from window object or URL parameters
+function getCurrentCashier() {
+  if (window.cashierInfo) {
+    return window.cashierInfo;
+  }
+  
+  const urlParams = new URLSearchParams(window.location.search);
+  return {
+    name: urlParams.get('name') || 'Cashier',
+    username: urlParams.get('username') || 'cashier',
+    email: urlParams.get('email') || ''
+  };
+}
 
 // ==========================
 // Render Orders
@@ -58,7 +72,7 @@ function renderOrders() {
       <td>${itemDisplay}</td>
       <td>${order.total_item_count || order.quantity || 1}</td>
       <td>₱${(order.total_amount || 0).toFixed(2)}</td>
-      <td><span class="status ${statusColors[order.status] || 'served'}">${order.status || 'Served'}</span></td>
+      <td><span class="status ${statusColors[order.status] || 'pending'}">${order.status || 'Pending'}</span></td>
       <td>${order.served_by_username ? `<strong>${order.served_by_username}</strong>${order.action_type ? '<br><small style="color: #999;">(' + (order.action_type === 'served' ? 'Served' : 'Canceled') + ')</small>' : ''}${order.served_at ? '<br><small style="color: #666;">' + new Date(order.served_at).toLocaleString() + '</small>' : ''}` : '<span style="color: #999;">-</span>'}</td>
       <td>
         <select onchange="updateOrderStatus('${order.order_id || order._id || order.id}', this.value)">
@@ -98,16 +112,16 @@ function updateOrderStatus(orderId, newStatus) {
     
     console.log('Found order, updating status from', oldStatus, 'to', newStatus);
     
-    // Get current admin info
-    const adminInfo = window.adminInfo || { name: 'Admin', username: 'admin' };
+    // Get current cashier info
+    const currentCashier = getCurrentCashier();
     
     // Update order status
     order.status = newStatus;
     
-    // If marking as served or canceled, record the admin who did the action
+    // If marking as served or canceled, record the cashier who did the action
     if (newStatus === 'Served' || newStatus === 'Canceled') {
-      order.served_by = adminInfo.name;
-      order.served_by_username = adminInfo.username;
+      order.served_by = currentCashier.name;
+      order.served_by_username = currentCashier.username;
       order.served_at = new Date().toISOString();
       order.action_type = newStatus === 'Served' ? 'served' : 'canceled';
     } else if (newStatus === 'Pending') {
@@ -121,12 +135,12 @@ function updateOrderStatus(orderId, newStatus) {
     // Immediately update the display
     renderOrders();
     
-    // Save to database
-    saveOrderStatusToDB(orderIdStr, newStatus).then(success => {
+    // Save to database with cashier info
+    saveOrderStatusToDB(orderIdStr, newStatus, currentCashier).then(success => {
       if (success) {
         console.log(`Order #${order.order_id || order._id || order.id} status updated to ${newStatus}`);
-        if (newStatus === 'Served' || newStatus === 'Canceled') {
-          console.log(`Order ${newStatus.toLowerCase()} by: ${adminInfo.name} (${adminInfo.username})`);
+        if (newStatus === 'Served') {
+          console.log(`Order served by: ${currentCashier.name} (${currentCashier.username})`);
         }
       } else {
         // Revert status if save failed
@@ -144,18 +158,17 @@ function updateOrderStatus(orderId, newStatus) {
 // ==========================
 // Save Order Status to Database
 // ==========================
-async function saveOrderStatusToDB(orderId, newStatus) {
+async function saveOrderStatusToDB(orderId, newStatus, cashierInfo) {
   try {
     const requestData = {
       order_id: orderId,
       status: newStatus
     };
     
-    // Add admin info if marking as served or canceled
-    if (newStatus === 'Served' || newStatus === 'Canceled') {
-      const adminInfo = window.adminInfo || { name: 'Admin', username: 'admin' };
-      requestData.served_by = adminInfo.name;
-      requestData.served_by_username = adminInfo.username;
+    // Add cashier info if marking as served or canceled
+    if ((newStatus === 'Served' || newStatus === 'Canceled') && cashierInfo) {
+      requestData.served_by = cashierInfo.name;
+      requestData.served_by_username = cashierInfo.username;
       requestData.served_at = new Date().toISOString();
     }
     
@@ -213,8 +226,10 @@ async function fetchOrdersFromDB() {
 // Initialize on page load
 // ==========================
 document.addEventListener('DOMContentLoaded', async () => {
-  // Debug: Log admin info
-  console.log('🔍 Admin info:', window.adminInfo);
+  // Debug: Log cashier info
+  const cashierInfo = getCurrentCashier();
+  console.log('🔍 Current cashier info:', cashierInfo);
+  console.log('🔍 Window cashier info:', window.cashierInfo);
   
   await fetchOrdersFromDB();
 });

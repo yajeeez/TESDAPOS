@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <?php
-// Start session and check authentication
-require_once __DIR__ . '/../../includes/session.php';
+// Get cashier information from database
+require_once __DIR__ . '/cashier_auth.php';
 
 // Prevent caching to avoid back navigation after logout
 header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
@@ -9,15 +9,10 @@ header('Cache-Control: post-check=0, pre-check=0', false);
 header('Pragma: no-cache');
 header('Expires: Sat, 26 Jul 1997 05:00:00 GMT');
 
-// Require cashier login
-SessionManager::requireLogin();
-
-// Check if user is cashier
-if (SessionManager::getUserRole() !== 'cashier') {
-    SessionManager::setFlashMessage('error', 'Access denied. Cashier privileges required.');
-    header('Location: ../../public/components/login.html');
-    exit();
-}
+$cashierInfo = getCurrentCashierInfo();
+$userName = $cashierInfo['name'];
+$userEmail = $cashierInfo['email'];
+$userUsername = $cashierInfo['username'];
 
 // Get user info
 $userEmail = $_SESSION['email'] ?? '';

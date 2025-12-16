@@ -1,4 +1,13 @@
 <!DOCTYPE html>
+<?php
+// Get cashier information from database
+require_once __DIR__ . '/cashier_auth.php';
+
+$cashierInfo = getCurrentCashierInfo();
+$userName = $cashierInfo['name'];
+$userEmail = $cashierInfo['email'];
+$userUsername = $cashierInfo['username'];
+?>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -19,9 +28,10 @@
       </div>
       <h2>TESDA POS</h2>
       <ul>
-        <li><a href="CashierDashboard.php"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
-        <li><a href="Transactions.php" class="active"><i class="fas fa-cash-register"></i><span>Transactions</span></a></li>
-        <li><a href="change_password.php"><i class="fas fa-key"></i><span>Change Password</span></a></li>
+        <li><a href="CashierDashboard.php?username=<?php echo urlencode($userUsername); ?>"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
+        <li><a href="Orders.php?username=<?php echo urlencode($userUsername); ?>"><i class="fas fa-receipt"></i><span>Orders</span></a></li>
+        <li><a href="Transactions.php?username=<?php echo urlencode($userUsername); ?>" class="active"><i class="fas fa-cash-register"></i><span>Transactions</span></a></li>
+        <li><a href="change_password.php?username=<?php echo urlencode($userUsername); ?>"><i class="fas fa-key"></i><span>Change Password</span></a></li>
         <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></li>
       </ul>
     </nav>
@@ -32,6 +42,10 @@
           <h2>Transactions</h2>
         </div>
         <div class="topbar-right">
+          <div class="user-info" style="display: flex; align-items: center; gap: 1rem; margin-right: 1rem;">
+            <span style="color: #666;">Welcome, <strong><?php echo htmlspecialchars($userName); ?></strong></span>
+            <small style="color: #999;"><?php echo htmlspecialchars($userEmail); ?></small>
+          </div>
           <input type="text" placeholder="Search..." class="search-input" />
         </div>
       </div>
