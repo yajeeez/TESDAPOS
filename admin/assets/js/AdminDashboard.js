@@ -61,41 +61,52 @@ async function calculateAllMetrics() {
   try {
     // Use filtered transactions if available, otherwise use all transactions
     let transactions = [];
-    if (typeof filteredTransactions !== 'undefined' && Array.isArray(filteredTransactions)) {
-      // Always use filteredTransactions (even if empty) - this respects the applied filters
+    
+    // Check if filteredTransactions exists and has been initialized
+    if (typeof filteredTransactions !== 'undefined' && Array.isArray(filteredTransactions) && filteredTransactions.length > 0) {
+      // Use filteredTransactions - it's already filtered by applyFilters()
       transactions = filteredTransactions;
-    }
-    
-    // If no filtered transactions available, try to get all transactions
-    if (transactions.length === 0 && typeof transactionsData !== 'undefined' && Array.isArray(transactionsData)) {
+      console.log('📊 Using filteredTransactions:', transactions.length);
+    } else if (typeof transactionsData !== 'undefined' && Array.isArray(transactionsData) && transactionsData.length > 0) {
+      // Use all transactions if no filter is applied
       transactions = transactionsData;
-    }
-    
-    // Final fallback to database fetch
-    if (transactions.length === 0) {
-      const response = await fetch('/TESDAPOS/admin/fetch_orders.php');
+      console.log('📊 Using all transactionsData:', transactions.length);
+    } else {
+      // Final fallback to database fetch
+      const response = await fetch('/TESDAPOS/admin/fetch_filtered_orders.php');
       const data = await response.json();
       
       if (data.success && data.orders) {
         transactions = data.orders;
+        console.log('📊 Fetched from database:', transactions.length);
       }
     }
     
+    // Don't apply additional filters here - filteredTransactions is already filtered by applyFilters()
+    // Just use the transactions as-is
+    
     if (transactions.length > 0) {
-      const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const todayStr = today.toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
       
       transactions.forEach(transaction => {
         const status = transaction.status || 'Pending';
         
-        // Calculate total sales - exclude Pending and Canceled orders
-        if (status !== 'Pending' && status !== 'Canceled' && transaction.total_amount) {
+        // Calculate total sales - only count Served orders
+        if (status === 'Served' && transaction.total_amount) {
           metrics.totalSales += parseFloat(transaction.total_amount) || 0;
         }
 
-        // Count orders today - exclude Pending and Canceled orders
-        const transactionDate = transaction.created_at ? new Date(transaction.created_at).toISOString().split('T')[0] : null;
-        if (transactionDate === today && status !== 'Pending' && status !== 'Canceled') {
-          metrics.ordersToday++;
+        // Count orders today - count ALL Served orders from today
+        if (transaction.created_at) {
+          const transactionDate = new Date(transaction.created_at);
+          const transactionDateStr = transactionDate.toISOString().split('T')[0];
+          
+          // Count all Served orders from today
+          if (transactionDateStr === todayStr && status === 'Served') {
+            metrics.ordersToday++;
+          }
         }
 
         // Count by status
@@ -105,8 +116,8 @@ async function calculateAllMetrics() {
           metrics.statusDistribution.Pending++;
         }
 
-        // Count by payment method - exclude Pending and Canceled orders
-        if (status !== 'Pending' && status !== 'Canceled') {
+        // Count by payment method - only count Served orders
+        if (status === 'Served') {
           const paymentMethod = transaction.payment_method || 'Cash';
           if (paymentMethod === 'Cash' || paymentMethod === 'cash') {
             metrics.paymentMethodDistribution.Cash++;
@@ -123,26 +134,6 @@ async function calculateAllMetrics() {
     // Fallback to dashboard metrics if database fetch fails
     metrics.totalSales = dashboardMetrics.totalSales || 0;
     metrics.ordersToday = dashboardMetrics.ordersToday || 0;
-  }
-
-  // IMPORTANT: Use the same reliable data source as the working dashboard card
-  // This ensures the charts show the same "Orders Today" count as the card
-  try {
-    const dashboardResponse = await fetch('/TESDAPOS/connection/fetch_dashboard_metrics.php');
-    const dashboardData = await dashboardResponse.json();
-    
-    if (dashboardData.success) {
-      // Override with the reliable dashboard metrics
-      metrics.totalSales = dashboardData.totalSales || metrics.totalSales;
-      metrics.ordersToday = dashboardData.ordersToday || metrics.ordersToday;
-      
-      // Also update the global dashboard metrics for consistency
-      dashboardMetrics.totalSales = dashboardData.totalSales || dashboardMetrics.totalSales;
-      dashboardMetrics.ordersToday = dashboardData.ordersToday || dashboardMetrics.ordersToday;
-    }
-  } catch (error) {
-    console.error('Error fetching dashboard metrics for charts:', error);
-    // Keep the values calculated from fetch_orders.php as fallback
   }
 
   // Update global distributions
@@ -230,34 +221,34 @@ async function initCharts() {
     dashboardMetrics.totalProducts,
     dashboardMetrics.lowStockItems
   );
-  barColors.push('#4CAF50', '#2196F3', '#FF9800', '#F44336');
+  barColors.push('#9b59b6', '#3498db', '#f39c12', '#e74c3c');
   
   // Add status-based data based on filter
-  // Only show Served and Approved status (exclude Pending and Canceled from charts)
+  // Show Served and Canceled status
   if (paymentFilter === '' && (statusFilter === '' || statusFilter === 'Served')) {
-    barLabels.push('Served');
+    barLabels.push('Served Orders');
     barData.push(allMetrics.statusDistribution.Served);
-    barColors.push('#4CAF50');
+    barColors.push('#3498db');
   }
   
-  if (paymentFilter === '' && (statusFilter === '' || statusFilter === 'Approved')) {
-    barLabels.push('Approved');
-    barData.push(allMetrics.statusDistribution.Approved);
-    barColors.push('#2196F3');
+  if (paymentFilter === '' && (statusFilter === '' || statusFilter === 'Canceled')) {
+    barLabels.push('Canceled Orders');
+    barData.push(allMetrics.statusDistribution.Canceled);
+    barColors.push('#e74c3c');
   }
   
   // Add payment method-based data based on filter
   // Only show payment methods if no status filter is active
   if (statusFilter === '' && (paymentFilter === '' || paymentFilter === 'Cash')) {
-    barLabels.push('Cash');
+    barLabels.push('Cash Payments');
     barData.push(allMetrics.paymentMethodDistribution.Cash);
-    barColors.push('#4CAF50');
+    barColors.push('#27ae60');
   }
   
   if (statusFilter === '' && (paymentFilter === '' || paymentFilter === 'Cashless')) {
-    barLabels.push('Credit or Debit Card');
+    barLabels.push('Card Payments');
     barData.push(allMetrics.paymentMethodDistribution["Credit or Debit Card"]);
-    barColors.push('#2196F3');
+    barColors.push('#f39c12');
   }
 
   // Bar Chart - All Metrics
@@ -321,34 +312,34 @@ async function initCharts() {
     dashboardMetrics.totalProducts,
     dashboardMetrics.lowStockItems
   );
-  pieColors.push('#4CAF50', '#2196F3', '#FF9800', '#F44336');
+  pieColors.push('#9b59b6', '#3498db', '#f39c12', '#e74c3c');
   
   // Add status-based data based on filter
-  // Only show Served and Approved status (exclude Pending and Canceled from charts)
+  // Show Served and Canceled status
   if (paymentFilter === '' && (statusFilter === '' || statusFilter === 'Served')) {
-    pieLabels.push('Served');
+    pieLabels.push('Served Orders');
     pieData.push(allMetrics.statusDistribution.Served);
-    pieColors.push('#4CAF50');
+    pieColors.push('#3498db');
   }
   
-  if (paymentFilter === '' && (statusFilter === '' || statusFilter === 'Approved')) {
-    pieLabels.push('Approved');
-    pieData.push(allMetrics.statusDistribution.Approved);
-    pieColors.push('#2196F3');
+  if (paymentFilter === '' && (statusFilter === '' || statusFilter === 'Canceled')) {
+    pieLabels.push('Canceled Orders');
+    pieData.push(allMetrics.statusDistribution.Canceled);
+    pieColors.push('#e74c3c');
   }
   
   // Add payment method-based data based on filter
   // Only show payment methods if no status filter is active
   if (statusFilter === '' && (paymentFilter === '' || paymentFilter === 'Cash')) {
-    pieLabels.push('Cash');
+    pieLabels.push('Cash Payments');
     pieData.push(allMetrics.paymentMethodDistribution.Cash);
-    pieColors.push('#4CAF50');
+    pieColors.push('#27ae60');
   }
   
   if (statusFilter === '' && (paymentFilter === '' || paymentFilter === 'Cashless')) {
-    pieLabels.push('Credit or Debit Card');
+    pieLabels.push('Card Payments');
     pieData.push(allMetrics.paymentMethodDistribution["Credit or Debit Card"]);
-    pieColors.push('#2196F3');
+    pieColors.push('#f39c12');
   }
 
   // Pie Chart - All Metrics Distribution
@@ -538,6 +529,9 @@ async function computeDashboardMetrics() {
 async function refreshDashboardData() {
   try {
     console.log('Refreshing dashboard data...');
+    // First fetch inventory metrics
+    await computeDashboardMetrics();
+    // Then update dashboard cards with filtered transaction data
     await updateDashboardCards();
     // Wait a bit for transactions data to be available
     setTimeout(() => {
@@ -558,18 +552,26 @@ function refreshCharts() {
 }
 
 async function updateDashboardCards() {
-  await computeDashboardMetrics();
+  // Get filtered metrics instead of all metrics
+  const filteredMetrics = await calculateAllMetrics();
 
   const totalSalesEl = document.getElementById('dashboardTotalSales');
   const ordersTodayEl = document.getElementById('dashboardOrdersToday');
   const totalProductsEl = document.getElementById('dashboardTotalProducts');
   const lowStockEl = document.getElementById('dashboardLowStock');
 
+  console.log('📊 Updating dashboard cards:', {
+    totalSales: filteredMetrics.totalSales,
+    ordersToday: filteredMetrics.ordersToday,
+    totalProducts: dashboardMetrics.totalProducts,
+    lowStockItems: dashboardMetrics.lowStockItems
+  });
+
   if (totalSalesEl) {
-    totalSalesEl.textContent = formatCurrencyDashboard(dashboardMetrics.totalSales);
+    totalSalesEl.textContent = formatCurrencyDashboard(filteredMetrics.totalSales);
   }
   if (ordersTodayEl) {
-    ordersTodayEl.textContent = dashboardMetrics.ordersToday.toString();
+    ordersTodayEl.textContent = filteredMetrics.ordersToday.toString();
   }
   if (totalProductsEl) {
     totalProductsEl.textContent = dashboardMetrics.totalProducts.toString();
@@ -605,7 +607,7 @@ async function updateCharts() {
     dashboardMetrics.totalProducts,
     dashboardMetrics.lowStockItems
   );
-  barColors.push('#4CAF50', '#2196F3', '#FF9800', '#F44336');
+  barColors.push('#9b59b6', '#3498db', '#f39c12', '#e74c3c');
   
   pieLabels.push('Total Sales', 'Orders Today', 'Total Products', 'Low Stock Items');
   pieData.push(
@@ -614,50 +616,50 @@ async function updateCharts() {
     dashboardMetrics.totalProducts,
     dashboardMetrics.lowStockItems
   );
-  pieColors.push('#4CAF50', '#2196F3', '#FF9800', '#F44336');
+  pieColors.push('#9b59b6', '#3498db', '#f39c12', '#e74c3c');
   
   // Add status-based data based on filter
-  // Only show Served and Approved status (exclude Pending and Canceled from charts)
+  // Show Served and Canceled status
   if (paymentFilter === '' && (statusFilter === '' || statusFilter === 'Served')) {
-    barLabels.push('Served');
+    barLabels.push('Served Orders');
     barData.push(allMetrics.statusDistribution.Served);
-    barColors.push('#4CAF50');
+    barColors.push('#3498db');
     
-    pieLabels.push('Served');
+    pieLabels.push('Served Orders');
     pieData.push(allMetrics.statusDistribution.Served);
-    pieColors.push('#4CAF50');
+    pieColors.push('#3498db');
   }
   
-  if (paymentFilter === '' && (statusFilter === '' || statusFilter === 'Approved')) {
-    barLabels.push('Approved');
-    barData.push(allMetrics.statusDistribution.Approved);
-    barColors.push('#2196F3');
+  if (paymentFilter === '' && (statusFilter === '' || statusFilter === 'Canceled')) {
+    barLabels.push('Canceled Orders');
+    barData.push(allMetrics.statusDistribution.Canceled);
+    barColors.push('#e74c3c');
     
-    pieLabels.push('Approved');
-    pieData.push(allMetrics.statusDistribution.Approved);
-    pieColors.push('#2196F3');
+    pieLabels.push('Canceled Orders');
+    pieData.push(allMetrics.statusDistribution.Canceled);
+    pieColors.push('#e74c3c');
   }
   
   // Add payment method-based data based on filter
   // Only show payment methods if no status filter is active
   if (statusFilter === '' && (paymentFilter === '' || paymentFilter === 'Cash')) {
-    barLabels.push('Cash');
+    barLabels.push('Cash Payments');
     barData.push(allMetrics.paymentMethodDistribution.Cash);
-    barColors.push('#4CAF50');
+    barColors.push('#27ae60');
     
-    pieLabels.push('Cash');
+    pieLabels.push('Cash Payments');
     pieData.push(allMetrics.paymentMethodDistribution.Cash);
-    pieColors.push('#4CAF50');
+    pieColors.push('#27ae60');
   }
   
   if (statusFilter === '' && (paymentFilter === '' || paymentFilter === 'Cashless')) {
-    barLabels.push('Credit or Debit Card');
+    barLabels.push('Card Payments');
     barData.push(allMetrics.paymentMethodDistribution["Credit or Debit Card"]);
-    barColors.push('#2196F3');
+    barColors.push('#f39c12');
     
-    pieLabels.push('Credit or Debit Card');
+    pieLabels.push('Card Payments');
     pieData.push(allMetrics.paymentMethodDistribution["Credit or Debit Card"]);
-    pieColors.push('#2196F3');
+    pieColors.push('#f39c12');
   }
 
   // Update Bar Chart
@@ -768,7 +770,7 @@ function exportSalesReportToCSV() {
     return [
       transaction.order_id || transaction.id || '',
       transaction.date || (transaction.created_at ? new Date(transaction.created_at).toLocaleDateString() : ''),
-      transaction.cashier || transaction.staff_name || '',
+      transaction.served_by || transaction.staff_name || '',
       transaction.customer_name || 'Walk-in',
       transaction.status || 'Pending',
       transaction.paymentMethod || transaction.payment_method || 'Cash',

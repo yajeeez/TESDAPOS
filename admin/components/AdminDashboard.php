@@ -198,10 +198,11 @@ $loginTime = $_SESSION['login_time'] ?? time();
           cashierSelect.innerHTML = '<option value="">All Cashiers</option>';
           
           // Add cashier options
+          // Use cashier name as value since orders store cashier_name (full name)
           data.cashiers.forEach((cashier, index) => {
             console.log(`➕ Adding cashier ${index + 1}:`, cashier);
             const option = document.createElement('option');
-            option.value = cashier.username;
+            option.value = cashier.name; // Use name instead of username
             option.textContent = `${cashier.name} (${cashier.username})`;
             cashierSelect.appendChild(option);
           });
@@ -233,7 +234,7 @@ $loginTime = $_SESSION['login_time'] ?? time();
         
         fallbackCashiers.forEach(cashier => {
           const option = document.createElement('option');
-          option.value = cashier.username;
+          option.value = cashier.name; // Use name instead of username
           option.textContent = `${cashier.name} (${cashier.username})`;
           cashierSelect.appendChild(option);
         });
@@ -264,40 +265,68 @@ $loginTime = $_SESSION['login_time'] ?? time();
         await fetchTransactionsFromDB();
         updateSummaryCards();
         
-        // Add filter event listeners
-        const filterInputs = [
-          'filterStartDate',
-          'filterCashier', 
-          'filterStatus',
-          'filterPaymentMethod'
-        ];
-
-        filterInputs.forEach(inputId => {
-          const input = document.getElementById(inputId);
-          if (input) {
-            input.addEventListener('change', async () => {
-              // Apply filters to get new data
-              if (typeof applyFilters === 'function') {
-                applyFilters();
-              }
-              
-              // Update charts with filtered data
-              setTimeout(() => {
-                if (typeof refreshCharts === 'function') {
-                  refreshCharts();
-                }
-              }, 150);
-            });
+        // Initialize filteredTransactions with all data if not already set
+        if (typeof filteredTransactions === 'undefined' || filteredTransactions.length === 0) {
+          if (typeof transactionsData !== 'undefined' && transactionsData.length > 0) {
+            filteredTransactions = [...transactionsData];
+            console.log('✅ Initialized filteredTransactions with all data:', filteredTransactions.length);
           }
-        });
-        
-        // Refresh charts after transactions are loaded
-        setTimeout(() => {
-          if (typeof refreshCharts === 'function') {
-            refreshCharts();
-          }
-        }, 1000);
+        }
       }
+      
+      // Fetch and update dashboard metrics (inventory data)
+      if (typeof computeDashboardMetrics === 'function') {
+        await computeDashboardMetrics();
+      }
+      
+      // Update dashboard cards with initial data
+      if (typeof updateDashboardCards === 'function') {
+        await updateDashboardCards();
+      }
+      
+      // Add filter event listeners
+      const filterInputs = [
+        'filterStartDate',
+        'filterCashier', 
+        'filterStatus',
+        'filterPaymentMethod'
+      ];
+
+      filterInputs.forEach(inputId => {
+        const input = document.getElementById(inputId);
+        if (input) {
+          input.addEventListener('change', async () => {
+            console.log('🔄 Filter changed:', inputId, '=', input.value);
+            
+            // Apply filters to get new data
+            if (typeof applyFilters === 'function') {
+              applyFilters();
+              console.log('✅ Filters applied, filteredTransactions:', typeof filteredTransactions !== 'undefined' ? filteredTransactions.length : 'undefined');
+            }
+            
+            // Update dashboard cards with filtered data
+            if (typeof updateDashboardCards === 'function') {
+              await updateDashboardCards();
+              console.log('✅ Dashboard cards updated');
+            }
+            
+            // Update charts with filtered data
+            setTimeout(() => {
+              if (typeof refreshCharts === 'function') {
+                refreshCharts();
+                console.log('✅ Charts refreshed');
+              }
+            }, 150);
+          });
+        }
+      });
+      
+      // Refresh charts after transactions are loaded
+      setTimeout(() => {
+        if (typeof refreshCharts === 'function') {
+          refreshCharts();
+        }
+      }, 1000);
     });
   </script>
 </body>

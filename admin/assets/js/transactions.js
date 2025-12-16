@@ -135,7 +135,7 @@ function renderTransactions() {
       <td><strong>#${transaction.order_id || transaction.id}</strong></td>
       <td>${transaction.transaction_id || 'N/A'}</td>
       <td>${formatDisplayDate(transaction.created_at || transaction.date)}</td>
-      <td>${transaction.cashier_name || 'N/A'}</td>
+      <td>${transaction.served_by || 'N/A'}</td>
       <td>${itemsLabel}</td>
       <td>${itemCount}</td>
       <td>${transaction.payment_method || 'N/A'}</td>
@@ -284,6 +284,14 @@ function applyFilters() {
   const status = statusSelect?.value || '';
   const paymentMethod = paymentSelect?.value || '';
 
+  console.log('🔍 Applying filters:', {
+    startDate: startDate ? startDate.toISOString() : 'none',
+    endDate: endDate ? endDate.toISOString() : 'none',
+    cashier: cashier || 'all',
+    status: status || 'all',
+    paymentMethod: paymentMethod || 'all'
+  });
+
   filteredTransactions = transactionsData.filter((txn) => {
     // Use created_at or date field
     const txnDateString = txn.created_at || txn.date;
@@ -296,17 +304,40 @@ function applyFilters() {
     if (startDate && txnDate < startDate) return false;
     if (endDate && txnDate > endDate) return false;
     
-    // Cashier filter
-    if (cashier && txn.cashier_name !== cashier) return false;
+    // Cashier filter - match by served_by (full name)
+    if (cashier && txn.served_by !== cashier) {
+      console.log('❌ Filtered out by cashier:', txn.served_by, '!==', cashier);
+      return false;
+    }
     
     // Status filter
     if (status && txn.status !== status) return false;
     
-    // Payment method filter
-    if (paymentMethod && txn.payment_method !== paymentMethod) return false;
+    // Payment method filter - handle both "Cashless" and "Credit or Debit Card"
+    if (paymentMethod) {
+      const txnPayment = txn.payment_method || 'Cash';
+      if (paymentMethod === 'Cashless' || paymentMethod === 'Credit or Debit Card') {
+        // Match card payments
+        if (txnPayment !== 'card' && txnPayment !== 'Card' && txnPayment !== 'Credit or Debit Card' && txnPayment !== 'Cashless') {
+          return false;
+        }
+      } else if (paymentMethod === 'Cash') {
+        // Match cash payments
+        if (txnPayment !== 'Cash' && txnPayment !== 'cash') {
+          return false;
+        }
+      } else {
+        // Exact match for other payment methods
+        if (txnPayment !== paymentMethod) {
+          return false;
+        }
+      }
+    }
     
     return true;
   });
+
+  console.log('✅ Filtered transactions:', filteredTransactions.length, 'out of', transactionsData.length);
 
   renderTransactions();
   updateSummaryCards();
@@ -378,7 +409,7 @@ function exportToCSV() {
     return [
       transaction.order_id || transaction.id || '',
       transaction.created_at ? new Date(transaction.created_at).toLocaleDateString() : (transaction.date || ''),
-      transaction.cashier_name || '',
+      transaction.served_by || '',
       fullPaymentMethod, // Use the full payment method value
       transaction.status || 'Pending',
       `"${itemsDetails}"`, // Items details wrapped in quotes
@@ -457,7 +488,7 @@ function printSalesReport() {
       <tr>
         <td>#${txn.order_id || txn.id}</td>
         <td>${formatDisplayDate(txn.created_at || txn.date)}</td>
-        <td>${txn.cashier_name || 'N/A'}</td>
+        <td>${txn.served_by || 'N/A'}</td>
         <td>${items}</td>
         <td style="text-align:center;">${itemCount}</td>
         <td>${txn.payment_method || 'N/A'}</td>
@@ -1261,7 +1292,7 @@ function printTransactionReport(orderId) {
           </div>
           <div class="info-item">
             <span class="info-label">Cashier:</span>
-            <span class="info-value">${transaction.cashier_name || 'N/A'}</span>
+            <span class="info-value">${transaction.served_by || 'N/A'}</span>
           </div>
           <div class="info-item">
             <span class="info-label">Payment Method:</span>
@@ -1334,7 +1365,7 @@ function exportTransactionToCSV(orderId) {
     orderId,
     transaction.transaction_id || 'N/A',
     transaction.created_at ? new Date(transaction.created_at).toLocaleDateString() : (transaction.date || ''),
-    transaction.cashier_name || 'N/A',
+    transaction.served_by || 'N/A',
     fullPaymentMethod, // Use the full payment method value
     transaction.status || 'Pending',
     item.name || item.product_name || 'Unknown Item',
@@ -1348,7 +1379,7 @@ function exportTransactionToCSV(orderId) {
     orderId,
     transaction.transaction_id || 'N/A',
     transaction.created_at ? new Date(transaction.created_at).toLocaleDateString() : (transaction.date || ''),
-    transaction.cashier_name || 'N/A',
+    transaction.served_by || 'N/A',
     fullPaymentMethod, // Use the full payment method value
     transaction.status || 'Pending',
     'TOTAL',

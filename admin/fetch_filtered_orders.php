@@ -40,9 +40,9 @@ try {
         $filter['created_at'] = $dateFilter;
     }
     
-    // Cashier filter
+    // Cashier filter - use served_by field (full name)
     if ($cashier && $cashier !== '') {
-        $filter['cashier_name'] = $cashier;
+        $filter['served_by'] = $cashier;
     }
     
     // Status filter
@@ -111,9 +111,9 @@ try {
             }
         }
         
-        // Collect unique cashiers for filter options
-        if (isset($order['cashier_name']) && $order['cashier_name']) {
-            $cashiers[] = $order['cashier_name'];
+        // Collect unique cashiers for filter options - use served_by field
+        if (isset($order['served_by']) && $order['served_by']) {
+            $cashiers[] = $order['served_by'];
         }
         
         $orders[] = $order;
