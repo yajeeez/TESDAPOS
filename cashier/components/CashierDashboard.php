@@ -90,17 +90,14 @@ $loginTime = time();
           <h3 style="color: var(--tesda-blue); margin-bottom: 1rem;">
             <i class="fas fa-filter"></i> Filter Sales Report
           </h3>
-          <div class="filter-controls" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; align-items: end;">
+          <div class="filter-controls" style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: flex-end; justify-content: flex-start;">
             <div class="filter-group" style="display: flex; flex-direction: column; gap: 0.5rem;">
               <label for="filterStartDate" style="font-size: 0.85rem; font-weight: 600; color: #555;">Date</label>
               <input type="date" id="filterStartDate" class="filter-input" style="padding: 0.6rem; border: 1px solid #ddd; border-radius: 6px; font-size: 0.9rem;" />
             </div>
 
             <div class="filter-group" style="display: flex; flex-direction: column; gap: 0.5rem;">
-              <label for="filterCashier" style="font-size: 0.85rem; font-weight: 600; color: #555;">Cashier</label>
-              <select id="filterCashier" class="filter-input" style="padding: 0.6rem; border: 1px solid #ddd; border-radius: 6px; font-size: 0.9rem;">
-                <option value="">All Cashiers</option>
-              </select>
+              <!-- Cashier filter removed -->
             </div>
             <div class="filter-group" style="display: flex; flex-direction: column; gap: 0.5rem;">
               <label for="filterStatus" style="font-size: 0.85rem; font-weight: 600; color: #555;">Status</label>
@@ -119,7 +116,6 @@ $loginTime = time();
               </select>
             </div>
             <div class="filter-group" style="display: flex; flex-direction: column; gap: 0.5rem;">
-              <label style="font-size: 0.85rem; font-weight: 600; color: #555; opacity: 0;">Export</label>
               <button id="exportCsvBtn" class="export-btn" style="padding: 0.69rem; border: 1px solid #ddd; border-radius: 6px; font-size: 0.9rem; background: var(--tesda-blue); color: #ddd; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" onmouseover="this.style.background='linear-gradient(135deg, var(--tesda-dark), var(--tesda-blue))'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(0,0,0,0.2)'; this.style.border='1px solid var(--tesda-dark)'; this.style.color='#0f2940'" onmouseout="this.style.background='var(--tesda-blue)'; this.style.transform='translateY(0px)'; this.style.boxShadow='0 2px 4px rgba(0,0,0,0.1)'; this.style.border='1px solid #ddd'; this.style.color='#ddd'">
                 <i class="fas fa-file-csv"></i> Export CSV
               </button>
