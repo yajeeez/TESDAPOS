@@ -63,15 +63,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // Regenerate session ID for security
                 SessionManager::regenerateId();
                 
+                // Role-based redirection
+                $userRole = $user['role'] ?? 'admin';
+                
                 // Log the login in audit trail
                 if ($userRole === 'cashier') {
                     AuditLogger::logCashierLogin($user['name'] ?? 'Unknown', $user['username']);
                 } else {
                     AuditLogger::log('admin_login', "Admin '{$user['name']}' logged in");
                 }
-                
-                // Role-based redirection
-                $userRole = $user['role'] ?? 'admin';
                 
                 if ($userRole === 'admin') {
                     // Redirect to admin dashboard

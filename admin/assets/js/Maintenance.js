@@ -423,6 +423,16 @@ function displayAuditTrail(auditData) {
       let actionText = entry.action;
       if (actionText === 'page_access' || actionText === 'audit_view' || actionText === 'system_check') {
         actionText = ''; // Don't show these action names
+      } else if (actionText === 'cashier_login') {
+        actionText = 'Cashier Login';
+      } else if (actionText === 'cashier_logout') {
+        actionText = 'Cashier Logout';
+      } else if (actionText === 'admin_login') {
+        actionText = 'Admin Login';
+      } else if (actionText === 'order_created') {
+        actionText = 'Order Created';
+      } else if (actionText === 'order_status_updated') {
+        actionText = 'Order Status Updated';
       }
       
       // Only show delete button if entry has an ID
