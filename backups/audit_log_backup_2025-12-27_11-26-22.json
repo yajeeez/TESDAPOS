@@ -1,187 +1,17 @@
 [
     {
-        "id": "audit_694f51e714aa74.95067119",
-        "timestamp": "2025-12-27 11:26:31",
-        "action": "page_access",
-        "details": "Accessed Maintenance page",
+        "id": "audit_694f512bcb0350.01112683",
+        "timestamp": "2025-12-27 11:23:23",
+        "action": "audit_cleared",
+        "details": "All audit logs cleared (7 entries). Backup created: audit_log_backup_2025-12-27_11-23-23.json",
         "user": "Admin User",
         "role": "admin",
         "ip": "::1",
         "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
     },
     {
-        "id": "audit_694f51fdb74c54.89371634",
-        "timestamp": "2025-12-27 11:26:53",
-        "action": "admin_login",
-        "details": "Admin 'Admin User' logged in",
-        "user": "Admin User",
-        "role": "admin",
-        "ip": "::1",
-        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
-    },
-    {
-        "id": "audit_694f51fdbe53e9.40566229",
-        "timestamp": "2025-12-27 11:26:53",
-        "action": "page_access",
-        "details": "Accessed Dashboard page",
-        "user": "Admin User",
-        "role": "admin",
-        "ip": "::1",
-        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
-    },
-    {
-        "id": "audit_694f51ffbfb0c0.84464614",
-        "timestamp": "2025-12-27 11:26:55",
-        "action": "page_access",
-        "details": "Accessed Maintenance page",
-        "user": "Admin User",
-        "role": "admin",
-        "ip": "::1",
-        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
-    },
-    {
-        "id": "audit_694f5202aaefb0.13830576",
-        "timestamp": "2025-12-27 11:26:58",
-        "action": "page_access",
-        "details": "Accessed Maintenance page",
-        "user": "Admin User",
-        "role": "admin",
-        "ip": "::1",
-        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
-    },
-    {
-        "id": "audit_694f522808a881.23372162",
-        "timestamp": "2025-12-27 11:27:36",
-        "action": "page_access",
-        "details": "Accessed Maintenance page",
-        "user": "Admin User",
-        "role": "admin",
-        "ip": "::1",
-        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
-    },
-    {
-        "id": "audit_694f52282b9932.52205211",
-        "timestamp": "2025-12-27 11:27:36",
-        "action": "page_access",
-        "details": "Accessed Maintenance page",
-        "user": "Admin User",
-        "role": "admin",
-        "ip": "::1",
-        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
-    },
-    {
-        "id": "audit_694f5228487234.38159948",
-        "timestamp": "2025-12-27 11:27:36",
-        "action": "page_access",
-        "details": "Accessed Maintenance page",
-        "user": "Admin User",
-        "role": "admin",
-        "ip": "::1",
-        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
-    },
-    {
-        "id": "audit_694f523f81bc54.79904416",
-        "timestamp": "2025-12-27 11:27:59",
-        "action": "admin_login",
-        "details": "Admin 'Admin User' logged in",
-        "user": "Admin User",
-        "role": "admin",
-        "ip": "::1",
-        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
-    },
-    {
-        "id": "audit_694f523f87dc67.14654399",
-        "timestamp": "2025-12-27 11:27:59",
-        "action": "page_access",
-        "details": "Accessed Dashboard page",
-        "user": "Admin User",
-        "role": "admin",
-        "ip": "::1",
-        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
-    },
-    {
-        "id": "audit_694f52b0f131b1.06557981",
-        "timestamp": "2025-12-27 11:29:52",
-        "action": "page_access",
-        "details": "Accessed Dashboard page",
-        "user": "Admin User",
-        "role": "admin",
-        "ip": "::1",
-        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
-    },
-    {
-        "id": "audit_694f52b112f713.91021662",
-        "timestamp": "2025-12-27 11:29:53",
-        "action": "page_access",
-        "details": "Accessed Dashboard page",
-        "user": "Admin User",
-        "role": "admin",
-        "ip": "::1",
-        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
-    },
-    {
-        "id": "audit_694f52b12d5ee2.46905325",
-        "timestamp": "2025-12-27 11:29:53",
-        "action": "page_access",
-        "details": "Accessed Dashboard page",
-        "user": "Admin User",
-        "role": "admin",
-        "ip": "::1",
-        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
-    },
-    {
-        "id": "audit_694f52b147f231.96710742",
-        "timestamp": "2025-12-27 11:29:53",
-        "action": "page_access",
-        "details": "Accessed Dashboard page",
-        "user": "Admin User",
-        "role": "admin",
-        "ip": "::1",
-        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
-    },
-    {
-        "id": "audit_694f52b16081a5.75468204",
-        "timestamp": "2025-12-27 11:29:53",
-        "action": "page_access",
-        "details": "Accessed Dashboard page",
-        "user": "Admin User",
-        "role": "admin",
-        "ip": "::1",
-        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
-    },
-    {
-        "id": "audit_694f52b17a33b7.56346888",
-        "timestamp": "2025-12-27 11:29:53",
-        "action": "page_access",
-        "details": "Accessed Dashboard page",
-        "user": "Admin User",
-        "role": "admin",
-        "ip": "::1",
-        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
-    },
-    {
-        "id": "audit_694f52ba7a4de8.84610682",
-        "timestamp": "2025-12-27 11:30:02",
-        "action": "page_access",
-        "details": "Accessed Dashboard page",
-        "user": "Admin User",
-        "role": "admin",
-        "ip": "::1",
-        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
-    },
-    {
-        "id": "audit_694f52baa69b66.61540512",
-        "timestamp": "2025-12-27 11:30:02",
-        "action": "page_access",
-        "details": "Accessed Dashboard page",
-        "user": "Admin User",
-        "role": "admin",
-        "ip": "::1",
-        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
-    },
-    {
-        "id": "audit_694f52cbc35cc4.36470466",
-        "timestamp": "2025-12-27 11:30:19",
+        "id": "audit_694f513882be08.08402047",
+        "timestamp": "2025-12-27 11:23:36",
         "action": "admin_login",
         "details": "Admin 'Cashier One' logged in",
         "user": "Cashier One",
@@ -190,8 +20,8 @@
         "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
     },
     {
-        "id": "audit_694f52cbc852d7.08974769",
-        "timestamp": "2025-12-27 11:30:19",
+        "id": "audit_694f5138888cb7.68278976",
+        "timestamp": "2025-12-27 11:23:36",
         "action": "page_access",
         "details": "Accessed Cashier Dashboard page",
         "user": "Cashier One",
@@ -200,8 +30,48 @@
         "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
     },
     {
-        "id": "audit_694f52d2e8d019.90370857",
-        "timestamp": "2025-12-27 11:30:26",
+        "id": "audit_694f513b38dac2.32135918",
+        "timestamp": "2025-12-27 11:23:39",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Cashier One",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_694f513be2bb31.23074585",
+        "timestamp": "2025-12-27 11:23:39",
+        "action": "page_access",
+        "details": "Accessed Cashier Transactions page",
+        "user": "Cashier One",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_694f513d4bd860.71030766",
+        "timestamp": "2025-12-27 11:23:41",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Cashier One",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_694f513e15b0f7.73257132",
+        "timestamp": "2025-12-27 11:23:42",
+        "action": "page_access",
+        "details": "Accessed Cashier Transactions page",
+        "user": "Cashier One",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_694f513f6ad5c7.55037088",
+        "timestamp": "2025-12-27 11:23:43",
         "action": "cashier_logout",
         "details": "Cashier 'Cashier One' (cashier1) logged out",
         "user": "Cashier One",
@@ -212,8 +82,8 @@
         "cashier_username": "cashier1"
     },
     {
-        "id": "audit_694f52dd968560.69259868",
-        "timestamp": "2025-12-27 11:30:37",
+        "id": "audit_694f5144ed2aa0.26188916",
+        "timestamp": "2025-12-27 11:23:48",
         "action": "admin_login",
         "details": "Admin 'Admin User' logged in",
         "user": "Admin User",
@@ -222,10 +92,120 @@
         "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
     },
     {
-        "id": "audit_694f52dd9bd014.27178391",
-        "timestamp": "2025-12-27 11:30:37",
+        "id": "audit_694f5144f28ce6.50390262",
+        "timestamp": "2025-12-27 11:23:48",
         "action": "page_access",
         "details": "Accessed Dashboard page",
+        "user": "Admin User",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_694f5146e74bb7.09993391",
+        "timestamp": "2025-12-27 11:23:50",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Admin User",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_694f51ae94b499.38569819",
+        "timestamp": "2025-12-27 11:25:34",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Admin User",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_694f51aee73af7.21716015",
+        "timestamp": "2025-12-27 11:25:34",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Admin User",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_694f51af1a5517.34088386",
+        "timestamp": "2025-12-27 11:25:35",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Admin User",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_694f51bcb97677.96022033",
+        "timestamp": "2025-12-27 11:25:48",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Admin User",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_694f51d4781a70.65981090",
+        "timestamp": "2025-12-27 11:26:12",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Admin User",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_694f51d74c3170.36396998",
+        "timestamp": "2025-12-27 11:26:15",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Admin User",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_694f51d7699822.96734273",
+        "timestamp": "2025-12-27 11:26:15",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Admin User",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_694f51d78461c7.51853031",
+        "timestamp": "2025-12-27 11:26:15",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Admin User",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_694f51d7977043.51578906",
+        "timestamp": "2025-12-27 11:26:15",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Admin User",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_694f51d7b42ad0.28845934",
+        "timestamp": "2025-12-27 11:26:15",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
         "user": "Admin User",
         "role": "admin",
         "ip": "::1",

@@ -29,6 +29,7 @@ AuditLogger::log('page_access', 'Accessed Cashier Dashboard page');
   <title>TESDA POS Cashier</title>
   <link rel="icon" href="../../img/TESDAG.png" type="image/png">
   <link rel="stylesheet" href="../assets/css/CashierDashboard.css">
+  <link rel="stylesheet" href="../assets/css/logout-modal.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <!-- Chart.js CDN -->
@@ -48,7 +49,7 @@ AuditLogger::log('page_access', 'Accessed Cashier Dashboard page');
         <li><a href="Orders.php"><i class="fas fa-receipt"></i><span>Manage Orders</span></a></li>
         <li><a href="Transactions.php"><i class="fas fa-cash-register"></i><span>Transactions</span></a></li>
         <li><a href="change_password.php"><i class="fas fa-key"></i><span>Change Password</span></a></li>
-        <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></li>
+        <li><a href="#" onclick="showLogoutModal(event)"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></li>
       </ul>
     </nav>
 
@@ -151,6 +152,7 @@ AuditLogger::log('page_access', 'Accessed Cashier Dashboard page');
   </div>
 
   <!-- JS -->
+  <script src="../assets/js/logout-modal.js"></script>
   <script src="../assets/js/CashierDashboard.js"></script>
   <script>
     // Cashier-specific transaction fetching
