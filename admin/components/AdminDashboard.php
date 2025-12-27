@@ -61,7 +61,7 @@ AuditLogger::log('page_access', 'Accessed Dashboard page');
         <li><a href="Inventory.php"><i class="fas fa-boxes"></i><span>Inventory</span></a></li>
         <li><a href="Transactions.php"><i class="fas fa-cash-register"></i><span>Transactions</span></a></li>
         <li><a href="Maintenance.php"><i class="fas fa-tools"></i><span>Maintenance</span></a></li>
-        <li><a href="change_password.php"><i class="fas fa-key"></i><span>Change Password</span></a></li>
+        <li><a href="#" onclick="showChangePasswordModal(event)"><i class="fas fa-key"></i><span>Change Password</span></a></li>
         <li><a href="#" onclick="showLogoutModal(event)"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></li>
       </ul>
       

@@ -62,12 +62,8 @@ function showDashboardNotification(message, type = 'info') {
 }
 
 // ==========================
-// Logout
+// Logout function is now in logout-modal.js
 // ==========================
-function logout(e) {
-  if (e) e.preventDefault();
-  window.location.href = "../../public/components/login.html"; 
-}
 
 // ==========================
 // Charts (Chart.js) & Metrics

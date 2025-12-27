@@ -31,6 +31,34 @@ function createLogoutModal() {
   }
 }
 
+// Create and inject change password modal HTML
+function createChangePasswordModal() {
+  const modalHTML = `
+    <div id="changePasswordModal" class="logout-modal-overlay">
+      <div class="logout-modal-content">
+        <div class="logout-modal-icon" style="background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);">
+          <i class="fas fa-key"></i>
+        </div>
+        <h3 class="logout-modal-title">Change Password</h3>
+        <p class="logout-modal-message">Do you want to change your password?</p>
+        <div class="logout-modal-actions">
+          <button class="logout-modal-btn logout-cancel" onclick="closeChangePasswordModal()">
+            <i class="fas fa-times"></i> Cancel
+          </button>
+          <button class="logout-modal-btn" style="background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);" onclick="confirmChangePassword()">
+            <i class="fas fa-check"></i> Yes, Continue
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  // Inject modal into body if it doesn't exist
+  if (!document.getElementById('changePasswordModal')) {
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+  }
+}
+
 // Show logout modal
 function showLogoutModal(e) {
   if (e) e.preventDefault();
@@ -58,6 +86,33 @@ function confirmLogout() {
   window.location.href = '../components/logout.php';
 }
 
+// Show change password modal
+function showChangePasswordModal(e) {
+  if (e) e.preventDefault();
+  
+  // Create modal if it doesn't exist
+  createChangePasswordModal();
+  
+  const modal = document.getElementById('changePasswordModal');
+  if (modal) {
+    modal.classList.add('active');
+  }
+}
+
+// Close change password modal
+function closeChangePasswordModal() {
+  const modal = document.getElementById('changePasswordModal');
+  if (modal) {
+    modal.classList.remove('active');
+  }
+}
+
+// Confirm change password and redirect
+function confirmChangePassword() {
+  // Redirect to change password page
+  window.location.href = 'change_password.php';
+}
+
 // Update the logout function to show modal instead of direct redirect
 function logout(e) {
   showLogoutModal(e);
@@ -65,9 +120,15 @@ function logout(e) {
 
 // Close modal when clicking outside
 document.addEventListener('click', function(e) {
-  const modal = document.getElementById('logoutModal');
-  if (modal && e.target === modal) {
+  const logoutModal = document.getElementById('logoutModal');
+  const changePasswordModal = document.getElementById('changePasswordModal');
+  
+  if (logoutModal && e.target === logoutModal) {
     closeLogoutModal();
+  }
+  
+  if (changePasswordModal && e.target === changePasswordModal) {
+    closeChangePasswordModal();
   }
 });
 
@@ -75,5 +136,6 @@ document.addEventListener('click', function(e) {
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') {
     closeLogoutModal();
+    closeChangePasswordModal();
   }
 });

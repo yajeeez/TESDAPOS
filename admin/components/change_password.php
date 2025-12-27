@@ -333,6 +333,132 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 opacity: 0;
             }
         }
+        
+        /* Logout Modal Styles */
+        .logout-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(4px);
+        }
+        
+        .logout-modal-overlay.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .logout-modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            animation: slideUp 0.3s ease;
+        }
+        
+        .logout-modal-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: white;
+            animation: pulse 2s infinite;
+        }
+        
+        .logout-modal-title {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        
+        .logout-modal-message {
+            color: #666;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+        
+        .logout-modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+        
+        .logout-modal-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .logout-cancel {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .logout-cancel:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .logout-confirm {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+        }
+        
+        .logout-confirm:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(220, 53, 69, 0.4);
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
     </style>
 </head>
 <body>
@@ -496,8 +622,60 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
         
-        // Form validation with toast notifications
-        document.querySelector('form').addEventListener('submit', function(e) {
+        // Create confirmation modal HTML
+        function createPasswordConfirmModal() {
+            const modalHTML = `
+                <div id="passwordConfirmModal" class="logout-modal-overlay">
+                    <div class="logout-modal-content">
+                        <div class="logout-modal-icon" style="background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);">
+                            <i class="fas fa-key"></i>
+                        </div>
+                        <h3 class="logout-modal-title">Confirm Password Change</h3>
+                        <p class="logout-modal-message">Are you sure you want to change your password?</p>
+                        <div class="logout-modal-actions">
+                            <button class="logout-modal-btn logout-cancel" onclick="closePasswordConfirmModal()">
+                                <i class="fas fa-times"></i> Cancel
+                            </button>
+                            <button class="logout-modal-btn" style="background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);" onclick="confirmPasswordChange()">
+                                <i class="fas fa-check"></i> Yes, Change Password
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            if (!document.getElementById('passwordConfirmModal')) {
+                document.body.insertAdjacentHTML('beforeend', modalHTML);
+            }
+        }
+        
+        function showPasswordConfirmModal() {
+            createPasswordConfirmModal();
+            const modal = document.getElementById('passwordConfirmModal');
+            if (modal) {
+                modal.classList.add('active');
+            }
+        }
+        
+        function closePasswordConfirmModal() {
+            const modal = document.getElementById('passwordConfirmModal');
+            if (modal) {
+                modal.classList.remove('active');
+            }
+        }
+        
+        function confirmPasswordChange() {
+            closePasswordConfirmModal();
+            // Submit the form programmatically, bypassing the event listener
+            const form = document.querySelector('form');
+            form.removeEventListener('submit', handleFormSubmit);
+            form.submit();
+        }
+        
+        // Form validation with confirmation modal
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            
             const currentPassword = document.getElementById('current_password').value;
             const newPassword = document.getElementById('new_password').value;
             const confirmPassword = document.getElementById('confirm_password').value;
@@ -510,24 +688,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             // Client-side validation with toast notifications
             if (!currentPassword || !newPassword || !confirmPassword) {
-                e.preventDefault();
                 toastManager.show('All fields are required.', 'error', 'Validation Error');
                 return;
             }
             
             if (newPassword !== confirmPassword) {
-                e.preventDefault();
                 toastManager.show('New passwords do not match.', 'error', 'Validation Error');
                 document.getElementById('confirm_password').setCustomValidity('Passwords do not match');
                 return;
             }
             
             if (newPassword.length < 8) {
-                e.preventDefault();
                 toastManager.show('Password must be exactly 8 characters long.', 'error', 'Validation Error');
                 return;
             }
-        });
+            
+            // All validations passed, show confirmation modal
+            showPasswordConfirmModal();
+        }
+        
+        document.querySelector('form').addEventListener('submit', handleFormSubmit);
         
                 
         // Password confirmation validation
@@ -579,6 +759,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         // Check for success on page load
         checkPasswordChangeSuccess();
+        
+        // Close modal when clicking outside
+        document.addEventListener('click', function(e) {
+            const modal = document.getElementById('passwordConfirmModal');
+            if (modal && e.target === modal) {
+                closePasswordConfirmModal();
+            }
+        });
+        
+        // Close modal on ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closePasswordConfirmModal();
+            }
+        });
     </script>
 </body>
 </html>
