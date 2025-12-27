@@ -44,13 +44,20 @@ class AuditLogger {
             $id = uniqid('audit_', true);
             
             // Get user information from session
+            SessionManager::start();
             $user = SessionManager::getFullName();
-            $role = SessionManager::getUserRole() ?? 'unknown';
+            $role = SessionManager::getUserRole() ?? 'guest';
             
             // If no session user, check if it's a cashier
             if ($user === 'Unknown User' && isset($_SESSION['cashier_name'])) {
                 $user = $_SESSION['cashier_name'];
                 $role = 'cashier';
+            }
+            
+            // If still no user, it's a guest/customer
+            if ($user === 'Unknown User') {
+                $user = 'Guest/Customer';
+                $role = 'guest';
             }
             
             $entry = [

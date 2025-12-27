@@ -16,6 +16,10 @@ $userEmail = $cashierInfo['email'];
 $userUsername = $cashierInfo['username'];
 $loginTime = time();
 
+// Log page access
+require_once __DIR__ . '/../../includes/audit_logger.php';
+AuditLogger::log('page_access', 'Accessed Cashier Dashboard page');
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

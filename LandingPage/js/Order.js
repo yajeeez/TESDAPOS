@@ -962,8 +962,31 @@ async function processPayment() {
 // Initialize the page when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Order page loaded, fetching products...');
+    
+    // Log page access
+    logPageAccess();
+    
     fetchProducts();
 });
+
+// Function to log page access for audit trail
+async function logPageAccess() {
+    try {
+        const response = await fetch('/TESDAPOS/LandingPage/log_page_access.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        if (response.ok) {
+            console.log('Page access logged successfully');
+        }
+    } catch (error) {
+        console.log('Failed to log page access:', error);
+        // Don't show error to user, just log it
+    }
+}
 
 
 // Function to print POS-style receipt

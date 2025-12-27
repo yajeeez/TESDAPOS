@@ -7,6 +7,10 @@ $cashierInfo = getCurrentCashierInfo();
 $userName = $cashierInfo['name'];
 $userEmail = $cashierInfo['email'];
 $userUsername = $cashierInfo['username'];
+
+// Log page access
+require_once __DIR__ . '/../../includes/audit_logger.php';
+AuditLogger::log('page_access', 'Accessed Cashier Transactions page');
 ?>
 <html lang="en">
 <head>

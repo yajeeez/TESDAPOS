@@ -1,0 +1,72 @@
+[
+    {
+        "id": "audit_694f511771b0e6.61111313",
+        "timestamp": "2025-12-27 11:23:03",
+        "action": "audit_cleared",
+        "details": "All audit logs cleared (41 entries). Backup created: audit_log_backup_2025-12-27_11-23-03.json",
+        "user": "Admin User",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_694f512191b390.17350470",
+        "timestamp": "2025-12-27 11:23:13",
+        "action": "page_access",
+        "details": "Accessed Dashboard page",
+        "user": "Admin User",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_694f51222b9057.65088238",
+        "timestamp": "2025-12-27 11:23:14",
+        "action": "page_access",
+        "details": "Accessed Orders page",
+        "user": "Admin User",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_694f51229caa92.74731351",
+        "timestamp": "2025-12-27 11:23:14",
+        "action": "page_access",
+        "details": "Accessed Create Products page",
+        "user": "Admin User",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_694f512319bef3.37380786",
+        "timestamp": "2025-12-27 11:23:15",
+        "action": "page_access",
+        "details": "Accessed Inventory page",
+        "user": "Admin User",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_694f51239996d0.95032919",
+        "timestamp": "2025-12-27 11:23:15",
+        "action": "page_access",
+        "details": "Accessed Transactions page",
+        "user": "Admin User",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_694f512461bff6.91582631",
+        "timestamp": "2025-12-27 11:23:16",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Admin User",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    }
+]

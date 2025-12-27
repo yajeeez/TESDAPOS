@@ -418,7 +418,8 @@ function displayAuditTrail(auditData) {
       const role = entry.role || 'N/A';
       const user = entry.user || 'Unknown User';
       
-      // Hide the action text for page_access, audit_view, and system_check
+      // Hide the action text for page_access, audit_view and system_check
+      // But keep the entries visible to track page visits
       let actionText = entry.action;
       if (actionText === 'page_access' || actionText === 'audit_view' || actionText === 'system_check') {
         actionText = ''; // Don't show these action names

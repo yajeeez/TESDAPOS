@@ -1,19 +1,111 @@
 [
     {
-        "id": "audit_694f4d788b8cc1.12766931",
-        "timestamp": "2025-12-27 11:07:36",
+        "id": "audit_694f512bcb0350.01112683",
+        "timestamp": "2025-12-27 11:23:23",
         "action": "audit_cleared",
-        "details": "All audit logs cleared (149 entries). Backup created: audit_log_backup_2025-12-27_11-07-36.json",
+        "details": "All audit logs cleared (7 entries). Backup created: audit_log_backup_2025-12-27_11-23-23.json",
         "user": "Admin User",
         "role": "admin",
         "ip": "::1",
         "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
     },
     {
-        "id": "audit_694f4d791841c6.94948110",
-        "timestamp": "2025-12-27 11:07:37",
-        "action": "audit_view",
-        "details": "Audit trail viewed - 1 entries",
+        "id": "audit_694f513882be08.08402047",
+        "timestamp": "2025-12-27 11:23:36",
+        "action": "admin_login",
+        "details": "Admin 'Cashier One' logged in",
+        "user": "Cashier One",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_694f5138888cb7.68278976",
+        "timestamp": "2025-12-27 11:23:36",
+        "action": "page_access",
+        "details": "Accessed Cashier Dashboard page",
+        "user": "Cashier One",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_694f513b38dac2.32135918",
+        "timestamp": "2025-12-27 11:23:39",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Cashier One",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_694f513be2bb31.23074585",
+        "timestamp": "2025-12-27 11:23:39",
+        "action": "page_access",
+        "details": "Accessed Cashier Transactions page",
+        "user": "Cashier One",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_694f513d4bd860.71030766",
+        "timestamp": "2025-12-27 11:23:41",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Cashier One",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_694f513e15b0f7.73257132",
+        "timestamp": "2025-12-27 11:23:42",
+        "action": "page_access",
+        "details": "Accessed Cashier Transactions page",
+        "user": "Cashier One",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_694f513f6ad5c7.55037088",
+        "timestamp": "2025-12-27 11:23:43",
+        "action": "cashier_logout",
+        "details": "Cashier 'Cashier One' (cashier1) logged out",
+        "user": "Cashier One",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36",
+        "cashier_name": "Cashier One",
+        "cashier_username": "cashier1"
+    },
+    {
+        "id": "audit_694f5144ed2aa0.26188916",
+        "timestamp": "2025-12-27 11:23:48",
+        "action": "admin_login",
+        "details": "Admin 'Admin User' logged in",
+        "user": "Admin User",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_694f5144f28ce6.50390262",
+        "timestamp": "2025-12-27 11:23:48",
+        "action": "page_access",
+        "details": "Accessed Dashboard page",
+        "user": "Admin User",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_694f5146e74bb7.09993391",
+        "timestamp": "2025-12-27 11:23:50",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
         "user": "Admin User",
         "role": "admin",
         "ip": "::1",

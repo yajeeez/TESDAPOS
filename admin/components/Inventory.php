@@ -18,6 +18,10 @@ if (SessionManager::getUserRole() !== 'admin') {
     exit();
 }
 
+// Log page access
+require_once __DIR__ . '/../../includes/audit_logger.php';
+AuditLogger::log('page_access', 'Accessed Inventory page');
+
 // Add any necessary PHP logic here
 
 ?>

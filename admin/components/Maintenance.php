@@ -175,8 +175,7 @@ function getAuditTrail() {
             return strtotime($b['timestamp']) - strtotime($a['timestamp']);
         });
         
-        // Log the audit trail access
-        logAudit('audit_view', 'Audit trail viewed - ' . count($auditData) . ' entries');
+        // Don't log viewing the audit trail to avoid cluttering the logs
         
         echo json_encode([
             'success' => true,
@@ -506,7 +505,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // Log page access (only when not handling POST requests)
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     try {
-        logAudit('page_access', 'Maintenance page accessed');
+        logAudit('page_access', 'Accessed Maintenance page');
     } catch (Exception $e) {
         // Silently ignore audit logging errors on page load
     }
