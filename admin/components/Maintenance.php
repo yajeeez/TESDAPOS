@@ -414,6 +414,42 @@ function deleteAuditEntry() {
     }
 }
 
+function clearAllAuditLogs() {
+    $auditFile = __DIR__ . '/../../backups/audit_log.json';
+    
+    if (!file_exists($auditFile)) {
+        echo json_encode(['success' => false, 'message' => 'Audit log file not found']);
+        return;
+    }
+    
+    // Get current count for logging
+    $auditData = json_decode(file_get_contents($auditFile), true) ?: [];
+    $totalCount = count($auditData);
+    
+    // Create a backup before clearing
+    $backupFile = __DIR__ . '/../../backups/audit_log_backup_' . date('Y-m-d_H-i-s') . '.json';
+    copy($auditFile, $backupFile);
+    
+    // Clear the audit log
+    $emptyLog = [];
+    if (file_put_contents($auditFile, json_encode($emptyLog, JSON_PRETTY_PRINT))) {
+        // Log the clear action
+        logAudit('audit_cleared', "All audit logs cleared ({$totalCount} entries). Backup created: " . basename($backupFile));
+        
+        echo json_encode([
+            'success' => true,
+            'message' => "All audit logs cleared successfully. {$totalCount} entries removed.",
+            'backup_file' => basename($backupFile),
+            'cleared_count' => $totalCount
+        ]);
+    } else {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Failed to clear audit logs'
+        ]);
+    }
+}
+
 // Handle maintenance actions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Disable error display for API responses to prevent HTML error output
@@ -452,6 +488,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 break;
             case 'delete_audit_entry':
                 deleteAuditEntry();
+                break;
+            case 'clear_all_audit_logs':
+                clearAllAuditLogs();
                 break;
             default:
                 echo json_encode(['success' => false, 'message' => 'Invalid action']);
@@ -585,7 +624,12 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
             <!-- Audit Trail Display -->
             <div id="auditTrailDisplay" class="panel" style="display: none;">
-              <h4><i class="fas fa-user-shield"></i> Audit Trail</h4>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h4><i class="fas fa-user-shield"></i> Audit Trail</h4>
+                <button onclick="clearAllAuditLogs()" class="btn btn-danger" style="font-size: 0.85rem; padding: 0.5rem 1rem;">
+                  <i class="fas fa-trash-alt"></i> Clear All Logs
+                </button>
+              </div>
               <div class="audit-controls">
                 <input type="text" id="auditSearch" placeholder="Search audit logs..." class="search-input">
               </div>

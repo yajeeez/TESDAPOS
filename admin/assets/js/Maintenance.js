@@ -326,6 +326,49 @@ function deleteAuditEntry(entryId) {
   );
 }
 
+function clearAllAuditLogs() {
+  showConfirmModal(
+    'Clear All Audit Logs',
+    'Are you sure you want to clear ALL audit logs? This will delete all entries and create a backup. This action cannot be undone!',
+    () => {
+      showNotification('Clearing all audit logs...', 'info');
+      
+      fetch('Maintenance.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: 'action=clear_all_audit_logs'
+      })
+      .then(response => {
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          throw new Error('Server returned non-JSON response');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Clear all response:', data);
+        if (data.success) {
+          showNotification(`${data.message} Backup: ${data.backup_file}`, 'success');
+          // Refresh the audit trail after a short delay
+          setTimeout(() => {
+            viewAuditTrail();
+          }, 500);
+        } else {
+          showNotification(`Clear failed: ${data.message}`, 'error');
+        }
+      })
+      .catch(error => {
+        console.error('Error clearing audit logs:', error);
+        showNotification('Clear failed: ' + error.message, 'error');
+      });
+    },
+    'fa-trash-alt',
+    'modal-confirm'
+  );
+}
+
 // ==========================
 // Audit Trail Functions
 // ==========================
