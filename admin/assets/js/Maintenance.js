@@ -278,6 +278,54 @@ function deleteBackup(filename) {
   );
 }
 
+function deleteAuditEntry(entryId) {
+  if (!entryId) {
+    showNotification('Cannot delete entry: No ID found', 'error');
+    return;
+  }
+  
+  showConfirmModal(
+    'Delete Audit Entry',
+    'Are you sure you want to delete this audit entry? This action cannot be undone.',
+    () => {
+      showNotification('Deleting audit entry...', 'info');
+      
+      fetch('Maintenance.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `action=delete_audit_entry&entry_id=${encodeURIComponent(entryId)}`
+      })
+      .then(response => {
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          throw new Error('Server returned non-JSON response');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Delete response:', data);
+        if (data.success) {
+          showNotification('Audit entry deleted successfully', 'success');
+          // Refresh the audit trail after a short delay
+          setTimeout(() => {
+            viewAuditTrail();
+          }, 500);
+        } else {
+          showNotification(`Delete failed: ${data.message}`, 'error');
+        }
+      })
+      .catch(error => {
+        console.error('Error deleting audit entry:', error);
+        showNotification('Delete failed: ' + error.message, 'error');
+      });
+    },
+    'fa-trash',
+    'modal-confirm'
+  );
+}
+
 // ==========================
 // Audit Trail Functions
 // ==========================
@@ -316,19 +364,41 @@ function displayAuditTrail(auditData) {
   const auditList = document.getElementById('auditList');
   const panelDiv = document.getElementById('auditTrailDisplay');
   
+  console.log('Total audit entries received:', auditData.length);
+  
   if (auditData.length === 0) {
     auditList.innerHTML = '<p style="text-align: center; padding: 2rem; color: #666;">No audit records found</p>';
   } else {
     let html = '';
     auditData.forEach(entry => {
+      const entryId = entry.id || '';
+      const role = entry.role || 'N/A';
+      const user = entry.user || 'Unknown User';
+      
+      // Hide the action text for page_access, audit_view, and system_check
+      let actionText = entry.action;
+      if (actionText === 'page_access' || actionText === 'audit_view' || actionText === 'system_check') {
+        actionText = ''; // Don't show these action names
+      }
+      
+      // Only show delete button if entry has an ID
+      const deleteButton = entryId ? `
+        <div class="audit-actions">
+          <button class="btn-delete-audit" onclick="deleteAuditEntry('${entryId}')" title="Delete entry" style="background: linear-gradient(135deg, #ff4757 0%, #e63946 100%); border: 2px solid rgba(255, 255, 255, 0.2); box-shadow: 0 3px 12px rgba(230, 57, 70, 0.3);">
+            <i class="fas fa-trash-alt" style="color: #ffffff !important;"></i>
+          </button>
+        </div>
+      ` : '';
+      
       html += `
         <div class="audit-item">
           <div class="audit-time">${entry.timestamp}</div>
           <div class="audit-details">
-            <div class="audit-action">${entry.action}</div>
+            ${actionText ? `<div class="audit-action">${actionText}</div>` : ''}
             <div class="audit-description">${entry.details}</div>
-            <div class="audit-meta">IP: ${entry.ip} | User Agent: ${entry.user_agent.substring(0, 50)}...</div>
+            <div class="audit-meta">User: ${user} | Role: ${role}</div>
           </div>
+          ${deleteButton}
         </div>
       `;
     });

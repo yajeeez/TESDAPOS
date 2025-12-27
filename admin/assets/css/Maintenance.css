@@ -425,13 +425,20 @@ body {
 .audit-item {
   display: flex;
   align-items: start;
-  padding: 1rem;
-  border-bottom: 1px solid #f0f0f0;
-  transition: background 0.2s ease;
+  padding: 1.2rem;
+  border-bottom: 1px solid #e8e8e8;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  gap: 1.2rem;
+  position: relative;
+  background: white;
 }
 
 .audit-item:hover {
-  background: #f8f9fa;
+  background: linear-gradient(to right, #f8f9fa 0%, #ffffff 100%);
+  box-shadow: 0 4px 12px rgba(0, 74, 173, 0.08);
+  border-left: 4px solid var(--tesda-blue);
+  padding-left: calc(1.2rem - 4px);
+  transform: translateX(2px);
 }
 
 .audit-item:last-child {
@@ -451,20 +458,143 @@ body {
 }
 
 .audit-action {
-  font-weight: 600;
+  font-weight: 700;
   color: var(--tesda-blue);
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.4rem;
+  font-size: 1rem;
+  letter-spacing: 0.3px;
+  text-transform: capitalize;
 }
 
 .audit-description {
-  color: #666;
-  font-size: 0.9rem;
-  margin-bottom: 0.25rem;
+  color: #555;
+  font-size: 0.92rem;
+  margin-bottom: 0.4rem;
+  line-height: 1.5;
 }
 
 .audit-meta {
-  font-size: 0.8rem;
-  color: #999;
+  font-size: 0.82rem;
+  color: #888;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+}
+
+.audit-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+button.btn-delete-audit,
+.btn-delete-audit {
+  background: linear-gradient(135deg, #ff4757 0%, #e63946 100%) !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 10px;
+  padding: 0.7rem 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  box-shadow: 0 3px 12px rgba(230, 57, 70, 0.3) !important;
+  position: relative;
+  overflow: hidden;
+  min-width: 44px;
+  min-height: 44px;
+  border: 2px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+button.btn-delete-audit i,
+.btn-delete-audit i,
+.btn-delete-audit .fa-trash-alt,
+.btn-delete-audit .fas {
+  color: #ffffff !important;
+  font-size: 1.1rem !important;
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s ease;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+}
+
+button.btn-delete-audit::before,
+.btn-delete-audit::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease, height 0.6s ease;
+  z-index: 1;
+}
+
+button.btn-delete-audit::after,
+.btn-delete-audit::after {
+  content: attr(title);
+  position: absolute;
+  bottom: calc(100% + 10px);
+  right: 0;
+  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+  color: white;
+  padding: 0.6rem 0.9rem;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  z-index: 100;
+  letter-spacing: 0.3px;
+}
+
+button.btn-delete-audit:hover::after,
+.btn-delete-audit:hover::after {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+button.btn-delete-audit:hover::before,
+.btn-delete-audit:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+button.btn-delete-audit:hover,
+.btn-delete-audit:hover {
+  background: linear-gradient(135deg, #e63946 0%, #d62828 100%) !important;
+  transform: translateY(-4px) scale(1.08);
+  box-shadow: 0 8px 24px rgba(230, 57, 70, 0.45) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+button.btn-delete-audit:active,
+.btn-delete-audit:active {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 4px 14px rgba(230, 57, 70, 0.35) !important;
+}
+
+button.btn-delete-audit:hover i,
+.btn-delete-audit:hover i {
+  transform: rotate(20deg) scale(1.15);
+  animation: trashShake 0.6s ease;
+}
+
+@keyframes trashShake {
+  0%, 100% { transform: rotate(0deg) scale(1.15); }
+  20% { transform: rotate(20deg) scale(1.15); }
+  40% { transform: rotate(-20deg) scale(1.15); }
+  60% { transform: rotate(15deg) scale(1.15); }
+  80% { transform: rotate(-10deg) scale(1.15); }
 }
 
 /* === Toast Notifications === */
@@ -747,6 +877,22 @@ body {
   
   .audit-details {
     margin-left: 0;
+  }
+  
+  .audit-actions {
+    width: 100%;
+    justify-content: flex-end;
+    margin-top: 0.5rem;
+  }
+  
+  .btn-delete-audit::after {
+    right: auto;
+    left: 50%;
+    transform: translateX(-50%) translateY(5px);
+  }
+  
+  .btn-delete-audit:hover::after {
+    transform: translateX(-50%) translateY(0);
   }
   
   .backup-item {

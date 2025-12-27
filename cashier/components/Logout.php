@@ -1,11 +1,24 @@
 <?php
 require_once __DIR__ . '/../../includes/session.php';
+require_once __DIR__ . '/../../includes/audit_logger.php';
 
 // Prevent caching
 header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
 header('Cache-Control: post-check=0, pre-check=0', false);
 header('Pragma: no-cache');
 header('Expires: Sat, 26 Jul 1997 05:00:00 GMT');
+
+// Get user info before logging out
+$userName = SessionManager::getFullName();
+$userUsername = SessionManager::getUsername();
+$userRole = SessionManager::getUserRole();
+
+// Log the logout in audit trail
+if ($userRole === 'cashier') {
+    AuditLogger::logCashierLogout($userName, $userUsername);
+} else {
+    AuditLogger::log('admin_logout', "Admin '{$userName}' logged out");
+}
 
 // Logout the user
 SessionManager::logout();

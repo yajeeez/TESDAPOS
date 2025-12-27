@@ -34,6 +34,10 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 require_once __DIR__ . '/MongoOrders.php';
+require_once __DIR__ . '/../includes/audit_logger.php';
+
+// Start session to get cashier info
+session_start();
 
 try {
     // Read raw JSON body
@@ -88,6 +92,17 @@ try {
 
     $mongoOrders = new MongoOrders();
     $result = $mongoOrders->addOrder($order);
+
+    // Log the order creation in audit trail
+    if ($result['success']) {
+        $orderId = $result['order_id'] ?? 'Unknown';
+        AuditLogger::logOrderCreated(
+            $orderId,
+            $order['total_amount'],
+            $order['total_item_count'],
+            $order['payment_method']
+        );
+    }
 
     ob_clean();
     echo json_encode($result, JSON_UNESCAPED_SLASHES);

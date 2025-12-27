@@ -5,6 +5,7 @@ header('Access-Control-Allow-Methods: POST, PUT, PATCH');
 header('Access-Control-Allow-Headers: Content-Type');
 
 require_once __DIR__ . '/../connection/MongoOrders.php';
+require_once __DIR__ . '/../includes/audit_logger.php';
 
 try {
     // Get JSON input
@@ -39,8 +40,17 @@ try {
     
     $mongoOrders = new MongoOrders();
     
+    // Get old status before updating
+    $oldOrder = $mongoOrders->getOrderById($orderId);
+    $oldStatus = $oldOrder['status'] ?? 'Unknown';
+    
     // Update the order status with cashier info
     $result = $mongoOrders->updateOrderStatus($orderId, $newStatus, $servedBy, $servedByUsername, $servedAt);
+    
+    // Log the status update in audit trail
+    if ($result['success']) {
+        AuditLogger::logOrderStatusUpdate($orderId, $oldStatus, $newStatus);
+    }
     
     echo json_encode($result);
     

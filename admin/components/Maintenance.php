@@ -39,10 +39,16 @@ function logAudit($action, $details = '') {
         $auditData = json_decode(file_get_contents($auditFile), true) ?: [];
     }
     
+    // Generate unique ID for each audit entry
+    $id = uniqid('audit_', true);
+    
     $auditData[] = [
+        'id' => $id,
         'timestamp' => date('Y-m-d H:i:s'),
         'action' => $action,
         'details' => $details,
+        'user' => SessionManager::getFullName(),
+        'role' => SessionManager::getUserRole() ?? 'unknown',
         'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown',
         'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? 'unknown'
     ];
@@ -356,6 +362,58 @@ function deleteBackup() {
     }
 }
 
+function deleteAuditEntry() {
+    $entryId = $_POST['entry_id'] ?? '';
+    
+    // Log the delete attempt for debugging
+    error_log("Delete audit entry attempt - Entry ID: " . $entryId);
+    
+    if (empty($entryId)) {
+        echo json_encode(['success' => false, 'message' => 'Entry ID not provided']);
+        return;
+    }
+    
+    $auditFile = __DIR__ . '/../../backups/audit_log.json';
+    
+    if (!file_exists($auditFile)) {
+        echo json_encode(['success' => false, 'message' => 'Audit log file not found']);
+        return;
+    }
+    
+    $auditData = json_decode(file_get_contents($auditFile), true) ?: [];
+    $originalCount = count($auditData);
+    
+    // Filter out the entry with the specified ID
+    $filteredData = array_filter($auditData, function($entry) use ($entryId) {
+        return ($entry['id'] ?? '') !== $entryId;
+    });
+    
+    // Re-index array
+    $filteredData = array_values($filteredData);
+    $newCount = count($filteredData);
+    
+    error_log("Original count: $originalCount, New count: $newCount");
+    
+    if ($newCount === $originalCount) {
+        echo json_encode(['success' => false, 'message' => 'Audit entry not found or entry has no ID']);
+        return;
+    }
+    
+    if (file_put_contents($auditFile, json_encode($filteredData, JSON_PRETTY_PRINT))) {
+        error_log("Successfully deleted audit entry: $entryId");
+        echo json_encode([
+            'success' => true,
+            'message' => 'Audit entry deleted successfully',
+            'deleted_count' => $originalCount - $newCount
+        ]);
+    } else {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Failed to write to audit log file'
+        ]);
+    }
+}
+
 // Handle maintenance actions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Disable error display for API responses to prevent HTML error output
@@ -392,6 +450,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             case 'delete_backup':
                 deleteBackup();
                 break;
+            case 'delete_audit_entry':
+                deleteAuditEntry();
+                break;
             default:
                 echo json_encode(['success' => false, 'message' => 'Invalid action']);
         }
@@ -420,7 +481,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>TESDA POS - Maintenance</title>
   <link rel="icon" type="image/x-icon" href="../../favicon.ico">
-  <link rel="stylesheet" href="../assets/css/Maintenance.css">
+  <link rel="stylesheet" href="../assets/css/Maintenance.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
@@ -557,6 +618,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
   </div>
 
   <!-- JS -->
-  <script src="../assets/js/Maintenance.js"></script>
+  <script src="../assets/js/Maintenance.js?v=<?php echo time(); ?>"></script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../../includes/session.php';
+require_once __DIR__ . '/../../includes/audit_logger.php';
 require_once __DIR__ . '/../../vendor/autoload.php';
 require_once __DIR__ . '/../../config/database.php';
 
@@ -61,6 +62,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
                 // Regenerate session ID for security
                 SessionManager::regenerateId();
+                
+                // Log the login in audit trail
+                if ($userRole === 'cashier') {
+                    AuditLogger::logCashierLogin($user['name'] ?? 'Unknown', $user['username']);
+                } else {
+                    AuditLogger::log('admin_login', "Admin '{$user['name']}' logged in");
+                }
                 
                 // Role-based redirection
                 $userRole = $user['role'] ?? 'admin';
