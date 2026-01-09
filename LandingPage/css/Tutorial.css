@@ -80,53 +80,93 @@ header {
   margin-bottom: 2.5rem;
 }
 
-/* Steps (Cards) */
-.steps-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+/* Card Grid - Horizontal Layout */
+.card-grid {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: center;
+  align-items: flex-start;
   gap: 2rem;
-  padding: 0 1rem;
+  padding: 0 2rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+  flex-wrap: nowrap;
 }
 
-.step-card {
+.tutorial-card {
   background: var(--card-bg);
-  border-radius: 16px;
-  box-shadow: 0 8px 24px var(--shadow);
-  padding: 2rem 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px var(--shadow);
+  padding: 1.5rem;
   text-align: center;
   backdrop-filter: blur(10px);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   position: relative;
   overflow: hidden;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center;
+  width: 280px;
+  max-width: 280px;
+  flex-shrink: 0;
+  flex-grow: 0;
 }
 
-.step-card:hover {
+.tutorial-card:hover {
   transform: translateY(-8px);
   box-shadow: 0 12px 32px rgba(0,0,0,0.2);
 }
 
-.step-icon {
-  font-size: 2.5rem;
-  color: var(--tesda-blue);
-  margin-bottom: 1rem;
+.tutorial-img {
+  width: 100% !important;
+  border-radius: 8px;
+  object-fit: cover;
+  object-position: center;
+  margin: 0 auto 1rem;
   transition: transform 0.3s ease;
+  background: linear-gradient(145deg, #f8fafc 0%, #e2e8f0 100%);
+  display: block;
 }
 
-.step-card:hover .step-icon {
+.tutorial-card:hover .tutorial-img {
   transform: scale(1.1);
 }
 
-.step-card h2 {
-  font-size: 1.3rem;
-  margin: 0.6rem 0;
+.tutorial-card h2 {
+  font-size: 1.1rem;
+  margin: 0.5rem 0;
   color: var(--tesda-dark);
+  font-weight: 600;
 }
 
-.step-card p {
-  font-size: 0.95rem;
+.tutorial-card p {
+  font-size: 0.85rem;
   color: #555;
+  line-height: 1.5;
   margin-top: 0.5rem;
-  min-height: 40px;
+}
+
+/* Responsive Design */
+@media (max-width: 1000px) {
+  .card-grid {
+    flex-wrap: wrap !important;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .card-grid {
+    flex-direction: column !important;
+    align-items: center;
+    padding: 0 1rem 2rem;
+  }
+  
+  .tutorial-card {
+    width: 100%;
+    max-width: 350px;
+  }
 }
 
 /* Footer */

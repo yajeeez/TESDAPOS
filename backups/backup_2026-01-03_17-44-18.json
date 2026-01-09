@@ -1,0 +1,674 @@
+{
+    "timestamp": "2026-01-03 17:44:18",
+    "version": "1.0.0",
+    "orders": [
+        {
+            "_id": {
+                "$oid": "6940e9d2d220688bec06fdbc"
+            },
+            "items": [
+                {
+                    "product_id": "69294d1a3cc7fb759809ef3c",
+                    "name": "Burger",
+                    "size": null,
+                    "price": 50,
+                    "quantity": 1,
+                    "subtotal": 50
+                }
+            ],
+            "payment_method": "cash",
+            "total_amount": 50,
+            "cash_amount": 50,
+            "change_amount": 0,
+            "transaction_id": "CASH61842310",
+            "card_number": null,
+            "card_holder": null,
+            "product_names": [
+                "Burger"
+            ],
+            "total_item_count": 1,
+            "order_id": "01",
+            "created_at": {
+                "$date": {
+                    "$numberLong": "1765861842358"
+                }
+            },
+            "status": "Canceled",
+            "served_at": {
+                "$date": {
+                    "$numberLong": "1765866540000"
+                }
+            },
+            "served_by": "Cashier Two",
+            "served_by_username": "cashier2",
+            "action_type": "canceled"
+        },
+        {
+            "_id": {
+                "$oid": "6940f335d220688bec06fdc5"
+            },
+            "items": [
+                {
+                    "product_id": "69294d1a3cc7fb759809ef3c",
+                    "name": "Burger",
+                    "size": null,
+                    "price": 50,
+                    "quantity": 1,
+                    "subtotal": 50
+                },
+                {
+                    "product_id": "69294e083cc7fb759809ef3d",
+                    "name": "Potato Chips",
+                    "size": null,
+                    "price": 50,
+                    "quantity": 1,
+                    "subtotal": 50
+                },
+                {
+                    "product_id": "692951683cc7fb759809ef3e",
+                    "name": "Chicken Lechon",
+                    "size": null,
+                    "price": 260,
+                    "quantity": 1,
+                    "subtotal": 260
+                }
+            ],
+            "payment_method": "card",
+            "total_amount": 360,
+            "cash_amount": 360,
+            "change_amount": 0,
+            "transaction_id": "TXN-20251216-374994",
+            "card_number": "**** **** **** 1828",
+            "card_holder": "Patricia Bautista",
+            "product_names": [
+                "Burger",
+                "Potato Chips",
+                "Chicken Lechon"
+            ],
+            "total_item_count": 3,
+            "order_id": "02",
+            "created_at": {
+                "$date": {
+                    "$numberLong": "1765864245835"
+                }
+            },
+            "status": "Served",
+            "action_type": "served",
+            "served_at": {
+                "$date": {
+                    "$numberLong": "1765864262000"
+                }
+            },
+            "served_by": "Cashier One",
+            "served_by_username": "cashier1"
+        },
+        {
+            "_id": {
+                "$oid": "6940f3a4d220688bec06fdc7"
+            },
+            "items": [
+                {
+                    "product_id": "692951683cc7fb759809ef3e",
+                    "name": "Chicken Lechon",
+                    "size": null,
+                    "price": 260,
+                    "quantity": 9,
+                    "subtotal": 2340
+                }
+            ],
+            "payment_method": "card",
+            "total_amount": 2340,
+            "cash_amount": 2340,
+            "change_amount": 0,
+            "transaction_id": "TXN-20251216-761931",
+            "card_number": "**** **** **** 1063",
+            "card_holder": "Carlo Ramirez",
+            "product_names": [
+                "Chicken Lechon"
+            ],
+            "total_item_count": 9,
+            "order_id": "03",
+            "created_at": {
+                "$date": {
+                    "$numberLong": "1765864356033"
+                }
+            },
+            "status": "Canceled",
+            "action_type": "canceled",
+            "served_at": {
+                "$date": {
+                    "$numberLong": "1765867280000"
+                }
+            },
+            "served_by": "Admin User",
+            "served_by_username": "admin1"
+        },
+        {
+            "_id": {
+                "$oid": "6940f3aed220688bec06fdc8"
+            },
+            "items": [
+                {
+                    "product_id": "69294d1a3cc7fb759809ef3c",
+                    "name": "Burger",
+                    "size": null,
+                    "price": 50,
+                    "quantity": 3,
+                    "subtotal": 150
+                },
+                {
+                    "product_id": "69294e083cc7fb759809ef3d",
+                    "name": "Potato Chips",
+                    "size": null,
+                    "price": 50,
+                    "quantity": 2,
+                    "subtotal": 100
+                }
+            ],
+            "payment_method": "card",
+            "total_amount": 250,
+            "cash_amount": 250,
+            "change_amount": 0,
+            "transaction_id": "TXN-20251216-190333",
+            "card_number": "**** **** **** 9222",
+            "card_holder": "Mark Villanueva",
+            "product_names": [
+                "Burger",
+                "Potato Chips"
+            ],
+            "total_item_count": 5,
+            "order_id": "04",
+            "created_at": {
+                "$date": {
+                    "$numberLong": "1765864366624"
+                }
+            },
+            "status": "Served",
+            "action_type": "served",
+            "served_at": {
+                "$date": {
+                    "$numberLong": "1765864478000"
+                }
+            },
+            "served_by": "Cashier Two",
+            "served_by_username": "cashier2"
+        },
+        {
+            "_id": {
+                "$oid": "694116b5d220688bec06fdd9"
+            },
+            "items": [
+                {
+                    "product_id": "69294e083cc7fb759809ef3d",
+                    "name": "Potato Chips",
+                    "size": null,
+                    "price": 50,
+                    "quantity": 1,
+                    "subtotal": 50
+                },
+                {
+                    "product_id": "69294d1a3cc7fb759809ef3c",
+                    "name": "Burger",
+                    "size": null,
+                    "price": 50,
+                    "quantity": 1,
+                    "subtotal": 50
+                },
+                {
+                    "product_id": "692951683cc7fb759809ef3e",
+                    "name": "Chicken Lechon",
+                    "size": null,
+                    "price": 260,
+                    "quantity": 1,
+                    "subtotal": 260
+                }
+            ],
+            "payment_method": "Cash",
+            "total_amount": 360,
+            "cash_amount": 360,
+            "change_amount": 0,
+            "transaction_id": "TXN-20251216-399490",
+            "card_number": null,
+            "card_holder": null,
+            "product_names": [
+                "Potato Chips",
+                "Burger",
+                "Chicken Lechon"
+            ],
+            "total_item_count": 3,
+            "order_id": "05",
+            "created_at": {
+                "$date": {
+                    "$numberLong": "1765873333713"
+                }
+            },
+            "status": "Pending"
+        },
+        {
+            "_id": {
+                "$oid": "6941173fd220688bec06fdda"
+            },
+            "items": [
+                {
+                    "product_id": "69294c153cc7fb759809ef3b",
+                    "name": "Orange Juice",
+                    "size": "small",
+                    "price": 80,
+                    "quantity": 4,
+                    "subtotal": 320
+                },
+                {
+                    "product_id": "69294d1a3cc7fb759809ef3c",
+                    "name": "Burger",
+                    "size": null,
+                    "price": 50,
+                    "quantity": 3,
+                    "subtotal": 150
+                },
+                {
+                    "product_id": "69294e083cc7fb759809ef3d",
+                    "name": "Potato Chips",
+                    "size": null,
+                    "price": 50,
+                    "quantity": 2,
+                    "subtotal": 100
+                },
+                {
+                    "product_id": "692951683cc7fb759809ef3e",
+                    "name": "Chicken Lechon",
+                    "size": null,
+                    "price": 260,
+                    "quantity": 2,
+                    "subtotal": 520
+                }
+            ],
+            "payment_method": "Cash",
+            "total_amount": 1090,
+            "cash_amount": 1090,
+            "change_amount": 0,
+            "transaction_id": "TXN-20251216-331806",
+            "card_number": null,
+            "card_holder": null,
+            "product_names": [
+                "Orange Juice",
+                "Burger",
+                "Potato Chips",
+                "Chicken Lechon"
+            ],
+            "total_item_count": 11,
+            "order_id": "06",
+            "created_at": {
+                "$date": {
+                    "$numberLong": "1765873471203"
+                }
+            },
+            "status": "Pending"
+        },
+        {
+            "_id": {
+                "$oid": "694f7b01d425ae6fa701038b"
+            },
+            "items": [
+                {
+                    "product_id": "69294c153cc7fb759809ef3b",
+                    "name": "Orange Juice",
+                    "size": "large",
+                    "price": 128,
+                    "quantity": 1,
+                    "subtotal": 128
+                }
+            ],
+            "payment_method": "card",
+            "total_amount": 128,
+            "cash_amount": 128,
+            "change_amount": 0,
+            "transaction_id": "TXN-20251227-233582",
+            "card_number": "**** **** **** 2211",
+            "card_holder": "Maria Cruz",
+            "product_names": [
+                "Orange Juice"
+            ],
+            "total_item_count": 1,
+            "order_id": "07",
+            "created_at": {
+                "$date": {
+                    "$numberLong": "1766816513218"
+                }
+            },
+            "status": "Pending"
+        },
+        {
+            "_id": {
+                "$oid": "694f88c4d425ae6fa701038d"
+            },
+            "items": [
+                {
+                    "product_id": "69294e083cc7fb759809ef3d",
+                    "name": "Potato Chips",
+                    "size": null,
+                    "price": 50,
+                    "quantity": 1,
+                    "subtotal": 50
+                }
+            ],
+            "payment_method": "card",
+            "total_amount": 50,
+            "cash_amount": 50,
+            "change_amount": 0,
+            "transaction_id": "TXN-20251227-587541",
+            "card_number": "**** **** **** 4241",
+            "card_holder": "Angela Reyes",
+            "product_names": [
+                "Potato Chips"
+            ],
+            "total_item_count": 1,
+            "order_id": "08",
+            "created_at": {
+                "$date": {
+                    "$numberLong": "1766820036804"
+                }
+            },
+            "status": "Pending"
+        },
+        {
+            "_id": {
+                "$oid": "694f8b56d425ae6fa701038e"
+            },
+            "items": [
+                {
+                    "product_id": "69294c153cc7fb759809ef3b",
+                    "name": "Orange Juice",
+                    "size": "medium",
+                    "price": 104,
+                    "quantity": 1,
+                    "subtotal": 104
+                }
+            ],
+            "payment_method": "card",
+            "total_amount": 104,
+            "cash_amount": 104,
+            "change_amount": 0,
+            "transaction_id": "TXN-20251227-787248",
+            "card_number": "**** **** **** 9605",
+            "card_holder": "Carlo Ramirez",
+            "product_names": [
+                "Orange Juice"
+            ],
+            "total_item_count": 1,
+            "order_id": "09",
+            "created_at": {
+                "$date": {
+                    "$numberLong": "1766820694917"
+                }
+            },
+            "status": "Pending"
+        },
+        {
+            "_id": {
+                "$oid": "694f9611d425ae6fa701038f"
+            },
+            "items": [
+                {
+                    "product_id": "69294c153cc7fb759809ef3b",
+                    "name": "Orange Juice",
+                    "size": "small",
+                    "price": 80,
+                    "quantity": 5,
+                    "subtotal": 400
+                }
+            ],
+            "payment_method": "Cash",
+            "total_amount": 400,
+            "cash_amount": 400,
+            "change_amount": 0,
+            "transaction_id": "TXN-20251227-898845",
+            "card_number": null,
+            "card_holder": null,
+            "product_names": [
+                "Orange Juice"
+            ],
+            "total_item_count": 5,
+            "order_id": "10",
+            "created_at": {
+                "$date": {
+                    "$numberLong": "1766823441038"
+                }
+            },
+            "status": "Pending"
+        },
+        {
+            "_id": {
+                "$oid": "694f9d85d425ae6fa7010392"
+            },
+            "items": [
+                {
+                    "product_id": "69294d1a3cc7fb759809ef3c",
+                    "name": "Burger",
+                    "size": null,
+                    "price": 50,
+                    "quantity": 1,
+                    "subtotal": 50
+                }
+            ],
+            "payment_method": "card",
+            "total_amount": 50,
+            "cash_amount": 50,
+            "change_amount": 0,
+            "transaction_id": "TXN-20251227-331247",
+            "card_number": "**** **** **** 4074",
+            "card_holder": "Andrea Castillo",
+            "product_names": [
+                "Burger"
+            ],
+            "total_item_count": 1,
+            "order_id": "11",
+            "created_at": {
+                "$date": {
+                    "$numberLong": "1766825349111"
+                }
+            },
+            "status": "Pending"
+        },
+        {
+            "_id": {
+                "$oid": "6958b37403c18d7506099ea7"
+            },
+            "items": [
+                {
+                    "product_id": "69294e083cc7fb759809ef3d",
+                    "name": "Potato Chips",
+                    "size": null,
+                    "price": 50,
+                    "quantity": 1,
+                    "subtotal": 50
+                }
+            ],
+            "payment_method": "Cash",
+            "total_amount": 50,
+            "cash_amount": 50,
+            "change_amount": 0,
+            "transaction_id": "TXN-20260103-803685",
+            "card_number": null,
+            "card_holder": null,
+            "product_names": [
+                "Potato Chips"
+            ],
+            "total_item_count": 1,
+            "order_id": "12",
+            "created_at": {
+                "$date": {
+                    "$numberLong": "1767420788435"
+                }
+            },
+            "status": "Pending"
+        },
+        {
+            "_id": {
+                "$oid": "6958c2d403c18d7506099ea8"
+            },
+            "items": [
+                {
+                    "product_id": "69294c153cc7fb759809ef3b",
+                    "name": "Orange Juice",
+                    "size": "small",
+                    "price": 80,
+                    "quantity": 1,
+                    "subtotal": 80
+                }
+            ],
+            "payment_method": "card",
+            "total_amount": 80,
+            "cash_amount": 80,
+            "change_amount": 0,
+            "transaction_id": "TXN-20260103-794130",
+            "card_number": "**** **** **** 3840",
+            "card_holder": "Ria Mendoza",
+            "product_names": [
+                "Orange Juice"
+            ],
+            "total_item_count": 1,
+            "order_id": "13",
+            "created_at": {
+                "$date": {
+                    "$numberLong": "1767424724637"
+                }
+            },
+            "status": "Pending"
+        },
+        {
+            "_id": {
+                "$oid": "6958c2f003c18d7506099ea9"
+            },
+            "items": [
+                {
+                    "product_id": "69294c153cc7fb759809ef3b",
+                    "name": "Orange Juice",
+                    "size": "small",
+                    "price": 80,
+                    "quantity": 1,
+                    "subtotal": 80
+                }
+            ],
+            "payment_method": "card",
+            "total_amount": 80,
+            "cash_amount": 80,
+            "change_amount": 0,
+            "transaction_id": "TXN-20260103-185961",
+            "card_number": "**** **** **** 1097",
+            "card_holder": "Carlo Ramirez",
+            "product_names": [
+                "Orange Juice"
+            ],
+            "total_item_count": 1,
+            "order_id": "14",
+            "created_at": {
+                "$date": {
+                    "$numberLong": "1767424752491"
+                }
+            },
+            "status": "Pending"
+        }
+    ],
+    "products": [
+        {
+            "_id": {
+                "$oid": "69294c153cc7fb759809ef3b"
+            },
+            "product_name": "Orange Juice",
+            "category": "beverage",
+            "price": 80,
+            "stock_quantity": 100,
+            "image_path": "img\/product\/product_1764314133_Orange_Juice.jpg",
+            "created_at": {
+                "$date": {
+                    "$numberLong": "1764314133848"
+                }
+            },
+            "updated_at": {
+                "$date": {
+                    "$numberLong": "1764314133848"
+                }
+            }
+        },
+        {
+            "_id": {
+                "$oid": "69294d1a3cc7fb759809ef3c"
+            },
+            "product_name": "Burger",
+            "category": "food",
+            "price": 50,
+            "stock_quantity": 100,
+            "image_path": "img\/product\/product_1764314394_Burger.webp",
+            "created_at": {
+                "$date": {
+                    "$numberLong": "1764314394781"
+                }
+            },
+            "updated_at": {
+                "$date": {
+                    "$numberLong": "1764314394781"
+                }
+            }
+        },
+        {
+            "_id": {
+                "$oid": "69294e083cc7fb759809ef3d"
+            },
+            "product_name": "Potato Chips",
+            "category": "Snack",
+            "price": 50,
+            "stock_quantity": 10,
+            "image_path": "img\/product\/product_1764314632_Potato_Chips.webp",
+            "created_at": {
+                "$date": {
+                    "$numberLong": "1764314632222"
+                }
+            },
+            "updated_at": {
+                "$date": {
+                    "$numberLong": "1764396458231"
+                }
+            }
+        },
+        {
+            "_id": {
+                "$oid": "692951683cc7fb759809ef3e"
+            },
+            "product_name": "Chicken Lechon",
+            "category": "Food",
+            "price": 260,
+            "stock_quantity": 9,
+            "image_path": "img\/product\/product_1764315496_Chicken_Lechon.webp",
+            "created_at": {
+                "$date": {
+                    "$numberLong": "1764315496432"
+                }
+            },
+            "updated_at": {
+                "$date": {
+                    "$numberLong": "1765505700104"
+                }
+            }
+        },
+        {
+            "_id": {
+                "$oid": "6958db2a03c18d7506099eaa"
+            },
+            "product_name": "Donut",
+            "category": "snack",
+            "price": 35,
+            "stock_quantity": 50,
+            "image_path": "img\/product\/product_1767430954_Donut.jpg",
+            "created_at": {
+                "$date": {
+                    "$numberLong": "1767430954390"
+                }
+            },
+            "updated_at": {
+                "$date": {
+                    "$numberLong": "1767430954390"
+                }
+            }
+        }
+    ]
+}
