@@ -2244,5 +2244,15 @@
         "role": "guest",
         "ip": "192.168.100.166",
         "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6960d902e32ec0.93853366",
+        "timestamp": "2026-01-09 18:31:30",
+        "action": "page_access",
+        "details": "Customer accessed Order page (Landing Page)",
+        "user": "Guest\/Customer",
+        "role": "guest",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
     }
 ]
