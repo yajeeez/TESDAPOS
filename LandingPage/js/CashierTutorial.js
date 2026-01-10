@@ -6,15 +6,14 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Array of cashier tutorial images
   const images = [
-    '../img/Tutorial/login_page.png',
-    '../img/Tutorial/cash_dashboard.png',
-    '../img/Tutorial/cash_manage.png',
-    '../img/Tutorial/cash_manage1.png',
-    '../img/Tutorial/cash_manage2.png',
-    '../img/Tutorial/print.png',
-    '../img/Tutorial/print1.png',
-    '../img/Tutorial/cash_pass.png',
-    '../img/Tutorial/cash_pass1.png'
+    '../img/Tutorial/Cashier/cashier_login.png',
+    '../img/Tutorial/Cashier/cashier_dashboard.png',
+    '../img/Tutorial/Cashier/cashier_manage.png',
+    '../img/Tutorial/Cashier/cashier_manage1.png',
+    '../img/Tutorial/Cashier/cashier_manage2.png',  
+    '../img/Tutorial/Cashier/cashier_print.png',
+    '../img/Tutorial/Cashier/cashier_changepass.png',
+    '../img/Tutorial/Cashier/cashier_changepass1.png'
   ];
   
   let currentIndex = 0;

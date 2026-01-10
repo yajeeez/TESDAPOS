@@ -2254,5 +2254,133 @@
         "role": "guest",
         "ip": "::1",
         "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6961f797bfa722.25304612",
+        "timestamp": "2026-01-10 14:54:15",
+        "action": "page_access",
+        "details": "Customer accessed Order page (Landing Page)",
+        "user": "Guest\/Customer",
+        "role": "guest",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6961f7a9596725.33260433",
+        "timestamp": "2026-01-10 14:54:33",
+        "action": "admin_login",
+        "details": "Admin 'Admin User' logged in",
+        "user": "Admin User",
+        "role": "admin",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6961f7a9962c29.22498278",
+        "timestamp": "2026-01-10 14:54:33",
+        "action": "page_access",
+        "details": "Accessed Dashboard page",
+        "user": "Admin User",
+        "role": "admin",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6961f8a34ba311.13994175",
+        "timestamp": "2026-01-10 14:58:43",
+        "action": "cashier_login",
+        "details": "Cashier 'Cashier One' (cashier1) logged in",
+        "user": "Cashier One",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36",
+        "cashier_name": "Cashier One",
+        "cashier_username": "cashier1"
+    },
+    {
+        "id": "audit_6961f8a3b94be4.11887071",
+        "timestamp": "2026-01-10 14:58:43",
+        "action": "page_access",
+        "details": "Accessed Cashier Dashboard page",
+        "user": "Cashier One",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6961fa6b238460.75520257",
+        "timestamp": "2026-01-10 15:06:19",
+        "action": "cashier_logout",
+        "details": "Cashier 'Cashier One' (cashier1) logged out",
+        "user": "Cashier One",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36",
+        "cashier_name": "Cashier One",
+        "cashier_username": "cashier1"
+    },
+    {
+        "id": "audit_69620c358c64e5.30862198",
+        "timestamp": "2026-01-10 16:22:13",
+        "action": "cashier_login",
+        "details": "Cashier 'Cashier One' (cashier1) logged in",
+        "user": "Cashier One",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36",
+        "cashier_name": "Cashier One",
+        "cashier_username": "cashier1"
+    },
+    {
+        "id": "audit_69620c35973534.59046499",
+        "timestamp": "2026-01-10 16:22:13",
+        "action": "page_access",
+        "details": "Accessed Cashier Dashboard page",
+        "user": "Cashier One",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69620c37f1a788.68413124",
+        "timestamp": "2026-01-10 16:22:15",
+        "action": "page_access",
+        "details": "Accessed Cashier Transactions page",
+        "user": "Cashier One",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69620c398c5f39.59004312",
+        "timestamp": "2026-01-10 16:22:17",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Cashier One",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69620c3a4e5ad6.18334092",
+        "timestamp": "2026-01-10 16:22:18",
+        "action": "page_access",
+        "details": "Accessed Cashier Transactions page",
+        "user": "Cashier One",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69620c9d0df688.53076081",
+        "timestamp": "2026-01-10 16:23:57",
+        "action": "cashier_logout",
+        "details": "Cashier 'Cashier One' (cashier1) logged out",
+        "user": "Cashier One",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36",
+        "cashier_name": "Cashier One",
+        "cashier_username": "cashier1"
     }
 ]
