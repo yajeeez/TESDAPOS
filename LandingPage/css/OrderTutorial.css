@@ -193,9 +193,7 @@ footer {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: var(--card-bg);
   border-radius: 16px;
-  box-shadow: 0 8px 24px var(--shadow);
   overflow: hidden;
   margin-bottom: 2rem;
 }

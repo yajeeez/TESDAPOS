@@ -6,12 +6,18 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Array of tutorial images for Order/Customer flow
   const images = [
-    '../img/Tutorial/order now.png',
-    '../img/Tutorial/addtocart.png',
-    '../img/Tutorial/check out.png',
+    '../img/Tutorial/tutorial_page.png',
+    '../img/Tutorial/ordernow_page.png',
+    '../img/Tutorial/ordernow1.png',
+    '../img/Tutorial/ordernow2.png',
+    '../img/Tutorial/ordernow3.png',
+    '../img/Tutorial/ordernow4.png',
+    '../img/Tutorial/order_size.png',
+    '../img/Tutorial/order_addtocart.png',
+    '../img/Tutorial/order_checkout.png',
     '../img/Tutorial/payment.png',
     '../img/Tutorial/creditcard.png',
-    '../img/Tutorial/swipe.png'
+    '../img/Tutorial/swipecard.png'
   ];
   
   let currentIndex = 0;

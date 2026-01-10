@@ -6,20 +6,28 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Array of admin tutorial images
   const images = [
-    '../img/Tutorial/login.png',
-    '../img/Tutorial/dashboard.png',
-    '../img/Tutorial/dashboard2.png',
-    '../img/Tutorial/dashboard3.png',
-    '../img/Tutorial/dashboard4.png',
-    '../img/Tutorial/Inventory.png',
-    '../img/Tutorial/createproduct.png',
-    '../img/Tutorial/manageproduct.png',
-    '../img/Tutorial/audit_trail.png',
-    '../img/Tutorial/audit_delete.png',
+    '../img/Tutorial/login_page.png',
+    '../img/Tutorial/admin_dash.png',
+    '../img/Tutorial/admin_dash1.png',
+    '../img/Tutorial/admin_dash2.png',
+    '../img/Tutorial/admin_dash3.png',
+    '../img/Tutorial/inventory.png',
+    '../img/Tutorial/create_product.png',
+    '../img/Tutorial/create_product1.png',
+    '../img/Tutorial/admin_manage.png',
+    '../img/Tutorial/admin_action.png',
+    '../img/Tutorial/admin_print.png',
+    '../img/Tutorial/admin_generate.png',
+    '../img/Tutorial/admin_report.png',
+    '../img/Tutorial/admin_audit.png',
+    '../img/Tutorial/admin_audit1.png',
     '../img/Tutorial/maintenance.png',
-    '../img/Tutorial/systemhealth.png',
-    '../img/Tutorial/backup.png',
-    '../img/Tutorial/changepass.png'
+    '../img/Tutorial/admin_health.png',
+    '../img/Tutorial/admin_health1.png',
+    '../img/Tutorial/admin_backup.png',
+    '../img/Tutorial/admin_backup1.png',
+    '../img/Tutorial/admin_pass.png',
+    '../img/Tutorial/admin_pass1.png'
   ];
   
   let currentIndex = 0;
