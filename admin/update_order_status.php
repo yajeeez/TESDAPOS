@@ -40,16 +40,12 @@ try {
     
     $mongoOrders = new MongoOrders();
     
-    // Get old status before updating
-    $oldOrder = $mongoOrders->getOrderById($orderId);
-    $oldStatus = $oldOrder['status'] ?? 'Unknown';
-    
     // Update the order status with cashier info
     $result = $mongoOrders->updateOrderStatus($orderId, $newStatus, $servedBy, $servedByUsername, $servedAt);
     
     // Log the status update in audit trail
     if ($result['success']) {
-        AuditLogger::logOrderStatusUpdate($orderId, $oldStatus, $newStatus);
+        AuditLogger::logOrderStatusUpdate($orderId, 'Previous Status', $newStatus);
     }
     
     echo json_encode($result);
