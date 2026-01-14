@@ -57,7 +57,7 @@ function renderOrders() {
     const paymentMethodLower = paymentMethodRaw.toLowerCase();
     const isCash = paymentMethodLower === 'cash';
     const paymentDisplay = isCash ? 'Cash' : (order.card_type || paymentMethodRaw || 'Card');
-    const txnDisplay = (!isCash && order.transaction_id) ? order.transaction_id : '';
+    const txnDisplay = order.transaction_id ? order.transaction_id : '';
 
     // Debug: Log served_by info for this order
     console.log(`Order ${displayId} - served_by: "${order.served_by}", served_by_username: "${order.served_by_username}"`);
