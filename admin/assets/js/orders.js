@@ -37,7 +37,14 @@ function renderOrders() {
     return;
   }
 
-  orders.forEach(order => {
+  // Sort orders by order_id in ascending order (lowest number first)
+  const sortedOrders = [...orders].sort((a, b) => {
+    const idA = parseInt((a.order_id || a.id || '0').toString().replace(/\D/g, '')) || 0;
+    const idB = parseInt((b.order_id || b.id || '0').toString().replace(/\D/g, '')) || 0;
+    return idA - idB;
+  });
+
+  sortedOrders.forEach(order => {
     const tr = document.createElement('tr');
 
     // Handle real order data structure with product_names

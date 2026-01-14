@@ -113,7 +113,14 @@ function renderTransactions() {
     return;
   }
 
-  transactionsToRender.forEach((transaction) => {
+  // Sort transactions by order_id in ascending order (lowest number first)
+  const sortedTransactions = [...transactionsToRender].sort((a, b) => {
+    const idA = parseInt((a.order_id || a.id || '0').toString().replace(/\D/g, '')) || 0;
+    const idB = parseInt((b.order_id || b.id || '0').toString().replace(/\D/g, '')) || 0;
+    return idA - idB;
+  });
+
+  sortedTransactions.forEach((transaction) => {
     const total = transactionTotal(transaction);
     const itemCount = transactionItemCount(transaction);
 
