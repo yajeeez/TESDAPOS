@@ -248,12 +248,12 @@ function printTransactionReport(orderId) {
     </tr>
   `).join('');
 
-  const total = transactionTotal(transaction);
   const itemCount = transactionItemCount(transaction);
 
-  // Calculate VAT (1%)
-  const subtotal = total / 1.01;
-  const vat = total - subtotal;
+  // Calculate VAT (1% added to subtotal, matching receipt calculation)
+  const subtotal = transactionTotal(transaction);
+  const vat = subtotal * 0.01;
+  const total = subtotal + vat;
 
   printWindow.document.write(`
     <!DOCTYPE html>
@@ -392,6 +392,12 @@ function printTransactionReport(orderId) {
             <div style="font-weight: normal; font-size: 0.95rem;">Subtotal: ${formatCurrency(subtotal)}</div>
             <div style="font-weight: normal; font-size: 0.95rem;">VAT (1%): ${formatCurrency(vat)}</div>
             <div style="margin-top: 8px; padding-top: 8px; border-top: 2px solid #333; font-size: 1.2rem;">Total Amount: ${formatCurrency(total)}</div>
+            ${transaction.cash_received ? `
+            <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #ddd;">
+              <div style="font-weight: normal; font-size: 0.95rem;">Cash: ${formatCurrency(transaction.cash_received)}</div>
+              <div style="font-weight: normal; font-size: 0.95rem;">Change: ${formatCurrency(transaction.change_amount || 0)}</div>
+            </div>
+            ` : ''}
           </div>
         </div>
 
@@ -567,6 +573,15 @@ function printSalesReport() {
   const totalItems = transactionsToPrint.reduce((sum, txn) => sum + transactionItemCount(txn), 0);
   const averageOrder = transactionCount > 0 ? totalSales / transactionCount : 0;
 
+  // Calculate VAT breakdown (1% added to subtotal, matching receipt calculation)
+  const subtotal = totalSales;
+  const vat = subtotal * 0.01;
+  const totalWithVat = subtotal + vat;
+
+  // Calculate total cash and change
+  const totalCash = transactionsToPrint.reduce((sum, txn) => sum + (txn.cash_received || 0), 0);
+  const totalChange = transactionsToPrint.reduce((sum, txn) => sum + (txn.change_amount || 0), 0);
+
   // Generate table rows
   const tableRows = transactionsToPrint.map(txn => {
     const items = txn.items ? txn.items.map(item => `${item.name} (${item.quantity}x)`).join(', ') : 'No items';
@@ -724,6 +739,24 @@ function printSalesReport() {
             </tr>
           </tfoot>
         </table>
+
+        <div style="margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+          <h3 style="margin-top: 0; color: #004aad;">Payment Summary</h3>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 1rem;">
+            <div style="text-align: right; font-weight: 600;">Subtotal:</div>
+            <div style="text-align: right;">${formatCurrency(subtotal)}</div>
+            <div style="text-align: right; font-weight: 600;">VAT (1%):</div>
+            <div style="text-align: right;">${formatCurrency(vat)}</div>
+            <div style="text-align: right; font-weight: 600; font-size: 1.1rem; padding-top: 10px; border-top: 2px solid #004aad;">Total Amount:</div>
+            <div style="text-align: right; font-weight: 600; font-size: 1.1rem; padding-top: 10px; border-top: 2px solid #004aad;">${formatCurrency(totalWithVat)}</div>
+            ${totalCash > 0 ? `
+            <div style="text-align: right; font-weight: 600; margin-top: 10px;">Cash:</div>
+            <div style="text-align: right; margin-top: 10px;">${formatCurrency(totalCash)}</div>
+            <div style="text-align: right; font-weight: 600;">Change:</div>
+            <div style="text-align: right;">${formatCurrency(totalChange)}</div>
+            ` : ''}
+          </div>
+        </div>
 
         <div class="footer">
           <p>© 2025 TESDA POS System</p>
