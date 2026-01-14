@@ -451,19 +451,23 @@ function exportTransactionToCSV(orderId) {
     (item.price || 0) * (item.quantity || 1)
   ]);
 
-  // Add summary row at the end
-  csvRows.push([
-    orderId,
-    transaction.transaction_id || 'N/A',
-    transaction.created_at ? new Date(transaction.created_at).toLocaleDateString() : (transaction.date || ''),
-    transaction.served_by || 'N/A',
-    fullPaymentMethod,
-    transaction.status || 'Pending',
-    'TOTAL',
-    transactionItemCount(transaction).toString(),
-    '',
-    transactionTotal(transaction)
-  ]);
+  // Calculate totals
+  const itemCount = transactionItemCount(transaction);
+  const subtotal = transactionTotal(transaction);
+  const vat = subtotal * 0.01;
+  const total = subtotal + vat;
+
+  // Add summary rows
+  csvRows.push(['', '', '', '', '', '', '', '', '', '']);
+  csvRows.push(['', '', '', '', '', '', 'Total Items:', itemCount, '', '']);
+  csvRows.push(['', '', '', '', '', '', 'Subtotal:', '', '', subtotal.toFixed(2)]);
+  csvRows.push(['', '', '', '', '', '', 'VAT (1%):', '', '', vat.toFixed(2)]);
+  csvRows.push(['', '', '', '', '', '', 'Total Amount:', '', '', total.toFixed(2)]);
+  
+  if (transaction.cash_received) {
+    csvRows.push(['', '', '', '', '', '', 'Cash:', '', '', transaction.cash_received.toFixed(2)]);
+    csvRows.push(['', '', '', '', '', '', 'Change:', '', '', (transaction.change_amount || 0).toFixed(2)]);
+  }
 
   const csvContent = [
     headers.join(','),
@@ -809,6 +813,18 @@ function exportToCSV() {
       transaction.total_amount || '0.00'
     ];
   });
+
+  // Calculate summary totals
+  const totalSales = transactionsToExport.reduce((sum, txn) => sum + transactionTotal(txn), 0);
+  const subtotal = totalSales;
+  const vat = subtotal * 0.01;
+  const totalWithVat = subtotal + vat;
+
+  // Add summary rows
+  csvRows.push(['', '', '', '', '', '', '', '']);
+  csvRows.push(['', '', '', '', '', '', 'Subtotal:', subtotal.toFixed(2)]);
+  csvRows.push(['', '', '', '', '', '', 'VAT (1%):', vat.toFixed(2)]);
+  csvRows.push(['', '', '', '', '', '', 'Total Amount:', totalWithVat.toFixed(2)]);
 
   // Combine headers and rows
   const csvContent = [
