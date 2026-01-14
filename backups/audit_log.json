@@ -7536,5 +7536,173 @@
         "role": "cashier",
         "ip": "::1",
         "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69675562d82cc3.77344403",
+        "timestamp": "2026-01-14 16:35:46",
+        "action": "page_access",
+        "details": "Customer accessed Order page (Landing Page)",
+        "user": "Cashier One",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69675563179f18.71896397",
+        "timestamp": "2026-01-14 16:35:47",
+        "action": "page_access",
+        "details": "Customer accessed Order page (Landing Page)",
+        "user": "Cashier One",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696755695793f4.83079526",
+        "timestamp": "2026-01-14 16:35:53",
+        "action": "order_created",
+        "details": "Order #03 created - Amount: \u20b1150, Items: 3, Payment: Cash",
+        "user": "Cashier One",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36",
+        "order_id": "03",
+        "total_amount": 150,
+        "item_count": 3,
+        "payment_method": "Cash"
+    },
+    {
+        "id": "audit_6967557323b575.52739629",
+        "timestamp": "2026-01-14 16:36:03",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Cashier One",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967557347f379.99190623",
+        "timestamp": "2026-01-14 16:36:03",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Cashier One",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696755e5cbe028.60382238",
+        "timestamp": "2026-01-14 16:37:57",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Cashier One",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696755e5da1fb6.36215213",
+        "timestamp": "2026-01-14 16:37:57",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Cashier One",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69675659a5eb70.47483324",
+        "timestamp": "2026-01-14 16:39:53",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Cashier One",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69675685e864e0.09499803",
+        "timestamp": "2026-01-14 16:40:37",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Cashier One",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69675690078037.47655199",
+        "timestamp": "2026-01-14 16:40:48",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Cashier One",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69675690275fb3.61156379",
+        "timestamp": "2026-01-14 16:40:48",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Cashier One",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967570a82d6b3.95038416",
+        "timestamp": "2026-01-14 16:42:50",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Cashier One",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967570a99e1e2.22317735",
+        "timestamp": "2026-01-14 16:42:50",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Cashier One",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967570ab4bca7.72783501",
+        "timestamp": "2026-01-14 16:42:50",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Cashier One",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967570c7d8245.15461737",
+        "timestamp": "2026-01-14 16:42:52",
+        "action": "page_access",
+        "details": "Customer accessed Order page (Landing Page)",
+        "user": "Guest\/Customer",
+        "role": "guest",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967571b6b0cc3.06660722",
+        "timestamp": "2026-01-14 16:43:07",
+        "action": "order_created",
+        "details": "Order #04 created - Amount: \u20b1260, Items: 1, Payment: visa",
+        "user": "Guest\/Customer",
+        "role": "guest",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36",
+        "order_id": "04",
+        "total_amount": 260,
+        "item_count": 1,
+        "payment_method": "visa"
     }
 ]

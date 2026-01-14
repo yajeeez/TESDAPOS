@@ -270,6 +270,82 @@ function printReceipt(orderId) {
     return;
   }
 
+  // Show confirmation modal
+  showPrintConfirmationModal(orderId);
+}
+
+// ==========================
+// Show Print Confirmation Modal
+// ==========================
+function showPrintConfirmationModal(orderId) {
+  const displayId = orders.find(o => {
+    const orderIdStr = String(orderId);
+    const orderOrderId = String(o.order_id || '');
+    const orderMongoId = String(o._id || '');
+    const orderIdField = String(o.id || '');
+    return orderOrderId === orderIdStr || orderMongoId === orderIdStr || orderIdField === orderIdStr;
+  })?.order_id || orderId;
+
+  const modalHtml = `
+    <div class="edit-modal-overlay" id="printConfirmModalOverlay" onclick="closePrintConfirmModal()">
+      <div class="edit-modal" onclick="event.stopPropagation()" style="max-width: 400px;">
+        <div class="edit-modal-header">
+          <h3><i class="fas fa-print"></i> Print Receipt</h3>
+        </div>
+        <div class="edit-modal-body">
+          <p style="text-align: center; font-size: 16px; margin: 20px 0; color: black;">
+            Are you sure you want to print the receipt for Order #${displayId}?
+          </p>
+        </div>
+        <div class="edit-modal-footer">
+          <button class="cancel-btn" onclick="closePrintConfirmModal()">Cancel</button>
+          <button class="save-btn" onclick="confirmPrintReceipt('${orderId}')">
+            <i class="fas fa-print"></i> Print
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.body.insertAdjacentHTML('beforeend', modalHtml);
+}
+
+// ==========================
+// Close Print Confirmation Modal
+// ==========================
+function closePrintConfirmModal() {
+  const modal = document.getElementById('printConfirmModalOverlay');
+  if (modal) {
+    modal.remove();
+  }
+}
+
+// ==========================
+// Confirm Print Receipt
+// ==========================
+function confirmPrintReceipt(orderId) {
+  closePrintConfirmModal();
+  executePrintReceipt(orderId);
+}
+
+// ==========================
+// Execute Print Receipt
+// ==========================
+function executePrintReceipt(orderId) {
+  const order = orders.find(o => {
+    const orderIdStr = String(orderId);
+    const orderOrderId = String(o.order_id || '');
+    const orderMongoId = String(o._id || '');
+    const orderIdField = String(o.id || '');
+
+    return orderOrderId === orderIdStr || orderMongoId === orderIdStr || orderIdField === orderIdStr;
+  });
+
+  if (!order) {
+    alert('Order not found');
+    return;
+  }
+
   // Calculate subtotal (before VAT)
   const subtotal = order.total_amount || 0;
 
