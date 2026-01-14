@@ -92,8 +92,9 @@ let paymentMethodDistribution = {
 
 // ==========================
 // Calculate All Dashboard Metrics from Database
+// For dashboard cards, always use ALL data regardless of filters
 // ==========================
-async function calculateAllMetrics() {
+async function calculateAllMetrics(useFilters = false) {
   // Initialize metrics
   const metrics = {
     totalSales: 0,
@@ -114,19 +115,18 @@ async function calculateAllMetrics() {
 
   // Fetch real order data from database
   try {
-    // Use filtered transactions if available, otherwise use all transactions
+    // For dashboard cards, always use ALL transactions
+    // For charts, use filtered transactions if useFilters is true
     let transactions = [];
     
-    // Check if filteredTransactions exists and has been initialized
-    if (typeof filteredTransactions !== 'undefined' && Array.isArray(filteredTransactions)) {
-      // Use filteredTransactions - it's already filtered by applyFilters()
-      // This can be empty array if cashier has no data
+    if (useFilters && typeof filteredTransactions !== 'undefined' && Array.isArray(filteredTransactions)) {
+      // Use filteredTransactions for charts
       transactions = filteredTransactions;
-      console.log('📊 Using filteredTransactions:', transactions.length);
+      console.log('📊 Using filteredTransactions for charts:', transactions.length);
     } else if (typeof transactionsData !== 'undefined' && Array.isArray(transactionsData)) {
-      // Use all transactions if no filter is applied
+      // Use all transactions for dashboard cards
       transactions = transactionsData;
-      console.log('📊 Using all transactionsData:', transactions.length);
+      console.log('📊 Using all transactionsData for dashboard cards:', transactions.length);
     } else {
       // Final fallback to database fetch
       const response = await fetch('/TESDAPOS/admin/fetch_filtered_orders.php');
@@ -142,8 +142,12 @@ async function calculateAllMetrics() {
     // If transactions is empty (cashier has no data), metrics will remain at 0
     if (transactions.length > 0) {
       const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      const todayStr = today.toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
+      const year = today.getFullYear();
+      const month = String(today.getMonth() + 1).padStart(2, '0');
+      const day = String(today.getDate()).padStart(2, '0');
+      const todayStr = `${year}-${month}-${day}`; // Format: YYYY-MM-DD
+      
+      console.log('📅 Today\'s date for filtering:', todayStr);
       
       transactions.forEach(transaction => {
         const status = transaction.status || 'Pending';
@@ -155,12 +159,24 @@ async function calculateAllMetrics() {
 
         // Count orders today - count ALL Served orders from today
         if (transaction.created_at) {
-          const transactionDate = new Date(transaction.created_at);
-          const transactionDateStr = transactionDate.toISOString().split('T')[0];
+          const createdAtStr = String(transaction.created_at);
           
-          // Count all Served orders from today
-          if (transactionDateStr === todayStr && status === 'Served') {
+          // Check if created_at starts with today's date (handles both date strings and ISO timestamps)
+          if (createdAtStr.startsWith(todayStr) && status === 'Served') {
             metrics.ordersToday++;
+            console.log('✅ Order counted for today:', {
+              order_id: transaction.order_id,
+              created_at: createdAtStr,
+              today: todayStr,
+              status: status
+            });
+          } else if (status === 'Served') {
+            console.log('❌ Order NOT from today:', {
+              order_id: transaction.order_id,
+              created_at: createdAtStr,
+              today: todayStr,
+              status: status
+            });
           }
         }
 
@@ -621,15 +637,15 @@ function refreshCharts() {
 }
 
 async function updateDashboardCards() {
-  // Get filtered metrics instead of all metrics
-  const filteredMetrics = await calculateAllMetrics();
+  // Get FILTERED metrics for dashboard cards
+  const filteredMetrics = await calculateAllMetrics(true);
 
   const totalSalesEl = document.getElementById('dashboardTotalSales');
   const ordersTodayEl = document.getElementById('dashboardOrdersToday');
   const totalProductsEl = document.getElementById('dashboardTotalProducts');
   const lowStockEl = document.getElementById('dashboardLowStock');
 
-  console.log('📊 Updating dashboard cards:', {
+  console.log('📊 Updating dashboard cards with FILTERED data:', {
     totalSales: filteredMetrics.totalSales,
     ordersToday: filteredMetrics.ordersToday,
     totalProducts: dashboardMetrics.totalProducts,
@@ -648,34 +664,13 @@ async function updateDashboardCards() {
   if (lowStockEl) {
     lowStockEl.textContent = dashboardMetrics.lowStockItems.toString();
   }
-  
-  // Check if any filters are active and show notification if no data
-  const dateFilter = document.getElementById('filterStartDate')?.value;
-  const cashierFilter = document.getElementById('filterCashier')?.value;
-  const statusFilter = document.getElementById('filterStatus')?.value;
-  const paymentFilter = document.getElementById('filterPaymentMethod')?.value;
-  
-  const hasActiveFilters = dateFilter || cashierFilter || statusFilter || paymentFilter;
-  const hasNoData = filteredMetrics.totalSales === 0 && 
-                    filteredMetrics.ordersToday === 0 && 
-                    filteredMetrics.statusDistribution.Served === 0;
-  
-  if (hasActiveFilters && hasNoData) {
-    const filterDesc = [];
-    if (dateFilter) filterDesc.push(`Date: ${dateFilter}`);
-    if (cashierFilter) filterDesc.push(`Cashier: ${cashierFilter}`);
-    if (statusFilter) filterDesc.push(`Status: ${statusFilter}`);
-    if (paymentFilter) filterDesc.push(`Payment: ${paymentFilter}`);
-    
-    console.log('⚠️ No data found for active filters:', filterDesc.join(', '));
-  }
 }
 
 async function updateCharts() {
   if (!barChart || !pieChart) return;
 
-  // Get all updated metrics from database
-  const allMetrics = await calculateAllMetrics();
+  // Get FILTERED metrics for charts
+  const allMetrics = await calculateAllMetrics(true);
   
   // Check active filters
   const statusFilter = document.getElementById('filterStatus')?.value || '';

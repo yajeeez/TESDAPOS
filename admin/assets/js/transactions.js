@@ -325,10 +325,18 @@ function applyFilters() {
     if (startDate && txnDate < startDate) return false;
     if (endDate && txnDate > endDate) return false;
 
-    // Cashier filter - match by served_by (full name)
-    if (cashier && txn.served_by !== cashier) {
-      console.log('❌ Filtered out by cashier:', txn.served_by, '!==', cashier);
-      return false;
+    // Cashier filter - match by served_by_username (username)
+    if (cashier) {
+      const matchesByUsername = txn.served_by_username === cashier;
+      
+      if (!matchesByUsername) {
+        console.log('❌ Filtered out by cashier:', {
+          cashier: cashier,
+          served_by: txn.served_by,
+          served_by_username: txn.served_by_username
+        });
+        return false;
+      }
     }
 
     // Status filter

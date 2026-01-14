@@ -209,7 +209,7 @@ AuditLogger::log('page_access', 'Accessed Dashboard page');
           data.cashiers.forEach((cashier, index) => {
             console.log(`➕ Adding cashier ${index + 1}:`, cashier);
             const option = document.createElement('option');
-            option.value = cashier.name; // Use name instead of username
+            option.value = cashier.username; // Use username for consistent matching
             option.textContent = `${cashier.name} (${cashier.username})`;
             cashierSelect.appendChild(option);
           });
@@ -241,7 +241,7 @@ AuditLogger::log('page_access', 'Accessed Dashboard page');
         
         fallbackCashiers.forEach(cashier => {
           const option = document.createElement('option');
-          option.value = cashier.name; // Use name instead of username
+          option.value = cashier.username; // Use username for consistent matching
           option.textContent = `${cashier.name} (${cashier.username})`;
           cashierSelect.appendChild(option);
         });
