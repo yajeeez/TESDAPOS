@@ -784,10 +784,11 @@ async function savePaymentEdit(orderId) {
 
     console.log('Response status:', response.status);
 
-    if (!response.ok) {
+    const contentType = response.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
       const errorText = await response.text();
-      console.error('Response error:', errorText);
-      throw new Error(`HTTP error! status: ${response.status}`);
+      console.error('Server returned non-JSON response:', errorText);
+      throw new Error('Server error - check console for details');
     }
 
     const result = await response.json();

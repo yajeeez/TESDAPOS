@@ -9168,5 +9168,683 @@
         "role": "cashier",
         "ip": "::1",
         "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676062b38f72.60804987",
+        "timestamp": "2026-01-14 17:22:42",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676070d37684.31918123",
+        "timestamp": "2026-01-14 17:22:56",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696760734937f3.30670315",
+        "timestamp": "2026-01-14 17:22:59",
+        "action": "cashier_logout",
+        "details": "Cashier 'Emman Tombeats' (cashier1) logged out",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36",
+        "cashier_name": "Emman Tombeats",
+        "cashier_username": "cashier1"
+    },
+    {
+        "id": "audit_69676078454699.53509419",
+        "timestamp": "2026-01-14 17:23:04",
+        "action": "admin_login",
+        "details": "Admin 'Aeron Gaylord' logged in",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696760784c0af7.63133206",
+        "timestamp": "2026-01-14 17:23:04",
+        "action": "page_access",
+        "details": "Accessed Dashboard page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967607be17924.88217202",
+        "timestamp": "2026-01-14 17:23:07",
+        "action": "page_access",
+        "details": "Accessed Orders page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967607d302403.00360355",
+        "timestamp": "2026-01-14 17:23:09",
+        "action": "page_access",
+        "details": "Accessed Create Products page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967607e63c2f9.45888829",
+        "timestamp": "2026-01-14 17:23:10",
+        "action": "page_access",
+        "details": "Accessed Transactions page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967607fa48517.33777319",
+        "timestamp": "2026-01-14 17:23:11",
+        "action": "page_access",
+        "details": "Accessed Inventory page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696760817898f2.15893323",
+        "timestamp": "2026-01-14 17:23:13",
+        "action": "page_access",
+        "details": "Accessed Create Products page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676083313186.52804613",
+        "timestamp": "2026-01-14 17:23:15",
+        "action": "page_access",
+        "details": "Accessed Transactions page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676088086c97.20713311",
+        "timestamp": "2026-01-14 17:23:20",
+        "action": "page_access",
+        "details": "Accessed Transactions page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696760882bf462.16528856",
+        "timestamp": "2026-01-14 17:23:20",
+        "action": "page_access",
+        "details": "Accessed Transactions page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967608849a0a7.45941991",
+        "timestamp": "2026-01-14 17:23:20",
+        "action": "page_access",
+        "details": "Accessed Transactions page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967608a71e763.50427101",
+        "timestamp": "2026-01-14 17:23:22",
+        "action": "page_access",
+        "details": "Accessed Orders page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967608bf07652.18387959",
+        "timestamp": "2026-01-14 17:23:23",
+        "action": "page_access",
+        "details": "Accessed Orders page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967608c3d7412.14151896",
+        "timestamp": "2026-01-14 17:23:24",
+        "action": "page_access",
+        "details": "Accessed Orders page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967608da019c9.72604121",
+        "timestamp": "2026-01-14 17:23:25",
+        "action": "page_access",
+        "details": "Accessed Transactions page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696760b40ff2d1.43878081",
+        "timestamp": "2026-01-14 17:24:04",
+        "action": "page_access",
+        "details": "Accessed Transactions page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696760b4313369.53988892",
+        "timestamp": "2026-01-14 17:24:04",
+        "action": "page_access",
+        "details": "Accessed Transactions page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696760b449b4f4.18661279",
+        "timestamp": "2026-01-14 17:24:04",
+        "action": "page_access",
+        "details": "Accessed Transactions page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696760d55e37a5.12795512",
+        "timestamp": "2026-01-14 17:24:37",
+        "action": "page_access",
+        "details": "Accessed Transactions page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696760d5835479.66567569",
+        "timestamp": "2026-01-14 17:24:37",
+        "action": "page_access",
+        "details": "Accessed Transactions page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696760df1db2b4.45920074",
+        "timestamp": "2026-01-14 17:24:47",
+        "action": "page_access",
+        "details": "Accessed Transactions page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696760df403551.06352160",
+        "timestamp": "2026-01-14 17:24:47",
+        "action": "page_access",
+        "details": "Accessed Transactions page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696760e1633a21.33197499",
+        "timestamp": "2026-01-14 17:24:49",
+        "action": "page_access",
+        "details": "Accessed Transactions page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696760e18543b1.97342129",
+        "timestamp": "2026-01-14 17:24:49",
+        "action": "page_access",
+        "details": "Accessed Transactions page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696760e1a131c4.83438971",
+        "timestamp": "2026-01-14 17:24:49",
+        "action": "page_access",
+        "details": "Accessed Transactions page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696760eaccc0a2.52812338",
+        "timestamp": "2026-01-14 17:24:58",
+        "action": "page_access",
+        "details": "Accessed Transactions page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696760eae79f31.45207446",
+        "timestamp": "2026-01-14 17:24:58",
+        "action": "page_access",
+        "details": "Accessed Transactions page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676117a97173.50419050",
+        "timestamp": "2026-01-14 17:25:43",
+        "action": "page_access",
+        "details": "Accessed Transactions page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676117be3063.54581430",
+        "timestamp": "2026-01-14 17:25:43",
+        "action": "page_access",
+        "details": "Accessed Transactions page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967611815db78.09072777",
+        "timestamp": "2026-01-14 17:25:44",
+        "action": "page_access",
+        "details": "Accessed Transactions page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696761187d0863.18036434",
+        "timestamp": "2026-01-14 17:25:44",
+        "action": "page_access",
+        "details": "Accessed Transactions page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676118ac03a1.67575515",
+        "timestamp": "2026-01-14 17:25:44",
+        "action": "page_access",
+        "details": "Accessed Transactions page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967612c252494.36063070",
+        "timestamp": "2026-01-14 17:26:04",
+        "action": "page_access",
+        "details": "Accessed Transactions page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967612c4a31b2.02222246",
+        "timestamp": "2026-01-14 17:26:04",
+        "action": "page_access",
+        "details": "Accessed Transactions page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967612e0d6960.37016693",
+        "timestamp": "2026-01-14 17:26:06",
+        "action": "page_access",
+        "details": "Accessed Transactions page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967612e322cd3.69513123",
+        "timestamp": "2026-01-14 17:26:06",
+        "action": "page_access",
+        "details": "Accessed Transactions page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967612e4ea627.45311293",
+        "timestamp": "2026-01-14 17:26:06",
+        "action": "page_access",
+        "details": "Accessed Transactions page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967612e71fd20.17014194",
+        "timestamp": "2026-01-14 17:26:06",
+        "action": "page_access",
+        "details": "Accessed Transactions page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967612e86d734.58818999",
+        "timestamp": "2026-01-14 17:26:06",
+        "action": "page_access",
+        "details": "Accessed Transactions page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967612e9f8240.98102167",
+        "timestamp": "2026-01-14 17:26:06",
+        "action": "page_access",
+        "details": "Accessed Transactions page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696761529d5f88.65966320",
+        "timestamp": "2026-01-14 17:26:42",
+        "action": "page_access",
+        "details": "Accessed Create Products page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676153b78037.39207832",
+        "timestamp": "2026-01-14 17:26:43",
+        "action": "page_access",
+        "details": "Accessed Orders page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676169f165e1.31754734",
+        "timestamp": "2026-01-14 17:27:05",
+        "action": "cashier_login",
+        "details": "Cashier 'Emman Tombeats' (cashier1) logged in",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36",
+        "cashier_name": "Emman Tombeats",
+        "cashier_username": "cashier1"
+    },
+    {
+        "id": "audit_6967616a037958.28046370",
+        "timestamp": "2026-01-14 17:27:06",
+        "action": "page_access",
+        "details": "Accessed Cashier Dashboard page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696761968f37f8.66946748",
+        "timestamp": "2026-01-14 17:27:50",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696761988118f0.10162900",
+        "timestamp": "2026-01-14 17:27:52",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696761e2f30a60.46192375",
+        "timestamp": "2026-01-14 17:29:06",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967622316ca48.68854298",
+        "timestamp": "2026-01-14 17:30:11",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967622367c9c5.88161091",
+        "timestamp": "2026-01-14 17:30:11",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676227bf5fa1.61999262",
+        "timestamp": "2026-01-14 17:30:15",
+        "action": "page_access",
+        "details": "Customer accessed Order page (Landing Page)",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676228395758.57448316",
+        "timestamp": "2026-01-14 17:30:16",
+        "action": "page_access",
+        "details": "Customer accessed Order page (Landing Page)",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676291d52608.74882253",
+        "timestamp": "2026-01-14 17:32:01",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696762920a3622.59748753",
+        "timestamp": "2026-01-14 17:32:02",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676292254397.97077454",
+        "timestamp": "2026-01-14 17:32:02",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696762a37cc109.80287425",
+        "timestamp": "2026-01-14 17:32:19",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696762a39dc9d7.69308484",
+        "timestamp": "2026-01-14 17:32:19",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696762a3b63c10.08671633",
+        "timestamp": "2026-01-14 17:32:19",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696762c8dff614.24627959",
+        "timestamp": "2026-01-14 17:32:56",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696762c90c44f7.51063906",
+        "timestamp": "2026-01-14 17:32:57",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696762c9278077.76972730",
+        "timestamp": "2026-01-14 17:32:57",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696762c9423919.30984906",
+        "timestamp": "2026-01-14 17:32:57",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696762cc04a281.36348829",
+        "timestamp": "2026-01-14 17:33:00",
+        "action": "page_access",
+        "details": "Customer accessed Order page (Landing Page)",
+        "user": "Guest\/Customer",
+        "role": "guest",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696762ceef6468.78018460",
+        "timestamp": "2026-01-14 17:33:02",
+        "action": "payment_update",
+        "details": "Updated payment details for order 01",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696762ed590a94.82689525",
+        "timestamp": "2026-01-14 17:33:33",
+        "action": "order_created",
+        "details": "Order #12 created - Amount: \u20b1450, Items: 9, Payment: Cash",
+        "user": "Guest\/Customer",
+        "role": "guest",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36",
+        "order_id": "12",
+        "total_amount": 450,
+        "item_count": 9,
+        "payment_method": "Cash"
     }
 ]

@@ -1,7 +1,7 @@
 <?php
 // Start session and check authentication
 require_once __DIR__ . '/../includes/session.php';
-require_once __DIR__ . '/../connection/connection.php';
+require_once __DIR__ . '/../connection/MongoOrders.php';
 
 // Prevent caching
 header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
@@ -38,8 +38,8 @@ if (empty($orderId) || $cashReceived <= 0) {
 }
 
 try {
-    $db = getDatabaseConnection();
-    $ordersCollection = $db->orders;
+    $mongoOrders = new MongoOrders();
+    $ordersCollection = $mongoOrders->getCollection();
     
     // Update the order with payment details and served_by info
     $result = $ordersCollection->updateOne(
