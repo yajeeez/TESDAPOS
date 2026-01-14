@@ -85,6 +85,7 @@ try {
         'cash_amount'     => isset($data['cash_amount']) ? (float) $data['cash_amount'] : null,
         'change_amount'   => isset($data['change_amount']) ? (float) $data['change_amount'] : null,
         'transaction_id'  => $data['transaction_id'],
+        'card_type'       => isset($data['card_type']) ? $data['card_type'] : null,
         'card_number'     => isset($data['card_number']) ? $data['card_number'] : null,
         'card_holder'     => isset($data['card_holder']) ? $data['card_holder'] : null,
         'product_names'   => $productNames,

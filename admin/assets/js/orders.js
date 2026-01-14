@@ -9,7 +9,7 @@ let orders = [];
 // ==========================
 function logout(e) {
   if (e) e.preventDefault();
-  window.location.href = "../../public/components/login.html"; 
+  window.location.href = "../../public/components/login.html";
 }
 
 const statusColors = {
@@ -25,21 +25,21 @@ function renderOrders() {
   const tbody = document.getElementById('ordersList');
   if (!tbody) return;
   tbody.innerHTML = '';
-  
+
   if (orders.length === 0) {
     tbody.innerHTML = `
       <tr>
-        <td colspan="7" style="text-align: center; padding: 2rem; color: #666;">
+        <td colspan="9" style="text-align: center; padding: 2rem; color: #666;">
           No orders found. Orders will appear here when customers place them.
         </td>
       </tr>
     `;
     return;
   }
-  
+
   orders.forEach(order => {
     const tr = document.createElement('tr');
-    
+
     // Handle real order data structure with product_names
     let itemDisplay = '';
     if (order.product_names && Array.isArray(order.product_names)) {
@@ -49,18 +49,26 @@ function renderOrders() {
     } else {
       itemDisplay = 'Unknown items';
     }
-    
+
     // Use order_id if available, otherwise use id
     const displayId = order.order_id || order.id;
-    
+
+    const paymentMethodRaw = (order.payment_method ?? '').toString();
+    const paymentMethodLower = paymentMethodRaw.toLowerCase();
+    const isCash = paymentMethodLower === 'cash';
+    const paymentDisplay = isCash ? 'Cash' : (order.card_type || paymentMethodRaw || 'Card');
+    const txnDisplay = (!isCash && order.transaction_id) ? order.transaction_id : '';
+
     // Debug: Log served_by info for this order
     console.log(`Order ${displayId} - served_by: "${order.served_by}", served_by_username: "${order.served_by_username}"`);
-    
+
     tr.innerHTML = `
       <td>${displayId}</td>
       <td>${itemDisplay}</td>
       <td>${order.total_item_count || order.quantity || 1}</td>
       <td>₱${(order.total_amount || 0).toFixed(2)}</td>
+      <td>${paymentDisplay}</td>
+      <td>${txnDisplay}</td>
       <td><span class="status ${statusColors[order.status] || 'served'}">${order.status || 'Served'}</span></td>
       <td>${order.served_by ? order.served_by : (order.served_by_username ? order.served_by_username : '<span style="color: #999;">Not yet served</span>')}</td>
       <td>
@@ -87,32 +95,32 @@ function renderOrders() {
 // ==========================
 function updateOrderStatus(orderId, newStatus) {
   if (!newStatus) return;
-  
+
   console.log('Updating order:', orderId, 'to status:', newStatus);
-  
+
   // Convert orderId to string for consistent comparison
   const orderIdStr = String(orderId);
-  
+
   const order = orders.find(o => {
     const orderOrderId = String(o.order_id || '');
     const orderMongoId = String(o._id || '');
     const orderIdField = String(o.id || '');
-    
+
     return orderOrderId === orderIdStr || orderMongoId === orderIdStr || orderIdField === orderIdStr;
   });
-  
+
   if (order) {
     const oldStatus = order.status || 'Unknown';
     const oldServedBy = order.served_by || '';
-    
+
     console.log('Found order, updating status from', oldStatus, 'to', newStatus);
-    
+
     // Get current admin info
     const adminInfo = window.adminInfo || { name: 'Admin', username: 'admin' };
-    
+
     // Update order status
     order.status = newStatus;
-    
+
     // If marking as served or canceled, record the admin who did the action
     if (newStatus === 'Served' || newStatus === 'Canceled') {
       order.served_by = adminInfo.name;
@@ -126,10 +134,10 @@ function updateOrderStatus(orderId, newStatus) {
       order.served_at = '';
       order.action_type = '';
     }
-    
+
     // Immediately update the display
     renderOrders();
-    
+
     // Save to database
     saveOrderStatusToDB(orderIdStr, newStatus).then(success => {
       if (success) {
@@ -159,7 +167,7 @@ async function saveOrderStatusToDB(orderId, newStatus) {
       order_id: orderId,
       status: newStatus
     };
-    
+
     // Add admin info if marking as served or canceled
     if (newStatus === 'Served' || newStatus === 'Canceled') {
       const adminInfo = window.adminInfo || { name: 'Admin', username: 'admin' };
@@ -167,7 +175,7 @@ async function saveOrderStatusToDB(orderId, newStatus) {
       requestData.served_by_username = adminInfo.username;
       requestData.served_at = new Date().toISOString();
     }
-    
+
     const response = await fetch('/TESDAPOS/admin/update_order_status.php', {
       method: 'POST',
       headers: {
@@ -175,11 +183,11 @@ async function saveOrderStatusToDB(orderId, newStatus) {
       },
       body: JSON.stringify(requestData)
     });
-    
+
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    
+
     const result = await response.json();
     return result.success;
   } catch (error) {
@@ -194,15 +202,15 @@ async function saveOrderStatusToDB(orderId, newStatus) {
 async function fetchOrdersFromDB() {
   try {
     console.log('Fetching orders from database...');
-    
+
     const response = await fetch('/TESDAPOS/admin/fetch_orders.php');
-    
+
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    
+
     const result = await response.json();
-    
+
     if (result.success && result.orders) {
       orders = result.orders;
       renderOrders();
@@ -224,7 +232,7 @@ async function fetchOrdersFromDB() {
 document.addEventListener('DOMContentLoaded', async () => {
   // Debug: Log admin info
   console.log('🔍 Admin info:', window.adminInfo);
-  
+
   await fetchOrdersFromDB();
 });
 
@@ -238,37 +246,37 @@ function printReceipt(orderId) {
     const orderOrderId = String(o.order_id || '');
     const orderMongoId = String(o._id || '');
     const orderIdField = String(o.id || '');
-    
+
     return orderOrderId === orderIdStr || orderMongoId === orderIdStr || orderIdField === orderIdStr;
   });
-  
+
   if (!order) {
     alert('Order not found');
     return;
   }
-  
+
   // Calculate subtotal (before VAT)
   const subtotal = order.total_amount || 0;
-  
+
   // Calculate VAT (1% of subtotal)
   const vatRate = 0.01;
   const vatAmount = subtotal * vatRate;
-  
+
   // Calculate total (subtotal + VAT)
   const total = subtotal + vatAmount;
-  
+
   // Handle item display
   let itemDisplay = '';
   if (order.product_names && Array.isArray(order.product_names)) {
     itemDisplay = order.product_names.map((name, index) => {
       const qty = order.quantities && order.quantities[index] ? order.quantities[index] : 1;
       let price = order.prices && order.prices[index] ? parseFloat(order.prices[index]) : 0;
-      
+
       // If price is 0, calculate from subtotal
       if (price === 0 && subtotal > 0) {
         price = subtotal / (order.quantities ? order.quantities.reduce((a, b) => a + b, 0) : 1);
       }
-      
+
       return `<tr>
         <td style="padding: 4px 0; text-align: left;">${name}</td>
         <td style="padding: 4px 0; text-align: center;">${qty}</td>
@@ -293,32 +301,53 @@ function printReceipt(orderId) {
       <td style="padding: 4px 0; text-align: right;">₱${price.toFixed(2)}</td>
     </tr>`;
   }
-  
+
   const displayId = order.order_id || order.id;
   const cashReceived = order.cash_received || 0;
   const changeAmount = cashReceived > 0 ? (cashReceived - total) : 0;
   const paymentMethod = order.payment_method || 'Cash';
-  
+
   const currentDate = new Date(order.created_at || new Date());
-  const dateStr = currentDate.toLocaleDateString('en-PH', { 
-    year: 'numeric', 
-    month: 'short', 
-    day: 'numeric' 
+  const dateStr = currentDate.toLocaleDateString('en-PH', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
   });
-  const timeStr = currentDate.toLocaleTimeString('en-PH', { 
-    hour: '2-digit', 
+  const timeStr = currentDate.toLocaleTimeString('en-PH', {
+    hour: '2-digit',
     minute: '2-digit',
-    hour12: true 
+    hour12: true
   });
-  
+
+  // Determine if this is a card payment and prepare header lines
+  const paymentMethodLower = paymentMethod.toLowerCase();
+  const isCardPayment = paymentMethodLower === 'visa' || paymentMethodLower === 'gcash' || paymentMethodLower === 'maya';
+  let headerPaymentLine = '';
+  let headerCardTypeLine = '';
+  let headerTransactionLine = '';
+
+  if (isCardPayment) {
+    headerPaymentLine = `<p><strong>Payment Method:</strong> Card</p>`;
+    const cardTypeDisplay = order.card_type || paymentMethod;
+    headerCardTypeLine = `<p><strong>Card Type:</strong> ${cardTypeDisplay}</p>`;
+    if (order.transaction_id) {
+      headerTransactionLine = `<p><strong>Transaction ID:</strong> ${order.transaction_id}</p>`;
+    }
+  } else if (paymentMethodLower === 'cash') {
+    // For cash payments, show transaction ID but not payment method or card type
+    if (order.transaction_id) {
+      headerTransactionLine = `<p><strong>Transaction ID:</strong> ${order.transaction_id}</p>`;
+    }
+  }
+
   // Create print window
   const printWindow = window.open('', '_blank', 'width=300,height=600');
-  
+
   if (!printWindow) {
     alert('Please allow popups to print receipt');
     return;
   }
-  
+
   printWindow.document.write(`
     <!DOCTYPE html>
     <html>
@@ -451,6 +480,9 @@ function printReceipt(orderId) {
         <p><strong>Order #:</strong> ${displayId}</p>
         <p><strong>Date:</strong> ${dateStr}</p>
         <p><strong>Time:</strong> ${timeStr}</p>
+        ${headerPaymentLine}
+        ${headerCardTypeLine}
+        ${headerTransactionLine}
       </div>
       
       <table class="items-table">
@@ -490,31 +522,7 @@ function printReceipt(orderId) {
         </p>
         ` : ''}
       </div>
-      
-      ${paymentMethod && paymentMethod.toLowerCase() !== 'cash' ? `
-      <div style="margin-top: 10px; padding-top: 10px; border-top: 2px solid #000;">
-        <p style="margin: 8px 0; font-size: 12px; font-weight: bold; text-align: center;">CARD PAYMENT RECEIPT</p>
-        <div style="border: 1px solid #000; padding: 8px; margin: 8px 0; background: #f9f9f9;">
-          <p style="margin: 4px 0; font-size: 11px;"><strong>Payment Method:</strong> ${paymentMethod}</p>
-          <p style="margin: 4px 0; font-size: 11px;"><strong>Transaction Type:</strong> SALE</p>
-          ${order.transaction_id ? `<p style="margin: 4px 0; font-size: 11px;"><strong>Transaction ID:</strong> ${order.transaction_id}</p>` : ''}
-          ${order.card_number ? `<p style="margin: 4px 0; font-size: 11px;"><strong>Card Number:</strong> ${order.card_number}</p>` : ''}
-          ${order.card_holder ? `<p style="margin: 4px 0; font-size: 11px;"><strong>Cardholder:</strong> ${order.card_holder}</p>` : ''}
-          <p style="margin: 4px 0; font-size: 11px;"><strong>Auth Code:</strong> ${Math.random().toString(36).substring(2, 8).toUpperCase()}</p>
-          <p style="margin: 4px 0; font-size: 11px;"><strong>Reference No:</strong> ${Date.now().toString().slice(-8)}</p>
-        </div>
-        <div style="margin-top: 8px; padding: 8px; border-top: 1px dashed #000;">
-          <p style="margin: 4px 0; font-size: 12px; display: flex; justify-content: space-between;">
-            <strong>Amount Charged:</strong>
-            <strong>₱${total.toFixed(2)}</strong>
-          </p>
-          <p style="margin: 4px 0; font-size: 10px; text-align: center; color: #333;">
-            Payment Status: APPROVED
-          </p>
-        </div>
-      </div>
-      ` : ''}
-      
+
       <div class="receipt-footer">
         <p>This serves as your official receipt</p>
         <p>Please keep for your records</p>
@@ -529,7 +537,7 @@ function printReceipt(orderId) {
     </body>
     </html>
   `);
-  
+
   printWindow.document.close();
 }
 
@@ -542,15 +550,15 @@ function openEditModal(orderId) {
     const orderOrderId = String(o.order_id || '');
     const orderMongoId = String(o._id || '');
     const orderIdField = String(o.id || '');
-    
+
     return orderOrderId === orderIdStr || orderMongoId === orderIdStr || orderIdField === orderIdStr;
   });
-  
+
   if (!order) {
     alert('Order not found');
     return;
   }
-  
+
   // Handle item display
   let itemDisplay = '';
   if (order.product_names && Array.isArray(order.product_names)) {
@@ -560,11 +568,11 @@ function openEditModal(orderId) {
   } else {
     itemDisplay = 'Unknown items';
   }
-  
+
   const displayId = order.order_id || order.id;
   const totalAmount = order.total_amount || 0;
   const quantity = order.total_item_count || order.quantity || 1;
-  
+
   // Create modal HTML
   const modalHtml = `
     <div class="edit-modal-overlay" id="editModalOverlay" onclick="closeEditModal()">
@@ -615,7 +623,7 @@ function openEditModal(orderId) {
       </div>
     </div>
   `;
-  
+
   // Add modal to body
   document.body.insertAdjacentHTML('beforeend', modalHtml);
 }
@@ -631,7 +639,7 @@ function calculateChange() {
   const cashReceived = parseFloat(document.getElementById('cashReceived').value) || 0;
   const totalBalance = parseFloat(document.getElementById('totalBalance').value) || 0;
   const change = cashReceived - totalBalance;
-  
+
   document.getElementById('changeAmount').value = change >= 0 ? change.toFixed(2) : '0.00';
 }
 
@@ -639,22 +647,22 @@ async function savePaymentEdit(orderId) {
   const cashReceived = parseFloat(document.getElementById('cashReceived').value) || 0;
   const changeAmount = parseFloat(document.getElementById('changeAmount').value) || 0;
   const totalBalance = parseFloat(document.getElementById('totalBalance').value) || 0;
-  
+
   if (cashReceived <= 0) {
     alert('Please enter a valid cash received amount');
     return;
   }
-  
+
   if (cashReceived < totalBalance) {
     alert('Cash received cannot be less than total balance');
     return;
   }
-  
+
   const adminInfo = window.adminInfo || { name: 'Admin', username: 'admin' };
-  
+
   console.log('Saving payment edit for order:', orderId);
   console.log('Admin info:', adminInfo);
-  
+
   try {
     const requestData = {
       order_id: orderId,
@@ -664,9 +672,9 @@ async function savePaymentEdit(orderId) {
       updated_by: adminInfo.username,
       updated_by_name: adminInfo.name
     };
-    
+
     console.log('Request data:', requestData);
-    
+
     // Update order with payment details
     const response = await fetch('/TESDAPOS/admin/update_payment_details.php', {
       method: 'POST',
@@ -675,18 +683,18 @@ async function savePaymentEdit(orderId) {
       },
       body: JSON.stringify(requestData)
     });
-    
+
     console.log('Response status:', response.status);
-    
+
     if (!response.ok) {
       const errorText = await response.text();
       console.error('Response error:', errorText);
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    
+
     const result = await response.json();
     console.log('Response result:', result);
-    
+
     if (result.success) {
       alert('Payment details updated successfully');
       closeEditModal();

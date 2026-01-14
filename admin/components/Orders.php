@@ -84,6 +84,8 @@ AuditLogger::log('page_access', 'Accessed Orders page');
                 <th>Item</th>
                 <th>Quantity</th>
                 <th>Amount</th>
+                <th>Payment</th>
+                <th>Transaction ID</th>
                 <th>Status</th>
                 <th>Served By</th>
                 <th>Action</th>

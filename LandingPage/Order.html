@@ -205,10 +205,11 @@
             </div>
             <div class="card-info" id="cardInfo" style="display: none;">
               <div class="card-details">
-                  <p><strong>Card Number:</strong> <span id="cardNumber">**** **** **** 1234</span></p>
+                <p><strong>Card Type:</strong> <span id="cardType">Visa</span></p>
+                <p><strong>Transaction ID:</strong> <span id="transactionId"></span></p>
+                <p><strong>Card Number:</strong> <span id="cardNumber">**** **** **** 1234</span></p>
                 <p><strong>Cardholder:</strong> <span id="cardHolder">Cardholder Name</span></p>
                 <p class="total-amount-row"><strong>Total Amount:</strong> ₱<span id="cardTotalAmount">0.00</span></p>
-                <p><strong>Transaction ID:</strong> <span id="transactionId"></span></p>
               </div>
             </div>
           </div>
@@ -227,6 +228,7 @@
   </div>
 
   <!-- JS -->
-  <script src="js/Order.js"></script>
+  <!-- Cache-busted JS to ensure latest Order.js is loaded -->
+  <script src="js/Order.js?v=2"></script>
 </body>
 </html>

@@ -2,7 +2,7 @@
 async function fetchProducts() {
     try {
         console.log('Fetching products from database...');
-        
+
         // Use absolute paths since we're in browser context
         // Try TESDAPOS path first, then without
         const urls = [
@@ -11,10 +11,10 @@ async function fetchProducts() {
             '/connection/fetch_products.php',
             '/admin/fetch_products.php'
         ];
-        
+
         let response = null;
         let urlUsed = null;
-        
+
         // Try each URL until one works
         for (const url of urls) {
             try {
@@ -31,41 +31,41 @@ async function fetchProducts() {
                 console.log('URL not accessible:', url, 'Error:', e.message);
             }
         }
-        
+
         if (!response) {
             throw new Error('Could not access any product endpoint. Make sure XAMPP Apache is running. Tried: ' + urls.join(', '));
         }
-        
+
         console.log('Using URL:', urlUsed);
         console.log('Response status:', response.status);
         console.log('Response OK:', response.ok);
-        
+
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         const contentType = response.headers.get('content-type');
         console.log('Content-Type:', contentType);
-        
+
         const responseText = await response.text();
         console.log('Raw response text length:', responseText.length);
         console.log('Raw response text (first 500 chars):', responseText.substring(0, 500));
-        
+
         // Check if response is HTML (error page)
         if (responseText.trim().startsWith('<')) {
             console.error('Received HTML instead of JSON. Server may have an error.');
             console.error('Current URL:', window.location.href);
-            
+
             // Check if accessed via Live Server or file://
-            if (window.location.href.includes('127.0.0.1:5500') || 
+            if (window.location.href.includes('127.0.0.1:5500') ||
                 window.location.href.includes('localhost:5500') ||
                 window.location.protocol === 'file:') {
                 throw new Error('WRONG ACCESS METHOD: Please access via XAMPP Apache at http://localhost/TESDAPOS/LandingPage/Order.html (NOT via Live Server or file://)');
             }
-            
+
             throw new Error('Server returned HTML instead of JSON. Check if MongoDB is running and PHP is configured correctly.');
         }
-        
+
         // Try to parse JSON
         let data;
         try {
@@ -76,14 +76,14 @@ async function fetchProducts() {
             console.error('Raw response was:', responseText);
             throw new Error('Invalid JSON response from server. Check browser console for details.');
         }
-        
+
         if (data.success) {
             console.log('Displaying', data.products.length, 'products');
             displayProducts(data.products);
         } else {
             console.error('Failed to fetch products:', data.message);
             let errorMsg = data.message || 'Unknown error';
-            
+
             // Provide helpful error messages
             if (errorMsg.includes('MongoDB')) {
                 errorMsg += ' - Make sure MongoDB service is running.';
@@ -92,7 +92,7 @@ async function fetchProducts() {
             } else if (errorMsg.includes('mongodb extension')) {
                 errorMsg += ' - Install the MongoDB PHP extension.';
             }
-            
+
             document.querySelector('.card-grid').innerHTML = `
                 <div class="error-container">
                     <p class="error-message">Failed to load products</p>
@@ -120,54 +120,54 @@ let currentFilter = 'All';
 // Function to display products in the card grid
 function displayProducts(products, filterCategory = 'All') {
     const cardGrid = document.querySelector('.card-grid');
-    
+
     if (!products) {
         cardGrid.innerHTML = '<p class="error-message">No products data received.</p>';
         return;
     }
-    
+
     if (!Array.isArray(products)) {
         cardGrid.innerHTML = '<p class="error-message">Invalid products data format. Expected array, got: ' + typeof products + '</p>';
         return;
     }
-    
+
     // Store all products for filtering
     allProducts = products;
-    
+
     // Filter products based on category
     let filteredProducts = products;
     if (filterCategory !== 'All') {
         filteredProducts = products.filter(product => {
             if (!product.category) return false;
-            
+
             const productCategory = product.category.toLowerCase();
             const searchCategory = filterCategory.toLowerCase();
-            
+
             // Handle both singular and plural forms (e.g., "Snack" and "Snacks")
-            return productCategory === searchCategory || 
-                   productCategory === searchCategory.replace(/s$/, '') ||
-                   productCategory + 's' === searchCategory;
+            return productCategory === searchCategory ||
+                productCategory === searchCategory.replace(/s$/, '') ||
+                productCategory + 's' === searchCategory;
         });
     }
-    
+
     if (filteredProducts.length === 0) {
         cardGrid.innerHTML = '<p class="empty-message">No products available in this category.</p>';
         return;
     }
-    
+
     console.log('Creating product cards for', filteredProducts.length, 'products');
-    
+
     // Clear the grid
     cardGrid.innerHTML = '';
-    
+
     // Create a card for each product
     filteredProducts.forEach((product, index) => {
         console.log('Creating card for product', index, ':', product.product_name);
-        
+
         const card = document.createElement('div');
         card.className = 'order-card';
         card.setAttribute('data-category', product.category || 'others');
-        
+
         // Construct image path - if no image, use a placeholder
         let imagePath = '../img/TESDALOGO.png'; // Default placeholder
         if (product.image_path && product.image_path.trim() !== '') {
@@ -175,13 +175,13 @@ function displayProducts(products, filterCategory = 'All') {
             imagePath = `../${product.image_path.replace(/^\/+/, '')}`;
             console.log('Product image path:', imagePath);
         }
-        
+
         // Determine stock status
         const quantity = parseInt(product.stock_quantity) || 0;
         let stockBadge = '';
         let stockClass = '';
         let isDisabled = '';
-        
+
         if (quantity === 0) {
             stockBadge = '<div class="stock-badge out-of-stock"><i class="fas fa-times-circle"></i> Out of Stock</div>';
             isDisabled = 'disabled';
@@ -190,15 +190,15 @@ function displayProducts(products, filterCategory = 'All') {
         } else {
             stockBadge = `<div class="stock-badge"><i class="fas fa-check-circle"></i> ${quantity} in stock</div>`;
         }
-        
+
         // Check if product is a drink/beverage
         const isBeverage = product.category && (
-            product.category.toLowerCase() === 'beverage' || 
+            product.category.toLowerCase() === 'beverage' ||
             product.category.toLowerCase() === 'beverages' ||
             product.category.toLowerCase() === 'drink' ||
             product.category.toLowerCase() === 'drinks'
         );
-        
+
         // Size options for beverages
         let sizeSelector = '';
         if (isBeverage && quantity > 0) {
@@ -208,7 +208,7 @@ function displayProducts(products, filterCategory = 'All') {
                 medium: basePrice * 1.3,
                 large: basePrice * 1.6
             };
-            
+
             sizeSelector = `
                 <div class="size-selector" data-product-id="${product.id}">
                     <label class="size-label">Size:</label>
@@ -227,7 +227,7 @@ function displayProducts(products, filterCategory = 'All') {
                 </div>
             `;
         }
-        
+
         card.innerHTML = `
             <img src="${imagePath}" alt="${product.product_name}" class="order-img" onerror="this.src='../img/TESDALOGO.png'; console.log('Image load error for product:', '${product.product_name}');">
             <h2>${product.product_name}</h2>
@@ -239,10 +239,10 @@ function displayProducts(products, filterCategory = 'All') {
                 ${quantity === 0 ? 'Out of Stock' : 'Add to Cart'}
             </button>
         `;
-        
+
         cardGrid.appendChild(card);
     });
-    
+
     console.log('Finished creating', filteredProducts.length, 'product cards');
 }
 
@@ -250,13 +250,13 @@ function displayProducts(products, filterCategory = 'All') {
 function filterProducts(category) {
     console.log('Filtering by category:', category);
     currentFilter = category;
-    
+
     // Update active button
     document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.classList.remove('active');
     });
     event.target.closest('.filter-btn').classList.add('active');
-    
+
     // Re-display products with filter
     displayProducts(allProducts, category);
 }
@@ -269,7 +269,7 @@ let cartOpen = false;
 function toggleCart() {
     const cartDropdown = document.getElementById('cartDropdown');
     cartOpen = !cartOpen;
-    
+
     if (cartOpen) {
         cartDropdown.classList.add('active');
         updateCartDisplay();
@@ -287,13 +287,13 @@ function selectSize(productId, size, price) {
             btn.classList.remove('active');
         });
         sizeSelector.querySelector(`.size-btn[data-size="${size}"]`).classList.add('active');
-        
+
         // Update price display
         const priceDisplay = document.getElementById(`price-${productId}`);
         if (priceDisplay) {
             priceDisplay.textContent = `₱${price.toFixed(2)}`;
         }
-        
+
         // Update add button to use selected size and price
         const addBtn = document.querySelector(`.add-btn[data-product-id="${productId}"]`);
         if (addBtn) {
@@ -309,15 +309,15 @@ function addToCart(productId, productName, basePrice, size = '') {
     const addBtn = document.querySelector(`.add-btn[data-product-id="${productId}"]`);
     let selectedSize = size;
     let finalPrice = parseFloat(basePrice);
-    
+
     if (addBtn && addBtn.getAttribute('data-selected-size')) {
         selectedSize = addBtn.getAttribute('data-selected-size');
         finalPrice = parseFloat(addBtn.getAttribute('data-selected-price'));
     }
-    
+
     // Create unique cart item ID that includes size for beverages
     const cartItemId = selectedSize ? `${productId}_${selectedSize}` : productId;
-    
+
     // Check if product with same size already exists in cart
     const existingItem = cart.find(item => {
         if (selectedSize) {
@@ -325,7 +325,7 @@ function addToCart(productId, productName, basePrice, size = '') {
         }
         return item.id === productId && !item.size;
     });
-    
+
     if (existingItem) {
         // Increase quantity if item already exists
         existingItem.quantity += 1;
@@ -338,19 +338,19 @@ function addToCart(productId, productName, basePrice, size = '') {
             price: finalPrice,
             quantity: 1
         };
-        
+
         // Add size info if it's a beverage
         if (selectedSize) {
             cartItem.size = selectedSize;
         }
-        
+
         cart.push(cartItem);
     }
-    
+
     // Update cart count and display
     updateCartCount();
     updateCartDisplay();
-    
+
     // Show success message
     const sizeText = selectedSize ? ` (${selectedSize.charAt(0).toUpperCase() + selectedSize.slice(1)})` : '';
     showCartMessage(`${productName}${sizeText} added to cart!`);
@@ -361,7 +361,7 @@ function updateCartCount() {
     const cartCount = document.getElementById('cartCount');
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
     cartCount.textContent = totalItems;
-    
+
     // Add bounce animation
     cartCount.style.animation = 'none';
     setTimeout(() => {
@@ -374,20 +374,20 @@ function updateCartDisplay() {
     const cartItems = document.getElementById('cartItems');
     const cartFooter = document.getElementById('cartFooter');
     const cartTotal = document.getElementById('cartTotal');
-    
+
     if (cart.length === 0) {
         cartItems.innerHTML = '<div class="empty-cart" onclick="event.stopPropagation()">Your cart is empty</div>';
         cartFooter.style.display = 'none';
         return;
     }
-    
+
     // Show footer when cart has items
     cartFooter.style.display = 'block';
-    
+
     // Calculate total
     const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     cartTotal.textContent = total.toFixed(2);
-    
+
     // Render cart items
     cartItems.innerHTML = cart.map(item => {
         const sizeText = item.size ? ` <span class="cart-item-size">(${item.size.charAt(0).toUpperCase() + item.size.slice(1)})</span>` : '';
@@ -425,9 +425,9 @@ function updateCartDisplay() {
 function updateQuantity(cartItemId, change) {
     const item = cart.find(item => item.cartItemId === cartItemId);
     if (!item) return;
-    
+
     item.quantity += change;
-    
+
     if (item.quantity <= 0) {
         removeFromCart(cartItemId);
     } else {
@@ -440,17 +440,17 @@ function updateQuantity(cartItemId, change) {
 function setQuantity(cartItemId, newQuantity) {
     const item = cart.find(item => item.cartItemId === cartItemId);
     if (!item) return;
-    
+
     // Parse and validate quantity
     let quantity = parseInt(newQuantity);
-    
+
     // Ensure quantity is valid
     if (isNaN(quantity) || quantity < 1) {
         quantity = 1;
     } else if (quantity > 999) {
         quantity = 999;
     }
-    
+
     item.quantity = quantity;
     updateCartCount();
     updateCartDisplay();
@@ -463,17 +463,17 @@ let itemToRemove = null;
 function showRemoveItemModal(cartItemId) {
     const item = cart.find(item => item.cartItemId === cartItemId);
     if (!item) return;
-    
+
     // Store the item ID for confirmation
     itemToRemove = cartItemId;
-    
+
     // Update modal message with item name
     const sizeText = item.size ? ` (${item.size.charAt(0).toUpperCase() + item.size.slice(1)})` : '';
     const messageEl = document.getElementById('removeItemMessage');
     if (messageEl) {
         messageEl.textContent = `Are you sure you want to remove "${item.name}${sizeText}" from your cart?`;
     }
-    
+
     // Show modal
     const modal = document.getElementById('removeItemModal');
     modal.classList.add('active');
@@ -512,7 +512,7 @@ function removeFromCart(cartItemId) {
 // Function to cancel entire order (clear cart)
 function cancelOrder() {
     if (cart.length === 0) return;
-    
+
     // Show custom confirmation modal
     const modal = document.getElementById('confirmModal');
     modal.classList.add('active');
@@ -539,11 +539,11 @@ function confirmCancelOrder() {
 function showCartMessage(message, type = 'success') {
     // Create temporary message element
     const messageEl = document.createElement('div');
-    
+
     // Set color based on type
     let bgColor = 'var(--tesda-blue)';
     let icon = '<i class="fas fa-check-circle"></i>';
-    
+
     if (type === 'error') {
         bgColor = '#dc3545';
         icon = '<i class="fas fa-times-circle"></i>';
@@ -551,7 +551,7 @@ function showCartMessage(message, type = 'success') {
         bgColor = '#ffc107';
         icon = '<i class="fas fa-exclamation-triangle"></i>';
     }
-    
+
     messageEl.style.cssText = `
         position: fixed;
         top: 100px;
@@ -571,14 +571,14 @@ function showCartMessage(message, type = 'success') {
         font-size: 0.95rem;
     `;
     messageEl.innerHTML = `${icon} <span>${message}</span>`;
-    
+
     document.body.appendChild(messageEl);
-    
+
     // Animate in
     setTimeout(() => {
         messageEl.style.transform = 'translateX(0)';
     }, 100);
-    
+
     // Remove after 3 seconds
     setTimeout(() => {
         messageEl.style.transform = 'translateX(400px)';
@@ -591,10 +591,10 @@ function showCartMessage(message, type = 'success') {
 }
 
 // Close cart when clicking outside
-document.addEventListener('click', function(event) {
+document.addEventListener('click', function (event) {
     const cartContainer = document.querySelector('.cart-container');
     const cartDropdown = document.getElementById('cartDropdown');
-    
+
     if (cartOpen && !cartContainer.contains(event.target)) {
         toggleCart();
     }
@@ -611,22 +611,22 @@ function openPaymentModal() {
         showCartMessage('Your cart is empty. Add items before checkout.', 'warning');
         return;
     }
-    
+
     const modal = document.getElementById('paymentModal');
     const cartTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     paymentTotal = cartTotal;
-    
+
     // Reset payment state
     selectedPaymentMethod = null;
     cardSwiped = false;
-    
+
     // Update order summary
     updatePaymentOrderSummary();
-    
+
     // Update totals
     document.getElementById('paymentSubtotal').textContent = cartTotal.toFixed(2);
     document.getElementById('paymentTotal').textContent = cartTotal.toFixed(2);
-    
+
     // Reset UI
     document.querySelectorAll('.payment-method-btn').forEach(btn => {
         btn.classList.remove('active');
@@ -636,14 +636,14 @@ function openPaymentModal() {
     document.getElementById('cardInfo').style.display = 'none';
     // Button is always enabled since payment method is optional
     document.getElementById('confirmPaymentBtn').disabled = false;
-    
+
     // Reset card swipe area
     const swipeLine = document.querySelector('.swipe-line');
     if (swipeLine) {
         swipeLine.classList.remove('swiping');
     }
     cardSwiped = false;
-    
+
     // Show modal
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
@@ -654,7 +654,7 @@ function closePaymentModal() {
     const modal = document.getElementById('paymentModal');
     modal.classList.remove('active');
     document.body.style.overflow = '';
-    
+
     // Reset state
     selectedPaymentMethod = null;
     cardSwiped = false;
@@ -663,12 +663,12 @@ function closePaymentModal() {
 // Function to update payment order summary
 function updatePaymentOrderSummary() {
     const orderItemsList = document.getElementById('paymentOrderItems');
-    
+
     if (cart.length === 0) {
         orderItemsList.innerHTML = '<p>No items in cart</p>';
         return;
     }
-    
+
     orderItemsList.innerHTML = cart.map(item => {
         const sizeText = item.size ? ` (${item.size.charAt(0).toUpperCase() + item.size.slice(1)})` : '';
         const itemTotal = (item.price * item.quantity).toFixed(2);
@@ -687,10 +687,25 @@ function updatePaymentOrderSummary() {
 // Function to select payment method
 function selectPaymentMethod(method) {
     selectedPaymentMethod = method;
-    
+
     // Reset card swipe state when selecting a new payment method
     cardSwiped = false;
-    
+
+    // Clear any previous card swipe details to avoid showing stale transaction/card info
+    const cardTypeEl = document.getElementById('cardType');
+    const transactionIdEl = document.getElementById('transactionId');
+    const cardNumberEl = document.getElementById('cardNumber');
+    const cardHolderEl = document.getElementById('cardHolder');
+    if (transactionIdEl) transactionIdEl.textContent = '';
+    if (cardNumberEl) cardNumberEl.textContent = '**** **** **** ****';
+    if (cardHolderEl) cardHolderEl.textContent = 'Cardholder Name';
+    if (cardTypeEl) {
+        cardTypeEl.textContent =
+            method === 'visa' ? 'Visa' :
+                method === 'gcash' ? 'GCash' :
+                    method === 'maya' ? 'Maya' : 'Card';
+    }
+
     // Update button states
     document.querySelectorAll('.payment-method-btn').forEach(btn => {
         btn.classList.remove('active');
@@ -698,12 +713,12 @@ function selectPaymentMethod(method) {
             btn.classList.add('active');
         }
     });
-    
+
     // Show/hide payment sections
     if (method === 'visa' || method === 'gcash' || method === 'maya') {
         document.getElementById('cashPaymentSection').style.display = 'none';
         document.getElementById('cardPaymentSection').style.display = 'block';
-        
+
         // Reset card info display
         document.getElementById('cardInfo').style.display = 'none';
         const swipeBtn = document.getElementById('simulateSwipeBtn');
@@ -712,7 +727,7 @@ function selectPaymentMethod(method) {
             swipeBtn.innerHTML = '<i class="fas fa-hand-pointer"></i> Simulate Card Swipe';
             swipeBtn.style.background = '';
         }
-        
+
         // Disable confirm button until card is swiped
         document.getElementById('confirmPaymentBtn').disabled = true;
     }
@@ -740,31 +755,40 @@ function simulateCardSwipe() {
     if (cardSwiped) {
         return; // Already swiped
     }
-    
+
     const swipeArea = document.getElementById('cardSwipeArea');
     const swipeLine = swipeArea.querySelector('.swipe-line');
     const swipeIndicator = document.getElementById('swipeIndicator');
     const cardInfo = document.getElementById('cardInfo');
     const swipeBtn = document.getElementById('simulateSwipeBtn');
-    
+
     // Disable button
     swipeBtn.disabled = true;
     swipeBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-    
+
     // Hide indicator
     if (swipeIndicator) {
         swipeIndicator.style.opacity = '0.3';
     }
-    
+
     // Animate swipe line
     if (swipeLine) {
         swipeLine.classList.add('swiping');
     }
-    
+
     // Simulate processing delay
     setTimeout(() => {
         // Show card info
         cardInfo.style.display = 'block';
+
+        // Ensure Card Type matches the currently selected payment method
+        const cardTypeEl = document.getElementById('cardType');
+        if (cardTypeEl) {
+            cardTypeEl.textContent =
+                selectedPaymentMethod === 'visa' ? 'Visa' :
+                    selectedPaymentMethod === 'gcash' ? 'GCash' :
+                        selectedPaymentMethod === 'maya' ? 'Maya' : 'Card';
+        }
 
         // Generate random masked card number (**** **** **** 1234)
         const last4 = Math.floor(1000 + Math.random() * 9000);
@@ -796,26 +820,26 @@ function simulateCardSwipe() {
         // Generate realistic transaction ID
         const transactionId = generateCardTransactionId();
         document.getElementById('transactionId').textContent = transactionId;
-        
+
         // Display total amount
         document.getElementById('cardTotalAmount').textContent = paymentTotal.toFixed(2);
-        
+
         // Mark as swiped
         cardSwiped = true;
-        
+
         // Update button
         swipeBtn.disabled = false;
         swipeBtn.innerHTML = '<i class="fas fa-check-circle"></i> Card Swiped';
         swipeBtn.style.background = '#28a745';
-        
+
         // Remove swipe animation
         if (swipeLine) {
             swipeLine.classList.remove('swiping');
         }
-        
+
         // Enable confirm button after successful card swipe
         document.getElementById('confirmPaymentBtn').disabled = false;
-        
+
         // Show success message
         showCartMessage('Card read successfully!', 'success');
     }, 2000);
@@ -829,7 +853,7 @@ async function processPayment() {
     let transactionId = '';
     let cardNumber = null;
     let cardHolder = null;
-    
+
     // If no payment method selected, default to Cash
     if (!selectedPaymentMethod) {
         selectedPaymentMethod = 'Cash';
@@ -864,7 +888,14 @@ async function processPayment() {
         // Generate transaction ID for cash payment
         transactionId = generateCardTransactionId();
     }
-    
+
+    // Determine card type label for receipts / storage (only for non-cash methods)
+    const cardTypeLabel =
+        (selectedPaymentMethod === 'visa') ? 'Visa' :
+            (selectedPaymentMethod === 'gcash') ? 'GCash' :
+                (selectedPaymentMethod === 'maya') ? 'Maya' :
+                    null;
+
     // Disable confirm button during processing
     const confirmBtn = document.getElementById('confirmPaymentBtn');
     confirmBtn.disabled = true;
@@ -888,6 +919,7 @@ async function processPayment() {
             cash_amount: cashAmount,
             change_amount: changeAmount,
             transaction_id: transactionId,
+            card_type: cardTypeLabel,
             card_number: cardNumber,
             card_holder: cardHolder
         };
@@ -941,7 +973,21 @@ async function processPayment() {
         updateCartCount();
         updateCartDisplay();
 
-        // Close modals
+        // Print receipt BEFORE closing modal to preserve selectedPaymentMethod
+        printReceipt({
+            orderId: data.order_id || 'N/A',
+            transactionId: transactionId,
+            items: orderItems,
+            paymentMethod: selectedPaymentMethod,
+            totalAmount: paymentTotal,
+            cashAmount: cashAmount,
+            changeAmount: changeAmount,
+            cardType: cardTypeLabel,
+            cardNumber: cardNumber,
+            cardHolder: cardHolder
+        });
+
+        // Close modals AFTER printing receipt
         closePaymentModal();
         if (cartOpen) {
             toggleCart();
@@ -952,19 +998,8 @@ async function processPayment() {
 
         // Show completion message
         showCartMessage('Order completed! Thank you for your purchase.', 'success');
-        
-        // Print receipt after successful order
-        printReceipt({
-            orderId: data.order_id || 'N/A',
-            transactionId: transactionId,
-            items: orderItems,
-            paymentMethod: selectedPaymentMethod,
-            totalAmount: paymentTotal,
-            cashAmount: cashAmount,
-            changeAmount: changeAmount,
-            cardNumber: cardNumber,
-            cardHolder: cardHolder
-        });
+
+
     } catch (error) {
         console.error('Error processing/saving order:', error);
         showCartMessage('Failed to save order: ' + error.message, 'error');
@@ -976,12 +1011,12 @@ async function processPayment() {
 }
 
 // Initialize the page when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     console.log('Order page loaded, fetching products...');
-    
+
     // Log page access
     logPageAccess();
-    
+
     fetchProducts();
 });
 
@@ -994,7 +1029,7 @@ async function logPageAccess() {
                 'Content-Type': 'application/json'
             }
         });
-        
+
         if (response.ok) {
             console.log('Page access logged successfully');
         }
@@ -1007,41 +1042,47 @@ async function logPageAccess() {
 
 // Function to print POS-style receipt
 function printReceipt(orderData) {
+    console.log('🧾 printReceipt called with orderData:', orderData);
+    console.log('🧾 Payment Method:', orderData.paymentMethod);
+    console.log('🧾 Card Type:', orderData.cardType);
+    console.log('🧾 Transaction ID:', orderData.transactionId);
+
     const receiptWindow = window.open('', '_blank', 'width=300,height=600');
-    
+
     if (!receiptWindow) {
         alert('Please allow popups to print receipt');
         return;
     }
-    
+
     const currentDate = new Date();
-    const dateStr = currentDate.toLocaleDateString('en-PH', { 
-        year: 'numeric', 
-        month: 'short', 
-        day: 'numeric' 
+    const dateStr = currentDate.toLocaleDateString('en-PH', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
     });
-    const timeStr = currentDate.toLocaleTimeString('en-PH', { 
-        hour: '2-digit', 
+    const timeStr = currentDate.toLocaleTimeString('en-PH', {
+        hour: '2-digit',
         minute: '2-digit',
-        hour12: true 
+        hour12: true
     });
-    
+
     // Calculate subtotal (before VAT)
     const subtotal = orderData.items.reduce((sum, item) => sum + item.subtotal, 0);
-    
+
     // Calculate VAT (1% of subtotal)
     const vatRate = 0.01;
     const vatAmount = subtotal * vatRate;
-    
+
     // Calculate total (subtotal + VAT)
     const total = subtotal + vatAmount;
-    
+
     // Calculate change (if cash payment)
     let changeAmount = 0;
-    if (orderData.paymentMethod === 'cash' && orderData.cashAmount) {
+    const paymentMethodKey = String(orderData.paymentMethod || '').toLowerCase();
+    if (paymentMethodKey === 'cash' && orderData.cashAmount) {
         changeAmount = orderData.cashAmount - total;
     }
-    
+
     // Build items list
     let itemsHtml = '';
     orderData.items.forEach(item => {
@@ -1054,24 +1095,25 @@ function printReceipt(orderData) {
             </tr>
         `;
     });
-    
+
     // Payment details
     let paymentDetailsHtml = '';
-    const isCardPayment = orderData.paymentMethod === 'visa' || orderData.paymentMethod === 'gcash' || orderData.paymentMethod === 'maya' || orderData.paymentMethod === 'card';
-    
+    const isCardPayment = paymentMethodKey === 'visa' || paymentMethodKey === 'gcash' || paymentMethodKey === 'maya' || paymentMethodKey === 'card';
+
     if (isCardPayment) {
-        const paymentMethodName = orderData.paymentMethod === 'visa' ? 'Visa Card' : 
-                                  orderData.paymentMethod === 'gcash' ? 'GCash' : 
-                                  orderData.paymentMethod === 'maya' ? 'Maya' : 'Credit/Debit Card';
-        
+        const paymentMethodName = paymentMethodKey === 'visa' ? 'Visa Card' :
+            paymentMethodKey === 'gcash' ? 'GCash' :
+                paymentMethodKey === 'maya' ? 'Maya' : 'Credit/Debit Card';
+
         // Card payment receipt with detailed transaction info
         paymentDetailsHtml = `
             <div style="margin-top: 10px; padding-top: 10px; border-top: 2px solid #000;">
                 <p style="margin: 8px 0; font-size: 12px; font-weight: bold; text-align: center;">CARD PAYMENT RECEIPT</p>
                 <div style="border: 1px solid #000; padding: 8px; margin: 8px 0; background: #f9f9f9;">
                     <p style="margin: 4px 0; font-size: 11px;"><strong>Payment Method:</strong> ${paymentMethodName}</p>
+                    ${(orderData.cardType || paymentMethodName) ? `<p style="margin: 4px 0; font-size: 11px;"><strong>Card Used:</strong> ${orderData.cardType || paymentMethodName}</p>` : ''}
                     <p style="margin: 4px 0; font-size: 11px;"><strong>Transaction Type:</strong> SALE</p>
-                    ${orderData.transactionId ? `<p style="margin: 4px 0; font-size: 11px;"><strong>Transaction ID:</strong> ${orderData.transactionId}</p>` : `<p style="margin: 4px 0; font-size: 11px;"><strong>Transaction ID:</strong> ${Date.now()}</p>`}
+                    ${orderData.transactionId ? `<p style="margin: 4px 0; font-size: 11px;"><strong>Transaction ID:</strong> ${orderData.transactionId}</p>` : ''}
                     ${orderData.cardNumber ? `<p style="margin: 4px 0; font-size: 11px;"><strong>Card Number:</strong> ${orderData.cardNumber}</p>` : `<p style="margin: 4px 0; font-size: 11px;"><strong>Card Number:</strong> **** **** **** ****</p>`}
                     ${orderData.cardHolder ? `<p style="margin: 4px 0; font-size: 11px;"><strong>Cardholder:</strong> ${orderData.cardHolder}</p>` : ''}
                     <p style="margin: 4px 0; font-size: 11px;"><strong>Auth Code:</strong> ${Math.random().toString(36).substring(2, 8).toUpperCase()}</p>
@@ -1088,7 +1130,7 @@ function printReceipt(orderData) {
                 </div>
             </div>
         `;
-    } else if (orderData.paymentMethod === 'cash') {
+    } else if (paymentMethodKey === 'cash') {
         paymentDetailsHtml = `
             <div style="margin-top: 10px; padding-top: 10px; border-top: 1px dashed #000;">
                 <p style="margin: 6px 0; font-size: 11px; text-align: center;">
@@ -1097,7 +1139,24 @@ function printReceipt(orderData) {
             </div>
         `;
     }
-    
+
+    // Short summary lines to show directly in the main receipt header
+    let headerPaymentLine = '';
+    let headerCardTypeLine = '';
+    let headerTransactionLine = '';
+    if (isCardPayment) {
+        headerPaymentLine = `<p><strong>Payment Method:</strong> Card</p>`;
+        const headerCardLabel = orderData.cardType || paymentMethodKey.toUpperCase();
+        headerCardTypeLine = `<p><strong>Card Type:</strong> ${headerCardLabel}</p>`;
+        if (orderData.transactionId) {
+            headerTransactionLine = `<p><strong>Transaction ID:</strong> ${orderData.transactionId}</p>`;
+        }
+    } else if (paymentMethodKey === 'cash') {
+        // For cash payments, show transaction ID but not payment method or card type
+        if (orderData.transactionId) {
+            headerTransactionLine = `<p><strong>Transaction ID:</strong> ${orderData.transactionId}</p>`;
+        }
+    }
     const receiptHtml = `
         <!DOCTYPE html>
         <html>
@@ -1223,6 +1282,9 @@ function printReceipt(orderData) {
                 <p><strong>Order #:</strong> ${orderData.orderId}</p>
                 <p><strong>Date:</strong> ${dateStr}</p>
                 <p><strong>Time:</strong> ${timeStr}</p>
+                ${headerPaymentLine}
+                ${headerCardTypeLine}
+                ${headerTransactionLine}
             </div>
             
             <table class="items-table">
@@ -1252,9 +1314,7 @@ function printReceipt(orderData) {
                     <span>₱${total.toFixed(2)}</span>
                 </p>
             </div>
-            
-            ${paymentDetailsHtml}
-            
+
             <div class="receipt-footer">
                 <p>This serves as your official receipt</p>
                 <p>Please keep for your records</p>
@@ -1270,7 +1330,7 @@ function printReceipt(orderData) {
         </body>
         </html>
     `;
-    
+
     receiptWindow.document.write(receiptHtml);
     receiptWindow.document.close();
 }
