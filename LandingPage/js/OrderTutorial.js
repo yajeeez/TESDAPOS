@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Array of tutorial images for Order/Customer flow
   const images = [
-    '../img/Tutorial/Order/tutorial.png',
     '../img/Tutorial/Order/Order Now.png',
     '../img/Tutorial/Order/All.png',
     '../img/Tutorial/Order/All.png',

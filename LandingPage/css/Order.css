@@ -1162,7 +1162,7 @@ footer {
 
 .payment-method-options {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 1rem;
 }
 
@@ -1183,6 +1183,30 @@ footer {
   text-align: center;
   width: 100%;
   box-sizing: border-box;
+}
+
+#paymentModal .payment-method-btn .payment-logo {
+  height: 2.5rem;
+  width: auto;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#paymentModal .payment-method-btn .payment-logo svg {
+  height: 100%;
+  width: auto;
+  max-width: 120px;
+}
+
+#paymentModal .payment-method-btn .visa-logo svg {
+  max-width: 80px;
+}
+
+#paymentModal .payment-method-btn .gcash-logo svg,
+#paymentModal .payment-method-btn .maya-logo svg {
+  max-width: 100px;
 }
 
 #paymentModal .payment-method-btn:hover {
@@ -1540,6 +1564,12 @@ footer {
 }
 
 /* Responsive Design for Payment Modal */
+@media (max-width: 900px) {
+  .payment-method-options {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
 @media (max-width: 768px) {
   .payment-modal-content {
     width: 95%;

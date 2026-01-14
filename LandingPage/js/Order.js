@@ -697,7 +697,7 @@ function selectPaymentMethod(method) {
     });
     
     // Show/hide payment sections
-    if (method === 'card') {
+    if (method === 'visa' || method === 'gcash' || method === 'maya') {
         document.getElementById('cashPaymentSection').style.display = 'none';
         document.getElementById('cardPaymentSection').style.display = 'block';
         
