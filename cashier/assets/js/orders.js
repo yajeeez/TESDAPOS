@@ -78,6 +78,9 @@ function renderOrders() {
       <td><span class="status ${statusColors[order.status] || 'pending'}">${order.status || 'Pending'}</span></td>
       <td>${order.served_by ? order.served_by : (order.served_by_username ? order.served_by_username : '<span style="color: #999;">Not yet served</span>')}</td>
       <td>
+        <button class="edit-btn" onclick="openEditModal('${order.order_id || order._id || order.id}')" title="Edit Payment">
+          <i class="fas fa-edit"></i>
+        </button>
         <select onchange="updateOrderStatus('${order.order_id || order._id || order.id}', this.value)">
           <option value="">Change Status</option>
           <option value="Pending" ${order.status === 'Pending' ? 'selected' : ''}>Pending</option>
@@ -236,3 +239,154 @@ document.addEventListener('DOMContentLoaded', async () => {
   
   await fetchOrdersFromDB();
 });
+
+
+// ==========================
+// Edit Payment Modal Functions
+// ==========================
+function openEditModal(orderId) {
+  const order = orders.find(o => {
+    const orderIdStr = String(orderId);
+    const orderOrderId = String(o.order_id || '');
+    const orderMongoId = String(o._id || '');
+    const orderIdField = String(o.id || '');
+    
+    return orderOrderId === orderIdStr || orderMongoId === orderIdStr || orderIdField === orderIdStr;
+  });
+  
+  if (!order) {
+    alert('Order not found');
+    return;
+  }
+  
+  // Handle item display
+  let itemDisplay = '';
+  if (order.product_names && Array.isArray(order.product_names)) {
+    itemDisplay = order.product_names.join(', ');
+  } else if (order.item) {
+    itemDisplay = order.item;
+  } else {
+    itemDisplay = 'Unknown items';
+  }
+  
+  const displayId = order.order_id || order.id;
+  const totalAmount = order.total_amount || 0;
+  const quantity = order.total_item_count || order.quantity || 1;
+  
+  // Create modal HTML
+  const modalHtml = `
+    <div class="edit-modal-overlay" id="editModalOverlay" onclick="closeEditModal()">
+      <div class="edit-modal" onclick="event.stopPropagation()">
+        <div class="edit-modal-header">
+          <h3><i class="fas fa-edit"></i> Edit Payment Details</h3>
+        </div>
+        <div class="edit-modal-body">
+          <div class="order-info">
+            <div class="info-row">
+              <label>Order ID:</label>
+              <span>${displayId}</span>
+            </div>
+            <div class="info-row">
+              <label>Item(s):</label>
+              <span>${itemDisplay}</span>
+            </div>
+            <div class="info-row">
+              <label>Quantity:</label>
+              <span>${quantity}</span>
+            </div>
+            <div class="info-row">
+              <label>Amount:</label>
+              <span>₱${totalAmount.toFixed(2)}</span>
+            </div>
+          </div>
+          <div class="edit-form">
+            <div class="form-group">
+              <label for="cashReceived">Cash Received:</label>
+              <input type="number" id="cashReceived" step="0.01" min="0" placeholder="Enter cash received" oninput="calculateChange()">
+            </div>
+            <div class="form-group">
+              <label for="changeAmount">Change:</label>
+              <input type="number" id="changeAmount" step="0.01" readonly placeholder="0.00">
+            </div>
+            <div class="form-group">
+              <label for="totalBalance">Total Balance:</label>
+              <input type="number" id="totalBalance" value="${totalAmount.toFixed(2)}" step="0.01" readonly>
+            </div>
+          </div>
+        </div>
+        <div class="edit-modal-footer">
+          <button class="cancel-btn" onclick="closeEditModal()">Cancel</button>
+          <button class="save-btn" onclick="savePaymentEdit('${orderId}')">
+            <i class="fas fa-save"></i> Save Changes
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  // Add modal to body
+  document.body.insertAdjacentHTML('beforeend', modalHtml);
+}
+
+function closeEditModal() {
+  const modal = document.getElementById('editModalOverlay');
+  if (modal) {
+    modal.remove();
+  }
+}
+
+function calculateChange() {
+  const cashReceived = parseFloat(document.getElementById('cashReceived').value) || 0;
+  const totalBalance = parseFloat(document.getElementById('totalBalance').value) || 0;
+  const change = cashReceived - totalBalance;
+  
+  document.getElementById('changeAmount').value = change >= 0 ? change.toFixed(2) : '0.00';
+}
+
+async function savePaymentEdit(orderId) {
+  const cashReceived = parseFloat(document.getElementById('cashReceived').value) || 0;
+  const changeAmount = parseFloat(document.getElementById('changeAmount').value) || 0;
+  const totalBalance = parseFloat(document.getElementById('totalBalance').value) || 0;
+  
+  if (cashReceived <= 0) {
+    alert('Please enter a valid cash received amount');
+    return;
+  }
+  
+  if (cashReceived < totalBalance) {
+    alert('Cash received cannot be less than total balance');
+    return;
+  }
+  
+  const cashierInfo = getCurrentCashier();
+  
+  try {
+    // Update order with payment details
+    const response = await fetch('../update_payment_details.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        order_id: orderId,
+        cash_received: cashReceived,
+        change_amount: changeAmount,
+        total_balance: totalBalance,
+        updated_by: cashierInfo.username
+      })
+    });
+    
+    const result = await response.json();
+    
+    if (result.success) {
+      alert('Payment details updated successfully');
+      closeEditModal();
+      await fetchOrdersFromDB(); // Refresh orders
+    } else {
+      alert('Failed to update payment details: ' + (result.message || 'Unknown error'));
+    }
+  } catch (error) {
+    console.error('Error updating payment details:', error);
+    alert('Error updating payment details. Please try again.');
+  }
+}

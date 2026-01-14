@@ -1010,8 +1010,21 @@ function printReceipt(orderData) {
         hour12: true 
     });
     
-    // Calculate subtotal
+    // Calculate subtotal (before VAT)
     const subtotal = orderData.items.reduce((sum, item) => sum + item.subtotal, 0);
+    
+    // Calculate VAT (12% of subtotal)
+    const vatRate = 0.12;
+    const vatAmount = subtotal * vatRate;
+    
+    // Calculate total (subtotal + VAT)
+    const total = subtotal + vatAmount;
+    
+    // Calculate change (if cash payment)
+    let changeAmount = 0;
+    if (orderData.paymentMethod === 'cash' && orderData.cashAmount) {
+        changeAmount = orderData.cashAmount - total;
+    }
     
     // Build items list
     let itemsHtml = '';
@@ -1029,21 +1042,43 @@ function printReceipt(orderData) {
     
     // Payment details
     let paymentDetailsHtml = '';
-    if (orderData.paymentMethod === 'card') {
+    const isCardPayment = orderData.paymentMethod === 'visa' || orderData.paymentMethod === 'gcash' || orderData.paymentMethod === 'maya' || orderData.paymentMethod === 'card';
+    
+    if (isCardPayment) {
+        const paymentMethodName = orderData.paymentMethod === 'visa' ? 'Visa Card' : 
+                                  orderData.paymentMethod === 'gcash' ? 'GCash' : 
+                                  orderData.paymentMethod === 'maya' ? 'Maya' : 'Credit/Debit Card';
+        
+        // Card payment receipt with detailed transaction info
         paymentDetailsHtml = `
-            <div style="margin-top: 10px; padding-top: 10px; border-top: 1px dashed #000;">
-                <p style="margin: 3px 0;"><strong>Payment Method:</strong> Credit/Debit Card</p>
-                ${orderData.cardNumber ? `<p style="margin: 3px 0;"><strong>Card:</strong> ${orderData.cardNumber}</p>` : ''}
-                ${orderData.cardHolder ? `<p style="margin: 3px 0;"><strong>Cardholder:</strong> ${orderData.cardHolder}</p>` : ''}
-                ${orderData.transactionId ? `<p style="margin: 3px 0;"><strong>Transaction ID:</strong> ${orderData.transactionId}</p>` : ''}
+            <div style="margin-top: 10px; padding-top: 10px; border-top: 2px solid #000;">
+                <p style="margin: 8px 0; font-size: 12px; font-weight: bold; text-align: center;">CARD PAYMENT RECEIPT</p>
+                <div style="border: 1px solid #000; padding: 8px; margin: 8px 0; background: #f9f9f9;">
+                    <p style="margin: 4px 0; font-size: 11px;"><strong>Payment Method:</strong> ${paymentMethodName}</p>
+                    <p style="margin: 4px 0; font-size: 11px;"><strong>Transaction Type:</strong> SALE</p>
+                    ${orderData.transactionId ? `<p style="margin: 4px 0; font-size: 11px;"><strong>Transaction ID:</strong> ${orderData.transactionId}</p>` : `<p style="margin: 4px 0; font-size: 11px;"><strong>Transaction ID:</strong> ${Date.now()}</p>`}
+                    ${orderData.cardNumber ? `<p style="margin: 4px 0; font-size: 11px;"><strong>Card Number:</strong> ${orderData.cardNumber}</p>` : `<p style="margin: 4px 0; font-size: 11px;"><strong>Card Number:</strong> **** **** **** ****</p>`}
+                    ${orderData.cardHolder ? `<p style="margin: 4px 0; font-size: 11px;"><strong>Cardholder:</strong> ${orderData.cardHolder}</p>` : ''}
+                    <p style="margin: 4px 0; font-size: 11px;"><strong>Auth Code:</strong> ${Math.random().toString(36).substring(2, 8).toUpperCase()}</p>
+                    <p style="margin: 4px 0; font-size: 11px;"><strong>Reference No:</strong> ${Date.now().toString().slice(-8)}</p>
+                </div>
+                <div style="margin-top: 8px; padding: 8px; border-top: 1px dashed #000;">
+                    <p style="margin: 4px 0; font-size: 12px; display: flex; justify-content: space-between;">
+                        <strong>Amount Charged:</strong>
+                        <strong>₱${total.toFixed(2)}</strong>
+                    </p>
+                    <p style="margin: 4px 0; font-size: 10px; text-align: center; color: #333;">
+                        Payment Status: APPROVED
+                    </p>
+                </div>
             </div>
         `;
     } else if (orderData.paymentMethod === 'cash') {
         paymentDetailsHtml = `
             <div style="margin-top: 10px; padding-top: 10px; border-top: 1px dashed #000;">
-                <p style="margin: 3px 0;"><strong>Payment Method:</strong> Cash</p>
-                <p style="margin: 3px 0;"><strong>Cash Received:</strong> ₱${orderData.cashAmount.toFixed(2)}</p>
-                <p style="margin: 3px 0;"><strong>Change:</strong> ₱${orderData.changeAmount.toFixed(2)}</p>
+                <p style="margin: 6px 0; font-size: 11px; text-align: center;">
+                    <strong>Payment Method:</strong> Cash
+                </p>
             </div>
         `;
     }
@@ -1124,12 +1159,24 @@ function printReceipt(orderData) {
                     margin: 5px 0;
                     font-size: 11px;
                 }
+                .totals .vat-line {
+                    font-size: 11px;
+                    color: #333;
+                }
                 .totals .grand-total {
                     font-size: 14px;
                     font-weight: bold;
                     padding-top: 5px;
                     border-top: 2px solid #000;
                     margin-top: 5px;
+                }
+                .totals .change-line {
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #000;
+                    margin-top: 8px;
+                    padding-top: 8px;
+                    border-top: 1px dashed #000;
                 }
                 .receipt-footer {
                     text-align: center;
@@ -1179,12 +1226,16 @@ function printReceipt(orderData) {
             
             <div class="totals">
                 <p>
-                    <span>Subtotal:</span>
+                    <span>SUB TOTAL:</span>
                     <span>₱${subtotal.toFixed(2)}</span>
+                </p>
+                <p class="vat-line">
+                    <span>VAT (12%):</span>
+                    <span>₱${vatAmount.toFixed(2)}</span>
                 </p>
                 <p class="grand-total">
                     <span>TOTAL:</span>
-                    <span>₱${orderData.totalAmount.toFixed(2)}</span>
+                    <span>₱${total.toFixed(2)}</span>
                 </p>
             </div>
             
@@ -1218,3 +1269,4 @@ function printReceipt(orderData) {
     receiptWindow.document.write(receiptHtml);
     receiptWindow.document.close();
 }
+
