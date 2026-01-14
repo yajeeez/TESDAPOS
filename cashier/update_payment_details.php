@@ -21,6 +21,7 @@ $cashReceived = floatval($input['cash_received'] ?? 0);
 $changeAmount = floatval($input['change_amount'] ?? 0);
 $totalBalance = floatval($input['total_balance'] ?? 0);
 $updatedBy = $input['updated_by'] ?? '';
+$updatedByName = $input['updated_by_name'] ?? '';
 
 if (empty($orderId) || $cashReceived <= 0) {
     echo json_encode(['success' => false, 'message' => 'Invalid order ID or cash amount']);
@@ -31,7 +32,7 @@ try {
     $db = getDatabaseConnection();
     $ordersCollection = $db->orders;
     
-    // Update the order with payment details
+    // Update the order with payment details and served_by info
     $result = $ordersCollection->updateOne(
         ['order_id' => $orderId],
         [
@@ -40,7 +41,10 @@ try {
                 'change_amount' => $changeAmount,
                 'total_balance' => $totalBalance,
                 'payment_updated_by' => $updatedBy,
-                'payment_updated_at' => new MongoDB\BSON\UTCDateTime()
+                'payment_updated_at' => new MongoDB\BSON\UTCDateTime(),
+                'served_by' => $updatedByName,
+                'served_by_username' => $updatedBy,
+                'served_at' => new MongoDB\BSON\UTCDateTime()
             ]
         ]
     );

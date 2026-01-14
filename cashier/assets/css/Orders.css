@@ -234,6 +234,32 @@ body {
   pointer-events: none;
 }
 
+/* === Print Receipt Button === */
+.print-receipt-btn {
+  background: #27ae60;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.print-receipt-btn:hover {
+  background: #229954;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(39, 174, 96, 0.3);
+}
+
+.print-receipt-btn i {
+  pointer-events: none;
+}
+
 /* === Edit Modal === */
 .edit-modal-overlay {
   position: fixed;

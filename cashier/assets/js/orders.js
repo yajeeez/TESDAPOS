@@ -81,6 +81,9 @@ function renderOrders() {
         <button class="edit-btn" onclick="openEditModal('${order.order_id || order._id || order.id}')" title="Edit Payment">
           <i class="fas fa-edit"></i>
         </button>
+        <button class="print-receipt-btn" onclick="printReceipt('${order.order_id || order._id || order.id}')" title="Print Receipt">
+          <i class="fas fa-print"></i>
+        </button>
         <select onchange="updateOrderStatus('${order.order_id || order._id || order.id}', this.value)">
           <option value="">Change Status</option>
           <option value="Pending" ${order.status === 'Pending' ? 'selected' : ''}>Pending</option>
@@ -242,6 +245,310 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
 // ==========================
+// Print Receipt Function
+// ==========================
+function printReceipt(orderId) {
+  const order = orders.find(o => {
+    const orderIdStr = String(orderId);
+    const orderOrderId = String(o.order_id || '');
+    const orderMongoId = String(o._id || '');
+    const orderIdField = String(o.id || '');
+    
+    return orderOrderId === orderIdStr || orderMongoId === orderIdStr || orderIdField === orderIdStr;
+  });
+  
+  if (!order) {
+    alert('Order not found');
+    return;
+  }
+  
+  // Calculate subtotal (before VAT)
+  const subtotal = order.total_amount || 0;
+  
+  // Calculate VAT (1% of subtotal)
+  const vatRate = 0.01;
+  const vatAmount = subtotal * vatRate;
+  
+  // Calculate total (subtotal + VAT)
+  const total = subtotal + vatAmount;
+  
+  // Handle item display
+  let itemDisplay = '';
+  if (order.product_names && Array.isArray(order.product_names)) {
+    itemDisplay = order.product_names.map((name, index) => {
+      const qty = order.quantities && order.quantities[index] ? order.quantities[index] : 1;
+      let price = order.prices && order.prices[index] ? parseFloat(order.prices[index]) : 0;
+      
+      // If price is 0, calculate from subtotal
+      if (price === 0 && subtotal > 0) {
+        price = subtotal / (order.quantities ? order.quantities.reduce((a, b) => a + b, 0) : 1);
+      }
+      
+      return `<tr>
+        <td style="padding: 4px 0; text-align: left;">${name}</td>
+        <td style="padding: 4px 0; text-align: center;">${qty}</td>
+        <td style="padding: 4px 0; text-align: right;">₱${price.toFixed(2)}</td>
+      </tr>`;
+    }).join('');
+  } else if (order.item) {
+    const qty = order.quantity || order.total_item_count || 1;
+    const price = subtotal / qty;
+    itemDisplay = `<tr>
+      <td style="padding: 4px 0; text-align: left;">${order.item}</td>
+      <td style="padding: 4px 0; text-align: center;">${qty}</td>
+      <td style="padding: 4px 0; text-align: right;">₱${price.toFixed(2)}</td>
+    </tr>`;
+  } else {
+    // Fallback: use total_amount as the item price
+    const qty = order.total_item_count || order.quantity || 1;
+    const price = subtotal / qty;
+    itemDisplay = `<tr>
+      <td style="padding: 4px 0; text-align: left;">Order Items</td>
+      <td style="padding: 4px 0; text-align: center;">${qty}</td>
+      <td style="padding: 4px 0; text-align: right;">₱${price.toFixed(2)}</td>
+    </tr>`;
+  }
+  
+  const displayId = order.order_id || order.id;
+  const cashReceived = order.cash_received || 0;
+  const changeAmount = cashReceived > 0 ? (cashReceived - total) : 0;
+  const paymentMethod = order.payment_method || 'Cash';
+  
+  const currentDate = new Date(order.created_at || new Date());
+  const dateStr = currentDate.toLocaleDateString('en-PH', { 
+    year: 'numeric', 
+    month: 'short', 
+    day: 'numeric' 
+  });
+  const timeStr = currentDate.toLocaleTimeString('en-PH', { 
+    hour: '2-digit', 
+    minute: '2-digit',
+    hour12: true 
+  });
+  
+  // Create print window
+  const printWindow = window.open('', '_blank', 'width=300,height=600');
+  
+  if (!printWindow) {
+    alert('Please allow popups to print receipt');
+    return;
+  }
+  
+  printWindow.document.write(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <title>Receipt - Order #${displayId}</title>
+      <style>
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+        body {
+          font-family: 'Courier New', monospace;
+          font-size: 11px;
+          line-height: 1.4;
+          padding: 10px;
+          width: 280px;
+          margin: 0 auto;
+          background: white;
+        }
+        .receipt-header {
+          text-align: center;
+          margin-bottom: 15px;
+          padding-bottom: 10px;
+          border-bottom: 2px solid #000;
+        }
+        .receipt-header img {
+          width: 60px;
+          height: 60px;
+          margin-bottom: 5px;
+        }
+        .receipt-header h1 {
+          font-size: 16px;
+          font-weight: bold;
+          margin: 5px 0;
+        }
+        .receipt-header p {
+          font-size: 10px;
+          margin: 2px 0;
+        }
+        .receipt-info {
+          margin-bottom: 10px;
+          padding-bottom: 10px;
+          border-bottom: 1px dashed #000;
+        }
+        .receipt-info p {
+          margin: 3px 0;
+          font-size: 11px;
+        }
+        .items-table {
+          width: 100%;
+          margin-bottom: 10px;
+          border-collapse: collapse;
+        }
+        .items-table th {
+          border-bottom: 1px solid #000;
+          padding: 5px 0;
+          text-align: left;
+          font-size: 10px;
+          font-weight: bold;
+        }
+        .items-table td {
+          font-size: 10px;
+        }
+        .totals {
+          margin-top: 10px;
+          padding-top: 10px;
+          border-top: 1px solid #000;
+        }
+        .totals p {
+          display: flex;
+          justify-content: space-between;
+          margin: 5px 0;
+          font-size: 11px;
+        }
+        .totals .vat-line {
+          font-size: 11px;
+          color: #333;
+        }
+        .totals .grand-total {
+          font-size: 14px;
+          font-weight: bold;
+          padding-top: 5px;
+          border-top: 2px solid #000;
+          margin-top: 5px;
+        }
+        .totals .change-line {
+          font-size: 13px;
+          font-weight: bold;
+          color: #000;
+          margin-top: 8px;
+          padding-top: 8px;
+          border-top: 1px dashed #000;
+        }
+        .payment-info {
+          margin-top: 10px;
+          padding-top: 10px;
+          border-top: 1px dashed #000;
+          font-size: 11px;
+          text-align: center;
+        }
+        .receipt-footer {
+          text-align: center;
+          margin-top: 15px;
+          padding-top: 10px;
+          border-top: 1px dashed #000;
+          font-size: 10px;
+        }
+        @media print {
+          body {
+            width: 80mm;
+            padding: 5mm;
+          }
+          .no-print {
+            display: none;
+          }
+        }
+      </style>
+    </head>
+    <body>
+      <div class="receipt-header">
+        <img src="../../img/TESDALOGO.png" alt="TESDA Logo">
+        <h1>TESDA POS SYSTEM</h1>
+        <p>Food Ordering System</p>
+        <p>Thank you for your order!</p>
+      </div>
+      
+      <div class="receipt-info">
+        <p><strong>Order #:</strong> ${displayId}</p>
+        <p><strong>Date:</strong> ${dateStr}</p>
+        <p><strong>Time:</strong> ${timeStr}</p>
+      </div>
+      
+      <table class="items-table">
+        <thead>
+          <tr>
+            <th style="text-align: left;">Item</th>
+            <th style="text-align: center;">Qty</th>
+            <th style="text-align: right;">Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${itemDisplay}
+        </tbody>
+      </table>
+      
+      <div class="totals">
+        <p>
+          <span>SUB TOTAL:</span>
+          <span>₱${subtotal.toFixed(2)}</span>
+        </p>
+        <p class="vat-line">
+          <span>VAT (1%):</span>
+          <span>₱${vatAmount.toFixed(2)}</span>
+        </p>
+        <p class="grand-total">
+          <span>TOTAL:</span>
+          <span>₱${total.toFixed(2)}</span>
+        </p>
+        ${cashReceived > 0 ? `
+        <p class="change-line">
+          <span>Cash:</span>
+          <span>₱${cashReceived.toFixed(2)}</span>
+        </p>
+        <p class="change-line">
+          <span>Change:</span>
+          <span>₱${changeAmount.toFixed(2)}</span>
+        </p>
+        ` : ''}
+      </div>
+      
+      ${paymentMethod && paymentMethod.toLowerCase() !== 'cash' ? `
+      <div style="margin-top: 10px; padding-top: 10px; border-top: 2px solid #000;">
+        <p style="margin: 8px 0; font-size: 12px; font-weight: bold; text-align: center;">CARD PAYMENT RECEIPT</p>
+        <div style="border: 1px solid #000; padding: 8px; margin: 8px 0; background: #f9f9f9;">
+          <p style="margin: 4px 0; font-size: 11px;"><strong>Payment Method:</strong> ${paymentMethod}</p>
+          <p style="margin: 4px 0; font-size: 11px;"><strong>Transaction Type:</strong> SALE</p>
+          ${order.transaction_id ? `<p style="margin: 4px 0; font-size: 11px;"><strong>Transaction ID:</strong> ${order.transaction_id}</p>` : ''}
+          ${order.card_number ? `<p style="margin: 4px 0; font-size: 11px;"><strong>Card Number:</strong> ${order.card_number}</p>` : ''}
+          ${order.card_holder ? `<p style="margin: 4px 0; font-size: 11px;"><strong>Cardholder:</strong> ${order.card_holder}</p>` : ''}
+          <p style="margin: 4px 0; font-size: 11px;"><strong>Auth Code:</strong> ${Math.random().toString(36).substring(2, 8).toUpperCase()}</p>
+          <p style="margin: 4px 0; font-size: 11px;"><strong>Reference No:</strong> ${Date.now().toString().slice(-8)}</p>
+        </div>
+        <div style="margin-top: 8px; padding: 8px; border-top: 1px dashed #000;">
+          <p style="margin: 4px 0; font-size: 12px; display: flex; justify-content: space-between;">
+            <strong>Amount Charged:</strong>
+            <strong>₱${total.toFixed(2)}</strong>
+          </p>
+          <p style="margin: 4px 0; font-size: 10px; text-align: center; color: #333;">
+            Payment Status: APPROVED
+          </p>
+        </div>
+      </div>
+      ` : ''}
+      
+      <div class="receipt-footer">
+        <p>This serves as your official receipt</p>
+        <p>Please keep for your records</p>
+        <p style="margin-top: 10px;">© 2025 TESDA POS System</p>
+      </div>
+      
+      <script>
+        setTimeout(() => {
+          window.print();
+        }, 500);
+      </script>
+    </body>
+    </html>
+  `);
+  
+  printWindow.document.close();
+}
+
+// ==========================
 // Edit Payment Modal Functions
 // ==========================
 function openEditModal(orderId) {
@@ -360,23 +667,40 @@ async function savePaymentEdit(orderId) {
   
   const cashierInfo = getCurrentCashier();
   
+  console.log('Saving payment edit for order:', orderId);
+  console.log('Cashier info:', cashierInfo);
+  
   try {
+    const requestData = {
+      order_id: orderId,
+      cash_received: cashReceived,
+      change_amount: changeAmount,
+      total_balance: totalBalance,
+      updated_by: cashierInfo.username,
+      updated_by_name: cashierInfo.name
+    };
+    
+    console.log('Request data:', requestData);
+    
     // Update order with payment details
-    const response = await fetch('../update_payment_details.php', {
+    const response = await fetch('/TESDAPOS/cashier/update_payment_details.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-        order_id: orderId,
-        cash_received: cashReceived,
-        change_amount: changeAmount,
-        total_balance: totalBalance,
-        updated_by: cashierInfo.username
-      })
+      body: JSON.stringify(requestData)
     });
     
+    console.log('Response status:', response.status);
+    
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Response error:', errorText);
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
     const result = await response.json();
+    console.log('Response result:', result);
     
     if (result.success) {
       alert('Payment details updated successfully');
@@ -387,6 +711,6 @@ async function savePaymentEdit(orderId) {
     }
   } catch (error) {
     console.error('Error updating payment details:', error);
-    alert('Error updating payment details. Please try again.');
+    alert('Error updating payment details: ' + error.message);
   }
 }

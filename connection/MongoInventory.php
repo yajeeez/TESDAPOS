@@ -162,5 +162,51 @@ class MongoInventory {
             return ['success' => false, 'message' => 'Database error: ' . $e->getMessage()];
         }
     }
+    
+    /**
+     * Decrease stock quantity for a product
+     */
+    public function decreaseStock($productId, $quantity) {
+        try {
+            // First, get the current stock
+            $product = $this->getProductById($productId);
+            
+            if (!$product['success']) {
+                return ['success' => false, 'message' => 'Product not found'];
+            }
+            
+            $currentStock = $product['product']['stock_quantity'];
+            $newStock = $currentStock - $quantity;
+            
+            // Prevent negative stock
+            if ($newStock < 0) {
+                return ['success' => false, 'message' => 'Insufficient stock for product'];
+            }
+            
+            // Update the stock
+            $result = $this->collection->updateOne(
+                ['_id' => new ObjectId($productId)],
+                [
+                    '$set' => [
+                        'stock_quantity' => $newStock,
+                        'updated_at' => new UTCDateTime()
+                    ]
+                ]
+            );
+            
+            if ($result->getModifiedCount() === 1) {
+                return [
+                    'success' => true, 
+                    'message' => 'Stock updated successfully',
+                    'new_stock' => $newStock
+                ];
+            } else {
+                return ['success' => false, 'message' => 'Failed to update stock'];
+            }
+        } catch (Exception $e) {
+            error_log("Error decreasing stock: " . $e->getMessage());
+            return ['success' => false, 'message' => 'Database error: ' . $e->getMessage()];
+        }
+    }
 }
 ?>

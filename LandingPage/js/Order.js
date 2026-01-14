@@ -688,6 +688,9 @@ function updatePaymentOrderSummary() {
 function selectPaymentMethod(method) {
     selectedPaymentMethod = method;
     
+    // Reset card swipe state when selecting a new payment method
+    cardSwiped = false;
+    
     // Update button states
     document.querySelectorAll('.payment-method-btn').forEach(btn => {
         btn.classList.remove('active');
@@ -701,8 +704,17 @@ function selectPaymentMethod(method) {
         document.getElementById('cashPaymentSection').style.display = 'none';
         document.getElementById('cardPaymentSection').style.display = 'block';
         
-        // Button is always enabled since payment method is optional
-        document.getElementById('confirmPaymentBtn').disabled = false;
+        // Reset card info display
+        document.getElementById('cardInfo').style.display = 'none';
+        const swipeBtn = document.getElementById('simulateSwipeBtn');
+        if (swipeBtn) {
+            swipeBtn.disabled = false;
+            swipeBtn.innerHTML = '<i class="fas fa-hand-pointer"></i> Simulate Card Swipe';
+            swipeBtn.style.background = '';
+        }
+        
+        // Disable confirm button until card is swiped
+        document.getElementById('confirmPaymentBtn').disabled = true;
     }
 }
 
@@ -801,7 +813,7 @@ function simulateCardSwipe() {
             swipeLine.classList.remove('swiping');
         }
         
-        // Button is always enabled since payment method is optional
+        // Enable confirm button after successful card swipe
         document.getElementById('confirmPaymentBtn').disabled = false;
         
         // Show success message
@@ -825,9 +837,10 @@ async function processPayment() {
         changeAmount = 0;
         // Generate transaction ID for cash payment
         transactionId = generateCardTransactionId();
-    } else if (selectedPaymentMethod === 'card') {
+    } else if (selectedPaymentMethod === 'visa' || selectedPaymentMethod === 'gcash' || selectedPaymentMethod === 'maya') {
+        // Card payment methods require card swipe
         if (!cardSwiped) {
-            showCartMessage('Please swipe your card first or proceed without payment method', 'warning');
+            showCartMessage('Please swipe your card first before proceeding with payment', 'warning');
             return;
         }
         const txnEl = document.getElementById('transactionId');
@@ -934,6 +947,9 @@ async function processPayment() {
             toggleCart();
         }
 
+        // Refresh products to show updated stock quantities in real-time
+        await fetchProducts();
+
         // Show completion message
         showCartMessage('Order completed! Thank you for your purchase.', 'success');
         
@@ -1013,8 +1029,8 @@ function printReceipt(orderData) {
     // Calculate subtotal (before VAT)
     const subtotal = orderData.items.reduce((sum, item) => sum + item.subtotal, 0);
     
-    // Calculate VAT (12% of subtotal)
-    const vatRate = 0.12;
+    // Calculate VAT (1% of subtotal)
+    const vatRate = 0.01;
     const vatAmount = subtotal * vatRate;
     
     // Calculate total (subtotal + VAT)
@@ -1035,7 +1051,6 @@ function printReceipt(orderData) {
                 <td style="padding: 4px 0; text-align: left;">${itemName}</td>
                 <td style="padding: 4px 0; text-align: center;">${item.quantity}</td>
                 <td style="padding: 4px 0; text-align: right;">₱${item.price.toFixed(2)}</td>
-                <td style="padding: 4px 0; text-align: right;">₱${item.subtotal.toFixed(2)}</td>
             </tr>
         `;
     });
@@ -1216,7 +1231,6 @@ function printReceipt(orderData) {
                         <th style="text-align: left;">Item</th>
                         <th style="text-align: center;">Qty</th>
                         <th style="text-align: right;">Price</th>
-                        <th style="text-align: right;">Total</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -1230,7 +1244,7 @@ function printReceipt(orderData) {
                     <span>₱${subtotal.toFixed(2)}</span>
                 </p>
                 <p class="vat-line">
-                    <span>VAT (12%):</span>
+                    <span>VAT (1%):</span>
                     <span>₱${vatAmount.toFixed(2)}</span>
                 </p>
                 <p class="grand-total">
@@ -1245,15 +1259,6 @@ function printReceipt(orderData) {
                 <p>This serves as your official receipt</p>
                 <p>Please keep for your records</p>
                 <p style="margin-top: 10px;">© 2025 TESDA POS System</p>
-            </div>
-            
-            <div class="no-print" style="text-align: center; margin-top: 20px;">
-                <button onclick="window.print()" style="padding: 10px 20px; background: #004aad; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 12px;">
-                    Print Receipt
-                </button>
-                <button onclick="window.close()" style="padding: 10px 20px; background: #666; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 12px; margin-left: 10px;">
-                    Close
-                </button>
             </div>
             
             <script>

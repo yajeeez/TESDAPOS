@@ -34,6 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 require_once __DIR__ . '/MongoOrders.php';
+require_once __DIR__ . '/MongoInventory.php';
 require_once __DIR__ . '/../includes/audit_logger.php';
 
 // Start session to get cashier info
@@ -92,6 +93,28 @@ try {
 
     $mongoOrders = new MongoOrders();
     $result = $mongoOrders->addOrder($order);
+
+    // Update stock quantities for each item in the order
+    if ($result['success']) {
+        $mongoInventory = new MongoInventory();
+        $stockUpdateErrors = [];
+        
+        foreach ($data['items'] as $item) {
+            if (isset($item['product_id']) && isset($item['quantity'])) {
+                $stockResult = $mongoInventory->decreaseStock($item['product_id'], $item['quantity']);
+                
+                if (!$stockResult['success']) {
+                    $stockUpdateErrors[] = $item['name'] . ': ' . $stockResult['message'];
+                    error_log("Stock update failed for product {$item['product_id']}: {$stockResult['message']}");
+                }
+            }
+        }
+        
+        // Log stock update errors if any (but don't fail the order)
+        if (!empty($stockUpdateErrors)) {
+            error_log("Stock update errors: " . implode(', ', $stockUpdateErrors));
+        }
+    }
 
     // Log the order creation in audit trail
     if ($result['success']) {
