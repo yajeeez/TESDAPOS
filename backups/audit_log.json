@@ -10480,5 +10480,411 @@
         "role": "cashier",
         "ip": "::1",
         "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676806464123.79726158",
+        "timestamp": "2026-01-14 17:55:18",
+        "action": "page_access",
+        "details": "Accessed Cashier Dashboard page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967680a18d278.30134924",
+        "timestamp": "2026-01-14 17:55:22",
+        "action": "cashier_logout",
+        "details": "Cashier 'Emman Tombeats' (cashier1) logged out",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36",
+        "cashier_name": "Emman Tombeats",
+        "cashier_username": "cashier1"
+    },
+    {
+        "id": "audit_696768113dd347.14113128",
+        "timestamp": "2026-01-14 17:55:29",
+        "action": "cashier_login",
+        "details": "Cashier 'Emman Tombeats' (cashier1) logged in",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36",
+        "cashier_name": "Emman Tombeats",
+        "cashier_username": "cashier1"
+    },
+    {
+        "id": "audit_69676811446da2.68196284",
+        "timestamp": "2026-01-14 17:55:29",
+        "action": "page_access",
+        "details": "Accessed Cashier Dashboard page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967682fd40ac4.25612856",
+        "timestamp": "2026-01-14 17:55:59",
+        "action": "page_access",
+        "details": "Accessed Cashier Dashboard page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967682fe8fa10.51977916",
+        "timestamp": "2026-01-14 17:55:59",
+        "action": "page_access",
+        "details": "Accessed Cashier Dashboard page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676830079298.53746306",
+        "timestamp": "2026-01-14 17:56:00",
+        "action": "page_access",
+        "details": "Accessed Cashier Dashboard page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676830250071.26112057",
+        "timestamp": "2026-01-14 17:56:00",
+        "action": "page_access",
+        "details": "Accessed Cashier Dashboard page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696768303aca31.13757888",
+        "timestamp": "2026-01-14 17:56:00",
+        "action": "page_access",
+        "details": "Accessed Cashier Dashboard page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967683054e364.71032265",
+        "timestamp": "2026-01-14 17:56:00",
+        "action": "page_access",
+        "details": "Accessed Cashier Dashboard page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967686fcd8fa4.01483903",
+        "timestamp": "2026-01-14 17:57:03",
+        "action": "page_access",
+        "details": "Accessed Cashier Dashboard page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696768700f7c97.74251486",
+        "timestamp": "2026-01-14 17:57:04",
+        "action": "page_access",
+        "details": "Accessed Cashier Dashboard page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967687029ef25.13220661",
+        "timestamp": "2026-01-14 17:57:04",
+        "action": "page_access",
+        "details": "Accessed Cashier Dashboard page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696768704b7945.98439086",
+        "timestamp": "2026-01-14 17:57:04",
+        "action": "page_access",
+        "details": "Accessed Cashier Dashboard page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967688d132b21.00842300",
+        "timestamp": "2026-01-14 17:57:33",
+        "action": "page_access",
+        "details": "Accessed Cashier Dashboard page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967688d2a5ee2.52510354",
+        "timestamp": "2026-01-14 17:57:33",
+        "action": "page_access",
+        "details": "Accessed Cashier Dashboard page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696768f89d1329.85766341",
+        "timestamp": "2026-01-14 17:59:20",
+        "action": "page_access",
+        "details": "Accessed Cashier Dashboard page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696768f8ce3fa1.87884806",
+        "timestamp": "2026-01-14 17:59:20",
+        "action": "page_access",
+        "details": "Accessed Cashier Dashboard page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967691157b984.50906316",
+        "timestamp": "2026-01-14 17:59:45",
+        "action": "cashier_logout",
+        "details": "Cashier 'Emman Tombeats' (cashier1) logged out",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36",
+        "cashier_name": "Emman Tombeats",
+        "cashier_username": "cashier1"
+    },
+    {
+        "id": "audit_6967691998cd00.65084351",
+        "timestamp": "2026-01-14 17:59:53",
+        "action": "admin_login",
+        "details": "Admin 'Aeron Gaylord' logged in",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676919a02f80.68588543",
+        "timestamp": "2026-01-14 17:59:53",
+        "action": "page_access",
+        "details": "Accessed Dashboard page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676953544e69.78774100",
+        "timestamp": "2026-01-14 18:00:51",
+        "action": "page_access",
+        "details": "Accessed Dashboard page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676953e1e4b3.45460897",
+        "timestamp": "2026-01-14 18:00:51",
+        "action": "page_access",
+        "details": "Accessed Dashboard page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676954117818.72971413",
+        "timestamp": "2026-01-14 18:00:52",
+        "action": "page_access",
+        "details": "Accessed Dashboard page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696769562907e6.96548480",
+        "timestamp": "2026-01-14 18:00:54",
+        "action": "page_access",
+        "details": "Accessed Orders page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696769581e8c98.95333664",
+        "timestamp": "2026-01-14 18:00:56",
+        "action": "page_access",
+        "details": "Accessed Dashboard page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967698fad1a60.89633834",
+        "timestamp": "2026-01-14 18:01:51",
+        "action": "page_access",
+        "details": "Accessed Dashboard page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967698fce23a5.52402710",
+        "timestamp": "2026-01-14 18:01:51",
+        "action": "page_access",
+        "details": "Accessed Dashboard page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967698fe3d586.80857062",
+        "timestamp": "2026-01-14 18:01:51",
+        "action": "page_access",
+        "details": "Accessed Dashboard page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676996a5afa3.98201092",
+        "timestamp": "2026-01-14 18:01:58",
+        "action": "page_access",
+        "details": "Accessed Dashboard page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676996c74b44.96973433",
+        "timestamp": "2026-01-14 18:01:58",
+        "action": "page_access",
+        "details": "Accessed Dashboard page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696769a98ce1e0.67911632",
+        "timestamp": "2026-01-14 18:02:17",
+        "action": "page_access",
+        "details": "Accessed Dashboard page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696769a9a91761.78998540",
+        "timestamp": "2026-01-14 18:02:17",
+        "action": "page_access",
+        "details": "Accessed Dashboard page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696769a9bd8ba1.11057268",
+        "timestamp": "2026-01-14 18:02:17",
+        "action": "page_access",
+        "details": "Accessed Dashboard page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696769a9d4bc73.96130978",
+        "timestamp": "2026-01-14 18:02:17",
+        "action": "page_access",
+        "details": "Accessed Dashboard page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696769a9edd2b4.29884468",
+        "timestamp": "2026-01-14 18:02:17",
+        "action": "page_access",
+        "details": "Accessed Dashboard page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696769aa12c002.82387354",
+        "timestamp": "2026-01-14 18:02:18",
+        "action": "page_access",
+        "details": "Accessed Dashboard page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696769aa2c7ab0.36581394",
+        "timestamp": "2026-01-14 18:02:18",
+        "action": "page_access",
+        "details": "Accessed Dashboard page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696769aa458317.49795353",
+        "timestamp": "2026-01-14 18:02:18",
+        "action": "page_access",
+        "details": "Accessed Dashboard page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676c8f0e95d5.89671612",
+        "timestamp": "2026-01-14 18:14:39",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
     }
 ]

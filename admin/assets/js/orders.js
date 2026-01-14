@@ -9,6 +9,60 @@ let orders = [];
 // ==========================
 function logout(e) {
   if (e) e.preventDefault();
+  
+  // Show logout confirmation modal
+  showLogoutConfirmation();
+}
+
+function showLogoutConfirmation() {
+  const modal = document.createElement('div');
+  modal.className = 'modal-overlay';
+  modal.id = 'logoutModal';
+  
+  modal.innerHTML = `
+    <div class="modal-content">
+      <div class="modal-icon" style="background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);">
+        <i class="fas fa-sign-out-alt"></i>
+      </div>
+      <h3 class="modal-title">Confirm Logout</h3>
+      <p class="modal-message">Are you sure you want to logout?</p>
+      <div class="modal-actions">
+        <button class="modal-btn modal-cancel" onclick="closeLogoutModal()">
+          <i class="fas fa-times"></i> Cancel
+        </button>
+        <button class="modal-btn modal-confirm" onclick="confirmLogout()">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
+    </div>
+  `;
+  
+  document.body.appendChild(modal);
+  
+  // Trigger animation
+  setTimeout(() => modal.classList.add('active'), 10);
+  
+  // Close modal when clicking outside
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      closeLogoutModal();
+    }
+  });
+}
+
+function closeLogoutModal() {
+  const modal = document.getElementById('logoutModal');
+  if (modal) {
+    modal.classList.remove('active');
+    setTimeout(() => {
+      if (document.body.contains(modal)) {
+        document.body.removeChild(modal);
+      }
+    }, 300);
+  }
+}
+
+function confirmLogout() {
   window.location.href = "../../public/components/login.html";
 }
 

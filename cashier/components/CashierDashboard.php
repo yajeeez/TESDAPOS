@@ -332,6 +332,18 @@ AuditLogger::log('page_access', 'Accessed Cashier Dashboard page');
         ];
       });
 
+      // Calculate summary totals
+      const totalSales = transactionsToExport.reduce((sum, txn) => sum + (parseFloat(txn.total_amount) || 0), 0);
+      const subtotal = totalSales;
+      const vat = subtotal * 0.01;
+      const totalWithVat = subtotal + vat;
+
+      // Add summary rows
+      csvRows.push(['', '', '', '', '', '', '', '']);
+      csvRows.push(['', '', '', '', '', '', 'Subtotal:', subtotal.toFixed(2)]);
+      csvRows.push(['', '', '', '', '', '', 'VAT (1%):', vat.toFixed(2)]);
+      csvRows.push(['', '', '', '', '', '', 'Total Amount:', totalWithVat.toFixed(2)]);
+
       const csvContent = [
         headers.join(','),
         ...csvRows.map(row => row.join(','))

@@ -854,13 +854,13 @@ function exportSalesReportToCSV() {
     const items = transaction.items || [];
     const itemsCount = items.length;
     const itemsDetails = items.map(item => 
-      `${item.name || item.product_name} (${item.quantity}x @ ₱${item.price})`
+      `${item.name || item.product_name} (${item.quantity}x @ P${item.price})`
     ).join('; ');
 
     return [
       transaction.order_id || transaction.id || '',
       transaction.date || (transaction.created_at ? new Date(transaction.created_at).toLocaleDateString() : ''),
-      transaction.served_by || transaction.staff_name || '',
+      transaction.served_by || transaction.staff_name || 'N/A',
       transaction.customer_name || 'Walk-in',
       transaction.status || 'Pending',
       transaction.paymentMethod || transaction.payment_method || 'Cash',
@@ -870,13 +870,26 @@ function exportSalesReportToCSV() {
     ];
   });
 
+  // Calculate summary totals
+  const totalSales = transactions.reduce((sum, txn) => sum + (parseFloat(txn.total_amount) || 0), 0);
+  const subtotal = totalSales;
+  const vat = subtotal * 0.01;
+  const totalWithVat = subtotal + vat;
+
+  // Add summary rows
+  csvRows.push(['', '', '', '', '', '', '', '', '']);
+  csvRows.push(['', '', '', '', '', '', 'Subtotal:', subtotal.toFixed(2), '']);
+  csvRows.push(['', '', '', '', '', '', 'VAT (1%):', vat.toFixed(2), '']);
+  csvRows.push(['', '', '', '', '', '', 'Total Amount:', totalWithVat.toFixed(2), '']);
+
   // Combine headers and rows
   const csvContent = [headers, ...csvRows]
     .map(row => row.join(','))
     .join('\n');
 
-  // Create blob and download
-  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  // Add BOM for UTF-8 support in Excel
+  const BOM = '\uFEFF';
+  const blob = new Blob([BOM + csvContent], { type: 'text/csv;charset=utf-8;' });
   const link = document.createElement('a');
   const url = URL.createObjectURL(blob);
   
