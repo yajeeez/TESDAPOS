@@ -749,12 +749,6 @@ function printSalesReport() {
             <div style="text-align: right;">${formatCurrency(vat)}</div>
             <div style="text-align: right; font-weight: 600; font-size: 1.1rem; padding-top: 10px; border-top: 2px solid #004aad;">Total Amount:</div>
             <div style="text-align: right; font-weight: 600; font-size: 1.1rem; padding-top: 10px; border-top: 2px solid #004aad;">${formatCurrency(totalWithVat)}</div>
-            ${totalCash > 0 ? `
-            <div style="text-align: right; font-weight: 600; margin-top: 10px;">Cash:</div>
-            <div style="text-align: right; margin-top: 10px;">${formatCurrency(totalCash)}</div>
-            <div style="text-align: right; font-weight: 600;">Change:</div>
-            <div style="text-align: right;">${formatCurrency(totalChange)}</div>
-            ` : ''}
           </div>
         </div>
 

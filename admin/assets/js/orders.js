@@ -732,12 +732,12 @@ async function savePaymentEdit(orderId) {
   const totalBalance = parseFloat(document.getElementById('totalBalance').value) || 0;
 
   if (cashReceived <= 0) {
-    alert('Please enter a valid cash received amount');
+    showNotification('Please enter a valid cash received amount', 'warning');
     return;
   }
 
   if (cashReceived < totalBalance) {
-    alert('Cash received cannot be less than total balance');
+    showNotification('Cash received cannot be less than total balance', 'warning');
     return;
   }
 
@@ -780,14 +780,73 @@ async function savePaymentEdit(orderId) {
     console.log('Response result:', result);
 
     if (result.success) {
-      alert('Payment details updated successfully');
+      showNotification('Payment details updated successfully', 'success');
       closeEditModal();
       await fetchOrdersFromDB(); // Refresh orders
     } else {
-      alert('Failed to update payment details: ' + (result.message || 'Unknown error'));
+      showNotification('Failed to update payment details: ' + (result.message || 'Unknown error'), 'error');
     }
   } catch (error) {
     console.error('Error updating payment details:', error);
-    alert('Error updating payment details: ' + error.message);
+    showNotification('Error updating payment details: ' + error.message, 'error');
   }
+}
+
+// ==========================
+// Notification Function
+// ==========================
+function showNotification(message, type = 'success') {
+  const notification = document.createElement('div');
+  
+  // Set color and icon based on type
+  let bgColor = '#004aad';
+  let icon = '<i class="fas fa-check-circle"></i>';
+  
+  if (type === 'error') {
+    bgColor = '#dc3545';
+    icon = '<i class="fas fa-times-circle"></i>';
+  } else if (type === 'warning') {
+    bgColor = '#ffc107';
+    icon = '<i class="fas fa-exclamation-triangle"></i>';
+  } else if (type === 'success') {
+    bgColor = '#10b981';
+    icon = '<i class="fas fa-check-circle"></i>';
+  }
+  
+  notification.style.cssText = `
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    background: ${bgColor};
+    color: white;
+    padding: 14px 24px;
+    border-radius: 10px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    z-index: 10003;
+    font-weight: 600;
+    transform: translateX(400px);
+    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.95rem;
+  `;
+  notification.innerHTML = `${icon} <span>${message}</span>`;
+  
+  document.body.appendChild(notification);
+  
+  // Animate in
+  setTimeout(() => {
+    notification.style.transform = 'translateX(0)';
+  }, 100);
+  
+  // Remove after 3 seconds
+  setTimeout(() => {
+    notification.style.transform = 'translateX(400px)';
+    setTimeout(() => {
+      if (document.body.contains(notification)) {
+        document.body.removeChild(notification);
+      }
+    }, 400);
+  }, 3000);
 }
