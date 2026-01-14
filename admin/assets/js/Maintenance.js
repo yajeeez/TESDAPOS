@@ -39,6 +39,15 @@ function runSystemCheck() {
         if (data.success) {
           displaySystemCheckResults(data.checks, data.overall_status);
           updateSystemStatus(data.overall_status);
+          
+          // Enable the System Check Results button
+          const systemCheckBtn = document.getElementById('systemCheckBtn');
+          if (systemCheckBtn) {
+            systemCheckBtn.disabled = false;
+            systemCheckBtn.removeAttribute('title');
+            systemCheckBtn.title = 'View system check results';
+          }
+          
           showNotification('System check completed', 'success');
         } else {
           showNotification('System check failed: ' + (data.message || 'Unknown error'), 'error');
@@ -56,7 +65,8 @@ function runSystemCheck() {
 
 function displaySystemCheckResults(checks, overallStatus) {
   const resultsDiv = document.getElementById('checkResults');
-  const panelDiv = document.getElementById('systemCheckResults');
+  const unifiedPanel = document.getElementById('unifiedPanel');
+  const systemCheckContent = document.getElementById('systemCheckContent');
   
   let html = '';
   for (const [key, check] of Object.entries(checks)) {
@@ -79,7 +89,18 @@ function displaySystemCheckResults(checks, overallStatus) {
   }
   
   resultsDiv.innerHTML = html;
-  panelDiv.style.display = 'block';
+  
+  // Show the unified panel and system check content
+  unifiedPanel.style.display = 'block';
+  systemCheckContent.style.display = 'block';
+  
+  // Hide other content panels
+  document.getElementById('backupHistoryContent').style.display = 'none';
+  document.getElementById('auditTrailContent').style.display = 'none';
+  
+  // Update active button
+  document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelector('[data-panel="systemCheck"]').classList.add('active');
 }
 
 function updateSystemStatus(status) {
@@ -147,6 +168,8 @@ function updateBackupStatus() {
 }
 
 function loadBackupHistory() {
+  showNotification('Loading backup history...', 'info');
+  
   // Load actual backup files from server
   fetch('Maintenance.php', {
     method: 'POST',
@@ -164,9 +187,11 @@ function loadBackupHistory() {
   })
   .then(data => {
     displayBackupHistory(data.backups || []);
+    showNotification('Backup history loaded', 'success');
   })
   .catch(error => {
     console.error('Error loading backup history:', error);
+    showNotification('Failed to load backup history: ' + error.message, 'error');
     // Fallback to showing recent backup if any
     const backupList = document.getElementById('backupList');
     backupList.innerHTML = '<p style="text-align: center; padding: 1rem; color: #666;">Unable to load backup history</p>';
@@ -175,7 +200,8 @@ function loadBackupHistory() {
 
 function displayBackupHistory(backups) {
   const backupList = document.getElementById('backupList');
-  const panelDiv = document.getElementById('backupHistory');
+  const unifiedPanel = document.getElementById('unifiedPanel');
+  const backupHistoryContent = document.getElementById('backupHistoryContent');
   
   if (backups.length === 0) {
     backupList.innerHTML = '<p style="text-align: center; padding: 2rem; color: #666;">No backups found</p>';
@@ -202,7 +228,17 @@ function displayBackupHistory(backups) {
     backupList.innerHTML = html;
   }
   
-  panelDiv.style.display = 'block';
+  // Show the unified panel and backup history content
+  unifiedPanel.style.display = 'block';
+  backupHistoryContent.style.display = 'block';
+  
+  // Hide other content panels
+  document.getElementById('systemCheckContent').style.display = 'none';
+  document.getElementById('auditTrailContent').style.display = 'none';
+  
+  // Update active button
+  document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelector('[data-panel="backupHistory"]').classList.add('active');
 }
 
 function downloadBackup(filename) {
@@ -405,7 +441,8 @@ function viewAuditTrail() {
 
 function displayAuditTrail(auditData) {
   const auditList = document.getElementById('auditList');
-  const panelDiv = document.getElementById('auditTrailDisplay');
+  const unifiedPanel = document.getElementById('unifiedPanel');
+  const auditTrailContent = document.getElementById('auditTrailContent');
   
   console.log('Total audit entries received:', auditData.length);
   
@@ -414,7 +451,6 @@ function displayAuditTrail(auditData) {
   } else {
     let html = '';
     auditData.forEach(entry => {
-      const entryId = entry.id || '';
       const role = entry.role || 'N/A';
       const user = entry.user || 'Unknown User';
       
@@ -435,31 +471,34 @@ function displayAuditTrail(auditData) {
         actionText = 'Order Status Updated';
       }
       
-      // Only show delete button if entry has an ID
-      const deleteButton = entryId ? `
-        <div class="audit-actions">
-          <button class="btn-delete-audit" onclick="deleteAuditEntry('${entryId}')" title="Delete entry" style="background: linear-gradient(135deg, #ff4757 0%, #e63946 100%); border: 2px solid rgba(255, 255, 255, 0.2); box-shadow: 0 3px 12px rgba(230, 57, 70, 0.3);">
-            <i class="fas fa-trash-alt" style="color: #ffffff !important;"></i>
-          </button>
-        </div>
-      ` : '';
-      
       html += `
         <div class="audit-item">
           <div class="audit-time">${entry.timestamp}</div>
           <div class="audit-details">
             ${actionText ? `<div class="audit-action">${actionText}</div>` : ''}
             <div class="audit-description">${entry.details}</div>
-            <div class="audit-meta">User: ${user} | Role: ${role}</div>
           </div>
-          ${deleteButton}
+          <div class="audit-meta">
+            <span>User: ${user}</span>
+            <span>Role: ${role}</span>
+          </div>
         </div>
       `;
     });
     auditList.innerHTML = html;
   }
   
-  panelDiv.style.display = 'block';
+  // Show the unified panel and audit trail content
+  unifiedPanel.style.display = 'block';
+  auditTrailContent.style.display = 'block';
+  
+  // Hide other content panels
+  document.getElementById('systemCheckContent').style.display = 'none';
+  document.getElementById('backupHistoryContent').style.display = 'none';
+  
+  // Update active button
+  document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelector('[data-panel="auditTrail"]').classList.add('active');
   
   // Setup search functionality
   setupAuditSearch();
@@ -585,6 +624,55 @@ function showNotification(message, type = 'success') {
   setTimeout(() => {
     toast.classList.remove('show');
   }, 3000);
+}
+
+// ==========================
+// Panel Filter Functions
+// ==========================
+function showPanel(panelType) {
+  // Check if trying to show system check but button is disabled
+  if (panelType === 'systemCheck') {
+    const systemCheckBtn = document.getElementById('systemCheckBtn');
+    if (systemCheckBtn && systemCheckBtn.disabled) {
+      showNotification('Please run a system check first', 'warning');
+      return;
+    }
+  }
+  
+  const unifiedPanel = document.getElementById('unifiedPanel');
+  const systemCheckContent = document.getElementById('systemCheckContent');
+  const backupHistoryContent = document.getElementById('backupHistoryContent');
+  const auditTrailContent = document.getElementById('auditTrailContent');
+  
+  // Hide all content panels
+  systemCheckContent.style.display = 'none';
+  backupHistoryContent.style.display = 'none';
+  auditTrailContent.style.display = 'none';
+  
+  // Remove active class from all filter buttons
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  
+  // Show the unified panel
+  unifiedPanel.style.display = 'block';
+  
+  // Show the selected content and mark button as active
+  if (panelType === 'systemCheck') {
+    systemCheckContent.style.display = 'block';
+    document.querySelector('[data-panel="systemCheck"]').classList.add('active');
+    // Don't trigger system check automatically, just show existing results
+  } else if (panelType === 'backupHistory') {
+    backupHistoryContent.style.display = 'block';
+    document.querySelector('[data-panel="backupHistory"]').classList.add('active');
+    // Load backup history
+    loadBackupHistory();
+  } else if (panelType === 'auditTrail') {
+    auditTrailContent.style.display = 'block';
+    document.querySelector('[data-panel="auditTrail"]').classList.add('active');
+    // Load audit trail
+    viewAuditTrail();
+  }
 }
 
 // ==========================

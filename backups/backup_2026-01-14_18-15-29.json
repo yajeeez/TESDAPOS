@@ -1,0 +1,638 @@
+{
+    "timestamp": "2026-01-14 18:15:29",
+    "version": "1.0.0",
+    "orders": [
+        {
+            "_id": {
+                "$oid": "696754a6509ee64e720869b2"
+            },
+            "items": [
+                {
+                    "product_id": "69294e083cc7fb759809ef3d",
+                    "name": "Potato Chips",
+                    "size": null,
+                    "price": 50,
+                    "quantity": 2,
+                    "subtotal": 100
+                }
+            ],
+            "payment_method": "visa",
+            "total_amount": 100,
+            "cash_amount": 100,
+            "change_amount": 20,
+            "transaction_id": "TXN-20260114-526444",
+            "card_type": "Visa",
+            "card_number": "**** **** **** 3669",
+            "card_holder": "Carlo Ramirez",
+            "product_names": [
+                "Potato Chips"
+            ],
+            "total_item_count": 2,
+            "order_id": "01",
+            "created_at": {
+                "$date": {
+                    "$numberLong": "1768379558885"
+                }
+            },
+            "status": "Canceled",
+            "action_type": "canceled",
+            "served_at": {
+                "$date": {
+                    "$numberLong": "1768384272472"
+                }
+            },
+            "served_by": "Emman Tombeats",
+            "served_by_username": "cashier1",
+            "cash_received": 120,
+            "payment_updated_at": {
+                "$date": {
+                    "$numberLong": "1768384272472"
+                }
+            },
+            "payment_updated_by": "cashier1",
+            "total_balance": 100
+        },
+        {
+            "_id": {
+                "$oid": "696754c9509ee64e720869b3"
+            },
+            "items": [
+                {
+                    "product_id": "69294e083cc7fb759809ef3d",
+                    "name": "Potato Chips",
+                    "size": null,
+                    "price": 50,
+                    "quantity": 2,
+                    "subtotal": 100
+                }
+            ],
+            "payment_method": "Cash",
+            "total_amount": 100,
+            "cash_amount": 100,
+            "change_amount": 0,
+            "transaction_id": "TXN-20260114-737914",
+            "card_type": null,
+            "card_number": null,
+            "card_holder": null,
+            "product_names": [
+                "Potato Chips"
+            ],
+            "total_item_count": 2,
+            "order_id": "02",
+            "created_at": {
+                "$date": {
+                    "$numberLong": "1768379593015"
+                }
+            },
+            "status": "Canceled",
+            "action_type": "canceled",
+            "served_at": {
+                "$date": {
+                    "$numberLong": "1768380610000"
+                }
+            },
+            "served_by": "Emman Tombeats",
+            "served_by_username": "cashier1"
+        },
+        {
+            "_id": {
+                "$oid": "69675569509ee64e720869b4"
+            },
+            "items": [
+                {
+                    "product_id": "69294e083cc7fb759809ef3d",
+                    "name": "Potato Chips",
+                    "size": null,
+                    "price": 50,
+                    "quantity": 3,
+                    "subtotal": 150
+                }
+            ],
+            "payment_method": "Cash",
+            "total_amount": 150,
+            "cash_amount": 150,
+            "change_amount": 10,
+            "transaction_id": "TXN-20260114-548638",
+            "card_type": null,
+            "card_number": null,
+            "card_holder": null,
+            "product_names": [
+                "Potato Chips"
+            ],
+            "total_item_count": 3,
+            "order_id": "03",
+            "created_at": {
+                "$date": {
+                    "$numberLong": "1768379753307"
+                }
+            },
+            "status": "Served",
+            "action_type": "served",
+            "served_at": {
+                "$date": {
+                    "$numberLong": "1768384077736"
+                }
+            },
+            "served_by": "Emman Tombeats",
+            "served_by_username": "cashier1",
+            "cash_received": 160,
+            "payment_updated_at": {
+                "$date": {
+                    "$numberLong": "1768384077736"
+                }
+            },
+            "payment_updated_by": "cashier1",
+            "total_balance": 150
+        },
+        {
+            "_id": {
+                "$oid": "6967571b509ee64e720869b5"
+            },
+            "items": [
+                {
+                    "product_id": "692951683cc7fb759809ef3e",
+                    "name": "Chicken Lechon",
+                    "size": null,
+                    "price": 260,
+                    "quantity": 1,
+                    "subtotal": 260
+                }
+            ],
+            "payment_method": "visa",
+            "total_amount": 260,
+            "cash_amount": 260,
+            "change_amount": 5,
+            "transaction_id": "TXN-20260114-358126",
+            "card_type": "Visa",
+            "card_number": "**** **** **** 8572",
+            "card_holder": "Maria Cruz",
+            "product_names": [
+                "Chicken Lechon"
+            ],
+            "total_item_count": 1,
+            "order_id": "04",
+            "created_at": {
+                "$date": {
+                    "$numberLong": "1768380187408"
+                }
+            },
+            "status": "Served",
+            "action_type": "served",
+            "served_at": {
+                "$date": {
+                    "$numberLong": "1768383911280"
+                }
+            },
+            "served_by": "Emman Tombeats",
+            "served_by_username": "cashier1",
+            "cash_received": 265,
+            "payment_updated_at": {
+                "$date": {
+                    "$numberLong": "1768383911280"
+                }
+            },
+            "payment_updated_by": "cashier1",
+            "total_balance": 260
+        },
+        {
+            "_id": {
+                "$oid": "69675a6e509ee64e720869bc"
+            },
+            "items": [
+                {
+                    "product_id": "69294e083cc7fb759809ef3d",
+                    "name": "Potato Chips",
+                    "size": null,
+                    "price": 50,
+                    "quantity": 2,
+                    "subtotal": 100
+                }
+            ],
+            "payment_method": "gcash",
+            "total_amount": 100,
+            "cash_amount": 100,
+            "change_amount": 0,
+            "transaction_id": "TXN-20260114-939607",
+            "card_type": "GCash",
+            "card_number": "**** **** **** 6123",
+            "card_holder": "Carlo Ramirez",
+            "product_names": [
+                "Potato Chips"
+            ],
+            "total_item_count": 2,
+            "order_id": "05",
+            "created_at": {
+                "$date": {
+                    "$numberLong": "1768381038832"
+                }
+            },
+            "status": "Served",
+            "action_type": "served",
+            "served_at": {
+                "$date": {
+                    "$numberLong": "1768381133000"
+                }
+            },
+            "served_by": "Emman Tombeats",
+            "served_by_username": "cashier1"
+        },
+        {
+            "_id": {
+                "$oid": "69675b0a509ee64e720869be"
+            },
+            "items": [
+                {
+                    "product_id": "69294e083cc7fb759809ef3d",
+                    "name": "Potato Chips",
+                    "size": null,
+                    "price": 50,
+                    "quantity": 1,
+                    "subtotal": 50
+                }
+            ],
+            "payment_method": "Cash",
+            "total_amount": 50,
+            "cash_amount": 50,
+            "change_amount": 0,
+            "transaction_id": "TXN-20260114-408426",
+            "card_type": null,
+            "card_number": null,
+            "card_holder": null,
+            "product_names": [
+                "Potato Chips"
+            ],
+            "total_item_count": 1,
+            "order_id": "06",
+            "created_at": {
+                "$date": {
+                    "$numberLong": "1768381194263"
+                }
+            },
+            "status": "Served",
+            "action_type": "served",
+            "served_at": {
+                "$date": {
+                    "$numberLong": "1768381335000"
+                }
+            },
+            "served_by": "Emman Tombeats",
+            "served_by_username": "cashier1"
+        },
+        {
+            "_id": {
+                "$oid": "69675b2b509ee64e720869bf"
+            },
+            "items": [
+                {
+                    "product_id": "69294e083cc7fb759809ef3d",
+                    "name": "Potato Chips",
+                    "size": null,
+                    "price": 50,
+                    "quantity": 15,
+                    "subtotal": 750
+                }
+            ],
+            "payment_method": "visa",
+            "total_amount": 750,
+            "cash_amount": 750,
+            "change_amount": 0,
+            "transaction_id": "TXN-20260114-158708",
+            "card_type": "Visa",
+            "card_number": "**** **** **** 7520",
+            "card_holder": "Ria Mendoza",
+            "product_names": [
+                "Potato Chips"
+            ],
+            "total_item_count": 15,
+            "order_id": "07",
+            "created_at": {
+                "$date": {
+                    "$numberLong": "1768381227829"
+                }
+            },
+            "status": "Canceled",
+            "action_type": "canceled",
+            "served_at": {
+                "$date": {
+                    "$numberLong": "1768381333000"
+                }
+            },
+            "served_by": "Emman Tombeats",
+            "served_by_username": "cashier1"
+        },
+        {
+            "_id": {
+                "$oid": "69675b79509ee64e720869c0"
+            },
+            "items": [
+                {
+                    "product_id": "69294d1a3cc7fb759809ef3c",
+                    "name": "Burger",
+                    "size": null,
+                    "price": 50,
+                    "quantity": 1,
+                    "subtotal": 50
+                }
+            ],
+            "payment_method": "Cash",
+            "total_amount": 50,
+            "cash_amount": 50,
+            "change_amount": 0,
+            "transaction_id": "TXN-20260114-488316",
+            "card_type": null,
+            "card_number": null,
+            "card_holder": null,
+            "product_names": [
+                "Burger"
+            ],
+            "total_item_count": 1,
+            "order_id": "08",
+            "created_at": {
+                "$date": {
+                    "$numberLong": "1768381305797"
+                }
+            },
+            "status": "Served",
+            "action_type": "served",
+            "served_at": {
+                "$date": {
+                    "$numberLong": "1768381331000"
+                }
+            },
+            "served_by": "Emman Tombeats",
+            "served_by_username": "cashier1"
+        },
+        {
+            "_id": {
+                "$oid": "69675beb509ee64e720869c4"
+            },
+            "items": [
+                {
+                    "product_id": "69294e083cc7fb759809ef3d",
+                    "name": "Potato Chips",
+                    "size": null,
+                    "price": 50,
+                    "quantity": 2,
+                    "subtotal": 100
+                }
+            ],
+            "payment_method": "Cash",
+            "total_amount": 100,
+            "cash_amount": 100,
+            "change_amount": 0,
+            "transaction_id": "TXN-20260114-162738",
+            "card_type": null,
+            "card_number": null,
+            "card_holder": null,
+            "product_names": [
+                "Potato Chips"
+            ],
+            "total_item_count": 2,
+            "order_id": "09",
+            "created_at": {
+                "$date": {
+                    "$numberLong": "1768381419758"
+                }
+            },
+            "status": "Pending"
+        },
+        {
+            "_id": {
+                "$oid": "69675da4509ee64e720869c5"
+            },
+            "items": [
+                {
+                    "product_id": "69294e083cc7fb759809ef3d",
+                    "name": "Potato Chips",
+                    "size": null,
+                    "price": 50,
+                    "quantity": 9,
+                    "subtotal": 450
+                }
+            ],
+            "payment_method": "visa",
+            "total_amount": 450,
+            "cash_amount": 450,
+            "change_amount": 0,
+            "transaction_id": "TXN-20260114-798462",
+            "card_type": "Visa",
+            "card_number": "**** **** **** 6025",
+            "card_holder": "Ria Mendoza",
+            "product_names": [
+                "Potato Chips"
+            ],
+            "total_item_count": 9,
+            "order_id": "10",
+            "created_at": {
+                "$date": {
+                    "$numberLong": "1768381860845"
+                }
+            },
+            "status": "Pending"
+        },
+        {
+            "_id": {
+                "$oid": "69675ea1509ee64e720869c6"
+            },
+            "items": [
+                {
+                    "product_id": "69294e083cc7fb759809ef3d",
+                    "name": "Potato Chips",
+                    "size": null,
+                    "price": 50,
+                    "quantity": 1,
+                    "subtotal": 50
+                }
+            ],
+            "payment_method": "Cash",
+            "total_amount": 50,
+            "cash_amount": 50,
+            "change_amount": 0,
+            "transaction_id": "TXN-20260114-708264",
+            "card_type": null,
+            "card_number": null,
+            "card_holder": null,
+            "product_names": [
+                "Potato Chips"
+            ],
+            "total_item_count": 1,
+            "order_id": "11",
+            "created_at": {
+                "$date": {
+                    "$numberLong": "1768382113285"
+                }
+            },
+            "status": "Pending"
+        },
+        {
+            "_id": {
+                "$oid": "696762ed509ee64e720869c7"
+            },
+            "items": [
+                {
+                    "product_id": "69294e083cc7fb759809ef3d",
+                    "name": "Potato Chips",
+                    "size": null,
+                    "price": 50,
+                    "quantity": 9,
+                    "subtotal": 450
+                }
+            ],
+            "payment_method": "Cash",
+            "total_amount": 450,
+            "cash_amount": 450,
+            "change_amount": 0,
+            "transaction_id": "TXN-20260114-277290",
+            "card_type": null,
+            "card_number": null,
+            "card_holder": null,
+            "product_names": [
+                "Potato Chips"
+            ],
+            "total_item_count": 9,
+            "order_id": "12",
+            "created_at": {
+                "$date": {
+                    "$numberLong": "1768383213340"
+                }
+            },
+            "status": "Pending"
+        },
+        {
+            "_id": {
+                "$oid": "6967631b509ee64e720869c8"
+            },
+            "items": [
+                {
+                    "product_id": "69294e083cc7fb759809ef3d",
+                    "name": "Potato Chips",
+                    "size": null,
+                    "price": 50,
+                    "quantity": 9,
+                    "subtotal": 450
+                }
+            ],
+            "payment_method": "visa",
+            "total_amount": 450,
+            "cash_amount": 450,
+            "change_amount": 0,
+            "transaction_id": "TXN-20260114-218473",
+            "card_type": "Visa",
+            "card_number": "**** **** **** 7267",
+            "card_holder": "Ria Mendoza",
+            "product_names": [
+                "Potato Chips"
+            ],
+            "total_item_count": 9,
+            "order_id": "13",
+            "created_at": {
+                "$date": {
+                    "$numberLong": "1768383259840"
+                }
+            },
+            "status": "Pending"
+        }
+    ],
+    "products": [
+        {
+            "_id": {
+                "$oid": "69294c153cc7fb759809ef3b"
+            },
+            "product_name": "Orange Juice",
+            "category": "beverage",
+            "price": 80,
+            "stock_quantity": 98,
+            "image_path": "img\/product\/product_1764314133_Orange_Juice.jpg",
+            "created_at": {
+                "$date": {
+                    "$numberLong": "1764314133848"
+                }
+            },
+            "updated_at": {
+                "$date": {
+                    "$numberLong": "1768376335734"
+                }
+            }
+        },
+        {
+            "_id": {
+                "$oid": "69294d1a3cc7fb759809ef3c"
+            },
+            "product_name": "Burger",
+            "category": "food",
+            "price": 50,
+            "stock_quantity": 96,
+            "image_path": "img\/product\/product_1764314394_Burger.webp",
+            "created_at": {
+                "$date": {
+                    "$numberLong": "1764314394781"
+                }
+            },
+            "updated_at": {
+                "$date": {
+                    "$numberLong": "1768381305799"
+                }
+            }
+        },
+        {
+            "_id": {
+                "$oid": "69294e083cc7fb759809ef3d"
+            },
+            "product_name": "Potato Chips",
+            "category": "Snack",
+            "price": 50,
+            "stock_quantity": 393,
+            "image_path": "img\/product\/product_1764314632_Potato_Chips.webp",
+            "created_at": {
+                "$date": {
+                    "$numberLong": "1764314632222"
+                }
+            },
+            "updated_at": {
+                "$date": {
+                    "$numberLong": "1768383259858"
+                }
+            }
+        },
+        {
+            "_id": {
+                "$oid": "692951683cc7fb759809ef3e"
+            },
+            "product_name": "Chicken Lechon",
+            "category": "Food",
+            "price": 260,
+            "stock_quantity": 6,
+            "image_path": "img\/product\/product_1764315496_Chicken_Lechon.webp",
+            "created_at": {
+                "$date": {
+                    "$numberLong": "1764315496432"
+                }
+            },
+            "updated_at": {
+                "$date": {
+                    "$numberLong": "1768380187427"
+                }
+            }
+        },
+        {
+            "_id": {
+                "$oid": "6958db2a03c18d7506099eaa"
+            },
+            "product_name": "Donut",
+            "category": "snack",
+            "price": 35,
+            "stock_quantity": 39,
+            "image_path": "img\/product\/product_1767430954_Donut.jpg",
+            "created_at": {
+                "$date": {
+                    "$numberLong": "1767430954390"
+                }
+            },
+            "updated_at": {
+                "$date": {
+                    "$numberLong": "1768376335722"
+                }
+            }
+        }
+    ]
+}

@@ -288,6 +288,161 @@ body {
   margin-top: 2rem;
 }
 
+/* === Panel Filter Buttons === */
+.panel-filter-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 1rem;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.filter-btn {
+  padding: 0.8rem 1.5rem;
+  border: 2px solid var(--tesda-blue);
+  background: white;
+  color: var(--tesda-blue)  ;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  box-shadow: 0 2px 8px rgba(0, 74, 173, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.filter-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: var(--tesda-blue);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease, height 0.6s ease;
+  z-index: 0;
+}
+
+.filter-btn i {
+  position: relative;
+  z-index: 2;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.filter-btn span {
+  position: relative;
+  z-index: 2;
+  color: inherit;
+  transition: color 0.3s ease;
+}
+
+/* Ensure all text content is above the background */
+.filter-btn * {
+  position: relative;
+  z-index: 2;
+}
+
+.panel-filter-buttons .filter-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 74, 173, 0.25);
+  border-color: var(--tesda-dark-blue);
+  color: #fff !important;
+}
+
+.panel-filter-buttons .filter-btn:hover span {
+  color: #fff !important;
+}
+
+.panel-filter-buttons .filter-btn:hover i {
+  color: #fff !important;
+  transform: scale(1.2) rotate(5deg);
+}
+
+.panel-filter-buttons .filter-btn:hover * {
+  color: #fff !important;
+}
+
+.filter-btn:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.filter-btn.active {
+  background: linear-gradient(135deg, var(--tesda-blue) 0%, var(--tesda-dark-blue) 100%);
+  color: white;
+  border-color: var(--tesda-dark-blue);
+  box-shadow: 0 6px 20px rgba(0, 74, 173, 0.35);
+  transform: translateY(-2px);
+}
+
+.filter-btn.active span {
+  color: white;
+}
+
+.filter-btn.active i {
+  color: white;
+}
+
+.filter-btn.active::before {
+  width: 300px;
+  height: 300px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.filter-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.filter-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #e9ecef;
+  color: #6c757d;
+  border-color: #dee2e6;
+  box-shadow: none;
+  transform: none;
+}
+
+.filter-btn:disabled:hover {
+  transform: none;
+  box-shadow: none;
+  border-color: #dee2e6;
+}
+
+.filter-btn:disabled::before {
+  display: none;
+}
+
+.filter-btn:disabled i {
+  transform: none;
+}
+
+/* === Panel Content === */
+.panel-content {
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .panel {
   background: white;
   border-radius: 12px;
@@ -315,6 +470,7 @@ body {
 .check-item {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 1rem;
   border-radius: 8px;
   background: #f8f9fa;
@@ -350,17 +506,23 @@ body {
 
 .check-details {
   flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .check-details strong {
   display: block;
   color: #333;
   margin-bottom: 0.25rem;
+  font-size: 1rem;
 }
 
 .check-details span {
   color: #666;
   font-size: 0.9rem;
+  text-align: right;
+  margin-left: 2rem;
 }
 
 /* === Backup List === */
@@ -370,33 +532,36 @@ body {
 }
 
 .backup-item {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
   align-items: center;
-  justify-content: space-between;
   padding: 1rem;
   border-radius: 8px;
   background: #f8f9fa;
   border-left: 4px solid var(--tesda-blue);
+  gap: 1rem;
 }
 
 .backup-info {
-  flex: 1;
+  display: contents;
 }
 
 .backup-info strong {
-  display: block;
   color: #333;
-  margin-bottom: 0.25rem;
+  text-align: left;
+  font-size: 0.95rem;
 }
 
 .backup-info span {
   color: #666;
   font-size: 0.9rem;
+  text-align: center;
 }
 
 .backup-actions {
   display: flex;
   gap: 0.5rem;
+  justify-content: flex-end;
 }
 
 /* === Audit Trail === */
@@ -424,7 +589,8 @@ body {
 
 .audit-item {
   display: flex;
-  align-items: start;
+  align-items: center;
+  justify-content: center;
   padding: 1.2rem;
   border-bottom: 1px solid #e8e8e8;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -446,38 +612,56 @@ body {
 }
 
 .audit-time {
-  min-width: 140px;
+  min-width: 160px;
   color: #666;
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   font-family: monospace;
+  font-weight: 600;
 }
 
 .audit-details {
   flex: 1;
   margin-left: 1rem;
+  margin-right: 1rem;
+  text-align: center;
 }
 
 .audit-action {
   font-weight: 700;
   color: var(--tesda-blue);
   margin-bottom: 0.4rem;
-  font-size: 1rem;
+  font-size: 1.1rem;
   letter-spacing: 0.3px;
   text-transform: capitalize;
 }
 
 .audit-description {
   color: #555;
-  font-size: 0.92rem;
+  font-size: 1.05rem;
   margin-bottom: 0.4rem;
   line-height: 1.5;
+  font-weight: 500;
 }
 
 .audit-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.3rem;
+  min-width: 180px;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 8px;
+  border-left: 3px solid var(--tesda-blue);
+  margin-left: auto;
+}
+
+.audit-meta span {
   font-size: 0.82rem;
-  color: #888;
-  font-weight: 500;
+  color: #555;
+  font-weight: 600;
   letter-spacing: 0.2px;
+  text-align: right;
 }
 
 .audit-actions {
@@ -861,6 +1045,16 @@ button.btn-delete-audit:hover i,
     grid-template-columns: 1fr;
   }
   
+  .panel-filter-buttons {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  
+  .filter-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
   .audit-controls {
     flex-direction: column;
   }
@@ -877,22 +1071,19 @@ button.btn-delete-audit:hover i,
   
   .audit-details {
     margin-left: 0;
-  }
-  
-  .audit-actions {
+    margin-right: 0;
     width: 100%;
-    justify-content: flex-end;
+  }
+  
+  .audit-meta {
+    width: 100%;
+    margin-left: 0;
     margin-top: 0.5rem;
+    align-items: flex-start;
   }
   
-  .btn-delete-audit::after {
-    right: auto;
-    left: 50%;
-    transform: translateX(-50%) translateY(5px);
-  }
-  
-  .btn-delete-audit:hover::after {
-    transform: translateX(-50%) translateY(0);
+  .audit-meta span {
+    text-align: left;
   }
   
   .backup-item {

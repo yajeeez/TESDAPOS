@@ -10886,5 +10886,1187 @@
         "role": "admin",
         "ip": "::1",
         "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676ca7b1f3b2.41921836",
+        "timestamp": "2026-01-14 18:15:03",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676ca7ce4de3.37833722",
+        "timestamp": "2026-01-14 18:15:03",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676ca7eabe22.09583803",
+        "timestamp": "2026-01-14 18:15:03",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676ca810b6e8.24953264",
+        "timestamp": "2026-01-14 18:15:04",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676ca82a4821.99579367",
+        "timestamp": "2026-01-14 18:15:04",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676cb5784802.85337860",
+        "timestamp": "2026-01-14 18:15:17",
+        "action": "system_check",
+        "details": "System health check performed - Status: healthy",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676cb7904858.12146107",
+        "timestamp": "2026-01-14 18:15:19",
+        "action": "backup",
+        "details": "Backup created: backup_2026-01-14_18-15-19.json (Size: 0.02 MB)",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676cc148a941.48959531",
+        "timestamp": "2026-01-14 18:15:29",
+        "action": "backup",
+        "details": "Backup created: backup_2026-01-14_18-15-29.json (Size: 0.02 MB)",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676d8eec5350.83430251",
+        "timestamp": "2026-01-14 18:18:54",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676d99cbb4a8.44810975",
+        "timestamp": "2026-01-14 18:19:05",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676d9ca79969.20496903",
+        "timestamp": "2026-01-14 18:19:08",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676d9ccef481.67376079",
+        "timestamp": "2026-01-14 18:19:08",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676da9c7d1d4.84478470",
+        "timestamp": "2026-01-14 18:19:21",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676daa2f8e25.09450399",
+        "timestamp": "2026-01-14 18:19:22",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676dc265e041.78921366",
+        "timestamp": "2026-01-14 18:19:46",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676dc2986333.13220137",
+        "timestamp": "2026-01-14 18:19:46",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676dc2bbb476.58308778",
+        "timestamp": "2026-01-14 18:19:46",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676dc2da2371.29145598",
+        "timestamp": "2026-01-14 18:19:46",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676dcedea511.01037114",
+        "timestamp": "2026-01-14 18:19:58",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676dcf183364.68487650",
+        "timestamp": "2026-01-14 18:19:59",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676dcf36e1d2.33802738",
+        "timestamp": "2026-01-14 18:19:59",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676dd7b0aac1.79931170",
+        "timestamp": "2026-01-14 18:20:07",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676ddb2f5765.88977480",
+        "timestamp": "2026-01-14 18:20:11",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676df4506999.80228406",
+        "timestamp": "2026-01-14 18:20:36",
+        "action": "cashier_login",
+        "details": "Cashier 'Emman Tombeats' (cashier1) logged in",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36",
+        "cashier_name": "Emman Tombeats",
+        "cashier_username": "cashier1"
+    },
+    {
+        "id": "audit_69676df476b2d3.79177023",
+        "timestamp": "2026-01-14 18:20:36",
+        "action": "page_access",
+        "details": "Accessed Cashier Dashboard page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676dfcd6cbb4.06646721",
+        "timestamp": "2026-01-14 18:20:44",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676dfe8a8805.77652278",
+        "timestamp": "2026-01-14 18:20:46",
+        "action": "system_check",
+        "details": "System health check performed - Status: healthy",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676e0e929e56.30428644",
+        "timestamp": "2026-01-14 18:21:02",
+        "action": "page_access",
+        "details": "Accessed Cashier Transactions page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676e16689258.50908314",
+        "timestamp": "2026-01-14 18:21:10",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676e1691b4d0.38929078",
+        "timestamp": "2026-01-14 18:21:10",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676e56a2dd70.46366284",
+        "timestamp": "2026-01-14 18:22:14",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676e574b2138.77334259",
+        "timestamp": "2026-01-14 18:22:15",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676e577cc9f9.36608542",
+        "timestamp": "2026-01-14 18:22:15",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676e57c9cc21.71045217",
+        "timestamp": "2026-01-14 18:22:15",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676e58259092.48761557",
+        "timestamp": "2026-01-14 18:22:16",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676e58440a68.87830710",
+        "timestamp": "2026-01-14 18:22:16",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676e5873fd08.67289358",
+        "timestamp": "2026-01-14 18:22:16",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676e589f26a2.19541965",
+        "timestamp": "2026-01-14 18:22:16",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676e58c57ae0.13272689",
+        "timestamp": "2026-01-14 18:22:16",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676e58eefaa6.39230903",
+        "timestamp": "2026-01-14 18:22:16",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676e5955dae2.59146848",
+        "timestamp": "2026-01-14 18:22:17",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676e79c40f13.48134125",
+        "timestamp": "2026-01-14 18:22:49",
+        "action": "page_access",
+        "details": "Accessed Inventory page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676e7b0d4f82.29733768",
+        "timestamp": "2026-01-14 18:22:51",
+        "action": "page_access",
+        "details": "Accessed Orders page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676e7c274113.44618786",
+        "timestamp": "2026-01-14 18:22:52",
+        "action": "page_access",
+        "details": "Accessed Dashboard page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676e7d558a44.66284350",
+        "timestamp": "2026-01-14 18:22:53",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676e9a10db33.11985992",
+        "timestamp": "2026-01-14 18:23:22",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676e9a2f08a0.67543919",
+        "timestamp": "2026-01-14 18:23:22",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676e9a459968.99456685",
+        "timestamp": "2026-01-14 18:23:22",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676e9ff1e086.53379864",
+        "timestamp": "2026-01-14 18:23:27",
+        "action": "system_check",
+        "details": "System health check performed - Status: healthy",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676eee4a0784.90135828",
+        "timestamp": "2026-01-14 18:24:46",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676eee6554c1.02816773",
+        "timestamp": "2026-01-14 18:24:46",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676f3b659ea3.12791202",
+        "timestamp": "2026-01-14 18:26:03",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676f3b946e27.36523013",
+        "timestamp": "2026-01-14 18:26:03",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676f3bb5e2b2.99058692",
+        "timestamp": "2026-01-14 18:26:03",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676f60108061.33666349",
+        "timestamp": "2026-01-14 18:26:40",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676f60a6b155.56934207",
+        "timestamp": "2026-01-14 18:26:40",
+        "action": "page_access",
+        "details": "Accessed Cashier Dashboard page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69676fd1bbcbe8.40168853",
+        "timestamp": "2026-01-14 18:28:33",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967703aba9905.68966060",
+        "timestamp": "2026-01-14 18:30:18",
+        "action": "page_access",
+        "details": "Accessed Transactions page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696770561fa9f9.32365288",
+        "timestamp": "2026-01-14 18:30:46",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69677080b92f75.90316044",
+        "timestamp": "2026-01-14 18:31:28",
+        "action": "system_check",
+        "details": "System health check performed - Status: healthy",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69677084994fb9.23773616",
+        "timestamp": "2026-01-14 18:31:32",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69677084bafc60.69532342",
+        "timestamp": "2026-01-14 18:31:32",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967708ba9b851.57783314",
+        "timestamp": "2026-01-14 18:31:39",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696770a383f233.86750210",
+        "timestamp": "2026-01-14 18:32:03",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696770a3a357c9.44825867",
+        "timestamp": "2026-01-14 18:32:03",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696770c5b4df65.38216438",
+        "timestamp": "2026-01-14 18:32:37",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696770ca3434a0.52776820",
+        "timestamp": "2026-01-14 18:32:42",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696770ca929d50.58282586",
+        "timestamp": "2026-01-14 18:32:42",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696770d5f048e4.26582010",
+        "timestamp": "2026-01-14 18:32:53",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696770d62ea9d1.35760488",
+        "timestamp": "2026-01-14 18:32:54",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696770d871fac7.70458261",
+        "timestamp": "2026-01-14 18:32:56",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696770d88fe5b1.77595618",
+        "timestamp": "2026-01-14 18:32:56",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69677106d87f99.36283541",
+        "timestamp": "2026-01-14 18:33:42",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69677116bc0762.95027194",
+        "timestamp": "2026-01-14 18:33:58",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967711c1d9878.39618163",
+        "timestamp": "2026-01-14 18:34:04",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69677121d650f1.87525606",
+        "timestamp": "2026-01-14 18:34:09",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967712712c5e1.95878538",
+        "timestamp": "2026-01-14 18:34:15",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696771582db212.34916459",
+        "timestamp": "2026-01-14 18:35:04",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696771831407f1.12075863",
+        "timestamp": "2026-01-14 18:35:47",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69677188aa5653.39618652",
+        "timestamp": "2026-01-14 18:35:52",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696771d420d441.11296458",
+        "timestamp": "2026-01-14 18:37:08",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696771d8196e42.86104403",
+        "timestamp": "2026-01-14 18:37:12",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696771f5e67cd2.14670412",
+        "timestamp": "2026-01-14 18:37:41",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696771f94d9fb7.51266194",
+        "timestamp": "2026-01-14 18:37:45",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69677201c96d31.08373821",
+        "timestamp": "2026-01-14 18:37:53",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69677228159d85.01674937",
+        "timestamp": "2026-01-14 18:38:32",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696772283684b1.47684924",
+        "timestamp": "2026-01-14 18:38:32",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967723a1aa813.90064865",
+        "timestamp": "2026-01-14 18:38:50",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967723a3d0f91.39627518",
+        "timestamp": "2026-01-14 18:38:50",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967723a6b3ea9.82096283",
+        "timestamp": "2026-01-14 18:38:50",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967723bd36cd0.32664943",
+        "timestamp": "2026-01-14 18:38:51",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967723bf11f00.65717985",
+        "timestamp": "2026-01-14 18:38:51",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967723c1c8644.89333401",
+        "timestamp": "2026-01-14 18:38:52",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69677274ddc8d3.29135156",
+        "timestamp": "2026-01-14 18:39:48",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696772750dfa83.89162147",
+        "timestamp": "2026-01-14 18:39:49",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696772ae0b5b55.84367585",
+        "timestamp": "2026-01-14 18:40:46",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696772ae3d4621.05177237",
+        "timestamp": "2026-01-14 18:40:46",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696772b8672b57.02244842",
+        "timestamp": "2026-01-14 18:40:56",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696772b882af69.66883380",
+        "timestamp": "2026-01-14 18:40:56",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696772c35e6176.73147346",
+        "timestamp": "2026-01-14 18:41:07",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69677315055a95.58393271",
+        "timestamp": "2026-01-14 18:42:29",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967732d24cc95.50977056",
+        "timestamp": "2026-01-14 18:42:53",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967732d5ba3d8.02972824",
+        "timestamp": "2026-01-14 18:42:53",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967732d6a5d76.75790491",
+        "timestamp": "2026-01-14 18:42:53",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967732d809a40.24881467",
+        "timestamp": "2026-01-14 18:42:53",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967733678f720.03358587",
+        "timestamp": "2026-01-14 18:43:02",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696773368e6fe9.74348547",
+        "timestamp": "2026-01-14 18:43:02",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967735734ece1.57872693",
+        "timestamp": "2026-01-14 18:43:35",
+        "action": "system_check",
+        "details": "System health check performed - Status: healthy",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967737a6f1969.19423266",
+        "timestamp": "2026-01-14 18:44:10",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967737a88ccb3.68246482",
+        "timestamp": "2026-01-14 18:44:10",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696773a355a740.43013764",
+        "timestamp": "2026-01-14 18:44:51",
+        "action": "system_check",
+        "details": "System health check performed - Status: healthy",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696773c5054155.54013357",
+        "timestamp": "2026-01-14 18:45:25",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696773c51f3704.72605108",
+        "timestamp": "2026-01-14 18:45:25",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696773cae21d78.46822788",
+        "timestamp": "2026-01-14 18:45:30",
+        "action": "system_check",
+        "details": "System health check performed - Status: healthy",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696773db795de8.85132723",
+        "timestamp": "2026-01-14 18:45:47",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696773e5701b81.20252609",
+        "timestamp": "2026-01-14 18:45:57",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696773e5909f32.99059640",
+        "timestamp": "2026-01-14 18:45:57",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967745773e026.00952134",
+        "timestamp": "2026-01-14 18:47:51",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
     }
 ]

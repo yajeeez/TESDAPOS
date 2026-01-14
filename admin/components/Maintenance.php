@@ -607,32 +607,39 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             </div>
           </div>
 
-          <!-- Detailed Information Panels -->
+          <!-- Panel Filter Buttons -->
+          <div class="panel-filter-buttons">
+            <button class="filter-btn" onclick="showPanel('systemCheck')" data-panel="systemCheck" id="systemCheckBtn" disabled title="Run a system check first">
+              <i class="fas fa-clipboard-check"></i><span>System Check Results</span>
+            </button>
+            <button class="filter-btn" onclick="showPanel('backupHistory')" data-panel="backupHistory">
+              <i class="fas fa-archive"></i><span>Backup History</span>
+            </button>
+            <button class="filter-btn" onclick="showPanel('auditTrail')" data-panel="auditTrail">
+              <i class="fas fa-user-shield"></i><span>Audit Trail</span>
+            </button>
+          </div>
+
+          <!-- Unified Display Panel -->
           <div class="maintenance-panels">
-            <!-- System Check Results -->
-            <div id="systemCheckResults" class="panel" style="display: none;">
-              <h4><i class="fas fa-clipboard-check"></i> System Check Results</h4>
-              <div id="checkResults" class="check-list"></div>
-            </div>
+            <div id="unifiedPanel" class="panel" style="display: none;">
+              <!-- System Check Results Content -->
+              <div id="systemCheckContent" class="panel-content" style="display: none;">
+                <h4><i class="fas fa-clipboard-check"></i> System Check Results</h4>
+                <div id="checkResults" class="check-list"></div>
+              </div>
 
-            <!-- Backup History -->
-            <div id="backupHistory" class="panel" style="display: none;">
-              <h4><i class="fas fa-archive"></i> Recent Backups</h4>
-              <div id="backupList" class="backup-list"></div>
-            </div>
+              <!-- Backup History Content -->
+              <div id="backupHistoryContent" class="panel-content" style="display: none;">
+                <h4><i class="fas fa-archive"></i> Recent Backups</h4>
+                <div id="backupList" class="backup-list"></div>
+              </div>
 
-            <!-- Audit Trail Display -->
-            <div id="auditTrailDisplay" class="panel" style="display: none;">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+              <!-- Audit Trail Content -->
+              <div id="auditTrailContent" class="panel-content" style="display: none;">
                 <h4><i class="fas fa-user-shield"></i> Audit Trail</h4>
-                <button onclick="clearAllAuditLogs()" class="btn btn-danger" style="font-size: 0.85rem; padding: 0.5rem 1rem;">
-                  <i class="fas fa-trash-alt"></i> Clear All Logs
-                </button>
+                <div id="auditList" class="audit-list"></div>
               </div>
-              <div class="audit-controls">
-                <input type="text" id="auditSearch" placeholder="Search audit logs..." class="search-input">
-              </div>
-              <div id="auditList" class="audit-list"></div>
             </div>
           </div>
         </div>
