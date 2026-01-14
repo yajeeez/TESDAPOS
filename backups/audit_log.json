@@ -12068,5 +12068,1694 @@
         "role": "admin",
         "ip": "::1",
         "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69677472884f27.06454602",
+        "timestamp": "2026-01-14 18:48:18",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69677472c0b786.86120089",
+        "timestamp": "2026-01-14 18:48:18",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69677472d32ab7.48536432",
+        "timestamp": "2026-01-14 18:48:18",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69677476767d41.26236415",
+        "timestamp": "2026-01-14 18:48:22",
+        "action": "system_check",
+        "details": "System health check performed - Status: healthy",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774c96c5723.14174766",
+        "timestamp": "2026-01-14 18:49:45",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774ca885386.56102422",
+        "timestamp": "2026-01-14 18:49:46",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774cb281a83.99437558",
+        "timestamp": "2026-01-14 18:49:47",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774cb870845.34126980",
+        "timestamp": "2026-01-14 18:49:47",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774cbab9d76.43481040",
+        "timestamp": "2026-01-14 18:49:47",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774cbd1cc33.52060425",
+        "timestamp": "2026-01-14 18:49:47",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774cc012121.64109058",
+        "timestamp": "2026-01-14 18:49:48",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774cc28e4e5.10601287",
+        "timestamp": "2026-01-14 18:49:48",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774cc503c15.25070077",
+        "timestamp": "2026-01-14 18:49:48",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774cc7adc38.62107577",
+        "timestamp": "2026-01-14 18:49:48",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774cc9f0a69.88353869",
+        "timestamp": "2026-01-14 18:49:48",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774ccc81a63.91121578",
+        "timestamp": "2026-01-14 18:49:48",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774ccf35141.09314048",
+        "timestamp": "2026-01-14 18:49:48",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774cd289329.05594079",
+        "timestamp": "2026-01-14 18:49:49",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774cd4d6d74.22883601",
+        "timestamp": "2026-01-14 18:49:49",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774cd74f2e1.38161565",
+        "timestamp": "2026-01-14 18:49:49",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774cd97d841.57540752",
+        "timestamp": "2026-01-14 18:49:49",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774cdc8dad9.10260187",
+        "timestamp": "2026-01-14 18:49:49",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774cdf0a706.63197531",
+        "timestamp": "2026-01-14 18:49:49",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774ce2a54e4.31344600",
+        "timestamp": "2026-01-14 18:49:50",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774ce5097b9.37086639",
+        "timestamp": "2026-01-14 18:49:50",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774ce7786e7.89602676",
+        "timestamp": "2026-01-14 18:49:50",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774cea0c661.24191739",
+        "timestamp": "2026-01-14 18:49:50",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774ceccc4a8.15733647",
+        "timestamp": "2026-01-14 18:49:50",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774cef2ae26.53349764",
+        "timestamp": "2026-01-14 18:49:50",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774cf242420.35355676",
+        "timestamp": "2026-01-14 18:49:51",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774cf4fd120.24142561",
+        "timestamp": "2026-01-14 18:49:51",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774cf7b2468.87845847",
+        "timestamp": "2026-01-14 18:49:51",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774cfc8d920.14981411",
+        "timestamp": "2026-01-14 18:49:51",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d017cf07.70199018",
+        "timestamp": "2026-01-14 18:49:52",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d04cf913.80227624",
+        "timestamp": "2026-01-14 18:49:52",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d06b2093.60028453",
+        "timestamp": "2026-01-14 18:49:52",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d096c347.15803043",
+        "timestamp": "2026-01-14 18:49:52",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d0c75616.23547891",
+        "timestamp": "2026-01-14 18:49:52",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d0e52517.88853217",
+        "timestamp": "2026-01-14 18:49:52",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d11668c7.58887875",
+        "timestamp": "2026-01-14 18:49:53",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d143ebf1.09297615",
+        "timestamp": "2026-01-14 18:49:53",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d16ff5d7.64389256",
+        "timestamp": "2026-01-14 18:49:53",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d1983f50.12982284",
+        "timestamp": "2026-01-14 18:49:53",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d1bd9849.84026191",
+        "timestamp": "2026-01-14 18:49:53",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d1e616b4.08533448",
+        "timestamp": "2026-01-14 18:49:53",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d2152a18.01753208",
+        "timestamp": "2026-01-14 18:49:54",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d23d25c7.46813557",
+        "timestamp": "2026-01-14 18:49:54",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d2650301.64860872",
+        "timestamp": "2026-01-14 18:49:54",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d2929380.03048372",
+        "timestamp": "2026-01-14 18:49:54",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d2ba1c61.12371380",
+        "timestamp": "2026-01-14 18:49:54",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d2ee87e3.49440951",
+        "timestamp": "2026-01-14 18:49:54",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d3183d64.36761314",
+        "timestamp": "2026-01-14 18:49:55",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d3401326.64745332",
+        "timestamp": "2026-01-14 18:49:55",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d366d543.39638750",
+        "timestamp": "2026-01-14 18:49:55",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d389ee87.54751309",
+        "timestamp": "2026-01-14 18:49:55",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d3bb2677.16745986",
+        "timestamp": "2026-01-14 18:49:55",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d3dfeaf7.21058962",
+        "timestamp": "2026-01-14 18:49:55",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d414dba6.85248149",
+        "timestamp": "2026-01-14 18:49:56",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d43b3d36.07936509",
+        "timestamp": "2026-01-14 18:49:56",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d46133a0.71677861",
+        "timestamp": "2026-01-14 18:49:56",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d4921626.69247830",
+        "timestamp": "2026-01-14 18:49:56",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d4b8f383.13502130",
+        "timestamp": "2026-01-14 18:49:56",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d4eb5da8.39964243",
+        "timestamp": "2026-01-14 18:49:56",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d525a5e8.27937991",
+        "timestamp": "2026-01-14 18:49:57",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d5558fb8.05291573",
+        "timestamp": "2026-01-14 18:49:57",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d5825831.43576757",
+        "timestamp": "2026-01-14 18:49:57",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d5b2e609.61213386",
+        "timestamp": "2026-01-14 18:49:57",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d5dc5900.82319671",
+        "timestamp": "2026-01-14 18:49:57",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d6153cd6.86917756",
+        "timestamp": "2026-01-14 18:49:58",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d64713d0.70142946",
+        "timestamp": "2026-01-14 18:49:58",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d6c5b4e8.26857793",
+        "timestamp": "2026-01-14 18:49:58",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d70663c7.19682983",
+        "timestamp": "2026-01-14 18:49:59",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d73521d1.30893637",
+        "timestamp": "2026-01-14 18:49:59",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d76632a4.17252432",
+        "timestamp": "2026-01-14 18:49:59",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d792fbc4.29105209",
+        "timestamp": "2026-01-14 18:49:59",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d7c915e4.74824802",
+        "timestamp": "2026-01-14 18:49:59",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d80a1a44.46719539",
+        "timestamp": "2026-01-14 18:50:00",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d84497c9.96072555",
+        "timestamp": "2026-01-14 18:50:00",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d882b7f2.39228525",
+        "timestamp": "2026-01-14 18:50:00",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d8bf4135.08182559",
+        "timestamp": "2026-01-14 18:50:00",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d8edd4d9.43952178",
+        "timestamp": "2026-01-14 18:50:00",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d92b9037.38612703",
+        "timestamp": "2026-01-14 18:50:01",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d9640594.45957279",
+        "timestamp": "2026-01-14 18:50:01",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d99bafa4.54998693",
+        "timestamp": "2026-01-14 18:50:01",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774d9d014a4.70160057",
+        "timestamp": "2026-01-14 18:50:01",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774da0d8949.28699115",
+        "timestamp": "2026-01-14 18:50:02",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774da3a0956.94079841",
+        "timestamp": "2026-01-14 18:50:02",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774da60f995.93559890",
+        "timestamp": "2026-01-14 18:50:02",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774da8b69d8.11578821",
+        "timestamp": "2026-01-14 18:50:02",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774dab72469.86738004",
+        "timestamp": "2026-01-14 18:50:02",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774dae2c0b2.67952636",
+        "timestamp": "2026-01-14 18:50:02",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774db1afc22.01688017",
+        "timestamp": "2026-01-14 18:50:03",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774db4575a5.66354912",
+        "timestamp": "2026-01-14 18:50:03",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774db76bbf3.94177969",
+        "timestamp": "2026-01-14 18:50:03",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774dbaa8e09.06264928",
+        "timestamp": "2026-01-14 18:50:03",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774dbdf6b78.65303768",
+        "timestamp": "2026-01-14 18:50:03",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774dc2d0437.46490648",
+        "timestamp": "2026-01-14 18:50:04",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774dc6dc228.91135638",
+        "timestamp": "2026-01-14 18:50:04",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774dca661f0.62064449",
+        "timestamp": "2026-01-14 18:50:04",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774dcd56214.57033069",
+        "timestamp": "2026-01-14 18:50:04",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774dd116c78.74941542",
+        "timestamp": "2026-01-14 18:50:05",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774dd9fe0c1.42350120",
+        "timestamp": "2026-01-14 18:50:05",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774dddb6431.10380987",
+        "timestamp": "2026-01-14 18:50:05",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774de2143a5.07312822",
+        "timestamp": "2026-01-14 18:50:06",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774df048518.63697714",
+        "timestamp": "2026-01-14 18:50:07",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774df317486.48796154",
+        "timestamp": "2026-01-14 18:50:07",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774df6298a0.31953448",
+        "timestamp": "2026-01-14 18:50:07",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774df8f9bb9.99438892",
+        "timestamp": "2026-01-14 18:50:07",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774dfc1ac83.63565036",
+        "timestamp": "2026-01-14 18:50:07",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696774dfe6dee8.05756756",
+        "timestamp": "2026-01-14 18:50:07",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69677508c85ff1.27136300",
+        "timestamp": "2026-01-14 18:50:48",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69677508ebdd81.72240291",
+        "timestamp": "2026-01-14 18:50:48",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967750c9a3151.07426754",
+        "timestamp": "2026-01-14 18:50:52",
+        "action": "page_access",
+        "details": "Accessed Dashboard page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69677514a11869.48032574",
+        "timestamp": "2026-01-14 18:51:00",
+        "action": "page_access",
+        "details": "Accessed Orders page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69677515e0d7c0.55421681",
+        "timestamp": "2026-01-14 18:51:01",
+        "action": "page_access",
+        "details": "Accessed Dashboard page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69677526363281.59726944",
+        "timestamp": "2026-01-14 18:51:18",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696775269a9b56.37046001",
+        "timestamp": "2026-01-14 18:51:18",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69677527c13560.33460466",
+        "timestamp": "2026-01-14 18:51:19",
+        "action": "cashier_logout",
+        "details": "Cashier 'Emman Tombeats' (cashier1) logged out",
+        "user": "Emman Tombeats",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36",
+        "cashier_name": "Emman Tombeats",
+        "cashier_username": "cashier1"
+    },
+    {
+        "id": "audit_6967752e9b5e95.45071359",
+        "timestamp": "2026-01-14 18:51:26",
+        "action": "cashier_login",
+        "details": "Cashier 'Emman Jason' (cashier1) logged in",
+        "user": "Emman Jason",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36",
+        "cashier_name": "Emman Jason",
+        "cashier_username": "cashier1"
+    },
+    {
+        "id": "audit_6967752ea5a150.63026967",
+        "timestamp": "2026-01-14 18:51:26",
+        "action": "page_access",
+        "details": "Accessed Cashier Dashboard page",
+        "user": "Emman Jason",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696775608836c8.81869479",
+        "timestamp": "2026-01-14 18:52:16",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69677569b16337.55107566",
+        "timestamp": "2026-01-14 18:52:25",
+        "action": "page_access",
+        "details": "Accessed Dashboard page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967756f9aae12.22761071",
+        "timestamp": "2026-01-14 18:52:31",
+        "action": "page_access",
+        "details": "Customer accessed Order page (Landing Page)",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967756fabb2d6.01277998",
+        "timestamp": "2026-01-14 18:52:31",
+        "action": "page_access",
+        "details": "Customer accessed Order page (Landing Page)",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967756fe84fc4.29916034",
+        "timestamp": "2026-01-14 18:52:31",
+        "action": "page_access",
+        "details": "Customer accessed Order page (Landing Page)",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696775813ff7e8.29669039",
+        "timestamp": "2026-01-14 18:52:49",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69677617551d20.40111121",
+        "timestamp": "2026-01-14 18:55:19",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Jason",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69677621ccfb93.16360309",
+        "timestamp": "2026-01-14 18:55:29",
+        "action": "order_status_updated",
+        "details": "Order #01 status changed from 'Previous Status' to 'Pending'",
+        "user": "Emman Jason",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36",
+        "order_id": "01",
+        "old_status": "Previous Status",
+        "new_status": "Pending"
+    },
+    {
+        "id": "audit_6967762c14abe5.46068895",
+        "timestamp": "2026-01-14 18:55:40",
+        "action": "page_access",
+        "details": "Accessed Cashier Dashboard page",
+        "user": "Emman Jason",
+        "role": "cashier",
+        "ip": "192.168.100.166",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696776ca110d26.35483201",
+        "timestamp": "2026-01-14 18:58:18",
+        "action": "page_access",
+        "details": "Accessed Transactions page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696776cbc57808.83563914",
+        "timestamp": "2026-01-14 18:58:19",
+        "action": "page_access",
+        "details": "Accessed Create Products page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696776cd05db05.20158160",
+        "timestamp": "2026-01-14 18:58:21",
+        "action": "page_access",
+        "details": "Accessed Orders page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696776d00daea6.09968516",
+        "timestamp": "2026-01-14 18:58:24",
+        "action": "page_access",
+        "details": "Accessed Dashboard page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696776d1a87244.87315193",
+        "timestamp": "2026-01-14 18:58:25",
+        "action": "page_access",
+        "details": "Accessed Orders page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696776d37ec639.42615371",
+        "timestamp": "2026-01-14 18:58:27",
+        "action": "page_access",
+        "details": "Accessed Create Products page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696776d4d5c5b5.63422999",
+        "timestamp": "2026-01-14 18:58:28",
+        "action": "page_access",
+        "details": "Accessed Orders page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696776d6dc66f5.06141241",
+        "timestamp": "2026-01-14 18:58:30",
+        "action": "page_access",
+        "details": "Accessed Dashboard page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696776d85eff62.28271690",
+        "timestamp": "2026-01-14 18:58:32",
+        "action": "page_access",
+        "details": "Accessed Transactions page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696776d964f5d9.76909942",
+        "timestamp": "2026-01-14 18:58:33",
+        "action": "page_access",
+        "details": "Accessed Maintenance page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696776dbdfaa38.57052008",
+        "timestamp": "2026-01-14 18:58:35",
+        "action": "page_access",
+        "details": "Accessed Create Products page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696776dd3d3d83.94979811",
+        "timestamp": "2026-01-14 18:58:37",
+        "action": "page_access",
+        "details": "Accessed Orders page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696776f79e0321.23478257",
+        "timestamp": "2026-01-14 18:59:03",
+        "action": "page_access",
+        "details": "Accessed Orders page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696776f7e165d7.72467152",
+        "timestamp": "2026-01-14 18:59:03",
+        "action": "page_access",
+        "details": "Accessed Orders page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696776f98bf933.35339530",
+        "timestamp": "2026-01-14 18:59:05",
+        "action": "page_access",
+        "details": "Accessed Dashboard page",
+        "user": "Aeron Gaylord",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69677701cad9e4.91168662",
+        "timestamp": "2026-01-14 18:59:13",
+        "action": "admin_login",
+        "details": "Admin 'John Aeron' logged in",
+        "user": "John Aeron",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69677701d1a925.87782774",
+        "timestamp": "2026-01-14 18:59:13",
+        "action": "page_access",
+        "details": "Accessed Dashboard page",
+        "user": "John Aeron",
+        "role": "admin",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69677710cdb156.84093110",
+        "timestamp": "2026-01-14 18:59:28",
+        "action": "cashier_login",
+        "details": "Cashier 'Emman Jason' (cashier1) logged in",
+        "user": "Emman Jason",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36",
+        "cashier_name": "Emman Jason",
+        "cashier_username": "cashier1"
+    },
+    {
+        "id": "audit_69677710d58fb2.86896112",
+        "timestamp": "2026-01-14 18:59:28",
+        "action": "page_access",
+        "details": "Accessed Cashier Dashboard page",
+        "user": "Emman Jason",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69677712c3a375.90900770",
+        "timestamp": "2026-01-14 18:59:30",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Jason",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69677725951717.79589689",
+        "timestamp": "2026-01-14 18:59:49",
+        "action": "page_access",
+        "details": "Accessed Cashier Transactions page",
+        "user": "Emman Jason",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967772b1fb706.05541528",
+        "timestamp": "2026-01-14 18:59:55",
+        "action": "page_access",
+        "details": "Accessed Cashier Transactions page",
+        "user": "Emman Jason",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967773a1f5a01.80635312",
+        "timestamp": "2026-01-14 19:00:10",
+        "action": "page_access",
+        "details": "Accessed Cashier Dashboard page",
+        "user": "Emman Jason",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967773b418f77.52037192",
+        "timestamp": "2026-01-14 19:00:11",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Jason",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967773c4bc448.20531690",
+        "timestamp": "2026-01-14 19:00:12",
+        "action": "page_access",
+        "details": "Accessed Cashier Transactions page",
+        "user": "Emman Jason",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967773f3c6e73.03553206",
+        "timestamp": "2026-01-14 19:00:15",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Jason",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967777403e814.54171263",
+        "timestamp": "2026-01-14 19:01:08",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Jason",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69677774262e31.04612887",
+        "timestamp": "2026-01-14 19:01:08",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Jason",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69677776045596.58429642",
+        "timestamp": "2026-01-14 19:01:10",
+        "action": "page_access",
+        "details": "Accessed Cashier Dashboard page",
+        "user": "Emman Jason",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69677777ba1ca1.96931354",
+        "timestamp": "2026-01-14 19:01:11",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Jason",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69677778e47213.28728078",
+        "timestamp": "2026-01-14 19:01:12",
+        "action": "page_access",
+        "details": "Accessed Cashier Transactions page",
+        "user": "Emman Jason",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_69677786e3d8d4.10208793",
+        "timestamp": "2026-01-14 19:01:26",
+        "action": "page_access",
+        "details": "Accessed Cashier Dashboard page",
+        "user": "Emman Jason",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_6967779fc1a649.31592314",
+        "timestamp": "2026-01-14 19:01:51",
+        "action": "page_access",
+        "details": "Accessed Cashier Transactions page",
+        "user": "Emman Jason",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696777a2b33302.76802832",
+        "timestamp": "2026-01-14 19:01:54",
+        "action": "page_access",
+        "details": "Accessed Cashier Transactions page",
+        "user": "Emman Jason",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696777a2d1e3a5.75278437",
+        "timestamp": "2026-01-14 19:01:54",
+        "action": "page_access",
+        "details": "Accessed Cashier Transactions page",
+        "user": "Emman Jason",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696777a2f00b30.72741290",
+        "timestamp": "2026-01-14 19:01:54",
+        "action": "page_access",
+        "details": "Accessed Cashier Transactions page",
+        "user": "Emman Jason",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696777a32025d0.99866434",
+        "timestamp": "2026-01-14 19:01:55",
+        "action": "page_access",
+        "details": "Accessed Cashier Transactions page",
+        "user": "Emman Jason",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696777a497ec75.18870432",
+        "timestamp": "2026-01-14 19:01:56",
+        "action": "page_access",
+        "details": "Accessed Cashier Orders page",
+        "user": "Emman Jason",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
+    },
+    {
+        "id": "audit_696777a624a1c3.00305664",
+        "timestamp": "2026-01-14 19:01:58",
+        "action": "page_access",
+        "details": "Accessed Cashier Dashboard page",
+        "user": "Emman Jason",
+        "role": "cashier",
+        "ip": "::1",
+        "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/143.0.0.0 Safari\/537.36"
     }
 ]

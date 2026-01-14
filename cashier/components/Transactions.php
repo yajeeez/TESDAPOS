@@ -46,9 +46,6 @@ AuditLogger::log('page_access', 'Accessed Cashier Transactions page');
           <h2>Transactions</h2>
         </div>
         <div class="topbar-right">
-          <div class="user-info" style="display: flex; align-items: center; gap: 1rem; margin-right: 1rem;">
-            <span style="color: #666;">Welcome, <strong><?php echo htmlspecialchars($userName); ?></strong></span>
-          </div>
           <input type="text" placeholder="Search..." class="search-input" />
         </div>
       </div>
