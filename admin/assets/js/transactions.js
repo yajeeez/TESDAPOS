@@ -120,7 +120,7 @@ function renderTransactions() {
   transactionsToRender.forEach((transaction) => {
     const total = transactionTotal(transaction);
     const itemCount = transactionItemCount(transaction);
-    
+
     // Get product names for display
     let itemsLabel = 'No Items';
     if (transaction.product_names && transaction.product_names.length > 0) {
@@ -168,14 +168,14 @@ async function updateOrderStatus(orderId, newStatus) {
     });
 
     const result = await response.json();
-    
+
     if (result.success) {
       // Update local data
-      const transaction = transactionsData.find((txn) => 
-        (txn.order_id && txn.order_id === orderId) || 
+      const transaction = transactionsData.find((txn) =>
+        (txn.order_id && txn.order_id === orderId) ||
         (txn.id && txn.id === orderId)
       );
-      
+
       if (transaction) {
         transaction.status = newStatus;
       }
@@ -186,7 +186,7 @@ async function updateOrderStatus(orderId, newStatus) {
       } else {
         renderTransactions();
       }
-      
+
       updateSummaryCards();
       showNotification(`Transaction #${orderId} status updated to ${newStatus}`);
     } else {
@@ -200,7 +200,7 @@ async function updateOrderStatus(orderId, newStatus) {
 
 function updateSummaryCards() {
   const transactionsToUse = filteredTransactions.length > 0 ? filteredTransactions : transactionsData;
-  
+
   const totalSales = transactionsToUse.reduce((sum, txn) => sum + transactionTotal(txn), 0);
   const transactionCount = transactionsToUse.length;
   const totalItems = transactionsToUse.reduce((sum, txn) => sum + transactionItemCount(txn), 0);
@@ -239,7 +239,7 @@ function populateCashierFilter() {
 
   // Use the fetched cashiers array
   const cashiersToUse = allCashiers.length > 0 ? allCashiers : [];
-  
+
   cashiersToUse.forEach((name) => {
     const option = document.createElement('option');
     option.value = name;
@@ -261,9 +261,9 @@ function initializeDateFilters() {
     const date = new Date(txn.created_at || txn.date);
     return date.getTime();
   }).filter(ts => !isNaN(ts));
-  
+
   if (timestamps.length === 0) return;
-  
+
   const minDate = new Date(Math.min(...timestamps));
   const maxDate = new Date(Math.max(...timestamps));
 
@@ -281,7 +281,7 @@ function applyFilters() {
   // Handle single date input (for dashboard) or date range (for transactions page)
   let startDate = null;
   let endDate = null;
-  
+
   if (startInput?.value) {
     startDate = new Date(startInput.value + 'T00:00:00');
     // If there's no end date input (dashboard), use the same date for end
@@ -289,11 +289,11 @@ function applyFilters() {
       endDate = new Date(startInput.value + 'T23:59:59');
     }
   }
-  
+
   if (endInput?.value) {
     endDate = new Date(endInput.value + 'T23:59:59');
   }
-  
+
   const cashier = cashierSelect?.value || '';
   const status = statusSelect?.value || '';
   const paymentMethod = paymentSelect?.value || '';
@@ -310,23 +310,23 @@ function applyFilters() {
     // Use created_at or date field
     const txnDateString = txn.created_at || txn.date;
     if (!txnDateString) return false;
-    
+
     const txnDate = new Date(txnDateString);
     if (isNaN(txnDate.getTime())) return false;
-    
+
     // Date filter - if both dates are set, filter by range
     if (startDate && txnDate < startDate) return false;
     if (endDate && txnDate > endDate) return false;
-    
+
     // Cashier filter - match by served_by (full name)
     if (cashier && txn.served_by !== cashier) {
       console.log('❌ Filtered out by cashier:', txn.served_by, '!==', cashier);
       return false;
     }
-    
+
     // Status filter
     if (status && txn.status !== status) return false;
-    
+
     // Payment method filter - handle both "Cashless" and "Credit or Debit Card"
     if (paymentMethod) {
       const txnPayment = txn.payment_method || 'Cash';
@@ -347,7 +347,7 @@ function applyFilters() {
         }
       }
     }
-    
+
     return true;
   });
 
@@ -356,7 +356,7 @@ function applyFilters() {
   // Show notification if no results found
   if (filteredTransactions.length === 0 && transactionsData.length > 0) {
     console.log('ℹ️ No transactions match the current filters. Showing empty state.');
-    
+
     // Show a toast notification on dashboard
     if (typeof showDashboardNotification === 'function') {
       const filterDesc = [];
@@ -364,7 +364,7 @@ function applyFilters() {
       if (cashier) filterDesc.push(`cashier: ${cashier}`);
       if (status) filterDesc.push(`status: ${status}`);
       if (paymentMethod) filterDesc.push(`payment: ${paymentMethod}`);
-      
+
       showDashboardNotification(`No transactions found for ${filterDesc.join(', ')}`, 'info');
     }
   }
@@ -386,11 +386,11 @@ function resetFilters() {
       const date = new Date(txn.created_at || txn.date);
       return date.getTime();
     }).filter(ts => !isNaN(ts));
-    
+
     if (timestamps.length > 0) {
       const minDate = new Date(Math.min(...timestamps));
       const maxDate = new Date(Math.max(...timestamps));
-      
+
       if (startInput) startInput.value = formatInputDate(minDate);
       if (endInput) endInput.value = formatInputDate(maxDate);
     }
@@ -415,7 +415,7 @@ function resetFilters() {
 
 function exportToCSV() {
   const transactionsToExport = filteredTransactions.length > 0 ? filteredTransactions : transactionsData;
-  
+
   if (!transactionsToExport.length) {
     showNotification('No transactions to export', 'error');
     return;
@@ -423,12 +423,12 @@ function exportToCSV() {
 
   // CSV Headers
   const headers = ['Order ID', 'Date', 'Cashier', 'Payment Method', 'Status', 'Items', 'Quantity', 'Total Amount'];
-  
+
   // Convert transactions to CSV rows
   const csvRows = transactionsToExport.map(transaction => {
     const items = transaction.items || [];
     const itemsCount = transaction.total_item_count || items.length;
-    const itemsDetails = items.map(item => 
+    const itemsDetails = items.map(item =>
       `${item.name || item.product_name} (${item.quantity}x @ ₱${item.price})`
     ).join('; ');
 
@@ -457,23 +457,23 @@ function exportToCSV() {
   // Add BOM for UTF-8 support in Excel
   const BOM = '\uFEFF';
   const blob = new Blob([BOM + csvContent], { type: 'text/csv;charset=utf-8;' });
-  
+
   // Create download link
   const link = document.createElement('a');
   const url = URL.createObjectURL(blob);
   link.setAttribute('href', url);
-  
+
   // Generate filename with date range
   const startDate = document.getElementById('filterStartDate')?.value || 'all';
   const endDate = document.getElementById('filterEndDate')?.value || 'all';
   const filename = `sales_report_${startDate}_to_${endDate}.csv`;
-  
+
   link.setAttribute('download', filename);
   link.style.visibility = 'hidden';
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
-  
+
   showNotification(`Exported ${transactionsToExport.length} transaction(s) to CSV`, 'success');
 }
 
@@ -483,7 +483,7 @@ function exportToCSV() {
 
 function printSalesReport() {
   const transactionsToPrint = filteredTransactions.length > 0 ? filteredTransactions : transactionsData;
-  
+
   if (!transactionsToPrint.length) {
     showNotification('No transactions to print', 'error');
     return;
@@ -513,7 +513,7 @@ function printSalesReport() {
     const items = txn.items ? txn.items.map(item => `${item.name} (${item.quantity}x)`).join(', ') : 'No items';
     const total = transactionTotal(txn);
     const itemCount = transactionItemCount(txn);
-    
+
     return `
       <tr>
         <td>#${txn.order_id || txn.id}</td>
@@ -640,7 +640,8 @@ function printSalesReport() {
       </head>
       <body>
         <div class="header">
-          <h1>TESDA POS</h1>
+          <img src="/TESDAPOS/img/TESDALOGO.png" alt="TESDA Logo" style="width: 80px; height: 80px; margin-bottom: 10px;">
+          <h1>TESDA POS SYSTEM</h1>
           <h2>Sales Report</h2>
           <p>Generated on: ${new Date().toLocaleString('en-PH')}</p>
         </div>
@@ -700,7 +701,7 @@ function printSalesReport() {
         </table>
 
         <div class="footer">
-          <p>This is a computer-generated report from TESDA POS System</p>
+          <p>© 2025 TESDA POS System</p>
         </div>
 
         <script>
@@ -1071,7 +1072,7 @@ function attachEventHandlers() {
 async function fetchTransactionsFromDB() {
   try {
     console.log('Fetching transactions from database...');
-    
+
     // Fetch all orders from database
     const response = await fetch('/TESDAPOS/admin/fetch_filtered_orders.php', {
       method: 'GET',
@@ -1080,28 +1081,28 @@ async function fetchTransactionsFromDB() {
         'Pragma': 'no-cache'
       }
     });
-    
+
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    
+
     const data = await response.json();
-    
+
     if (data.success && data.orders) {
       // Update global variables with database data
       transactionsData = data.orders;
       allCashiers = data.cashiers || [];
-      
+
       // Initialize filtered transactions with all data
       filteredTransactions = [...transactionsData];
-      
+
       // Initialize other components
       initializeTransactionsData();
       populateCashierFilter();
       initializeDateFilters();
       renderTransactions();
       updateSummaryCards();
-      
+
       console.log(`Loaded ${transactionsData.length} transactions from database`);
       return true;
     } else {
@@ -1109,12 +1110,12 @@ async function fetchTransactionsFromDB() {
     }
   } catch (error) {
     console.error('Error fetching transactions from database:', error);
-    
+
     // Fallback to empty data
     transactionsData = [];
     filteredTransactions = [];
     allCashiers = [];
-    
+
     // Show error notification
     showNotification('Failed to load transactions from database. Please refresh the page.', 'error');
     return false;
@@ -1126,11 +1127,11 @@ async function fetchTransactionsFromDB() {
 // ==========================
 
 function generateTransactionReport(orderId) {
-  const transaction = transactionsData.find((txn) => 
-    (txn.order_id && txn.order_id === orderId) || 
+  const transaction = transactionsData.find((txn) =>
+    (txn.order_id && txn.order_id === orderId) ||
     (txn.id && txn.id === orderId)
   );
-  
+
   if (!transaction) {
     showNotification('Transaction not found', 'error');
     return;
@@ -1177,7 +1178,7 @@ function generateTransactionReport(orderId) {
   });
 
   // Function to close modal (added to global scope)
-  window.closeTransactionModal = function() {
+  window.closeTransactionModal = function () {
     modal.classList.remove('active');
     setTimeout(() => {
       if (document.body.contains(modal)) {
@@ -1189,11 +1190,11 @@ function generateTransactionReport(orderId) {
 }
 
 function printTransactionReport(orderId) {
-  const transaction = transactionsData.find((txn) => 
-    (txn.order_id && txn.order_id === orderId) || 
+  const transaction = transactionsData.find((txn) =>
+    (txn.order_id && txn.order_id === orderId) ||
     (txn.id && txn.id === orderId)
   );
-  
+
   if (!transaction) {
     showNotification('Transaction not found', 'error');
     return;
@@ -1217,6 +1218,10 @@ function printTransactionReport(orderId) {
 
   const total = transactionTotal(transaction);
   const itemCount = transactionItemCount(transaction);
+
+  // Calculate VAT (1%)
+  const subtotal = total / 1.01;
+  const vat = total - subtotal;
 
   printWindow.document.write(`
     <!DOCTYPE html>
@@ -1303,7 +1308,8 @@ function printTransactionReport(orderId) {
       </head>
       <body>
         <div class="header">
-          <h1>TESDA POS</h1>
+          <img src="/TESDAPOS/img/TESDALOGO.png" alt="TESDA Logo" style="width: 80px; height: 80px; margin-bottom: 10px;">
+          <h1>TESDA POS SYSTEM</h1>
           <h2>Transaction Report</h2>
         </div>
 
@@ -1350,12 +1356,15 @@ function printTransactionReport(orderId) {
 
         <div class="totals">
           <div>Total Items: ${itemCount}</div>
-          <div>Total Amount: ${formatCurrency(total)}</div>
+          <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #ddd;">
+            <div style="font-weight: normal; font-size: 0.95rem;">Subtotal: ${formatCurrency(subtotal)}</div>
+            <div style="font-weight: normal; font-size: 0.95rem;">VAT (1%): ${formatCurrency(vat)}</div>
+            <div style="margin-top: 8px; padding-top: 8px; border-top: 2px solid #333; font-size: 1.2rem;">Total Amount: ${formatCurrency(total)}</div>
+          </div>
         </div>
 
         <div class="footer">
-          <p>This is a computer-generated report from TESDA POS System</p>
-          <p>Generated on: ${new Date().toLocaleString('en-PH')}</p>
+          <p>© 2025 TESDA POS System</p>
         </div>
 
         <script>
@@ -1374,11 +1383,11 @@ function printTransactionReport(orderId) {
 }
 
 function exportTransactionToCSV(orderId) {
-  const transaction = transactionsData.find((txn) => 
-    (txn.order_id && txn.order_id === orderId) || 
+  const transaction = transactionsData.find((txn) =>
+    (txn.order_id && txn.order_id === orderId) ||
     (txn.id && txn.id === orderId)
   );
-  
+
   if (!transaction) {
     showNotification('Transaction not found', 'error');
     return;
@@ -1386,11 +1395,11 @@ function exportTransactionToCSV(orderId) {
 
   const items = transaction.items || [];
   const headers = ['Order ID', 'Transaction ID', 'Date', 'Cashier', 'Payment Method', 'Status', 'Item Name', 'Quantity', 'Price', 'Subtotal'];
-  
+
   // Ensure payment method shows full value
   const paymentMethod = transaction.payment_method || 'Cash';
   const fullPaymentMethod = paymentMethod.length > 15 ? paymentMethod : paymentMethod;
-  
+
   const csvRows = items.map(item => [
     orderId,
     transaction.transaction_id || 'N/A',
@@ -1425,7 +1434,7 @@ function exportTransactionToCSV(orderId) {
 
   const BOM = '\uFEFF';
   const blob = new Blob([BOM + csvContent], { type: 'text/csv;charset=utf-8;' });
-  
+
   const link = document.createElement('a');
   const url = URL.createObjectURL(blob);
   link.setAttribute('href', url);
@@ -1434,7 +1443,7 @@ function exportTransactionToCSV(orderId) {
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
-  
+
   showNotification(`Transaction #${orderId} exported to CSV`, 'success');
 }
 
@@ -1444,7 +1453,7 @@ function exportTransactionToCSV(orderId) {
 
 function generateReport() {
   const transactionsToExport = filteredTransactions.length > 0 ? filteredTransactions : transactionsData;
-  
+
   if (!transactionsToExport.length) {
     showNotification('No transactions to generate report', 'error');
     return;
@@ -1491,7 +1500,7 @@ function generateReport() {
   });
 
   // Function to close modal (added to global scope)
-  window.closeReportModal = function() {
+  window.closeReportModal = function () {
     modal.classList.remove('active');
     setTimeout(() => {
       if (document.body.contains(modal)) {
@@ -1509,20 +1518,20 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Check if we're on the transactions page or dashboard
   const isTransactionsPage = document.getElementById('transactionsList') !== null;
   const isDashboardPage = document.getElementById('salesReport') !== null;
-  
+
   if (isTransactionsPage || isDashboardPage) {
     await fetchTransactionsFromDB();
-    
+
     // Only render transactions table on transactions page
     if (isTransactionsPage) {
       renderTransactions();
     }
-    
+
     // Update summary cards on dashboard
     if (isDashboardPage) {
       updateSummaryCards();
     }
-    
+
     attachEventHandlers();
     console.log('Sales Report & Transactions module initialized');
   }
