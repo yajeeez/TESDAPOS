@@ -6,14 +6,25 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Array of cashier tutorial images
   const images = [
-    '../img/Tutorial/Cashier/cashier_login.png',
-    '../img/Tutorial/Cashier/cashier_dashboard.png',
-    '../img/Tutorial/Cashier/cashier_manage.png',
-    '../img/Tutorial/Cashier/cashier_manage1.png',
-    '../img/Tutorial/Cashier/cashier_manage2.png',  
-    '../img/Tutorial/Cashier/cashier_print.png',
-    '../img/Tutorial/Cashier/cashier_changepass.png',
-    '../img/Tutorial/Cashier/cashier_changepass1.png'
+     '../img/Tutorial/Cashier/cashier17.png',
+    '../img/Tutorial/Cashier/cashier1.png',
+    '../img/Tutorial/Cashier/cashier2.png',
+     '../img/Tutorial/Cashier/cashier3.png',
+    '../img/Tutorial/Cashier/cashier4.png',
+     '../img/Tutorial/Cashier/cashier5.png',
+    '../img/Tutorial/Cashier/cashier6.png',
+    '../img/Tutorial/Cashier/cashier7.png',
+    '../img/Tutorial/Cashier/cashier8.png',
+     '../img/Tutorial/Cashier/cashier9.png',
+    '../img/Tutorial/Cashier/cashier10.png',
+     '../img/Tutorial/Cashier/cashier11.png',
+      '../img/Tutorial/Cashier/cashier12.png',
+       '../img/Tutorial/Cashier/cashier13.png',
+        '../img/Tutorial/Cashier/cashier14.png',
+         '../img/Tutorial/Cashier/cashier15.png'
+        
+          
+
   ];
   
   let currentIndex = 0;
